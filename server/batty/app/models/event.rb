@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20090420021540
+#
+# Table name: events
+#
+#  id               :integer       not null, primary key
+#  created_at       :datetime      not null
+#  device_id        :integer       not null, index_events_on_device_id
+#  trigger_operator :integer       not null
+#  trigger_level    :integer       not null
+#  observed_level   :integer       not null
+#  observed_at      :datetime      not null, index_events_on_observed_at
+#
+
 
 # イベント
 class Event < ActiveRecord::Base

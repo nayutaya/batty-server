@@ -1,3 +1,17 @@
+# == Schema Information
+# Schema version: 20090420021540
+#
+# Table name: triggers
+#
+#  id         :integer       not null, primary key
+#  created_at :datetime      not null
+#  updated_at :datetime      not null
+#  device_id  :integer       not null, index_triggers_on_device_id
+#  enable     :boolean       not null, index_triggers_on_enable
+#  operator   :integer       not null
+#  level      :integer       not null, index_triggers_on_level
+#
+
 
 # トリガ
 class Trigger < ActiveRecord::Base

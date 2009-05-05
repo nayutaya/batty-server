@@ -1,3 +1,16 @@
+# == Schema Information
+# Schema version: 20090420021540
+#
+# Table name: email_addresses
+#
+#  id               :integer       not null, primary key
+#  created_at       :datetime      not null, index_email_addresses_on_created_at
+#  activation_token :string(40)    not null, index_email_addresses_on_activation_token(unique)
+#  user_id          :integer       not null, index_email_addresses_on_email_and_user_id(unique) index_email_addresses_on_user_id
+#  email            :string(200)   not null, index_email_addresses_on_email_and_user_id(unique)
+#  activated_at     :datetime      index_email_addresses_on_activated_at
+#
+
 
 # メールアドレス
 class EmailAddress < ActiveRecord::Base

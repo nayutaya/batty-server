@@ -1,3 +1,15 @@
+# == Schema Information
+# Schema version: 20090420021540
+#
+# Table name: energies
+#
+#  id             :integer       not null, primary key
+#  created_at     :datetime      not null
+#  device_id      :integer       not null, index_energies_on_device_id
+#  observed_level :integer       not null
+#  observed_at    :datetime      not null, index_energies_on_observed_at
+#
+
 
 # エネルギー
 class Energy < ActiveRecord::Base

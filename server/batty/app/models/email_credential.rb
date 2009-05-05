@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20090420021540
+#
+# Table name: email_credentials
+#
+#  id               :integer       not null, primary key
+#  created_at       :datetime      not null, index_email_credentials_on_created_at
+#  activation_token :string(40)    not null, index_email_credentials_on_activation_token(unique)
+#  user_id          :integer       not null, index_email_credentials_on_user_id
+#  email            :string(200)   not null, index_email_credentials_on_email(unique)
+#  hashed_password  :string(40)    not null
+#  activated_at     :datetime      index_email_credentials_on_activated_at
+#  loggedin_at      :datetime      
+#
+
 
 # メールログイン情報
 class EmailCredential < ActiveRecord::Base

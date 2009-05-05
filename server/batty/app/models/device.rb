@@ -1,5 +1,19 @@
 # -*- coding: utf-8 -*-
 
+# == Schema Information
+# Schema version: 20090420021540
+#
+# Table name: devices
+#
+#  id             :integer       not null, primary key
+#  created_at     :datetime      not null
+#  updated_at     :datetime      not null
+#  device_token   :string(40)    not null, index_devices_on_device_token(unique)
+#  user_id        :integer       not null, index_devices_on_user_id
+#  name           :string(50)    not null, index_devices_on_name
+#  device_icon_id :integer       not null, index_devices_on_device_icon_id
+#
+
 # デバイス
 class Device < ActiveRecord::Base
   has_many :energies
