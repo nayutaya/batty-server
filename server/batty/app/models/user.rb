@@ -21,8 +21,8 @@ class User < ActiveRecord::Base
 
   # TODO: EmailAddressモデルとの関連を実装
 
-  # TODO: nicknameの文字数を検証
-  # TODO: user_tokenの存在を検証
+  validates_presence_of :user_token
+  validates_length_of :nickname, :maximum => 40, :allow_nil => true
   # TODO: user_tokenのフォーマットを検証
 
   # TODO: user_tokenを生成するメソッドを実装

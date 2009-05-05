@@ -3,6 +3,11 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
+    @klass = User
+    @basic = @klass.new(
+      :user_token => "0",
+      :nickname   => "name")
+
     @yuya   = users(:yuya)
     @shinya = users(:shinya)
     @risa   = users(:risa)
@@ -98,5 +103,29 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(
       expected.sort_by(&:id),
       @shinya.events.all(:order => "events.id ASC"))
+  end
+
+  #
+  # 検証
+  #
+
+  test "all fixtures are valid" do
+    assert_equal(true, @klass.all.all?(&:valid?))
+  end
+
+  test "validates_presence_of :user_token" do
+    @basic.user_token = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_length_of :nickname" do
+    @basic.nickname = ""
+    assert_equal(true, @basic.valid?)
+
+    @basic.nickname = "あ" * 40
+    assert_equal(true, @basic.valid?)
+
+    @basic.nickname = "あ" * 41
+    assert_equal(false, @basic.valid?)
   end
 end
