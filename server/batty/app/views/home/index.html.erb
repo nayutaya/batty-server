@@ -1,4 +1,21 @@
 <h1>Dashboard</h1>
+
+<div id="login_form">
+  <div id="open_id_login_form">
+    <%- form_tag :controller => 'open_id_auth', :action => 'login' do %>
+    <%= text_field_tag 'openid_url' %>
+    <%= submit_tag 'OpenID でログイン' %>
+    <%- end -%>
+  </div>
+  <div id="password_login_form">
+    <%- form_tag :controller => 'password_auth', :action => 'login' do %>
+    <%= text_field_tag 'login' %>
+    <%= text_field_tag 'password' %>
+    <%= submit_tag 'ID とパスワードでログイン' %>
+    <%- end -%>
+  </div>
+</div>
+
 <div>
   <table>
     <thead>
