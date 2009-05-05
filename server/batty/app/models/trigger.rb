@@ -13,7 +13,6 @@
 #  level      :integer       not null, index_triggers_on_level
 #
 
-
 # トリガ
 class Trigger < ActiveRecord::Base
   belongs_to :device
@@ -21,12 +20,6 @@ class Trigger < ActiveRecord::Base
   named_scope :enable, :conditions => { :enable => true }
 
   # TODO: EmailActionモデルとの関連を実装
-
-  # TODO: device_idの存在を検証
-  # TODO: operatorの存在を検証
-  # TODO: operatorの範囲を検証
-  # TODO: levelの存在を検証
-  # TODO: levelの範囲を検証
 
   Operators = [
     [0, :eq, "＝", "等しい"],
@@ -45,6 +38,12 @@ class Trigger < ActiveRecord::Base
     }
     memo
   }.freeze.each(&:freeze)
+
+  validates_presence_of :device_id
+  validates_presence_of :operator
+  validates_presence_of :level
+  validates_inclusion_of :operator, :in => Operators.map(&:first)
+  validates_inclusion_of :level, :in => 0..100
 
   def self.operator_code_to_symbol(operator_code)
     return OperatorsTable[operator_code][:symbol]

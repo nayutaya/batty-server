@@ -5,6 +5,10 @@ require 'test_helper'
 class TriggerTest < ActiveSupport::TestCase
   def setup
     @klass = Trigger
+    @basic = @klass.new(
+      :device_id => devices(:yuya_pda),
+      :operator  => 0,
+      :level     => 0)
   end
 
   #
@@ -19,6 +23,53 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal(
       devices(:shinya_note),
       triggers(:shinya_note_ne0).device)
+  end
+
+  #
+  # 検証
+  #
+
+  test "all fixtures are valid" do
+    assert_equal(true, @klass.all.all?(&:valid?))
+  end
+
+  test "validates_presence_of :device_id" do
+    @basic.device_id = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :operator" do
+    @basic.operator = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :level" do
+    @basic.level = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_inclusion_of :operator" do
+    [
+      [-1, false],
+      [ 0, true ],
+      [ 5, true ],
+      [ 6, false],
+    ].each { |value, expected|
+      @basic.operator = value
+      assert_equal(expected, @basic.valid?)
+    }
+  end
+
+  test "validates_inclusion_of :level" do
+    [
+      [ -1, false],
+      [  0, true ],
+      [100, true ],
+      [101, false],
+    ].each { |value, expected|
+      @basic.level = value
+      assert_equal(expected, @basic.valid?)
+    }
   end
 
   #
