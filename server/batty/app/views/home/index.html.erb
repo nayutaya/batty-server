@@ -1,2 +1,23 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<h1>Dashboard</h1>
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>デバイス</th>
+        <th>バッテリー残量</th>
+        <th>トリガー</th>
+        <th>アクション</th>
+      </tr>
+    </thead>
+    <tbody>
+    <%- @devices.each do |device| -%>
+      <tr>
+        <td><%=h device.name %></td>
+        <td><%=h device.current_energy.try(:observed_level) %></td>
+        <td><%=h device.triggers.enable.count %></td>
+        <td>アクション</td>
+      </tr>
+    <%- end -%>
+    </tbody>
+  </table>
+</div>
