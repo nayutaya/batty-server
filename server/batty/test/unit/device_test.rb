@@ -185,4 +185,18 @@ class DeviceTest < ActiveSupport::TestCase
     }
   end
 
+  #
+  # current_energy
+  #
+
+  test "current_energy" do
+    device = devices(:yuya_pda)
+    assert_equal(100, device.current_energy.observed_level)
+  end
+
+  test "current_energy without record" do
+    device = devices(:shinya_cellular)
+    assert_nil(device.current_energy)
+  end
+
 end

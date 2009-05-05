@@ -39,4 +39,7 @@ class Device < ActiveRecord::Base
     token
   end
 
+  def current_energy
+    energies.first(:order => "observed_at DESC")
+  end
 end
