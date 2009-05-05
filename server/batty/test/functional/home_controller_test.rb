@@ -12,8 +12,10 @@ class HomeControllerTest < ActionController::TestCase
   # FIXME 認証実装後、他のユーザでもテストする
   test "GET index by yu-yan" do
     get :index
-    assert_equal('yu-yan', assigns(:user).nickname)
-    assert_equal('Touch Diamond', assigns(:devices)[0].name)
-    assert_equal('携帯電話', assigns(:devices)[1].name)
+    assert_response :success
+    assert_template 'index'
+    assert_equal(users(:yuya), assigns(:user))
+    assert_equal(devices(:yuya_pda), assigns(:devices)[0])
+    assert_equal(devices(:yuya_cellular), assigns(:devices)[1])
   end
 end
