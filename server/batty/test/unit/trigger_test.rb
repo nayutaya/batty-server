@@ -123,6 +123,24 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal("＝", triggers(:yuya_pda_eq100).operator_sign)
   end
 
+  test "to_event_hash" do
+    expected = {
+      :trigger_operator => nil,
+      :trigger_level    => nil,
+    }
+    assert_equal(
+      expected,
+      @klass.new.to_event_hash)
+
+    expected = {
+      :trigger_operator => triggers(:yuya_pda_ge90).operator,
+      :trigger_level    => triggers(:yuya_pda_ge90).level,
+    }
+    assert_equal(
+      expected,
+      triggers(:yuya_pda_ge90).to_event_hash)
+  end
+
   #
   # named_scope
   #

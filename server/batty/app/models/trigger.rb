@@ -69,5 +69,10 @@ class Trigger < ActiveRecord::Base
     return self.class.operator_code_to_sign(self.operator)
   end
 
-  # TODO: Eventモデルに変換するためのハッシュを生成するインスタンスメソッドを実装
+  def to_event_hash
+    return {
+      :trigger_operator => self.operator,
+      :trigger_level    => self.level,
+    }
+  end
 end
