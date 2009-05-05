@@ -10,14 +10,13 @@
 #  observed_at    :datetime      not null, index_energies_on_observed_at
 #
 
-
 # エネルギー
 class Energy < ActiveRecord::Base
   belongs_to :device
 
-  # TODO: observed_levelの存在を検証
-  # TODO: observed_levelの範囲を検証
-  # TODO: observed_atの存在を検証
+  validates_presence_of :observed_level
+  validates_presence_of :observed_at
+  validates_inclusion_of :observed_level, :in => (0..100), :allow_nil => true
 
   # TODO: Eventモデルに変換するためのハッシュを生成するインスタンスメソッドを実装
 end
