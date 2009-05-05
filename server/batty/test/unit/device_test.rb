@@ -110,4 +110,12 @@ class DeviceTest < ActiveSupport::TestCase
                      :name => 'a' * 51)
     end
   end
+
+  test "device_token is empty" do
+    assert_raise(ActiveRecord::RecordInvalid) do
+      Device.create!(:user_id => 1,
+                     :device_icon_id => 1,
+                     :name => 'a' * 50)
+    end
+  end
 end
