@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :user_token
   validates_length_of :nickname, :maximum => 40, :allow_nil => true
-  # TODO: user_tokenのフォーマットを検証
+  validates_format_of :user_token, :with => /\A[0-9a-f]{20}\z/
 
   # TODO: user_tokenを生成するメソッドを実装
   # TODO: 一意なuser_tokenを生成するメソッドを実装

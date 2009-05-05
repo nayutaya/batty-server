@@ -5,7 +5,7 @@ class UserTest < ActiveSupport::TestCase
   def setup
     @klass = User
     @basic = @klass.new(
-      :user_token => "0",
+      :user_token => "0" * 20,
       :nickname   => "name")
 
     @yuya   = users(:yuya)
@@ -126,6 +126,26 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(true, @basic.valid?)
 
     @basic.nickname = "あ" * 41
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_format_of :user_token" do
+    @basic.user_token = "0123456789abcdef0000"
+    assert_equal(true, @basic.valid?)
+
+    @basic.user_token = "0" * 20
+    assert_equal(true, @basic.valid?)
+
+    @basic.user_token = "0" * 19
+    assert_equal(false, @basic.valid?)
+
+    @basic.user_token = "0" * 21
+    assert_equal(false, @basic.valid?)
+
+    @basic.user_token = "0" * 19 + "A"
+    assert_equal(false, @basic.valid?)
+
+    @basic.user_token = "0" * 19 + "g"
     assert_equal(false, @basic.valid?)
   end
 end
