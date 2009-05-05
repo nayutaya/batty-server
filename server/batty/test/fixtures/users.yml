@@ -1,0 +1,18 @@
+
+yuya:
+  created_at: 2009-01-01 00:00:00
+  updated_at: 2009-01-01 00:00:00
+  user_token: "11111111111111111111111111111111"
+  nickname: "yu-yan"
+
+shinya:
+  created_at: 2009-01-01 00:00:00
+  updated_at: 2009-01-01 00:00:00
+  user_token: "22222222222222222222222222222222"
+  nickname: null
+
+risa:
+  created_at: 2009-01-01 00:00:00
+  updated_at: 2009-01-01 00:00:00
+  user_token: "33333333333333333333333333333333"
+  nickname: null

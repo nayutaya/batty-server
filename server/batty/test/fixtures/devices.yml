@@ -1,0 +1,32 @@
+
+yuya_pda:
+  created_at: 2009-01-01 00:00:00
+  updated_at: 2009-01-01 00:00:00
+  device_token: "0"
+  user: yuya
+  name: "Touch Diamond"
+  device_icon: pda
+
+yuya_cellular:
+  created_at: 2009-01-01 00:00:00
+  updated_at: 2009-01-01 00:00:00
+  device_token: "1"
+  user: yuya
+  name: "携帯電話"
+  device_icon: cellular
+
+shinya_note:
+  created_at: 2009-01-01 00:00:00
+  updated_at: 2009-01-01 00:00:00
+  device_token: "2"
+  user: shinya
+  name: "ノートマシン"
+  device_icon: note
+
+shinya_cellular:
+  created_at: 2009-01-01 00:00:00
+  updated_at: 2009-01-01 00:00:00
+  device_token: "3"
+  user: shinya
+  name: "携帯電話"
+  device_icon: cellular

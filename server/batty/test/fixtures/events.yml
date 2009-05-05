@@ -1,0 +1,24 @@
+
+yuya_pda_ge90_1:
+  created_at: 2009-01-01 00:00:00
+  device: yuya_pda
+  trigger_operator: <%= Trigger.operator_symbol_to_code(:ge) %>
+  trigger_level: 90
+  observed_level: 90
+  observed_at: 2009-01-02 00:00:00
+
+yuya_pda_eq100_1:
+  created_at: 2009-01-01 00:00:00
+  device: yuya_pda
+  trigger_operator: <%= Trigger.operator_symbol_to_code(:eq) %>
+  trigger_level: 100
+  observed_level: 100
+  observed_at: 2009-01-03 00:00:00
+
+yuya_cellular_lt40_1:
+  created_at: 2009-01-01 00:00:00
+  device: yuya_cellular
+  trigger_operator: <%= Trigger.operator_symbol_to_code(:lt) %>
+  trigger_level: 40
+  observed_level: 30
+  observed_at: 2009-01-02 00:00:00

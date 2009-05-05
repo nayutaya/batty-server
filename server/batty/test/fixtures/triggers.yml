@@ -1,0 +1,40 @@
+
+yuya_pda_ge90:
+  created_at: 2009-01-01 00:00:00
+  updated_at: 2009-01-01 00:00:00
+  device: yuya_pda
+  enable: true
+  operator: <%= Trigger.operator_symbol_to_code(:ge) %>
+  level: 90
+
+yuya_pda_eq100:
+  created_at: 2009-01-01 00:00:00
+  updated_at: 2009-01-01 00:00:00
+  device: yuya_pda
+  enable: true
+  operator: <%= Trigger.operator_symbol_to_code(:eq) %>
+  level: 100
+
+yuya_cellular_lt40:
+  created_at: 2009-01-01 00:00:00
+  updated_at: 2009-01-01 00:00:00
+  device: yuya_cellular
+  enable: true
+  operator: <%= Trigger.operator_symbol_to_code(:lt) %>
+  level: 40
+
+shinya_note_ne0:
+  created_at: 2009-01-01 00:00:00
+  updated_at: 2009-01-01 00:00:00
+  device: shinya_note
+  enable: true
+  operator: <%= Trigger.operator_symbol_to_code(:ne) %>
+  level: 0
+
+shinya_cellular_gt0:
+  created_at: 2009-01-01 00:00:00
+  updated_at: 2009-01-01 00:00:00
+  device: shinya_cellular
+  enable: false
+  operator: <%= Trigger.operator_symbol_to_code(:gt) %>
+  level: 0

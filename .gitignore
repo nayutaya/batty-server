@@ -1,0 +1,8 @@
+db/schema.rb
+db/*.sqlite3
+log/*.log
+tmp/cache/*
+tmp/pids/*
+tmp/sessions/*
+tmp/sockets/*
+
