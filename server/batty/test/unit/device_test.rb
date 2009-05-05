@@ -149,4 +149,21 @@ class DeviceTest < ActiveSupport::TestCase
                      :name => 'a' * 10)
     end
   end
+
+  #
+  # device_token 生成
+  #
+
+  test "create_device_token" do
+    10.times do
+      d = Device.new do |m|
+        m.user_id = 10
+        m.device_token = m.create_device_token
+        m.device_icon_id = 1
+        m.name = 'a' * 10
+      end
+      assert d.valid?
+    end
+  end
+
 end

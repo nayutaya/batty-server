@@ -27,6 +27,9 @@ class Device < ActiveRecord::Base
   validates_presence_of :device_token
   validates_format_of :device_token, :with => /\A[0-9a-f]{20}\z/i
 
-  # TODO: device_tokenを生成するメソッドを実装
+  def create_device_token
+    (1..20).map{ rand(16).to_s(16) }.join
+  end
+
   # TODO: 一意なdevice_tokenを生成するメソッドを実装
 end
