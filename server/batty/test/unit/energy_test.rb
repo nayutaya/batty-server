@@ -52,4 +52,26 @@ class EnergyTest < ActiveSupport::TestCase
       assert_equal(expected, @basic.valid?)
     }
   end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "to_event_hash" do
+    expected = {
+      :observed_level => nil,
+      :observed_at    => nil,
+    }
+    assert_equal(
+      expected,
+      @klass.new.to_event_hash)
+
+    expected = {
+      :observed_level => energies(:yuya_pda1).observed_level,
+      :observed_at    => energies(:yuya_pda1).observed_at,
+    }
+    assert_equal(
+      expected,
+      energies(:yuya_pda1).to_event_hash)
+  end
 end

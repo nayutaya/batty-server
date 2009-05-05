@@ -18,5 +18,10 @@ class Energy < ActiveRecord::Base
   validates_presence_of :observed_at
   validates_inclusion_of :observed_level, :in => (0..100), :allow_nil => true
 
-  # TODO: Eventモデルに変換するためのハッシュを生成するインスタンスメソッドを実装
+  def to_event_hash
+    return {
+      :observed_level => self.observed_level,
+      :observed_at    => self.observed_at,
+    }
+  end
 end
