@@ -22,9 +22,9 @@ class Event < ActiveRecord::Base
   validates_presence_of :trigger_level
   validates_presence_of :observed_level
   validates_presence_of :observed_at
-  # TODO: trigger_operatorの範囲を検証
-  # TODO: trigger_levelの範囲を検証
-  # TODO: observed_levelの範囲を検証
+  validates_inclusion_of :trigger_operator, :in => 0..5
+  validates_inclusion_of :trigger_level, :in => 0..100
+  validates_inclusion_of :observed_level, :in => 0..100
 
   def trigger_operator_symbol
     return Trigger.operator_code_to_symbol(self.trigger_operator)

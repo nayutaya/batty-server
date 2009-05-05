@@ -30,7 +30,9 @@ class EventTest < ActiveSupport::TestCase
   # 検証
   #
 
-  # FIXME: all fixtures
+  test "all fixtures are valid" do
+    assert_equal(true, @klass.all.all?(&:valid?))
+  end
 
   test "basic is valid" do
     assert_equal(true, @basic.valid?)
@@ -59,6 +61,42 @@ class EventTest < ActiveSupport::TestCase
   test "validates_presence_of :observed_at" do
     @basic.observed_at = nil
     assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_inclusion_of :trigger_operator" do
+    [
+      [-1, false],
+      [ 0, true ],
+      [ 5, true ],
+      [ 6, false],
+    ].each { |value, expected|
+      @basic.trigger_operator = value
+      assert_equal(expected, @basic.valid?)
+    }
+  end
+
+  test "validates_inclusion_of :trigger_level" do
+    [
+      [ -1, false],
+      [  0, true ],
+      [100, true ],
+      [101, false],
+    ].each { |value, expected|
+      @basic.trigger_level = value
+      assert_equal(expected, @basic.valid?)
+    }
+  end
+
+  test "validates_inclusion_of :observed_level" do
+    [
+      [ -1, false],
+      [  0, true ],
+      [100, true ],
+      [101, false],
+    ].each { |value, expected|
+      @basic.observed_level = value
+      assert_equal(expected, @basic.valid?)
+    }
   end
 
   #
