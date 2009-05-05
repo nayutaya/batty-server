@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 # デバイス
 class Device < ActiveRecord::Base
@@ -7,7 +8,8 @@ class Device < ActiveRecord::Base
   belongs_to :user
   belongs_to :device_icon
 
-  # TODO: nameの存在を検証
+  validates_presence_of :name
+
   # TODO: nameの文字数を検証
   # TODO: device_tokenの存在を検証
   # TODO: device_tokenのフォーマットを検証

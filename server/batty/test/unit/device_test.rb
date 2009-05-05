@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 require 'test_helper'
 
@@ -82,5 +83,13 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal(
       device_icons(:note),
       @shinya_note.device_icon)
+  end
+
+  test "name is empty" do
+    assert_raise(ActiveRecord::RecordInvalid) do
+      Device.create!(:user_id => 1,
+                     :device_token => "1",
+                     :device_icon_id => 1)
+    end
   end
 end
