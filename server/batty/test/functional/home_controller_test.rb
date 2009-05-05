@@ -3,10 +3,12 @@
 require 'test_helper'
 
 class HomeControllerTest < ActionController::TestCase
-  test "URI" do
+  test "URL" do
     base = {:controller => "home"}
 
     assert_routing("/", base.merge(:action => "index"))
+
+    assert_equal("/", root_path)
   end
 
   # FIXME 認証実装後、他のユーザでもテストする
