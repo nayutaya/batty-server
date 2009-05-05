@@ -13,12 +13,9 @@
 #  body       :text          
 #
 
-
 # メールアクション
 class EmailAction < ActiveRecord::Base
-  # TODO: テストデータを作成
-
-  # TODO: Triggerモデルとの関連を実装
+  belongs_to :trigger
 
   # TODO: trigger_idの存在を検証
   # TODO: emailの存在を検証

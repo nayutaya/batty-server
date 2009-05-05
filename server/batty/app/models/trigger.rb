@@ -15,11 +15,10 @@
 
 # トリガ
 class Trigger < ActiveRecord::Base
+  has_many :email_actions
   belongs_to :device
 
   named_scope :enable, :conditions => { :enable => true }
-
-  # TODO: EmailActionモデルとの関連を実装
 
   Operators = [
     [0, :eq, "＝", "等しい"],

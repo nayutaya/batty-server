@@ -15,6 +15,23 @@ class TriggerTest < ActiveSupport::TestCase
   # 関連
   #
 
+  test "has_many :email_actions" do
+    expected = [
+      email_actions(:yuya_pda_ge90_1),
+      email_actions(:yuya_pda_ge90_2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      triggers(:yuya_pda_ge90).email_actions.all(:order => "email_actions.id ASC"))
+
+    expected = [
+      email_actions(:shinya_note_ne0_1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      triggers(:shinya_note_ne0).email_actions.all(:order => "email_actions.id ASC"))
+  end
+
   test "belongs_to device" do
     assert_equal(
       devices(:yuya_pda),

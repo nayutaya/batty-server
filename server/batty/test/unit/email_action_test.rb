@@ -1,8 +1,23 @@
+
 require 'test_helper'
 
 class EmailActionTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  def setup
+    @klass = EmailAction
+    @basic = @klass.new
+  end
+
+  #
+  # 関連
+  #
+
+  test "belongs_to :trigger" do
+    assert_equal(
+      triggers(:yuya_pda_ge90),
+      email_actions(:yuya_pda_ge90_1).trigger)
+
+    assert_equal(
+      triggers(:shinya_note_ne0),
+      email_actions(:shinya_note_ne0_1).trigger)
   end
 end
