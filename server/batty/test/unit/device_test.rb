@@ -4,6 +4,11 @@ require 'test_helper'
 
 class DeviceTest < ActiveSupport::TestCase
   def setup
+    @klass         = Device
+    @basic         = @klass.new(:user_id => 1,
+                                :name => "name",
+                                :device_token => "1" * 20,
+                                :device_icon_id => 10)
     @yuya_pda      = devices(:yuya_pda)
     @yuya_cellular = devices(:yuya_cellular)
     @shinya_note   = devices(:shinya_note)
@@ -89,65 +94,43 @@ class DeviceTest < ActiveSupport::TestCase
   # 検証
   #
 
+  test "all fixtures are valid" do
+    assert @klass.all.all?(&:valid?)
+  end
+
   test "name is empty" do
-    assert_raise(ActiveRecord::RecordInvalid) do
-      Device.create!(:user_id => 1,
-                     :device_token => "1" * 20,
-                     :device_icon_id => 1)
-    end
+    @basic.name = nil
+    assert(!@basic.valid?)
   end
 
   test "too long japanese name" do
-    assert_raise(ActiveRecord::RecordInvalid) do
-      Device.create!(:user_id => 1,
-                     :device_token => "1" * 20,
-                     :device_icon_id => 1,
-                     :name => 'あ' * 51)
-    end
+    @basic.name = 'あ' * 51
+    assert(!@basic.valid?)
   end
 
   test "too long ascii name" do
-    assert_raise(ActiveRecord::RecordInvalid) do
-      Device.create!(:user_id => 1,
-                     :device_token => "1" * 20,
-                     :device_icon_id => 1,
-                     :name => 'a' * 51)
-    end
+    @basic.name = 'a' * 51
+    assert(!@basic.valid?)
   end
 
   test "device_token is empty" do
-    assert_raise(ActiveRecord::RecordInvalid) do
-      Device.create!(:user_id => 1,
-                     :device_icon_id => 1,
-                     :name => 'a' * 50)
-    end
+    @basic.device_token = nil
+    assert(!@basic.valid?)
   end
 
   test "device_token is invalid (invalid character)" do
-    assert_raise(ActiveRecord::RecordInvalid) do
-      Device.create!(:user_id => 1,
-                     :device_token => "xxx",
-                     :device_icon_id => 1,
-                     :name => 'a' * 10)
-    end
+    @basic.device_token = 'xxx'
+    assert(!@basic.valid?)
   end
 
   test "device_token is invalid (too long)" do
-    assert_raise(ActiveRecord::RecordInvalid) do
-      Device.create!(:user_id => 1,
-                     :device_token => "0" * 21,
-                     :device_icon_id => 1,
-                     :name => 'a' * 10)
-    end
+    @basic.device_token = '0' * 21
+    assert(!@basic.valid?)
   end
 
   test "device_token is invalid (too short)" do
-    assert_raise(ActiveRecord::RecordInvalid) do
-      Device.create!(:user_id => 1,
-                     :device_token => "0" * 19,
-                     :device_icon_id => 1,
-                     :name => 'a' * 10)
-    end
+    @basic.device_token = '0' * 19
+    assert(!@basic.valid?)
   end
 
   #
@@ -156,32 +139,17 @@ class DeviceTest < ActiveSupport::TestCase
 
   test "create_device_token" do
     10.times do
-      d = Device.new do |m|
-        m.user_id = 10
-        m.device_token = Device.create_device_token
-        m.device_icon_id = 1
-        m.name = 'a' * 10
-      end
-      assert d.valid?
+      @basic.device_token = @klass.create_device_token
+      assert @basic.valid?
     end
   end
 
   test "create_unique_device_token" do
-    Device.create!(:user_id => 1,
-                   :device_token => "a" * 20,
-                   :device_icon_id => 1,
-                   :name => 'a' * 10)
-    musha = Kagemusha.new(Device)
-    expected = ['a' * 20, 'b' * 20]
-    musha.defs(:create_device_token){ expected.shift }
+    musha = Kagemusha.new(@klass)
+    tokens = [ devices(:yuya_pda).device_token, 'b' * 20]
+    musha.defs(:create_device_token){ tokens.shift }
     musha.swap{
-      d = Device.new do |m|
-        m.user_id = 10
-        m.device_token = Device.create_unique_device_token
-        m.device_icon_id = 1
-        m.name = 'a' * 10
-      end
-      assert_equal('b'*20, d.device_token)
+      assert_equal('b'*20, @klass.create_unique_device_token)
     }
   end
 

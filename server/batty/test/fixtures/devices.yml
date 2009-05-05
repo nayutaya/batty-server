@@ -16,7 +16,7 @@
 yuya_pda:
   created_at: 2009-01-01 00:00:00
   updated_at: 2009-01-01 00:00:00
-  device_token: "0"
+  device_token: "<%= "1" * 20 %>"
   user: yuya
   name: "Touch Diamond"
   device_icon: pda
@@ -24,7 +24,7 @@ yuya_pda:
 yuya_cellular:
   created_at: 2009-01-01 00:00:00
   updated_at: 2009-01-01 00:00:00
-  device_token: "1"
+  device_token: "<%= "2" * 20 %>"
   user: yuya
   name: "携帯電話"
   device_icon: cellular
@@ -32,7 +32,7 @@ yuya_cellular:
 shinya_note:
   created_at: 2009-01-01 00:00:00
   updated_at: 2009-01-01 00:00:00
-  device_token: "2"
+  device_token: "<%= "3" * 20 %>"
   user: shinya
   name: "ノートマシン"
   device_icon: note
@@ -40,7 +40,7 @@ shinya_note:
 shinya_cellular:
   created_at: 2009-01-01 00:00:00
   updated_at: 2009-01-01 00:00:00
-  device_token: "3"
+  device_token: "<%= "4" * 20 %>"
   user: shinya
   name: "携帯電話"
   device_icon: cellular
