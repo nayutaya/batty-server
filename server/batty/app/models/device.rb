@@ -25,18 +25,11 @@ class Device < ActiveRecord::Base
   validates_presence_of :name
   validates_length_of :name, :maximum => 50
   validates_presence_of :device_token
-  validates_format_of :device_token, :with => /\A[0-9a-f]{20}\z/i
+  validates_format_of :device_token, :with => TokenUtil.create_token_regexp(20)
   validates_uniqueness_of :device_token
 
-  def self.create_device_token
-    (1..20).map{ rand(16).to_s(16) }.join
-  end
-
   def self.create_unique_device_token
-    begin
-      token = create_device_token
-    end while Device.exists?(:device_token => token)
-    token
+    TokenUtil.create_unique_token(self, :device_token, 20)
   end
 
   def current_energy

@@ -137,17 +137,10 @@ class DeviceTest < ActiveSupport::TestCase
   # device_token 生成
   #
 
-  test "create_device_token" do
-    10.times do
-      @basic.device_token = @klass.create_device_token
-      assert @basic.valid?
-    end
-  end
-
   test "create_unique_device_token" do
-    musha = Kagemusha.new(@klass)
+    musha = Kagemusha.new(TokenUtil)
     tokens = [ devices(:yuya_pda).device_token, 'b' * 20]
-    musha.defs(:create_device_token){ tokens.shift }
+    musha.defs(:create_token){ tokens.shift }
     musha.swap{
       assert_equal('b'*20, @klass.create_unique_device_token)
     }

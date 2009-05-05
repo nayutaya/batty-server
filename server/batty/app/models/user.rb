@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 # Schema version: 20090420021540
 #
@@ -21,8 +22,10 @@ class User < ActiveRecord::Base
 
   validates_presence_of :user_token
   validates_length_of :nickname, :maximum => 40, :allow_nil => true
-  validates_format_of :user_token, :with => /\A[0-9a-f]{20}\z/
+  validates_format_of :user_token, :with => TokenUtil.create_token_regexp(20)
 
-  # TODO: user_tokenを生成するメソッドを実装
-  # TODO: 一意なuser_tokenを生成するメソッドを実装
+  def self.create_unique_user_token
+    TokenUtil.create_unique_token(self, :user_token, 20)
+  end
+
 end

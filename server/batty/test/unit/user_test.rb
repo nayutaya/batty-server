@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 require 'test_helper'
 
@@ -157,6 +158,19 @@ class UserTest < ActiveSupport::TestCase
     ].each { |value, expected|
       @basic.user_token = value
       assert_equal(expected, @basic.valid?)
+    }
+  end
+
+  #
+  # user_token 生成
+  #
+
+  test "create_unique_user_token" do
+    musha = Kagemusha.new(TokenUtil)
+    tokens = [ users(:yuya).user_token, 'b' * 20]
+    musha.defs(:create_token){ tokens.shift }
+    musha.swap{
+      assert_equal('b'*20, @klass.create_unique_user_token)
     }
   end
 end
