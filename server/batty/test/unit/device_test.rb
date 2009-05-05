@@ -85,10 +85,14 @@ class DeviceTest < ActiveSupport::TestCase
       @shinya_note.device_icon)
   end
 
+  #
+  # 検証
+  #
+
   test "name is empty" do
     assert_raise(ActiveRecord::RecordInvalid) do
       Device.create!(:user_id => 1,
-                     :device_token => "1",
+                     :device_token => "1" * 20,
                      :device_icon_id => 1)
     end
   end
@@ -96,7 +100,7 @@ class DeviceTest < ActiveSupport::TestCase
   test "too long japanese name" do
     assert_raise(ActiveRecord::RecordInvalid) do
       Device.create!(:user_id => 1,
-                     :device_token => "1",
+                     :device_token => "1" * 20,
                      :device_icon_id => 1,
                      :name => 'あ' * 51)
     end
@@ -105,7 +109,7 @@ class DeviceTest < ActiveSupport::TestCase
   test "too long ascii name" do
     assert_raise(ActiveRecord::RecordInvalid) do
       Device.create!(:user_id => 1,
-                     :device_token => "1",
+                     :device_token => "1" * 20,
                      :device_icon_id => 1,
                      :name => 'a' * 51)
     end
@@ -116,6 +120,33 @@ class DeviceTest < ActiveSupport::TestCase
       Device.create!(:user_id => 1,
                      :device_icon_id => 1,
                      :name => 'a' * 50)
+    end
+  end
+
+  test "device_token is invalid (invalid character)" do
+    assert_raise(ActiveRecord::RecordInvalid) do
+      Device.create!(:user_id => 1,
+                     :device_token => "xxx",
+                     :device_icon_id => 1,
+                     :name => 'a' * 10)
+    end
+  end
+
+  test "device_token is invalid (too long)" do
+    assert_raise(ActiveRecord::RecordInvalid) do
+      Device.create!(:user_id => 1,
+                     :device_token => "0" * 21,
+                     :device_icon_id => 1,
+                     :name => 'a' * 10)
+    end
+  end
+
+  test "device_token is invalid (too short)" do
+    assert_raise(ActiveRecord::RecordInvalid) do
+      Device.create!(:user_id => 1,
+                     :device_token => "0" * 19,
+                     :device_icon_id => 1,
+                     :name => 'a' * 10)
     end
   end
 end

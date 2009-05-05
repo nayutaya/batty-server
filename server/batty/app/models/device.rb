@@ -25,8 +25,7 @@ class Device < ActiveRecord::Base
   validates_presence_of :name
   validates_length_of :name, :maximum => 50
   validates_presence_of :device_token
-
-  # TODO: device_tokenのフォーマットを検証 [0-9a-f]{20}
+  validates_format_of :device_token, :with => /\A[0-9a-f]{20}\z/i
 
   # TODO: device_tokenを生成するメソッドを実装
   # TODO: 一意なdevice_tokenを生成するメソッドを実装
