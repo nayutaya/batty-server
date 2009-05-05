@@ -172,11 +172,8 @@ class DeviceTest < ActiveSupport::TestCase
                    :device_icon_id => 1,
                    :name => 'a' * 10)
     musha = Kagemusha.new(Device)
-    count = 0
-    musha.defs(:create_device_token){
-      count += 1
-      count == 1 ? 'a' * 20 : 'b' * 20
-    }
+    expected = ['a' * 20, 'b' * 20]
+    musha.defs(:create_device_token){ expected.shift }
     musha.swap{
       d = Device.new do |m|
         m.user_id = 10
