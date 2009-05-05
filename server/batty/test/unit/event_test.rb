@@ -4,6 +4,12 @@ require 'test_helper'
 class EventTest < ActiveSupport::TestCase
   def setup
     @klass = Event
+    @basic = @klass.new(
+      :device_id        => devices(:yuya_pda),
+      :trigger_operator => 0,
+      :trigger_level    => 0,
+      :observed_level   => 0,
+      :observed_at      => Time.local(2009, 1, 1))
   end
 
   #
@@ -18,6 +24,41 @@ class EventTest < ActiveSupport::TestCase
     assert_equal(
       devices(:yuya_cellular),
       events(:yuya_cellular_lt40_1).device)
+  end
+
+  #
+  # 検証
+  #
+
+  # FIXME: all fixtures
+
+  test "basic is valid" do
+    assert_equal(true, @basic.valid?)
+  end
+
+  test "validates_presence_of :device_id" do
+    @basic.device_id = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :trigger_operator" do
+    @basic.trigger_operator = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :trigger_level" do
+    @basic.trigger_level = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :observed_level" do
+    @basic.observed_level = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :observed_at" do
+    @basic.observed_at = nil
+    assert_equal(false, @basic.valid?)
   end
 
   #
