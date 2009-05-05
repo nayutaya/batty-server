@@ -92,4 +92,22 @@ class DeviceTest < ActiveSupport::TestCase
                      :device_icon_id => 1)
     end
   end
+
+  test "too long japanese name" do
+    assert_raise(ActiveRecord::RecordInvalid) do
+      Device.create!(:user_id => 1,
+                     :device_token => "1",
+                     :device_icon_id => 1,
+                     :name => 'あ' * 51)
+    end
+  end
+
+  test "too long ascii name" do
+    assert_raise(ActiveRecord::RecordInvalid) do
+      Device.create!(:user_id => 1,
+                     :device_token => "1",
+                     :device_icon_id => 1,
+                     :name => 'a' * 51)
+    end
+  end
 end

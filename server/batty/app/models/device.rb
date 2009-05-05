@@ -23,8 +23,8 @@ class Device < ActiveRecord::Base
   belongs_to :device_icon
 
   validates_presence_of :name
+  validates_length_of :name, :maximum => 50
 
-  # TODO: nameの文字数を検証
   # TODO: device_tokenの存在を検証
   # TODO: device_tokenのフォーマットを検証
 
