@@ -158,12 +158,34 @@ class DeviceTest < ActiveSupport::TestCase
     10.times do
       d = Device.new do |m|
         m.user_id = 10
-        m.device_token = m.create_device_token
+        m.device_token = Device.create_device_token
         m.device_icon_id = 1
         m.name = 'a' * 10
       end
       assert d.valid?
     end
+  end
+
+  test "create_unique_device_token" do
+    Device.create!(:user_id => 1,
+                   :device_token => "a" * 20,
+                   :device_icon_id => 1,
+                   :name => 'a' * 10)
+    musha = Kagemusha.new(Device)
+    count = 0
+    musha.defs(:create_device_token){
+      count += 1
+      count == 1 ? 'a' * 20 : 'b' * 20
+    }
+    musha.swap{
+      d = Device.new do |m|
+        m.user_id = 10
+        m.device_token = Device.create_unique_device_token
+        m.device_icon_id = 1
+        m.name = 'a' * 10
+      end
+      assert_equal('b'*20, d.device_token)
+    }
   end
 
 end
