@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 require 'test_helper'
 
@@ -69,5 +70,15 @@ class TriggerTest < ActiveSupport::TestCase
   test "operator_sign" do
     assert_equal("≧", triggers(:yuya_pda_ge90).operator_sign)
     assert_equal("＝", triggers(:yuya_pda_eq100).operator_sign)
+  end
+
+  #
+  # named_scope
+  #
+
+  test "enabled" do
+    assert Trigger.count > Trigger.enable.count
+    assert Trigger.find(:all).any?{|v| !v.enable? }
+    assert Trigger.enable.all?{|v| v.enable? }
   end
 end

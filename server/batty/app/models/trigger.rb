@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 # Schema version: 20090420021540
 #
@@ -16,6 +17,8 @@
 # トリガ
 class Trigger < ActiveRecord::Base
   belongs_to :device
+
+  named_scope :enable, :conditions => { :enable => true }
 
   # TODO: EmailActionモデルとの関連を実装
 
