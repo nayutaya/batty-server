@@ -10,7 +10,6 @@
 #  nickname   :string(40)    
 #
 
-
 # ユーザ
 class User < ActiveRecord::Base
   has_many :open_id_credentials

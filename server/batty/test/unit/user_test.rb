@@ -119,33 +119,27 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "validates_length_of :nickname" do
-    @basic.nickname = ""
-    assert_equal(true, @basic.valid?)
-
-    @basic.nickname = "あ" * 40
-    assert_equal(true, @basic.valid?)
-
-    @basic.nickname = "あ" * 41
-    assert_equal(false, @basic.valid?)
+    [
+      ["",        true ],
+      ["あ" * 40, true ],
+      ["あ" * 41, false],
+    ].each { |value, expected|
+      @basic.nickname = value
+      assert_equal(expected, @basic.valid?)
+    }
   end
 
   test "validates_format_of :user_token" do
-    @basic.user_token = "0123456789abcdef0000"
-    assert_equal(true, @basic.valid?)
-
-    @basic.user_token = "0" * 20
-    assert_equal(true, @basic.valid?)
-
-    @basic.user_token = "0" * 19
-    assert_equal(false, @basic.valid?)
-
-    @basic.user_token = "0" * 21
-    assert_equal(false, @basic.valid?)
-
-    @basic.user_token = "0" * 19 + "A"
-    assert_equal(false, @basic.valid?)
-
-    @basic.user_token = "0" * 19 + "g"
-    assert_equal(false, @basic.valid?)
+    [
+      ["0123456789abcdef0000", true ],
+      ["0" * 19,               false],
+      ["0" * 20,               true ],
+      ["0" * 21,               false],
+      ["0" * 19 + "A",         false],
+      ["0" * 19 + "g",         false],
+    ].each { |value, expected|
+      @basic.user_token = value
+      assert_equal(expected, @basic.valid?)
+    }
   end
 end
