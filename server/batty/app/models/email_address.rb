@@ -11,12 +11,10 @@
 #  activated_at     :datetime      index_email_addresses_on_activated_at
 #
 
-
 # メールアドレス
 class EmailAddress < ActiveRecord::Base
-  # TODO: テストデータを作成
-
   # TODO: Userモデルとの関連を実装
+  belongs_to :user
 
   # TODO: emailの存在を検証
   # TODO: emailの文字数を検証

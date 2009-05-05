@@ -105,6 +105,23 @@ class UserTest < ActiveSupport::TestCase
       @shinya.events.all(:order => "events.id ASC"))
   end
 
+  test "has many email_addresses" do
+    expected = [
+      email_addresses(:yuya1),
+      email_addresses(:yuya2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @yuya.email_addresses.all(:order => "email_addresses.id ASC"))
+
+    expected = [
+      email_addresses(:shinya1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @shinya.email_addresses.all(:order => "email_addresses.id ASC"))
+  end
+
   #
   # 検証
   #

@@ -17,8 +17,7 @@ class User < ActiveRecord::Base
   has_many :devices
   has_many :energies, :through => :devices
   has_many :events, :through => :devices
-
-  # TODO: EmailAddressモデルとの関連を実装
+  has_many :email_addresses
 
   validates_presence_of :user_token
   validates_length_of :nickname, :maximum => 40, :allow_nil => true
