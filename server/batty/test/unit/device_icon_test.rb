@@ -11,7 +11,7 @@ class DeviceIconTest < ActiveSupport::TestCase
   # 関連
   #
 
-  test "has many devices" do
+  test "has_many :devices" do
     expected = [
       devices(:yuya_pda),
     ]

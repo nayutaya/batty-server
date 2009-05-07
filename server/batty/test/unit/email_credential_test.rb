@@ -11,7 +11,7 @@ class EmailCredentialTest < ActiveSupport::TestCase
   # 関連
   #
 
-  test "belongs to user" do
+  test "belongs_to :user" do
     assert_equal(
       users(:yuya),
       @yuya_gmail.user)

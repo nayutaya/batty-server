@@ -6,7 +6,7 @@ class EmailAddressTest < ActiveSupport::TestCase
   # 関連
   #
 
-  test "belongs to user" do
+  test "belongs_to :user" do
     assert_equal(
       users(:yuya),
       email_addresses(:yuya1).user)

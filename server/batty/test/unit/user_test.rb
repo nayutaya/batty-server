@@ -18,7 +18,7 @@ class UserTest < ActiveSupport::TestCase
   # 関連
   #
 
-  test "has many open_id_credentials" do
+  test "has_many :open_id_credentials" do
     expected = [
       open_id_credentials(:yuya_livedoor),
       open_id_credentials(:yuya_mixi),
@@ -35,7 +35,7 @@ class UserTest < ActiveSupport::TestCase
       @shinya.open_id_credentials.all(:order => "open_id_credentials.id ASC"))
   end
 
-  test "has many email_credentials" do
+  test "has_many :email_credentials" do
     expected = [
       email_credentials(:yuya_gmail),
       email_credentials(:yuya_nayutaya),
@@ -52,7 +52,7 @@ class UserTest < ActiveSupport::TestCase
       @risa.email_credentials.all(:order => "email_credentials.id ASC"))
   end
 
-  test "has many devices" do
+  test "has_many :devices" do
     expected = [
       devices(:yuya_pda),
       devices(:yuya_cellular),
@@ -70,7 +70,7 @@ class UserTest < ActiveSupport::TestCase
       @shinya.devices.all(:order => "devices.id ASC"))
   end
 
-  test "has many energies through by devices" do
+  test "has_many :energies, :through => :devices" do
     expected = [
       energies(:yuya_pda1),
       energies(:yuya_pda2),
@@ -90,7 +90,7 @@ class UserTest < ActiveSupport::TestCase
       @shinya.energies.all(:order => "energies.id ASC"))
   end
 
-  test "has many events through by devices" do
+  test "has_many :events, :through => :devices" do
     expected = [
       events(:yuya_pda_ge90_1),
       events(:yuya_pda_eq100_1),
@@ -106,7 +106,7 @@ class UserTest < ActiveSupport::TestCase
       @shinya.events.all(:order => "events.id ASC"))
   end
 
-  test "has many email_addresses" do
+  test "has_many :email_addresses" do
     expected = [
       email_addresses(:yuya1),
       email_addresses(:yuya2),
@@ -129,6 +129,10 @@ class UserTest < ActiveSupport::TestCase
 
   test "all fixtures are valid" do
     assert_equal(true, @klass.all.all?(&:valid?))
+  end
+
+  test "basic is valid" do
+    assert_equal(true, @basic.valid?)
   end
 
   test "validates_presence_of :user_token" do
@@ -162,15 +166,17 @@ class UserTest < ActiveSupport::TestCase
   end
 
   #
-  # user_token 生成
+  # クラスメソッド
   #
 
   test "create_unique_user_token" do
+    tokens = [users(:yuya).user_token, "b" * 20]
     musha = Kagemusha.new(TokenUtil)
-    tokens = [ users(:yuya).user_token, 'b' * 20]
-    musha.defs(:create_token){ tokens.shift }
-    musha.swap{
-      assert_equal('b'*20, @klass.create_unique_user_token)
+    musha.defs(:create_token) { tokens.shift }
+    musha.swap {
+      assert_equal(
+        "b" * 20,
+        @klass.create_unique_user_token)
     }
   end
 end

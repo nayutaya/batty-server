@@ -31,6 +31,10 @@ class EnergyTest < ActiveSupport::TestCase
     assert_equal(true, @klass.all.all?(&:valid?))
   end
 
+  test "basic is valid" do
+    assert_equal(true, @basic.valid?)
+  end
+
   test "validates_presence_of :observed_level" do
     @basic.observed_level = nil
     assert_equal(false, @basic.valid?)

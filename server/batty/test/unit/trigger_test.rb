@@ -6,7 +6,7 @@ class TriggerTest < ActiveSupport::TestCase
   def setup
     @klass = Trigger
     @basic = @klass.new(
-      :device_id => devices(:yuya_pda),
+      :device_id => devices(:yuya_pda).id,
       :operator  => 0,
       :level     => 0)
   end
@@ -32,7 +32,7 @@ class TriggerTest < ActiveSupport::TestCase
       triggers(:shinya_note_ne0).email_actions.all(:order => "email_actions.id ASC"))
   end
 
-  test "belongs_to device" do
+  test "belongs_to :device" do
     assert_equal(
       devices(:yuya_pda),
       triggers(:yuya_pda_ge90).device)
@@ -48,6 +48,10 @@ class TriggerTest < ActiveSupport::TestCase
 
   test "all fixtures are valid" do
     assert_equal(true, @klass.all.all?(&:valid?))
+  end
+
+  test "basic is valid" do
+    assert_equal(true, @basic.valid?)
   end
 
   test "validates_presence_of :device_id" do
@@ -87,6 +91,16 @@ class TriggerTest < ActiveSupport::TestCase
       @basic.level = value
       assert_equal(expected, @basic.valid?)
     }
+  end
+
+  #
+  # 名前付きスコープ
+  #
+
+  test "enabled" do
+    assert_equal(true, @klass.count > @klass.enable.count)
+    assert_equal(true, @klass.all.any? { |t| !t.enable? })
+    assert_equal(true, @klass.enable.all.all? { |t| t.enable? })
   end
 
   #
@@ -156,15 +170,5 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal(
       expected,
       triggers(:yuya_pda_ge90).to_event_hash)
-  end
-
-  #
-  # named_scope
-  #
-
-  test "enabled" do
-    assert Trigger.count > Trigger.enable.count
-    assert Trigger.find(:all).any?{|v| !v.enable? }
-    assert Trigger.enable.all?{|v| v.enable? }
   end
 end

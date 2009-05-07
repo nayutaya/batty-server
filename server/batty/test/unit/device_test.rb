@@ -4,11 +4,13 @@ require 'test_helper'
 
 class DeviceTest < ActiveSupport::TestCase
   def setup
-    @klass         = Device
-    @basic         = @klass.new(:user_id => 1,
-                                :name => "name",
-                                :device_token => "1" * 20,
-                                :device_icon_id => 10)
+    @klass = Device
+    @basic = @klass.new(
+      :user_id        => users(:yuya).id,
+      :name           => "name",
+      :device_token   => "0" * 20,
+      :device_icon_id => device_icons(:note).id)
+
     @yuya_pda      = devices(:yuya_pda)
     @yuya_cellular = devices(:yuya_cellular)
     @shinya_note   = devices(:shinya_note)
@@ -18,7 +20,7 @@ class DeviceTest < ActiveSupport::TestCase
   # 関連
   #
 
-  test "has many energies" do
+  test "has_many :energies" do
     expected = [
       energies(:yuya_pda1),
       energies(:yuya_pda2),
@@ -36,7 +38,7 @@ class DeviceTest < ActiveSupport::TestCase
       @shinya_note.energies.all(:order => "energies.id ASC"))
   end
 
-  test "has many triggers" do
+  test "has_many :triggers" do
     expected = [
       triggers(:yuya_pda_ge90),
       triggers(:yuya_pda_eq100),
@@ -53,7 +55,7 @@ class DeviceTest < ActiveSupport::TestCase
       @shinya_note.triggers.all(:order => "triggers.id ASC"))
   end
 
-  test "has many events" do
+  test "has_many :events" do
     expected = [
       events(:yuya_pda_ge90_1),
       events(:yuya_pda_eq100_1),
@@ -70,7 +72,7 @@ class DeviceTest < ActiveSupport::TestCase
       @yuya_cellular.events.all(:order => "events.id ASC"))
   end
 
-  test "belongs to user" do
+  test "belongs_to :user" do
     assert_equal(
       users(:yuya),
       @yuya_pda.user)
@@ -80,7 +82,7 @@ class DeviceTest < ActiveSupport::TestCase
       @shinya_note.user)
   end
 
-  test "belongs to device_icon" do
+  test "belongs_to :device_icon" do
     assert_equal(
       device_icons(:pda),
       @yuya_pda.device_icon)
@@ -95,59 +97,65 @@ class DeviceTest < ActiveSupport::TestCase
   #
 
   test "all fixtures are valid" do
-    assert @klass.all.all?(&:valid?)
+    assert_equal(true, @klass.all.all?(&:valid?))
+  end
+
+  test "basic is valid" do
+    assert_equal(true, @basic.valid?)
   end
 
   test "name is empty" do
     @basic.name = nil
-    assert(!@basic.valid?)
+    assert_equal(false, @basic.valid?)
   end
 
   test "too long japanese name" do
-    @basic.name = 'あ' * 51
-    assert(!@basic.valid?)
+    @basic.name = "あ" * 51
+    assert_equal(false, @basic.valid?)
   end
 
   test "too long ascii name" do
-    @basic.name = 'a' * 51
-    assert(!@basic.valid?)
+    @basic.name = "a" * 51
+    assert_equal(false, @basic.valid?)
   end
 
   test "device_token is empty" do
     @basic.device_token = nil
-    assert(!@basic.valid?)
+    assert_equal(false, @basic.valid?)
   end
 
   test "device_token is invalid (invalid character)" do
-    @basic.device_token = 'xxx'
-    assert(!@basic.valid?)
+    @basic.device_token = "xxx"
+    assert_equal(false, @basic.valid?)
   end
 
   test "device_token is invalid (too long)" do
-    @basic.device_token = '0' * 21
-    assert(!@basic.valid?)
+    @basic.device_token = "0" * 21
+    assert_equal(false, @basic.valid?)
   end
 
   test "device_token is invalid (too short)" do
-    @basic.device_token = '0' * 19
-    assert(!@basic.valid?)
+    @basic.device_token = "0" * 19
+    assert_equal(false, @basic.valid?)
   end
 
   #
-  # device_token 生成
+  # クラスメソッド
   #
 
   test "create_unique_device_token" do
+    tokens = [devices(:yuya_pda).device_token, "b" * 20]
     musha = Kagemusha.new(TokenUtil)
-    tokens = [ devices(:yuya_pda).device_token, 'b' * 20]
-    musha.defs(:create_token){ tokens.shift }
-    musha.swap{
-      assert_equal('b'*20, @klass.create_unique_device_token)
+    musha.defs(:create_token) { tokens.shift }
+    musha.swap {
+      assert_equal(
+        "b" * 20,
+        @klass.create_unique_device_token)
     }
   end
 
   #
-  # current_energy
+  # インスタンスメソッド
   #
 
   test "current_energy" do
@@ -157,7 +165,6 @@ class DeviceTest < ActiveSupport::TestCase
 
   test "current_energy without record" do
     device = devices(:shinya_cellular)
-    assert_nil(device.current_energy)
+    assert_equal(nil, device.current_energy)
   end
-
 end

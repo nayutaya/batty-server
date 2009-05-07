@@ -20,4 +20,16 @@ class EmailActionTest < ActiveSupport::TestCase
       triggers(:shinya_note_ne0),
       email_actions(:shinya_note_ne0_1).trigger)
   end
+
+  #
+  # 検証
+  #
+
+  test "all fixtures are valid" do
+    assert_equal(true, @klass.all.all?(&:valid?))
+  end
+
+  test "basic is valid" do
+    assert_equal(true, @basic.valid?)
+  end
 end
