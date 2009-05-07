@@ -12,7 +12,6 @@
 #  level      :integer       not null, index_triggers_on_level
 #
 
-
 yuya_pda_ge90:
   created_at: 2009-01-01 00:00:00
   updated_at: 2009-01-01 00:00:00
