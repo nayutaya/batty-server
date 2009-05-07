@@ -16,7 +16,7 @@ class UserFeedsControllerTest < ActionController::TestCase
     assert_routing("/user/abcdef/events.rdf",       base.merge(:action => "events", :user_token => "abcdef"))
   end
 
-  test "energies" do
+  test "GET energies" do
     get :energies, :user_token => @yuya.user_token
 
     assert_response(:success)
@@ -32,7 +32,7 @@ class UserFeedsControllerTest < ActionController::TestCase
     assert_equal(10, energies.per_page)
   end
 
-  test "energies, other user" do
+  test "GET energies, other user" do
     get :energies, :user_token => @shinya.user_token
 
     assert_response(:success)
@@ -41,14 +41,14 @@ class UserFeedsControllerTest < ActionController::TestCase
     assert_equal(@shinya, assigns(:user))
   end
 
-  test "energies, abnormal, no user token" do
+  test "GET energies, abnormal, no user token" do
     get :energies, :user_token => nil
 
     assert_response(404)
     assert_template(nil)
   end
 
-  test "events" do
+  test "GET events" do
     get :events, :user_token => @yuya.user_token
 
     assert_response(:success)
@@ -64,7 +64,7 @@ class UserFeedsControllerTest < ActionController::TestCase
     assert_equal(10, events.per_page)
   end
 
-  test "events, abnormal, no user token" do
+  test "GET events, abnormal, no user token" do
     get :events, :user_token => nil
 
     assert_response(404)

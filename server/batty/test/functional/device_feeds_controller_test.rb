@@ -16,7 +16,7 @@ class DeviceFeedsControllerTest < ActionController::TestCase
     assert_routing("/device/abcdef/events.rdf",       base.merge(:action => "events", :device_token => "abcdef"))
   end
 
-  test "energies" do
+  test "GET energies" do
     get :energies, :device_token => @yuya_pda.device_token
 
     assert_response(:success)
@@ -32,7 +32,7 @@ class DeviceFeedsControllerTest < ActionController::TestCase
     assert_equal(10, energies.per_page)
   end
 
-  test "energies, other device" do
+  test "GET energies, other device" do
     get :energies, :device_token => @shinya_note.device_token
 
     assert_response(:success)
@@ -41,14 +41,14 @@ class DeviceFeedsControllerTest < ActionController::TestCase
     assert_equal(@shinya_note, assigns(:device))
   end
 
-  test "energies, abnormal, no device token" do
+  test "GET energies, abnormal, no device token" do
     get :energies, :device_token => nil
 
     assert_response(404)
     assert_template(nil)
   end
 
-  test "events" do
+  test "GET events" do
     get :events, :device_token => @yuya_pda.device_token
 
     assert_response(:success)
@@ -64,7 +64,7 @@ class DeviceFeedsControllerTest < ActionController::TestCase
     assert_equal(10, events.per_page)
   end
 
-  test "events, abnormal, no device token" do
+  test "GET events, abnormal, no device token" do
     get :events, :device_token => nil
 
     assert_response(404)
