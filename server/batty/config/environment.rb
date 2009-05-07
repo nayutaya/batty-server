@@ -27,6 +27,8 @@ Rails::Initializer.run do |config|
   config.gem "gettext"
   config.gem "gettext_activerecord"
   config.gem "gettext_rails"
+  config.gem "cucumber"
+  config.gem "webrat"
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -50,4 +52,5 @@ Rails::Initializer.run do |config|
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = YAML.load_file(RAILS_ROOT + "/config/smtp.yml")
+
 end
