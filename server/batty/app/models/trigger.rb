@@ -18,8 +18,6 @@ class Trigger < ActiveRecord::Base
   has_many :email_actions
   belongs_to :device
 
-  named_scope :enable, :conditions => { :enable => true }
-
   Operators = [
     [0, :eq, "＝", "等しい"],
     [1, :ne, "≠", "等しくない"],
@@ -43,6 +41,8 @@ class Trigger < ActiveRecord::Base
   validates_presence_of :level
   validates_inclusion_of :operator, :in => Operators.map(&:first)
   validates_inclusion_of :level, :in => 0..100
+
+  named_scope :enable, :conditions => {:enable => true}
 
   def self.operator_code_to_symbol(operator_code)
     return OperatorsTable[operator_code][:symbol]

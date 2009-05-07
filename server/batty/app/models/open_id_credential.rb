@@ -10,7 +10,6 @@
 #  loggedin_at  :datetime      
 #
 
-
 # OpenIDログイン情報
 class OpenIdCredential < ActiveRecord::Base
   belongs_to :user

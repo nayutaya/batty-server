@@ -12,7 +12,6 @@
 #  url32         :string(200)   not null
 #
 
-
 # デバイスアイコン
 class DeviceIcon < ActiveRecord::Base
   has_many :devices

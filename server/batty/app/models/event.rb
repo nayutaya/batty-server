@@ -12,7 +12,6 @@
 #  observed_at      :datetime      not null, index_events_on_observed_at
 #
 
-
 # イベント
 class Event < ActiveRecord::Base
   belongs_to :device

@@ -25,7 +25,6 @@ class User < ActiveRecord::Base
   validates_format_of :user_token, :with => TokenUtil.create_token_regexp(20)
 
   def self.create_unique_user_token
-    TokenUtil.create_unique_token(self, :user_token, 20)
+    return TokenUtil.create_unique_token(self, :user_token, 20)
   end
-
 end

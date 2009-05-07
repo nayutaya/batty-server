@@ -13,7 +13,6 @@
 
 # メールアドレス
 class EmailAddress < ActiveRecord::Base
-  # TODO: Userモデルとの関連を実装
   belongs_to :user
 
   # TODO: emailの存在を検証
