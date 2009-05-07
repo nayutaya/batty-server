@@ -24,8 +24,8 @@ class Device < ActiveRecord::Base
 
   validates_presence_of :name
   validates_presence_of :device_token
-  validates_length_of :name, :maximum => 50
-  validates_format_of :device_token, :with => TokenUtil.create_token_regexp(20)
+  validates_length_of :name, :maximum => 50, :allow_nil => true
+  validates_format_of :device_token, :with => TokenUtil.create_token_regexp(20), :allow_nil => true
   validates_uniqueness_of :device_token
 
   def self.create_unique_device_token

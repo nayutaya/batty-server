@@ -104,39 +104,39 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal(true, @basic.valid?)
   end
 
-  test "name is empty" do
+  test "validates_presence_of :name" do
     @basic.name = nil
     assert_equal(false, @basic.valid?)
   end
 
-  test "too long japanese name" do
-    @basic.name = "あ" * 51
-    assert_equal(false, @basic.valid?)
-  end
-
-  test "too long ascii name" do
-    @basic.name = "a" * 51
-    assert_equal(false, @basic.valid?)
-  end
-
-  test "device_token is empty" do
+  test "validates_presence_of :device_token" do
     @basic.device_token = nil
     assert_equal(false, @basic.valid?)
   end
 
-  test "device_token is invalid (invalid character)" do
-    @basic.device_token = "xxx"
-    assert_equal(false, @basic.valid?)
+  test "validates_length_of :name" do
+    [
+      ["あ" *  1, true ],
+      ["あ" * 50, true ],
+      ["あ" * 51, false],
+    ].each { |value, expected|
+      @basic.name = value
+      assert_equal(expected, @basic.valid?)
+    }
   end
 
-  test "device_token is invalid (too long)" do
-    @basic.device_token = "0" * 21
-    assert_equal(false, @basic.valid?)
-  end
-
-  test "device_token is invalid (too short)" do
-    @basic.device_token = "0" * 19
-    assert_equal(false, @basic.valid?)
+  test "validates_format_of :device_token" do
+    [
+      ["0123456789abcdef0000", true ],
+      ["0" * 19,               false],
+      ["0" * 20,               true ],
+      ["0" * 21,               false],
+      ["0" * 19 + "A",         false],
+      ["0" * 19 + "g",         false],
+    ].each { |value, expected|
+      @basic.device_token = value
+      assert_equal(expected, @basic.valid?)
+    }
   end
 
   #
@@ -159,12 +159,16 @@ class DeviceTest < ActiveSupport::TestCase
   #
 
   test "current_energy" do
-    device = devices(:yuya_pda)
-    assert_equal(100, device.current_energy.observed_level)
+    assert_equal(
+      energies(:yuya_pda3),
+      devices(:yuya_pda).current_energy)
+
+    assert_equal(
+      energies(:yuya_cellular2),
+      devices(:yuya_cellular).current_energy)
   end
 
-  test "current_energy without record" do
-    device = devices(:shinya_cellular)
-    assert_equal(nil, device.current_energy)
+  test "current_energy, no records" do
+    assert_equal(nil, devices(:shinya_cellular).current_energy)
   end
 end
