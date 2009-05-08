@@ -17,6 +17,6 @@ class OpenIdCredential < ActiveRecord::Base
 
   validates_presence_of :identity_url
   validates_length_of :identity_url, :maximum => 200
+  validates_format_of :identity_url, :with => URI.regexp(%w[http https])
 
-  # TODO: identity_urlのフォーマットを検証
 end

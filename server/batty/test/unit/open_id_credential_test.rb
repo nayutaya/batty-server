@@ -49,4 +49,17 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
     assert_equal(false, @basic.valid?)
     assert_equal(true, @basic.errors.invalid?(:identity_url))
   end
+
+  test "validates_format_of :identity_url" do
+    [
+     ['http://example.com/',  true,  false],
+     ['https://example.com/', true,  false],
+     ['ftp://example.com',    false, true],
+     ['HTTP://EXAMPLE.COM',   false, true],
+    ].each{|value, expected1, expected2|
+      @basic.identity_url = value
+      assert_equal(expected1, @basic.valid?)
+      assert_equal(expected2, @basic.errors.invalid?(:identity_url))
+    }
+  end
 end
