@@ -58,4 +58,19 @@ class EmailCredentialTest < ActiveSupport::TestCase
     assert_equal(false, @basic.valid?)
     assert_equal(true, @basic.errors.invalid?(:activation_token))
   end
+
+  test "validates_format_of :activation_token" do
+    [
+      ["0123456789abcdef0000", true , false],
+      ["0" * 19,               false, true],
+      ["0" * 20,               true , false],
+      ["0" * 21,               false, true],
+      ["0" * 19 + "A",         false, true],
+      ["0" * 19 + "g",         false, true],
+    ].each { |value, expected1, expected2|
+      @basic.activation_token = value
+      assert_equal(expected1, @basic.valid?, value)
+      assert_equal(expected2, @basic.errors.invalid?(:activation_token), value)
+    }
+  end
 end

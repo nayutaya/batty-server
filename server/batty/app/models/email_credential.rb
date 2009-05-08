@@ -23,12 +23,12 @@ class EmailCredential < ActiveRecord::Base
   validates_presence_of :email
   validates_presence_of :activation_token
   validates_length_of :email, :maximum => 200, :allow_nil => true
+  validates_format_of :activation_token, :with => TokenUtil.create_token_regexp(20), :allow_nil => true
 
   # TODO: emailのフォーマットを検証 <- 保留
   # TODO: password の存在を確認
   # TODO: hashed_passwordの存在を検証
   # TODO: hashed_passwordのフォーマットを検証
-  # TODO: activation_tokenのフォーマットを検証
 
   # TODO: パスワードをハッシュするメソッドを実装
   # TODO: activation_tokenを生成するメソッドを実装
