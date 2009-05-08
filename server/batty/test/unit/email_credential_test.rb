@@ -52,4 +52,10 @@ class EmailCredentialTest < ActiveSupport::TestCase
     assert_equal(false, @basic.valid?)
     assert_equal(true, @basic.errors.invalid?(:email))
   end
+
+  test "validates_presence_of :activation_token" do
+    @basic.activation_token = nil
+    assert_equal(false, @basic.valid?)
+    assert_equal(true, @basic.errors.invalid?(:activation_token))
+  end
 end

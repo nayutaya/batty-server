@@ -21,9 +21,10 @@ class EmailCredential < ActiveRecord::Base
   attr_accessor :password
 
   validates_presence_of :email
-  validates_length_of   :email, :maximum => 200
+  validates_presence_of :activation_token
+  validates_length_of :email, :maximum => 200
 
-  # TODO: emailのフォーマットを検証
+  # TODO: emailのフォーマットを検証 <- 保留
   # TODO: password の存在を確認
   # TODO: hashed_passwordの存在を検証
   # TODO: hashed_passwordのフォーマットを検証
