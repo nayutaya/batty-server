@@ -56,7 +56,7 @@ module AnnotateModels
         col_type << "(#{col.limit})" if col.limit
       end 
       info << sprintf("#  %-#{max_size}.#{max_size}s:%-13.13s %s\n",
-        col.name, col_type, attrs.join(", "))
+        col.name, col_type, attrs.join(", ")).gsub(/\s+$/, "\n")
     end
 
     info << "#\n\n"
