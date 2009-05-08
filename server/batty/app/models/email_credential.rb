@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 # Schema version: 20090420021540
 #
@@ -17,9 +18,13 @@
 class EmailCredential < ActiveRecord::Base
   belongs_to :user
 
-  # TODO: emailの存在を検証
+  attr_accessor :password
+
+  validates_presence_of :email
+
   # TODO: emailの文字数を検証
   # TODO: emailのフォーマットを検証
+  # TODO: password の存在を確認
   # TODO: hashed_passwordの存在を検証
   # TODO: hashed_passwordのフォーマットを検証
   # TODO: activation_tokenの存在を検証
