@@ -9,7 +9,7 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
     @klass = OpenIdCredential
     @basic = @klass.new(
       :user         => users(:yuya),
-      :identity_url => @yuya_livedoor.identity_url)
+      :identity_url => 'http://example.com/foo')
   end
 
   #
@@ -52,14 +52,21 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
 
   test "validates_format_of :identity_url" do
     [
-     ['http://example.com/',  true,  false],
-     ['https://example.com/', true,  false],
-     ['ftp://example.com',    false, true],
-     ['HTTP://EXAMPLE.COM',   false, true],
+     ['http://example.com/foo',  true,  false],
+     ['https://example.com/foo', true,  false],
+     ['ftp://example.com/foo',   false, true],
+     ['HTTP://EXAMPLE.COM/foo',  false, true],
     ].each{|value, expected1, expected2|
       @basic.identity_url = value
       assert_equal(expected1, @basic.valid?)
       assert_equal(expected2, @basic.errors.invalid?(:identity_url))
     }
   end
+
+  test "validates_uniqueness_of :identity_url" do
+    @basic.identity_url = @yuya_livedoor.identity_url
+    assert_equal(false, @basic.valid?)
+    assert_equal(true, @basic.errors.invalid?(:identity_url))
+  end
+
 end
