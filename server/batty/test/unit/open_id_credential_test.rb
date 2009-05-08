@@ -43,4 +43,10 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
     assert_equal(false, @basic.valid?)
     assert_equal(true, @basic.errors.invalid?(:identity_url))
   end
+
+  test "validates_length_of :identity_url" do
+    @basic.identity_url = 'http://example.com/' + 'a' * 182
+    assert_equal(false, @basic.valid?)
+    assert_equal(true, @basic.errors.invalid?(:identity_url))
+  end
 end

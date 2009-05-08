@@ -16,7 +16,7 @@ class OpenIdCredential < ActiveRecord::Base
   belongs_to :user
 
   validates_presence_of :identity_url
+  validates_length_of :identity_url, :maximum => 200
 
-  # TODO: identity_urlの文字数を検証
   # TODO: identity_urlのフォーマットを検証
 end
