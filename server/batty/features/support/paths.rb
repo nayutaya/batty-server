@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module NavigationHelpers
   # Maps a name to a path. Used by the
   #
@@ -5,11 +6,20 @@ module NavigationHelpers
   #
   # step definition in webrat_steps.rb
   #
+  # TODO 日本語でパスの定義を書く
   def path_to(page_name)
     case page_name
-    
-    when /the homepage/
+    when /ダッシュボード/, /ホームページ/
       '/'
+    when /the new user page/
+      new_user_path
+
+    when /the new signup page/
+      new_signup_path
+
+    when /the new signup page/
+      new_signup_path
+
     
     # Add more mappings here.
     # Here is a more fancy example:
