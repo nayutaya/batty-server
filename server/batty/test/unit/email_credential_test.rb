@@ -74,6 +74,12 @@ class EmailCredentialTest < ActiveSupport::TestCase
     }
   end
 
+  test "validates_presence_of :hashed_password" do
+    @basic.hashed_password = nil
+    assert_equal(false, @basic.valid?)
+    assert_equal(true, @basic.errors.invalid?(:hashed_password))
+  end
+
   #
   # クラスメソッド
   #
