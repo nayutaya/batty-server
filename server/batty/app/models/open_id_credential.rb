@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 # Schema version: 20090420021540
 #
@@ -14,7 +15,8 @@
 class OpenIdCredential < ActiveRecord::Base
   belongs_to :user
 
-  # TODO: identity_urlの存在を検証
+  validates_presence_of :identity_url
+
   # TODO: identity_urlの文字数を検証
   # TODO: identity_urlのフォーマットを検証
 end
