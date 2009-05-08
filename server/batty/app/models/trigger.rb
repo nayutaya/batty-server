@@ -68,6 +68,18 @@ class Trigger < ActiveRecord::Base
     return self.class.operator_code_to_sign(self.operator)
   end
 
+  def evaluate(observed_level)
+    case self.operator
+    when 0 then (observed_level == self.level)
+    when 1 then (observed_level != self.level)
+    when 2 then (observed_level <  self.level)
+    when 3 then (observed_level <= self.level)
+    when 4 then (observed_level >  self.level)
+    when 5 then (observed_level >= self.level)
+    else false
+    end
+  end
+
   def to_event_hash
     return {
       :trigger_operator => self.operator,

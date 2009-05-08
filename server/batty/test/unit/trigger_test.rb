@@ -154,6 +154,67 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal("＝", triggers(:yuya_pda_eq100).operator_sign)
   end
 
+  test "evaluate, equal" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:eq),
+      :level    => 50)
+    assert_equal(false, trigger.evaluate(49))
+    assert_equal(true,  trigger.evaluate(50))
+    assert_equal(false, trigger.evaluate(51))
+  end
+
+  test "evaluate, not equal" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:ne),
+      :level    => 50)
+    assert_equal(true,  trigger.evaluate(49))
+    assert_equal(false, trigger.evaluate(50))
+    assert_equal(true,  trigger.evaluate(51))
+  end
+
+  test "evaluate, lt" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:lt),
+      :level    => 50)
+    assert_equal(true,  trigger.evaluate(49))
+    assert_equal(false, trigger.evaluate(50))
+    assert_equal(false, trigger.evaluate(51))
+  end
+
+  test "evaluate, le" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:le),
+      :level    => 50)
+    assert_equal(true,  trigger.evaluate(49))
+    assert_equal(true,  trigger.evaluate(50))
+    assert_equal(false, trigger.evaluate(51))
+  end
+
+  test "evaluate, gt" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:gt),
+      :level    => 50)
+    assert_equal(false, trigger.evaluate(49))
+    assert_equal(false, trigger.evaluate(50))
+    assert_equal(true,  trigger.evaluate(51))
+  end
+
+  test "evaluate, ge" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:ge),
+      :level    => 50)
+    assert_equal(false, trigger.evaluate(49))
+    assert_equal(true,  trigger.evaluate(50))
+    assert_equal(true,  trigger.evaluate(51))
+  end
+
+  test "evaluate, invalid operator" do
+    trigger = @klass.new(
+      :operator => nil,
+      :level    => 50)
+    assert_equal(false, trigger.evaluate(50))
+  end
+
   test "to_event_hash" do
     expected = {
       :trigger_operator => nil,
