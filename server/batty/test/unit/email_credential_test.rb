@@ -73,4 +73,20 @@ class EmailCredentialTest < ActiveSupport::TestCase
       assert_equal(expected2, @basic.errors.invalid?(:activation_token), value)
     }
   end
+
+  #
+  # クラスメソッド
+  #
+
+  test "create_unique_activation_token" do
+    tokens = [@yuya_gmail.activation_token, "b" * 20]
+    musha = Kagemusha.new(TokenUtil)
+    musha.defs(:create_token) { tokens.shift }
+    musha.swap {
+      assert_equal(
+        "b" * 20,
+        @klass.create_unique_activation_token)
+    }
+  end
+
 end
