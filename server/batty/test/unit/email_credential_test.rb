@@ -46,4 +46,10 @@ class EmailCredentialTest < ActiveSupport::TestCase
     assert_equal(false, @basic.valid?)
     assert_equal(true, @basic.errors.invalid?(:email))
   end
+
+  test "validates_length_of :email" do
+    @basic.email = "#{'a' * 189}@example.com" # 201 文字
+    assert_equal(false, @basic.valid?)
+    assert_equal(true, @basic.errors.invalid?(:email))
+  end
 end
