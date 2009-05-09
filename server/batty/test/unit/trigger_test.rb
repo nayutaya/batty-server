@@ -154,6 +154,87 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal("＝", triggers(:yuya_pda_eq100).operator_sign)
   end
 
+  test "match?, equal" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:eq),
+      :level    => 50)
+    assert_equal(false, trigger.match?(49))
+    assert_equal(true,  trigger.match?(50))
+    assert_equal(false, trigger.match?(51))
+  end
+
+  test "match?, not equal" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:ne),
+      :level    => 50)
+    assert_equal(true,  trigger.match?(49))
+    assert_equal(false, trigger.match?(50))
+    assert_equal(true,  trigger.match?(51))
+  end
+
+  test "match?, less then" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:lt),
+      :level    => 50)
+    assert_equal(true,  trigger.match?(49))
+    assert_equal(false, trigger.match?(50))
+    assert_equal(false, trigger.match?(51))
+  end
+
+  test "match?, less or equal" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:le),
+      :level    => 50)
+    assert_equal(true,  trigger.match?(49))
+    assert_equal(true,  trigger.match?(50))
+    assert_equal(false, trigger.match?(51))
+  end
+
+  test "match?, greater than" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:gt),
+      :level    => 50)
+    assert_equal(false, trigger.match?(49))
+    assert_equal(false, trigger.match?(50))
+    assert_equal(true,  trigger.match?(51))
+  end
+
+  test "match?, greater or equal" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:ge),
+      :level    => 50)
+    assert_equal(false, trigger.match?(49))
+    assert_equal(true,  trigger.match?(50))
+    assert_equal(true,  trigger.match?(51))
+  end
+
+  test "match?, invalid operator" do
+    trigger = @klass.new(
+      :operator => nil,
+      :level    => 50)
+    assert_equal(false, trigger.match?(50))
+  end
+
+  test "triggered?, equal" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:eq),
+      :level    => 0)
+    assert_equal(false, trigger.triggered?(0, 0))
+    assert_equal(true,  trigger.triggered?(0, 1))
+    assert_equal(false, trigger.triggered?(1, 0))
+    assert_equal(false, trigger.triggered?(1, 1))
+  end
+
+  test "triggered?, not equal" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:ne),
+      :level    => 0)
+    assert_equal(false, trigger.triggered?(0, 0))
+    assert_equal(false, trigger.triggered?(0, 1))
+    assert_equal(true,  trigger.triggered?(1, 0))
+    assert_equal(false, trigger.triggered?(1, 1))
+  end
+
   test "to_event_hash" do
     expected = {
       :trigger_operator => nil,

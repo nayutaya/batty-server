@@ -1,8 +1,8 @@
-db/schema.rb
-db/*.sqlite3
-log/*.log
-tmp/cache/*
-tmp/pids/*
-tmp/sessions/*
-tmp/sockets/*
-
+*.log
+*.sqlite3
+server/batty/db/schema.rb
+server/batty/nbproject/
+server/batty/tmp/cache/
+server/batty/tmp/pids/
+server/batty/tmp/sessions/
+server/batty/tmp/sockets/

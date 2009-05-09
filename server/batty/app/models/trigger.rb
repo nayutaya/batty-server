@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 # == Schema Information
 # Schema version: 20090420021540
 #
@@ -19,17 +20,18 @@ class Trigger < ActiveRecord::Base
   belongs_to :device
 
   Operators = [
-    [0, :eq, "＝", "等しい"],
-    [1, :ne, "≠", "等しくない"],
-    [2, :lt, "＜", "より小さい"],
-    [3, :le, "≦", "以下"],
-    [4, :gt, "＞", "より大きい"],
-    [5, :ge, "≧", "以上"],
+    [0, :eq, proc { |a, b| a == b }, "＝", "等しい"],
+    [1, :ne, proc { |a, b| a != b }, "≠", "等しくない"],
+    [2, :lt, proc { |a, b| a <  b }, "＜", "より小さい"],
+    [3, :le, proc { |a, b| a <= b }, "≦", "以下"],
+    [4, :gt, proc { |a, b| a >  b }, "＞", "より大きい"],
+    [5, :ge, proc { |a, b| a >= b }, "≧", "以上"],
   ].freeze.each(&:freeze)
 
-  OperatorsTable = Operators.inject(Hash.new({})) { |memo, (code, symbol, sign, desc)|
+  OperatorsTable = Operators.inject(Hash.new({})) { |memo, (code, symbol, block, sign, desc)|
     memo[code] = {
       :symbol => symbol,
+      :block  => block,
       :sign   => sign,
       :desc   => desc,
     }
@@ -53,7 +55,7 @@ class Trigger < ActiveRecord::Base
   end
 
   def self.operator_symbol_to_code(operator_symbol)
-    @_ope_sym_code ||= Operators.inject({}) { |memo, (code, symbol, sign, desc)|
+    @_ope_sym_code ||= Operators.inject({}) { |memo, (code, symbol, block, sign, desc)|
       memo[symbol] = code
       memo
     }
@@ -66,6 +68,16 @@ class Trigger < ActiveRecord::Base
 
   def operator_sign
     return self.class.operator_code_to_sign(self.operator)
+  end
+
+  def match?(observed_level)
+    block   = OperatorsTable[self.operator][:block]
+    block ||= proc { |a, b| false }
+    return block.call(observed_level, self.level)
+  end
+
+  def triggered?(first_level, second_level)
+    return self.match?(first_level) && !self.match?(second_level)
   end
 
   def to_event_hash

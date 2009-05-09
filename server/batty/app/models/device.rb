@@ -35,4 +35,50 @@ class Device < ActiveRecord::Base
   def current_energy
     return self.energies.first(:order => "observed_at DESC")
   end
+
+  def energies_for_trigger
+    return self.energies.all(
+      :order => "energies.observed_at DESC, energies.id DESC",
+      :limit => 2)
+  end
+
+  def active_triggers(energy_levels)
+    return [] if energy_levels.size < 2
+    return self.triggers.enable.
+      all(:order => "triggers.id ASC").
+      select { |trigger| trigger.triggered?(*energy_levels[0, 2]) }
+  end
+
+  def update_event
+    self.transaction {
+      energies = self.energies_for_trigger
+      triggers = self.active_triggers(energies.map(&:observed_level))
+
+      events = triggers.map { |trigger|
+        {:device_id => self.id}.
+          merge(energies.first.to_event_hash).
+          merge(trigger.to_event_hash)
+      }
+
+      return events.
+        reject { |attrs| Event.exists?(attrs) }.
+        map    { |attrs| Event.create!(attrs) }
+    }
+  end
+
+  def update_energy(options = {})
+    options = options.dup
+    observed_level = options.delete(:observed_level)
+    observed_at    = options.delete(:observed_at)
+    update_event   = (options.delete(:update_event) == true)
+    raise(ArgumentError) unless options.empty?
+
+    self.energies.create!(
+      :observed_level => observed_level,
+      :observed_at    => observed_at)
+
+    self.update_event if update_event
+
+    return nil
+  end
 end
