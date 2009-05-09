@@ -41,8 +41,8 @@ class Trigger < ActiveRecord::Base
   validates_presence_of :device_id
   validates_presence_of :operator
   validates_presence_of :level
-  validates_inclusion_of :operator, :in => Operators.map(&:first)
-  validates_inclusion_of :level, :in => Energy::LevelRange
+  validates_inclusion_of :operator, :in => Operators.map(&:first), :allow_nil => true
+  validates_inclusion_of :level, :in => Energy::LevelRange, :allow_nil => true
 
   named_scope :enable, :conditions => {:enable => true}
 

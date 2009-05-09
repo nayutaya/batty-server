@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :user_token
   validates_length_of :nickname, :maximum => 40, :allow_nil => true
-  validates_format_of :user_token, :with => TokenPattern
+  validates_format_of :user_token, :with => TokenPattern, :allow_nil => true
 
   def self.create_unique_user_token
     return TokenUtil.create_unique_token(self, :user_token, TokenLength)
