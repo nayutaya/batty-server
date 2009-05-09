@@ -241,4 +241,10 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal(level, energy.observed_level)
     assert_equal(time,  energy.observed_at)
   end
+
+  test "update_event" do
+    assert_difference("Event.count", +1) {
+      devices(:yuya_pda).update_event
+    }
+  end
 end

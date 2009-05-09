@@ -57,4 +57,18 @@ class Device < ActiveRecord::Base
 
     return nil
   end
+
+  def update_event
+    energies = self.energies_for_trigger
+    triggers = self.active_triggers(energies.map(&:observed_level))
+
+    triggers.each { |trigger|
+      event = Event.new(:device => self)
+      event.attributes = energies.first.to_event_hash
+      event.attributes = trigger.to_event_hash
+      event.save
+    }
+
+    return nil
+  end
 end
