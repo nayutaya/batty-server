@@ -8,37 +8,25 @@ class DeviceApiController < ApplicationController
   # POST /device/:device_token/energies/update/:level
   # POST /device/:device_token/energies/update/:level/:time
   def update_energy
-    if params[:level].blank?
+    level_str = params[:level]
+    time_str  = params[:time]
+    time_str  = Time.now.strftime("%Y%m%d%H%M%S") if time_str.blank?
+
+    level_valid   = !level_str.blank?
+    level_valid &&= (/\A\d{1,3}\z/ =~ level_str)
+    level_valid &&= (0..100).include?(level_str.to_i)
+
+    time_valid   = !time_str.blank?
+    time_valid &&= (/\A\d{14}\z/ =~ time_str)
+    time_valid &&= (Time.parse(time_str) rescue false)
+
+    unless level_valid && time_valid
       render(:text => "", :status => 404)
       return
     end
 
-    unless /\A\d{1,3}\z/ =~ params[:level]
-      render(:text => "", :status => 404)
-      return
-    end
-
-    unless (0..100).include?(params[:level].to_i)
-      render(:text => "", :status => 404)
-      return
-    end
-
-    @level = params[:level].to_i
-
-    if params[:time].blank?
-      @time = Time.now
-    else
-      unless /\A\d{14}\z/ =~ params[:time]
-        render(:text => "", :status => 404)
-        return
-      end
-      begin
-        @time = Time.parse(params[:time])
-      rescue ArgumentError
-        render(:text => "", :status => 404)
-        return
-      end
-    end
+    @level = level_str.to_i
+    @time  = Time.parse(time_str)
 
     @device.update_energy(
       :observed_level => @level,
