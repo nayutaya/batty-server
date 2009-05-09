@@ -70,15 +70,14 @@ class Trigger < ActiveRecord::Base
     return self.class.operator_code_to_sign(self.operator)
   end
 
-  # FIXME: より良いメソッド名に変更
-  def evaluate(observed_level)
+  def match?(observed_level)
     block   = OperatorsTable[self.operator][:block]
     block ||= proc { |a, b| false }
     return block.call(observed_level, self.level)
   end
 
   def triggered?(first_level, second_level)
-    return self.evaluate(first_level) && !self.evaluate(second_level)
+    return self.match?(first_level) && !self.match?(second_level)
   end
 
   def to_event_hash

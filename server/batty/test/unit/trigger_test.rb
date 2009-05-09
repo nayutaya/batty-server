@@ -154,65 +154,65 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal("＝", triggers(:yuya_pda_eq100).operator_sign)
   end
 
-  test "evaluate, equal" do
+  test "match?, equal" do
     trigger = @klass.new(
       :operator => @klass.operator_symbol_to_code(:eq),
       :level    => 50)
-    assert_equal(false, trigger.evaluate(49))
-    assert_equal(true,  trigger.evaluate(50))
-    assert_equal(false, trigger.evaluate(51))
+    assert_equal(false, trigger.match?(49))
+    assert_equal(true,  trigger.match?(50))
+    assert_equal(false, trigger.match?(51))
   end
 
-  test "evaluate, not equal" do
+  test "match?, not equal" do
     trigger = @klass.new(
       :operator => @klass.operator_symbol_to_code(:ne),
       :level    => 50)
-    assert_equal(true,  trigger.evaluate(49))
-    assert_equal(false, trigger.evaluate(50))
-    assert_equal(true,  trigger.evaluate(51))
+    assert_equal(true,  trigger.match?(49))
+    assert_equal(false, trigger.match?(50))
+    assert_equal(true,  trigger.match?(51))
   end
 
-  test "evaluate, less then" do
+  test "match?, less then" do
     trigger = @klass.new(
       :operator => @klass.operator_symbol_to_code(:lt),
       :level    => 50)
-    assert_equal(true,  trigger.evaluate(49))
-    assert_equal(false, trigger.evaluate(50))
-    assert_equal(false, trigger.evaluate(51))
+    assert_equal(true,  trigger.match?(49))
+    assert_equal(false, trigger.match?(50))
+    assert_equal(false, trigger.match?(51))
   end
 
-  test "evaluate, less or equal" do
+  test "match?, less or equal" do
     trigger = @klass.new(
       :operator => @klass.operator_symbol_to_code(:le),
       :level    => 50)
-    assert_equal(true,  trigger.evaluate(49))
-    assert_equal(true,  trigger.evaluate(50))
-    assert_equal(false, trigger.evaluate(51))
+    assert_equal(true,  trigger.match?(49))
+    assert_equal(true,  trigger.match?(50))
+    assert_equal(false, trigger.match?(51))
   end
 
-  test "evaluate, greater than" do
+  test "match?, greater than" do
     trigger = @klass.new(
       :operator => @klass.operator_symbol_to_code(:gt),
       :level    => 50)
-    assert_equal(false, trigger.evaluate(49))
-    assert_equal(false, trigger.evaluate(50))
-    assert_equal(true,  trigger.evaluate(51))
+    assert_equal(false, trigger.match?(49))
+    assert_equal(false, trigger.match?(50))
+    assert_equal(true,  trigger.match?(51))
   end
 
-  test "evaluate, greater or equal" do
+  test "match?, greater or equal" do
     trigger = @klass.new(
       :operator => @klass.operator_symbol_to_code(:ge),
       :level    => 50)
-    assert_equal(false, trigger.evaluate(49))
-    assert_equal(true,  trigger.evaluate(50))
-    assert_equal(true,  trigger.evaluate(51))
+    assert_equal(false, trigger.match?(49))
+    assert_equal(true,  trigger.match?(50))
+    assert_equal(true,  trigger.match?(51))
   end
 
-  test "evaluate, invalid operator" do
+  test "match?, invalid operator" do
     trigger = @klass.new(
       :operator => nil,
       :level    => 50)
-    assert_equal(false, trigger.evaluate(50))
+    assert_equal(false, trigger.match?(50))
   end
 
   test "triggered?, equal" do
