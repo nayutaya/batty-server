@@ -2,6 +2,10 @@
 require 'test_helper'
 
 class DeviceApiControllerTest < ActionController::TestCase
+  def setup
+    @yuya_pda = devices(:yuya_pda)
+  end
+
   test "routes" do
     base = {:controller => "device_api"}
 
@@ -12,18 +16,78 @@ class DeviceApiControllerTest < ActionController::TestCase
   end
 
   test "POST update_energy" do
-    device = devices(:yuya_pda)
+    device = @yuya_pda
+    level  = 50
+    time   = Time.local(2009, 1, 1)
 
-    post :update_energy, :device_token => device.device_token
+    called = false
+    musha = Kagemusha.new(Device)
+    musha.def(:update_energy) { |options|
+      raise unless self == device
+      raise unless options[:observed_level] == level
+      raise unless options[:observed_at]    == time
+      raise unless options[:update_event]   == true
+      called = true
+      nil
+    }
+
+    musha.swap {
+      Kagemusha::DateTime.at(time) {
+        post :update_energy, :device_token => device.device_token, :level => level.to_s
+      }
+    }
 
     assert_response(:success)
     assert_template(nil)
 
     assert_equal(device, assigns(:device))
+    assert_equal(level,  assigns(:level))
+    assert_equal(time,   assigns(:time))
+
+    assert_equal(true, called)
+  end
+
+  test "POST update_energy, min level" do
+    post :update_energy, :device_token => @yuya_pda.device_token, :level => "0"
+
+    assert_response(:success)
+    assert_template(nil)
+    
+    assert_equal(0, assigns(:level))
+  end
+
+  test "POST update_energy, max level" do
+    post :update_energy, :device_token => @yuya_pda.device_token, :level => "100"
+
+    assert_response(:success)
+    assert_template(nil)
+
+    assert_equal(100, assigns(:level))
   end
 
   test "POST update_energy, abnormal, no device token" do
     post :update_energy, :device_token => nil
+
+    assert_response(404)
+    assert_template(nil)
+  end
+
+  test "POST update_energy, abnormal, no level" do
+    post :update_energy, :device_token => @yuya_pda.device_token, :level => nil
+
+    assert_response(404)
+    assert_template(nil)
+  end
+
+  test "POST update_energy, abnormal, invalid level" do
+    post :update_energy, :device_token => @yuya_pda.device_token, :level => "x"
+
+    assert_response(404)
+    assert_template(nil)
+  end
+
+  test "POST update_energy, abnormal, level is too big" do
+    post :update_energy, :device_token => @yuya_pda.device_token, :level => "101"
 
     assert_response(404)
     assert_template(nil)

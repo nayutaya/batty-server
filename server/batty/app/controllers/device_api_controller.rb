@@ -8,9 +8,29 @@ class DeviceApiController < ApplicationController
   # POST /device/:device_token/energies/update/:level
   # POST /device/:device_token/energies/update/:level/:time
   def update_energy
-    # TODO: Energyオブジェクトの生成処理を実装
-    # TODO: Triggerオブジェクトの評価処理を実装
-    # TODO: Eventオブジェクトの生成処理を実装
+    if params[:level].blank?
+      render(:text => "", :status => 404)
+      return
+    end
+
+    unless /\A\d{1,3}\z/ =~ params[:level]
+      render(:text => "", :status => 404)
+      return
+    end
+
+    unless (0..100).include?(params[:level].to_i)
+      render(:text => "", :status => 404)
+      return
+    end
+
+    @level = params[:level].to_i
+    @time  = Time.now
+
+    @device.update_energy(
+      :observed_level => @level,
+      :observed_at    => @time,
+      :update_event   => true)
+
     render(:text => "success")
   end
 
