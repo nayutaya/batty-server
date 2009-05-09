@@ -242,28 +242,50 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal(time,  energy.observed_at)
   end
 
-  test "update_event" do
+  test "update_event, yuya_pad" do
     device = devices(:yuya_pda)
 
-    # 既にイベントが生成されている
+    # 該当するトリガあり、かつイベント生成済み
     assert_difference("Event.count", 0) {
       assert_equal([], device.update_event)
     }
 
-    a = device.energies.create!(:observed_level => 80, :observed_at => Time.local(2009, 1, 4))
+    e1 = device.energies.create!(:observed_level => 80, :observed_at => Time.local(2009, 1, 4))
 
     # 該当するトリガなし
     assert_difference("Event.count", 0) {
       assert_equal([], device.update_event)
     }
 
-    b = device.energies.create!(:observed_level => 90, :observed_at => Time.local(2009, 1, 4))
+    e2 = device.energies.create!(:observed_level => 90, :observed_at => Time.local(2009, 1, 5))
 
+    # 該当するトリガあり、かつイベント未生成
     assert_difference("Event.count", +1) {
       events = device.update_event
       assert_equal(1, events.size)
-      assert_equal(b.observed_level, events[0].observed_level)
-      assert_equal(b.observed_at,    events[0].observed_at)
+      assert_equal(e2.device_id,      events[0].device_id)
+      assert_equal(e2.observed_level, events[0].observed_level)
+      assert_equal(e2.observed_at,    events[0].observed_at)
+    }
+  end
+
+  test "update_event, shinya_note" do
+    device = devices(:shinya_note)
+
+    # 該当するトリガなし
+    assert_difference("Event.count", 0) {
+      assert_equal([], device.update_event)
+    }
+
+    e1 = device.energies.create!(:observed_level => 10, :observed_at => Time.local(2009, 1, 2))
+
+    # 該当するトリガあり、かつイベント未生成
+    assert_difference("Event.count", +1) {
+      events = device.update_event
+      assert_equal(1, events.size)
+      assert_equal(e1.device_id,      events[0].device_id)
+      assert_equal(e1.observed_level, events[0].observed_level)
+      assert_equal(e1.observed_at,    events[0].observed_at)
     }
   end
 end
