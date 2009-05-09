@@ -20,14 +20,17 @@ class EmailCredential < ActiveRecord::Base
 
   attr_accessor :password
 
+  TokenLength  = 20
+  TokenPattern = TokenUtil.create_token_regexp(TokenLength)
+
   validates_presence_of :email
   validates_presence_of :activation_token
   validates_presence_of :hashed_password
   validates_length_of :email, :maximum => 200, :allow_nil => true
-  validates_format_of :activation_token, :with => TokenUtil.create_token_regexp(20), :allow_nil => true
+  validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
 
   def self.create_unique_activation_token
-    return TokenUtil.create_unique_token(self, :activation_token, 20)
+    return TokenUtil.create_unique_token(self, :activation_token, TokenLength)
   end
 
   # TODO: emailのフォーマットを検証 <- 保留

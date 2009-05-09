@@ -22,8 +22,8 @@ class Event < ActiveRecord::Base
   validates_presence_of :observed_level
   validates_presence_of :observed_at
   validates_inclusion_of :trigger_operator, :in => 0..5
-  validates_inclusion_of :trigger_level, :in => 0..100
-  validates_inclusion_of :observed_level, :in => 0..100
+  validates_inclusion_of :trigger_level, :in => Energy::LevelRange
+  validates_inclusion_of :observed_level, :in => Energy::LevelRange
 
   def trigger_operator_symbol
     return Trigger.operator_code_to_symbol(self.trigger_operator)

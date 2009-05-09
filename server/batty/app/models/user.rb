@@ -20,11 +20,14 @@ class User < ActiveRecord::Base
   has_many :events, :through => :devices
   has_many :email_addresses
 
+  TokenLength  = 20
+  TokenPattern = TokenUtil.create_token_regexp(TokenLength)
+
   validates_presence_of :user_token
   validates_length_of :nickname, :maximum => 40, :allow_nil => true
-  validates_format_of :user_token, :with => TokenUtil.create_token_regexp(20)
+  validates_format_of :user_token, :with => TokenPattern
 
   def self.create_unique_user_token
-    return TokenUtil.create_unique_token(self, :user_token, 20)
+    return TokenUtil.create_unique_token(self, :user_token, TokenLength)
   end
 end

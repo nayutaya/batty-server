@@ -14,9 +14,11 @@
 class Energy < ActiveRecord::Base
   belongs_to :device
 
+  LevelRange = 0..100
+
   validates_presence_of :observed_level
   validates_presence_of :observed_at
-  validates_inclusion_of :observed_level, :in => (0..100), :allow_nil => true
+  validates_inclusion_of :observed_level, :in => LevelRange, :allow_nil => true
 
   def to_event_hash
     return {

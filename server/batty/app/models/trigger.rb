@@ -42,7 +42,7 @@ class Trigger < ActiveRecord::Base
   validates_presence_of :operator
   validates_presence_of :level
   validates_inclusion_of :operator, :in => Operators.map(&:first)
-  validates_inclusion_of :level, :in => 0..100
+  validates_inclusion_of :level, :in => Energy::LevelRange
 
   named_scope :enable, :conditions => {:enable => true}
 
