@@ -4,12 +4,13 @@ require 'test_helper'
 
 class OpenIdCredentialTest < ActiveSupport::TestCase
   def setup
-    @yuya_livedoor  = open_id_credentials(:yuya_livedoor)
-    @shinya_example = open_id_credentials(:shinya_example)
     @klass = OpenIdCredential
     @basic = @klass.new(
       :user         => users(:yuya),
-      :identity_url => 'http://example.com/foo')
+      :identity_url => "http://example.com/foo")
+
+    @yuya_livedoor  = open_id_credentials(:yuya_livedoor)
+    @shinya_example = open_id_credentials(:shinya_example)
   end
 
   #
@@ -45,17 +46,19 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
   end
 
   test "validates_length_of :identity_url" do
-    @basic.identity_url = 'http://example.com/' + 'a' * 182
+    @basic.identity_url = "http://example.com/" + "a" * 182
+    assert_equal(201, @basic.identity_url.size)
+
     assert_equal(false, @basic.valid?)
     assert_equal(true, @basic.errors.invalid?(:identity_url))
   end
 
   test "validates_format_of :identity_url" do
     [
-     ['http://example.com/foo',  true,  false],
-     ['https://example.com/foo', true,  false],
-     ['ftp://example.com/foo',   false, true],
-     ['HTTP://EXAMPLE.COM/foo',  false, true],
+     ["http://example.com/foo",  true,  false],
+     ["https://example.com/foo", true,  false],
+     ["ftp://example.com/foo",   false, true ],
+     ["HTTP://EXAMPLE.COM/foo",  false, true ],
     ].each{|value, expected1, expected2|
       @basic.identity_url = value
       assert_equal(expected1, @basic.valid?)
@@ -68,5 +71,4 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
     assert_equal(false, @basic.valid?)
     assert_equal(true, @basic.errors.invalid?(:identity_url))
   end
-
 end

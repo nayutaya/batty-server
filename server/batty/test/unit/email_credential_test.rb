@@ -4,15 +4,16 @@ require 'test_helper'
 
 class EmailCredentialTest < ActiveSupport::TestCase
   def setup
-    @yuya_gmail   = email_credentials(:yuya_gmail)
-    @risa_example = email_credentials(:risa_example)
     @klass = EmailCredential
     @basic = @klass.new(
-      :activation_token => '0' * 20,
+      :activation_token => "0" * 20,
       :user             => users(:yuya),
-      :email            => 'foo@example.com',
-      :password         => 'password',
-      :hashed_password  => 'hashed_password')
+      :email            => "foo@example.com",
+      :password         => "password",
+      :hashed_password  => "hashed_password")
+
+    @yuya_gmail   = email_credentials(:yuya_gmail)
+    @risa_example = email_credentials(:risa_example)
   end
 
   #
@@ -48,7 +49,9 @@ class EmailCredentialTest < ActiveSupport::TestCase
   end
 
   test "validates_length_of :email" do
-    @basic.email = "#{'a' * 189}@example.com" # 201 文字
+    @basic.email = "#{'a' * 189}@example.com"
+    assert_equal(201, @basic.email.size)
+
     assert_equal(false, @basic.valid?)
     assert_equal(true, @basic.errors.invalid?(:email))
   end
@@ -61,12 +64,12 @@ class EmailCredentialTest < ActiveSupport::TestCase
 
   test "validates_format_of :activation_token" do
     [
-      ["0123456789abcdef0000", true , false],
-      ["0" * 19,               false, true],
-      ["0" * 20,               true , false],
-      ["0" * 21,               false, true],
-      ["0" * 19 + "A",         false, true],
-      ["0" * 19 + "g",         false, true],
+      ["0123456789abcdef0000", true,  false],
+      ["0" * 19,               false, true ],
+      ["0" * 20,               true,  false],
+      ["0" * 21,               false, true ],
+      ["0" * 19 + "A",         false, true ],
+      ["0" * 19 + "g",         false, true ],
     ].each { |value, expected1, expected2|
       @basic.activation_token = value
       assert_equal(expected1, @basic.valid?, value)
@@ -94,5 +97,4 @@ class EmailCredentialTest < ActiveSupport::TestCase
         @klass.create_unique_activation_token)
     }
   end
-
 end
