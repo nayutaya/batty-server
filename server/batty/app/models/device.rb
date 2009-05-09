@@ -41,4 +41,11 @@ class Device < ActiveRecord::Base
       :order => "energies.observed_at DESC, energies.id DESC",
       :limit => 2)
   end
+
+  def active_triggers(energy_levels)
+    return [] if energy_levels.size < 2
+    return self.triggers.enable.
+      all(:order => "triggers.id ASC").
+      select { |trigger| trigger.triggered?(*energy_levels[0, 2]) }
+  end
 end

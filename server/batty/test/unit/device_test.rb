@@ -191,4 +191,41 @@ class DeviceTest < ActiveSupport::TestCase
     expected = []
     assert_equal(expected, devices(:shinya_cellular).energies_for_trigger)
   end
+
+  test "active_triggers, no energy levels" do
+    assert_equal(
+      [],
+      devices(:yuya_pda).active_triggers([]))
+  end
+
+  test "active_triggers, one energy level" do
+    assert_equal(
+      [],
+      devices(:yuya_pda).active_triggers([0]))
+  end
+
+  test "active_triggers, >=90 and ==100" do
+    expected = [
+      triggers(:yuya_pda_ge90),
+      triggers(:yuya_pda_eq100),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      devices(:yuya_pda).active_triggers([100, 0]))
+  end
+
+  test "active_triggers, >=90" do
+    expected = [
+      triggers(:yuya_pda_ge90),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      devices(:yuya_pda).active_triggers([90, 80]))
+  end
+
+  test "active_triggers, without disable trigger" do
+    assert_equal(
+      [],
+      devices(:shinya_cellular).active_triggers([100, 0]))
+  end
 end
