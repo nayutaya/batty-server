@@ -115,4 +115,11 @@ class DeviceApiControllerTest < ActionController::TestCase
     assert_response(404)
     assert_template(nil)
   end
+
+  test "GET update_energy, abnormal, not allowed method" do
+    get :update_energy, :device_token => @yuya_pda.device_token, :level => "0"
+
+    assert_response(405)
+    assert_template(nil)
+  end
 end

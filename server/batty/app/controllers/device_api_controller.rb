@@ -4,7 +4,10 @@ class DeviceApiController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_filter :required_param_device_token
 
-  # FIXME: POSTメソッドに制限
+  verify(
+    :method => :post,
+    :render => {:text => "", :status => 405})
+
   # POST /device/:device_token/energies/update/:level
   # POST /device/:device_token/energies/update/:level/:time
   def update_energy
