@@ -229,19 +229,6 @@ class DeviceTest < ActiveSupport::TestCase
       devices(:shinya_cellular).active_triggers([100, 0]))
   end
 
-  test "update_energy" do
-    level = 95
-    time  = Time.local(2009, 1, 4)
-
-    assert_difference("Energy.count", +1) {
-      devices(:yuya_pda).update_energy(level, time)
-    }
-
-    energy = Energy.first(:order => "energies.id DESC")
-    assert_equal(level, energy.observed_level)
-    assert_equal(time,  energy.observed_at)
-  end
-
   test "update_event, yuya_pad" do
     device = devices(:yuya_pda)
 
@@ -310,5 +297,18 @@ class DeviceTest < ActiveSupport::TestCase
       assert_equal(triggers(:shinya_note_ne0).operator, events[0].trigger_operator)
       assert_equal(triggers(:shinya_note_ne0).level,    events[0].trigger_level)
     }
+  end
+
+  test "update_energy" do
+    level = 95
+    time  = Time.local(2009, 1, 4)
+
+    assert_difference("Energy.count", +1) {
+      devices(:yuya_pda).update_energy(level, time)
+    }
+
+    energy = Energy.first(:order => "energies.id DESC")
+    assert_equal(level, energy.observed_level)
+    assert_equal(time,  energy.observed_at)
   end
 end
