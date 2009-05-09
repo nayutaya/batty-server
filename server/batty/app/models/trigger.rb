@@ -77,7 +77,9 @@ class Trigger < ActiveRecord::Base
     return block.call(observed_level, self.level)
   end
 
-  # FIXME: 二つのバッテリ残量を入力し、一方はトリガ条件に一致し、他方は一致しないことを判定するメソッドを追加
+  def triggered?(first_level, second_level)
+    return self.evaluate(first_level) && !self.evaluate(second_level)
+  end
 
   def to_event_hash
     return {

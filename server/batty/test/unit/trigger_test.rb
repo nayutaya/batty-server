@@ -215,6 +215,26 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal(false, trigger.evaluate(50))
   end
 
+  test "triggered?, equal" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:eq),
+      :level    => 0)
+    assert_equal(false, trigger.triggered?(0, 0))
+    assert_equal(true,  trigger.triggered?(0, 1))
+    assert_equal(false, trigger.triggered?(1, 0))
+    assert_equal(false, trigger.triggered?(1, 1))
+  end
+
+  test "triggered?, not equal" do
+    trigger = @klass.new(
+      :operator => @klass.operator_symbol_to_code(:ne),
+      :level    => 0)
+    assert_equal(false, trigger.triggered?(0, 0))
+    assert_equal(false, trigger.triggered?(0, 1))
+    assert_equal(true,  trigger.triggered?(1, 0))
+    assert_equal(false, trigger.triggered?(1, 1))
+  end
+
   test "to_event_hash" do
     expected = {
       :trigger_operator => nil,
