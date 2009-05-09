@@ -70,11 +70,14 @@ class Device < ActiveRecord::Base
     options = options.dup
     observed_level = options.delete(:observed_level)
     observed_at    = options.delete(:observed_at)
+    update_event   = (options.delete(:update_event) == true)
     raise(ArgumentError) unless options.empty?
 
     self.energies.create!(
       :observed_level => observed_level,
       :observed_at    => observed_at)
+
+    self.update_event if update_event
 
     return nil
   end

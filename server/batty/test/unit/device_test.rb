@@ -317,6 +317,50 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal(time,      energy.observed_at)
   end
 
+  test "update_energy, no update event" do
+    device = devices(:yuya_pda)
+
+    assert_difference("Event.count", 0) {
+      assert_difference("Energy.count", +1) {
+        device.update_energy(
+          :observed_level => 80,
+          :observed_at    => Time.local(2009, 1, 4),
+          :update_event   => false)
+      }
+    }
+
+    assert_difference("Event.count", 0) {
+      assert_difference("Energy.count", +1) {
+        device.update_energy(
+          :observed_level => 90,
+          :observed_at    => Time.local(2009, 1, 5),
+          :update_event   => false)
+      }
+    }
+  end
+
+  test "update_energy, update event" do
+    device = devices(:yuya_pda)
+
+    assert_difference("Event.count", 0) {
+      assert_difference("Energy.count", +1) {
+        device.update_energy(
+          :observed_level => 80,
+          :observed_at    => Time.local(2009, 1, 4),
+          :update_event   => true)
+      }
+    }
+
+    assert_difference("Event.count", +1) {
+      assert_difference("Energy.count", +1) {
+        device.update_energy(
+          :observed_level => 90,
+          :observed_at    => Time.local(2009, 1, 5),
+          :update_event   => true)
+      }
+    }
+  end
+
   test "update_energy, invalid parameter" do
     assert_raise(ArgumentError) {
       devices(:yuya_pda).update_energy(:invalid => true)
