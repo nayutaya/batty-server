@@ -48,4 +48,13 @@ class Device < ActiveRecord::Base
       all(:order => "triggers.id ASC").
       select { |trigger| trigger.triggered?(*energy_levels[0, 2]) }
   end
+
+  def update_energy(observed_level, observed_at)
+    Energy.create!(
+      :device         => self,
+      :observed_level => observed_level,
+      :observed_at    => observed_at)
+
+    return nil
+  end
 end
