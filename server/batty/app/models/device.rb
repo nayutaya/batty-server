@@ -62,13 +62,18 @@ class Device < ActiveRecord::Base
     energies = self.energies_for_trigger
     triggers = self.active_triggers(energies.map(&:observed_level))
 
+    events = []
+
     triggers.each { |trigger|
-      event = Event.new(:device => self)
-      event.attributes = energies.first.to_event_hash
-      event.attributes = trigger.to_event_hash
-      event.save
+      key = {:device_id => self.id}
+      key.merge!(energies.first.to_event_hash)
+      key.merge!(trigger.to_event_hash)
+
+      unless Event.exists?(key)
+        events << Event.create!(key)
+      end
     }
 
-    return nil
+    return events
   end
 end

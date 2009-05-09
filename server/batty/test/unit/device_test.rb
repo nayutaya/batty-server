@@ -243,8 +243,27 @@ class DeviceTest < ActiveSupport::TestCase
   end
 
   test "update_event" do
+    device = devices(:yuya_pda)
+
+    # 既にイベントが生成されている
+    assert_difference("Event.count", 0) {
+      assert_equal([], device.update_event)
+    }
+
+    a = device.energies.create!(:observed_level => 80, :observed_at => Time.local(2009, 1, 4))
+
+    # 該当するトリガなし
+    assert_difference("Event.count", 0) {
+      assert_equal([], device.update_event)
+    }
+
+    b = device.energies.create!(:observed_level => 90, :observed_at => Time.local(2009, 1, 4))
+
     assert_difference("Event.count", +1) {
-      devices(:yuya_pda).update_event
+      events = device.update_event
+      assert_equal(1, events.size)
+      assert_equal(b.observed_level, events[0].observed_level)
+      assert_equal(b.observed_at,    events[0].observed_at)
     }
   end
 end
