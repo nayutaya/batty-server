@@ -300,15 +300,26 @@ class DeviceTest < ActiveSupport::TestCase
   end
 
   test "update_energy" do
-    level = 95
-    time  = Time.local(2009, 1, 4)
+    device = devices(:yuya_pda)
+    level  = 95
+    time   = Time.local(2009, 1, 4)
 
     assert_difference("Energy.count", +1) {
-      devices(:yuya_pda).update_energy(level, time)
+      ret = device.update_energy(
+        :observed_level => level,
+        :observed_at    => time)
+      assert_equal(nil, ret)
     }
 
     energy = Energy.first(:order => "energies.id DESC")
-    assert_equal(level, energy.observed_level)
-    assert_equal(time,  energy.observed_at)
+    assert_equal(device.id, energy.device_id)
+    assert_equal(level,     energy.observed_level)
+    assert_equal(time,      energy.observed_at)
+  end
+
+  test "update_energy, invalid parameter" do
+    assert_raise(ArgumentError) {
+      devices(:yuya_pda).update_energy(:invalid => true)
+    }
   end
 end

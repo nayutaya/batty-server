@@ -66,7 +66,12 @@ class Device < ActiveRecord::Base
     }
   end
 
-  def update_energy(observed_level, observed_at)
+  def update_energy(options = {})
+    options = options.dup
+    observed_level = options.delete(:observed_level)
+    observed_at    = options.delete(:observed_at)
+    raise(ArgumentError) unless options.empty?
+
     self.energies.create!(
       :observed_level => observed_level,
       :observed_at    => observed_at)
