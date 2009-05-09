@@ -172,7 +172,7 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal(true,  trigger.evaluate(51))
   end
 
-  test "evaluate, lt" do
+  test "evaluate, less then" do
     trigger = @klass.new(
       :operator => @klass.operator_symbol_to_code(:lt),
       :level    => 50)
@@ -181,7 +181,7 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal(false, trigger.evaluate(51))
   end
 
-  test "evaluate, le" do
+  test "evaluate, less or equal" do
     trigger = @klass.new(
       :operator => @klass.operator_symbol_to_code(:le),
       :level    => 50)
@@ -190,7 +190,7 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal(false, trigger.evaluate(51))
   end
 
-  test "evaluate, gt" do
+  test "evaluate, greater than" do
     trigger = @klass.new(
       :operator => @klass.operator_symbol_to_code(:gt),
       :level    => 50)
@@ -199,7 +199,7 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal(true,  trigger.evaluate(51))
   end
 
-  test "evaluate, ge" do
+  test "evaluate, greater or equal" do
     trigger = @klass.new(
       :operator => @klass.operator_symbol_to_code(:ge),
       :level    => 50)

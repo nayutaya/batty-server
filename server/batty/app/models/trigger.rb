@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 # == Schema Information
 # Schema version: 20090420021540
 #
@@ -69,11 +70,14 @@ class Trigger < ActiveRecord::Base
     return self.class.operator_code_to_sign(self.operator)
   end
 
+  # FIXME: より良いメソッド名に変更
   def evaluate(observed_level)
     block   = OperatorsTable[self.operator][:block]
     block ||= proc { |a, b| false }
     return block.call(observed_level, self.level)
   end
+
+  # FIXME: 二つのバッテリ残量を入力し、一方はトリガ条件に一致し、他方は一致しないことを判定するメソッドを追加
 
   def to_event_hash
     return {
