@@ -33,7 +33,8 @@ class Device < ActiveRecord::Base
   end
 
   def current_energy
-    return self.energies.first(:order => "observed_at DESC")
+    return self.energies.first(
+      :order => "energies.observed_at DESC, energies.id DESC")
   end
 
   def energies_for_trigger
