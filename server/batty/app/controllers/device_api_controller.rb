@@ -24,7 +24,21 @@ class DeviceApiController < ApplicationController
     end
 
     @level = params[:level].to_i
-    @time  = Time.now
+
+    if params[:time].blank?
+      @time = Time.now
+    else
+      unless /\A\d{14}\z/ =~ params[:time]
+        render(:text => "", :status => 404)
+        return
+      end
+      begin
+        @time = Time.parse(params[:time])
+      rescue ArgumentError
+        render(:text => "", :status => 404)
+        return
+      end
+    end
 
     @device.update_energy(
       :observed_level => @level,

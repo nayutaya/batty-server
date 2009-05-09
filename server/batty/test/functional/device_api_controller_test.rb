@@ -65,6 +65,15 @@ class DeviceApiControllerTest < ActionController::TestCase
     assert_equal(100, assigns(:level))
   end
 
+  test "POST update_energy, with time" do
+    post :update_energy, :device_token => @yuya_pda.device_token, :level => "0", :time => "19870605040302"
+
+    assert_response(:success)
+    assert_template(nil)
+
+    assert_equal(Time.local(1987, 6, 5, 4, 3, 2), assigns(:time))
+  end
+
   test "POST update_energy, abnormal, no device token" do
     post :update_energy, :device_token => nil
 
@@ -79,7 +88,7 @@ class DeviceApiControllerTest < ActionController::TestCase
     assert_template(nil)
   end
 
-  test "POST update_energy, abnormal, invalid level" do
+  test "POST update_energy, abnormal, invalid level char" do
     post :update_energy, :device_token => @yuya_pda.device_token, :level => "x"
 
     assert_response(404)
@@ -88,6 +97,20 @@ class DeviceApiControllerTest < ActionController::TestCase
 
   test "POST update_energy, abnormal, level is too big" do
     post :update_energy, :device_token => @yuya_pda.device_token, :level => "101"
+
+    assert_response(404)
+    assert_template(nil)
+  end
+
+  test "POST update_energy, abnormal, invalid time char" do
+    post :update_energy, :device_token => @yuya_pda.device_token, :level => "0", :time => "x"
+
+    assert_response(404)
+    assert_template(nil)
+  end
+
+  test "POST update_energy, abnormal, invalid time" do
+    post :update_energy, :device_token => @yuya_pda.device_token, :level => "0", :time => "99999999999999"
 
     assert_response(404)
     assert_template(nil)
