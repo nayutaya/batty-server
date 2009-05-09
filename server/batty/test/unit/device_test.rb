@@ -171,4 +171,24 @@ class DeviceTest < ActiveSupport::TestCase
   test "current_energy, no records" do
     assert_equal(nil, devices(:shinya_cellular).current_energy)
   end
+
+  test "energies_for_trigger, from 3 energy records" do
+    expected = [
+      energies(:yuya_pda3),
+      energies(:yuya_pda2),
+    ]
+    assert_equal(expected, devices(:yuya_pda).energies_for_trigger)
+  end
+
+  test "energies_for_trigger, from 1 energy record" do
+    expected = [
+      energies(:shinya_note1),
+    ]
+    assert_equal(expected, devices(:shinya_note).energies_for_trigger)
+  end
+
+  test "energies_for_trigger, from no energy records" do
+    expected = []
+    assert_equal(expected, devices(:shinya_cellular).energies_for_trigger)
+  end
 end
