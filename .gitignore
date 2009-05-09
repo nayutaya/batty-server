@@ -1,5 +1,8 @@
+.DS_Store
 *.log
 *.sqlite3
+server/batty/*.sh
+server/batty/bin/
 server/batty/db/schema.rb
 server/batty/nbproject/
 server/batty/tmp/cache/
