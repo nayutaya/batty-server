@@ -29,14 +29,13 @@ class EmailCredential < ActiveRecord::Base
   validates_presence_of :hashed_password
   validates_length_of :email, :maximum => 200, :allow_nil => true
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
+  validates_format_of :hashed_password, :with => /\A[0-9a-f]{40}\z/, :allow_nil => true
+  # TODO: emailのフォーマットを検証 <- 保留
+  # TODO: password の存在を確認
 
   def self.create_unique_activation_token
     return TokenUtil.create_unique_token(self, :activation_token, TokenLength)
   end
-
-  # TODO: emailのフォーマットを検証 <- 保留
-  # TODO: password の存在を確認
-  # TODO: hashed_passwordのフォーマットを検証
 
   def self.create_hashed_password(password)
     return Digest::SHA1.hexdigest("batty:" + password)

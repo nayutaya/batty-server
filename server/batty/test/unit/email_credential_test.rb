@@ -10,7 +10,7 @@ class EmailCredentialTest < ActiveSupport::TestCase
       :user             => users(:yuya),
       :email            => "foo@example.com",
       :password         => "password",
-      :hashed_password  => "hashed_password")
+      :hashed_password  => "0" * 40)
 
     @yuya_gmail   = email_credentials(:yuya_gmail)
     @risa_example = email_credentials(:risa_example)
@@ -74,6 +74,20 @@ class EmailCredentialTest < ActiveSupport::TestCase
       @basic.activation_token = value
       assert_equal(expected1, @basic.valid?, value)
       assert_equal(expected2, @basic.errors.invalid?(:activation_token), value)
+    }
+  end
+
+  test "validates_format_of :hashed_password" do
+    [
+      ["0123456789abcdef" + "0" * 24, true ],
+      ["0" * 39,                      false],
+      ["0" * 40,                      true ],
+      ["0" * 41,                      false],
+      ["0" * 39 + "A",                false],
+      ["0" * 39 + "g",                false],
+    ].each { |value, expected|
+      @basic.hashed_password = value
+      assert_equal(expected, @basic.valid?, value)
     }
   end
 
