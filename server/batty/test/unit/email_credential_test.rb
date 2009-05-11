@@ -97,4 +97,18 @@ class EmailCredentialTest < ActiveSupport::TestCase
         @klass.create_unique_activation_token)
     }
   end
+
+  test "create_hashed_password" do
+    assert_equal(
+      Digest::SHA1.hexdigest("batty:a"),
+      @klass.create_hashed_password("a"))
+
+    assert_match(
+      /\A[0-9a-f]{40}\z/,
+      @klass.create_hashed_password("a"))
+
+    assert_not_equal(
+      @klass.create_hashed_password("a"),
+      @klass.create_hashed_password("b"))
+  end
 end

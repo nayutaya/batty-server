@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 # == Schema Information
 # Schema version: 20090420021540
 #
@@ -37,5 +38,7 @@ class EmailCredential < ActiveRecord::Base
   # TODO: password の存在を確認
   # TODO: hashed_passwordのフォーマットを検証
 
-  # TODO: パスワードをハッシュするメソッドを実装
+  def self.create_hashed_password(password)
+    return Digest::SHA1.hexdigest("batty:" + password)
+  end
 end
