@@ -40,4 +40,8 @@ class EmailCredential < ActiveRecord::Base
   def self.create_hashed_password(password)
     return Digest::SHA1.hexdigest("batty:" + password)
   end
+
+  def authenticate(password)
+    return (self.hashed_password == self.class.create_hashed_password(password))
+  end
 end

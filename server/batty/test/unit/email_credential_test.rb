@@ -125,4 +125,14 @@ class EmailCredentialTest < ActiveSupport::TestCase
       @klass.create_hashed_password("a"),
       @klass.create_hashed_password("b"))
   end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "authenticate" do
+    assert_equal(true,  email_credentials(:yuya_gmail).authenticate("yuya_gmail"))
+    assert_equal(false, email_credentials(:yuya_gmail).authenticate("YUYA_GMAIL"))
+    assert_equal(true,  email_credentials(:yuya_nayutaya).authenticate("yuya_nayutaya"))
+  end
 end
