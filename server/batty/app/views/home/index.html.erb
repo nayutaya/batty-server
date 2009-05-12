@@ -1,3 +1,6 @@
+
+<div>UserID: <%=h session[:user_id] %></div>
+
 <h1>Dashboard</h1>
 
 <div id="login_form">
@@ -14,6 +17,10 @@
      <%= submit_tag("ログイン") %>
     <%- } -%>
   </div>
+</div>
+
+<div>
+ <%= link_to(h("ログアウト"), {:controller => "auth", :action => "logout"}, :method => :post) %>
 </div>
 
 <div>

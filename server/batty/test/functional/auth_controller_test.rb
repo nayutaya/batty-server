@@ -25,4 +25,15 @@ class AuthControllerTest < ActionController::TestCase
 
     assert_equal(root_path, assigns(:return_path))
   end
+
+  test "POST logout" do
+    @request.session[:user_id] = 0
+
+    post :logout
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+
+    assert_equal(nil, @request.session[:user_id])
+  end
 end
