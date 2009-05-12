@@ -44,11 +44,11 @@ class EmailCredential < ActiveRecord::Base
   def self.authenticate(email, password)
     credential = self.find_by_email(email)
     return nil unless credential
-    return nil unless credential.authenticate(password)
+    return nil unless credential.authenticated?(password)
     return credential
   end
 
-  def authenticate(password)
+  def authenticated?(password)
     return false unless self.hashed_password == self.class.create_hashed_password(password)
     return false unless self.activated?
     return true

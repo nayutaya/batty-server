@@ -144,10 +144,10 @@ class EmailCredentialTest < ActiveSupport::TestCase
   # インスタンスメソッド
   #
 
-  test "authenticate" do
-    assert_equal(true,  email_credentials(:yuya_gmail).authenticate("yuya_gmail"))
-    assert_equal(false, email_credentials(:yuya_gmail).authenticate("YUYA_GMAIL"))
-    assert_equal(false, email_credentials(:yuya_nayutaya).authenticate("yuya_nayutaya"))
+  test "authenticated?" do
+    assert_equal(true,  email_credentials(:yuya_gmail).authenticated?("yuya_gmail"))
+    assert_equal(false, email_credentials(:yuya_gmail).authenticated?("YUYA_GMAIL"))
+    assert_equal(false, email_credentials(:yuya_nayutaya).authenticated?("yuya_nayutaya"))
   end
 
   test "activated?" do
