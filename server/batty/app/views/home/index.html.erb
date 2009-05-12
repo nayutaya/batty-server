@@ -3,47 +3,51 @@
 
 <h1>Dashboard</h1>
 
+<%- unless logged_in? -%>
 <div id="login_form">
-  <div id="open_id_login_form">
-    <%- form_tag :controller => 'open_id_auth', :action => 'login' do %>
-    <%= text_field_tag 'openid_url' %>
-    <%= submit_tag 'OpenID でログイン' %>
-    <%- end -%>
-  </div>
-  <div id="password_login_form">
-    <%- form_tag(:controller => "password_auth", :action => "login") { -%>
-     <%= text_field_tag("email") %>
-     <%= text_field_tag("password") %>
-     <%= submit_tag("ログイン") %>
-    <%- } -%>
-  </div>
+ <div id="open_id_login_form">
+  <%- form_tag(:controller => "open_id_auth", :action => "login") { -%>
+   <%= text_field_tag("openid_url") %>
+   <%= submit_tag("ログイン") %>
+  <%- } -%>
+ </div>
+ <div id="password_login_form">
+  <%- form_tag(:controller => "password_auth", :action => "login") { -%>
+   <%= text_field_tag("email") %>
+   <%= text_field_tag("password") %>
+   <%= submit_tag("ログイン") %>
+  <%- } -%>
+ </div>
 </div>
-
-<div>
- <%= link_to(h("ログアウト"), {:controller => "auth", :action => "logout"}, :method => :post) %>
-</div>
+<%- end -%>
 
 <%- if logged_in? -%>
-<div>
+ <div>
+  <%= link_to(h("ログアウト"), {:controller => "auth", :action => "logout"}, :method => :post) %>
+ </div>
+<%- end -%>
+
+<%- if logged_in? -%>
+ <div>
   <table>
-    <thead>
-      <tr>
-        <th>デバイス</th>
-        <th>バッテリー残量</th>
-        <th>トリガー</th>
-        <th>アクション</th>
-      </tr>
-    </thead>
-    <tbody>
-    <%- @devices.each do |device| -%>
-      <tr>
-        <td><%=h device.name %></td>
-        <td><%=h device.current_energy.try(:observed_level) %></td>
-        <td><%=h device.triggers.enable.count %></td>
-        <td>アクション</td>
-      </tr>
-    <%- end -%>
-    </tbody>
+   <thead>
+    <tr>
+     <th>デバイス</th>
+     <th>バッテリー残量</th>
+     <th>トリガー</th>
+     <th>アクション</th>
+    </tr>
+   </thead>
+   <tbody>
+    <%- @devices.each { |device| -%>
+     <tr>
+      <td><%=h device.name %></td>
+      <td><%=h device.current_energy.try(:observed_level) || "-" %> %</td>
+      <td><%=h device.triggers.enable.count %></td>
+      <td>アクション</td>
+     </tr>
+    <%- } -%>
+   </tbody>
   </table>
-</div>
+ </div>
 <%- end -%>
