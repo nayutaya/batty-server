@@ -23,13 +23,14 @@ class EmailCredential < ActiveRecord::Base
 
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
+  HashedPasswordPattern = /\A([0-9a-f]{8}):([0-9a-f]{64})\z/
 
   validates_presence_of :email
   validates_presence_of :activation_token
   validates_presence_of :hashed_password
   validates_length_of :email, :maximum => 200, :allow_nil => true
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
-  validates_format_of :hashed_password, :with => /\A[0-9a-f]{8}:[0-9a-f]{64}\z/, :allow_nil => true
+  validates_format_of :hashed_password, :with => HashedPasswordPattern, :allow_nil => true
   # TODO: emailのフォーマットを検証 <- 保留
   # TODO: password の存在を検証
   # TODO: password/password_confirmationの一致を検証
@@ -50,7 +51,7 @@ class EmailCredential < ActiveRecord::Base
   end
 
   def self.compare_hashed_password(password, hashed_password)
-    return false unless /\A([0-9a-f]{8}):([0-9a-f]{64})\Z/ =~ hashed_password
+    return false unless HashedPasswordPattern =~ hashed_password
     salt, digest = $1, $2
     return (Digest::SHA256.hexdigest(salt + ":" + password) == digest)
   end
