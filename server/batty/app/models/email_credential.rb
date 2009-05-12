@@ -33,6 +33,12 @@ class EmailCredential < ActiveRecord::Base
   # TODO: emailのフォーマットを検証 <- 保留
   # TODO: password の存在を確認
 
+  def initialize(attributes = nil)
+    super
+    @password              = nil
+    @password_confirmation = nil
+  end
+
   def self.create_unique_activation_token
     return TokenUtil.create_unique_token(self, :activation_token, TokenLength)
   end
