@@ -44,9 +44,11 @@ class EmailCredentialTest < ActiveSupport::TestCase
       assert_equal(get_value, record.__send__(name))
     }
   end
+
   #
   # 検証
   #
+  # FIXME: 順序を実装と揃える
 
   test "all fixtures are valid" do
     assert_equal(true, @klass.all.all?(&:valid?))

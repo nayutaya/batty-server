@@ -31,7 +31,8 @@ class EmailCredential < ActiveRecord::Base
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
   validates_format_of :hashed_password, :with => /\A[0-9a-f]{8}:[0-9a-f]{64}\z/, :allow_nil => true
   # TODO: emailのフォーマットを検証 <- 保留
-  # TODO: password の存在を確認
+  # TODO: password の存在を検証
+  # TODO: password/password_confirmationの一致を検証
 
   def initialize(attributes = nil)
     super
