@@ -1,8 +1,12 @@
 
 # メールアドレス/パスワード認証
 class PasswordAuthController < ApplicationController
+  verify(
+    :method => :post,
+    :render => {:text => "Method Not Allowed", :status => 405},
+    :only   => [:login])
+
   # TODO: URL
-  # TODO: POSTメソッドに制限
   def login
     # TODO: メールアドレスの確認処理を実装
     # TODO: パスワードの確認処理を実装

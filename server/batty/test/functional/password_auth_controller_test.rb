@@ -38,4 +38,11 @@ class PasswordAuthControllerTest < ActionController::TestCase
 
     assert_equal(nil, @request.session[:user_id])
   end
+
+  test "GET login, abnormal, method not allowed" do
+    get :login
+
+    assert_response(405)
+    assert_template(nil)
+  end
 end
