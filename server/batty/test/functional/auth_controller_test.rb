@@ -47,4 +47,24 @@ class AuthControllerTest < ActionController::TestCase
 
     assert_equal(0, @request.session[:user_id])
   end
+
+  test "GET logout_complete" do
+    return_path = "/return"
+
+    get :logout_complete, :return_path => return_path
+
+    assert_response(:success)
+    assert_template("logout_complete")
+
+    assert_equal(return_path, assigns(:return_path))
+  end
+
+  test "GET logout_complete, without return path" do
+    get :logout_complete
+
+    assert_response(:success)
+    assert_template("logout_complete")
+
+    assert_equal(root_path, assigns(:return_path))
+  end
 end

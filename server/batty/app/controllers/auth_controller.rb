@@ -17,4 +17,10 @@ class AuthController < ApplicationController
     reset_session
     redirect_to(root_path)
   end
+
+  # GET ?
+  def logout_complete
+    @return_path = params[:return_path]
+    @return_path = root_path if @return_path.blank?
+  end
 end
