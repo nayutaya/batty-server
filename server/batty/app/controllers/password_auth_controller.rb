@@ -16,14 +16,9 @@ class PasswordAuthController < ApplicationController
     if credential
       session[:user_id] = credential.user_id
       # TODO: リダイレクト処理を実装
-      redirect_to(:action => "login_complete")
+      redirect_to(:controller => "auth", :action => "login_complete")
     else
       render
     end
-  end
-
-  # TODO: URL
-  def login_complete
-    # TODO: リダイレクト処理を実装
   end
 end
