@@ -41,7 +41,20 @@ class EmailCredential < ActiveRecord::Base
     return Digest::SHA1.hexdigest("batty:" + password)
   end
 
+  def self.authenticate(email, password)
+    credential = self.find_by_email(email)
+    return nil unless credential
+    return nil unless credential.authenticate(password)
+    return credential
+  end
+
   def authenticate(password)
-    return (self.hashed_password == self.class.create_hashed_password(password))
+    return false unless self.hashed_password == self.class.create_hashed_password(password)
+    return false unless self.activated?
+    return true
+  end
+
+  def activated?
+    return !self.activated_at.nil?
   end
 end

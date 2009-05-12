@@ -101,7 +101,7 @@ class EmailCredentialTest < ActiveSupport::TestCase
   # クラスメソッド
   #
 
-  test "create_unique_activation_token" do
+  test "self.create_unique_activation_token" do
     tokens = [@yuya_gmail.activation_token, "b" * 20]
     musha = Kagemusha.new(TokenUtil)
     musha.defs(:create_token) { tokens.shift }
@@ -112,7 +112,7 @@ class EmailCredentialTest < ActiveSupport::TestCase
     }
   end
 
-  test "create_hashed_password" do
+  test "self.create_hashed_password" do
     assert_equal(
       Digest::SHA1.hexdigest("batty:a"),
       @klass.create_hashed_password("a"))
@@ -126,6 +126,20 @@ class EmailCredentialTest < ActiveSupport::TestCase
       @klass.create_hashed_password("b"))
   end
 
+  test "self.authenticate" do
+    assert_equal(
+      email_credentials(:yuya_gmail),
+      @klass.authenticate(email_credentials(:yuya_gmail).email, "yuya_gmail"))
+
+    assert_equal(
+      nil,
+      @klass.authenticate(email_credentials(:yuya_gmail).email, "YUYA_GMAIL"))
+
+    assert_equal(
+      nil,
+      @klass.authenticate(nil, nil))
+  end
+
   #
   # インスタンスメソッド
   #
@@ -133,6 +147,11 @@ class EmailCredentialTest < ActiveSupport::TestCase
   test "authenticate" do
     assert_equal(true,  email_credentials(:yuya_gmail).authenticate("yuya_gmail"))
     assert_equal(false, email_credentials(:yuya_gmail).authenticate("YUYA_GMAIL"))
-    assert_equal(true,  email_credentials(:yuya_nayutaya).authenticate("yuya_nayutaya"))
+    assert_equal(false, email_credentials(:yuya_nayutaya).authenticate("yuya_nayutaya"))
+  end
+
+  test "activated?" do
+    assert_equal(true,  email_credentials(:yuya_gmail).activated?)
+    assert_equal(false, email_credentials(:yuya_nayutaya).activated?)
   end
 end
