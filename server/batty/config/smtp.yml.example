@@ -1,0 +1,8 @@
+
+:enable_starttls_auto: true
+:address: "smtp.gmail.com"
+:port: 587
+:domain: "localhost.localdomain"
+:authentication: :plain
+:user_name: "username"
+:password: "password"

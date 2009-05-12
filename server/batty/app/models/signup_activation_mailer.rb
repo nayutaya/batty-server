@@ -1,8 +1,8 @@
 
 class SignupActivationMailer < ActionMailer::Base
-  def request
+  def request(to)
     subject    "SignupActivationMailer#request"
-    recipients "yuyakato@gmail.com"
+    recipients to
     from       "batty-no-reply@nayutaya.jp"
     sent_on    Time.now
 
