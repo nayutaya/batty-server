@@ -36,4 +36,15 @@ class AuthControllerTest < ActionController::TestCase
 
     assert_equal(nil, @request.session[:user_id])
   end
+
+  test "GET logout, abnormal, method not allowed" do
+    @request.session[:user_id] = 0
+
+    get :logout
+
+    assert_response(405)
+    assert_template(nil)
+
+    assert_equal(0, @request.session[:user_id])
+  end
 end

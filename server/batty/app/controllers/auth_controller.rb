@@ -1,6 +1,11 @@
 
 # 認証
 class AuthController < ApplicationController
+  verify(
+    :method => :post,
+    :render => {:text => "Method Not Allowed", :status => 405},
+    :only   => [:logout])
+
   # GET ?
   def login_complete
     @return_path = params[:return_path]
