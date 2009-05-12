@@ -3,6 +3,9 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
+  GetText.locale = "ja"
+  init_gettext "batty"
+
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 

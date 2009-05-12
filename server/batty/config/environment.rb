@@ -22,6 +22,11 @@ Rails::Initializer.run do |config|
   config.gem "mongrel"
   config.gem "kagemusha"
   config.gem "mislav-will_paginate", :version => "> 2.3.2", :lib => "will_paginate", :source => "http://gems.github.com"
+  config.gem "locale"
+  config.gem "locale_rails"
+  config.gem "gettext"
+  config.gem "gettext_activerecord"
+  config.gem "gettext_rails"
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -41,4 +46,8 @@ Rails::Initializer.run do |config|
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
+
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = YAML.load_file(RAILS_ROOT + "/config/smtp.yml")
 end
