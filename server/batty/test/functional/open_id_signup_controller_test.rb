@@ -24,6 +24,8 @@ class OpenIdSignupControllerTest < ActionController::TestCase
   end
 
   test "POST signup" do
+    @request.session[:identity_url] = "http://example.com/"
+
     post :signup
 
     assert_response(:redirect)
