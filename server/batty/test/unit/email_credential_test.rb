@@ -9,7 +9,6 @@ class EmailCredentialTest < ActiveSupport::TestCase
       :activation_token => "0" * 20,
       :user             => users(:yuya),
       :email            => "foo@example.com",
-      :password         => "password",
       :hashed_password  => ("0" * 8) + ":" + ("0" * 64))
 
     @yuya_gmail   = email_credentials(:yuya_gmail)
@@ -30,6 +29,21 @@ class EmailCredentialTest < ActiveSupport::TestCase
       @risa_example.user)
   end
 
+  #
+  # アクセサ
+  #
+
+  test "accessors" do
+    [
+      [:password,              nil, "str", "str"],
+      [:password_confirmation, nil, "str", "str"],
+    ].each { |name, default, set_value, get_value|
+      record = @klass.new
+      assert_equal(default, record.__send__(name))
+      record.__send__("#{name}=", set_value)
+      assert_equal(get_value, record.__send__(name))
+    }
+  end
   #
   # 検証
   #

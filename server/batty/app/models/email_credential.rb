@@ -19,7 +19,7 @@
 class EmailCredential < ActiveRecord::Base
   belongs_to :user
 
-  attr_accessor :password
+  attr_accessor :password, :password_confirmation
 
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
