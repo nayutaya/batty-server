@@ -3,7 +3,10 @@
 class HomeController < ApplicationController
   # GET /
   def index
-    @user = User.find_by_nickname("yu-yan") # FIXME: ログインユーザに変更
-    @devices = @user.devices.sort_by(&:name) # FIXME: order by句に変更
+    @login_user = User.find_by_id(session[:user_id])
+
+    if @login_user
+      @devices = @login_user.devices.all(:order => "devices.name ASC")
+    end
   end
 end

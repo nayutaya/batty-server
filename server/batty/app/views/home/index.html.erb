@@ -23,6 +23,7 @@
  <%= link_to(h("ログアウト"), {:controller => "auth", :action => "logout"}, :method => :post) %>
 </div>
 
+<%- if logged_in? -%>
 <div>
   <table>
     <thead>
@@ -45,3 +46,4 @@
     </tbody>
   </table>
 </div>
+<%- end -%>
