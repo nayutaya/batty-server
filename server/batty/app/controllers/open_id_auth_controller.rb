@@ -3,7 +3,6 @@
 # OpenID認証
 class OpenIdAuthController < ApplicationController
   # TODO: login アクションを実装する
-  # TODO: logout アクションを実装する
 
   def login
     openid_url = params[:openid_url]
@@ -28,12 +27,6 @@ class OpenIdAuthController < ApplicationController
         end
       end
     }
-  end
-
-  def logout
-    reset_session
-    flash[:notice] = "ログアウトしました。"
-    redirect_to(root_path)
   end
 
   private
