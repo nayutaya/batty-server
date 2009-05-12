@@ -10,7 +10,7 @@ class EmailCredentialTest < ActiveSupport::TestCase
       :user             => users(:yuya),
       :email            => "foo@example.com",
       :password         => "password",
-      :hashed_password  => "0" * 40)
+      :hashed_password  => ("0" * 8) + ":" + ("0" * 64))
 
     @yuya_gmail   = email_credentials(:yuya_gmail)
     @risa_example = email_credentials(:risa_example)
@@ -79,12 +79,21 @@ class EmailCredentialTest < ActiveSupport::TestCase
 
   test "validates_format_of :hashed_password" do
     [
-      ["0123456789abcdef" + "0" * 24, true ],
-      ["0" * 39,                      false],
-      ["0" * 40,                      true ],
-      ["0" * 41,                      false],
-      ["0" * 39 + "A",                false],
-      ["0" * 39 + "g",                false],
+      # ソルト値部分
+      ["01234567"  + ":" + "0" * 64, true ],
+      ["89abcdef"  + ":" + "0" * 64, true ],
+      ["0000000"   + ":" + "0" * 64, false],
+      ["00000000"  + ":" + "0" * 64, true ],
+      ["000000000" + ":" + "0" * 64, false],
+      ["0000000A"  + ":" + "0" * 64, false],
+      ["0000000g"  + ":" + "0" * 64, false],
+      # ハッシュ値部分
+      ["00000000" + ":" + "0123456789abcdef" + "0" * (64 - 16), true ],
+      ["00000000" + ":" + "0" * (64 - 1),                       false],
+      ["00000000" + ":" + "0" * 64,                             true ],
+      ["00000000" + ":" + "0" * (64 + 1),                       false],
+      ["00000000" + ":" + "0" * (64 - 1) + "A",                 false],
+      ["00000000" + ":" + "0" * (64 - 1) + "g",                 false],
     ].each { |value, expected|
       @basic.hashed_password = value
       assert_equal(expected, @basic.valid?, value)
@@ -113,17 +122,42 @@ class EmailCredentialTest < ActiveSupport::TestCase
   end
 
   test "self.create_hashed_password" do
-    assert_equal(
-      Digest::SHA1.hexdigest("batty:a"),
-      @klass.create_hashed_password("a"))
-
     assert_match(
-      /\A[0-9a-f]{40}\z/,
+      /\A[0-9a-f]{8}:[0-9a-f]{64}\z/,
       @klass.create_hashed_password("a"))
 
+    # 異なるパスワードでは、異なる値になること
     assert_not_equal(
       @klass.create_hashed_password("a"),
       @klass.create_hashed_password("b"))
+
+    # 同一のパスワードでも、異なる値になること
+    assert_not_equal(
+      @klass.create_hashed_password("a"),
+      @klass.create_hashed_password("a"))
+  end
+
+  test "self.compare_hashed_password" do
+    # ソルト、パスワードが一致
+    assert_equal(
+      true,
+      @klass.compare_hashed_password(
+        "password",
+        "00000000:" + Digest::SHA256.hexdigest("00000000:password")))
+
+    # ソルトが不一致、パスワードが一致
+    assert_equal(
+      false,
+      @klass.compare_hashed_password(
+        "password",
+        "00000000:" + Digest::SHA256.hexdigest("11111111:password")))
+
+    # ソルトが一致、パスワードが不一致
+    assert_equal(
+      false,
+      @klass.compare_hashed_password(
+        "password",
+        "00000000:" + Digest::SHA256.hexdigest("00000000:PASSWORD")))
   end
 
   test "self.authenticate" do

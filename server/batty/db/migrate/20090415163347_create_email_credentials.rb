@@ -11,7 +11,7 @@ class CreateEmailCredentials < ActiveRecord::Migration
       # メールアドレス
       t.string   :email,            :null => false, :limit => 200
       # ハッシュされたパスワード
-      t.string   :hashed_password,  :null => false, :limit => 40
+      t.string   :hashed_password,  :null => false, :limit => 8 + 1 + 64
       # アクティべーション日時
       t.datetime :activated_at,     :null => true
       # ログイン日時

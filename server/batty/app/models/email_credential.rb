@@ -29,7 +29,7 @@ class EmailCredential < ActiveRecord::Base
   validates_presence_of :hashed_password
   validates_length_of :email, :maximum => 200, :allow_nil => true
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
-  validates_format_of :hashed_password, :with => /\A[0-9a-f]{40}\z/, :allow_nil => true
+  validates_format_of :hashed_password, :with => /\A[0-9a-f]{8}:[0-9a-f]{64}\z/, :allow_nil => true
   # TODO: emailのフォーマットを検証 <- 保留
   # TODO: password の存在を確認
 
@@ -38,7 +38,14 @@ class EmailCredential < ActiveRecord::Base
   end
 
   def self.create_hashed_password(password)
-    return Digest::SHA1.hexdigest("batty:" + password)
+    salt = 8.times.map { rand(16).to_s(16) }.join
+    return salt + ":" + Digest::SHA256.hexdigest(salt + ":" + password)
+  end
+
+  def self.compare_hashed_password(password, hashed_password)
+    return false unless /\A([0-9a-f]{8}):([0-9a-f]{64})\Z/ =~ hashed_password
+    salt, digest = $1, $2
+    return (Digest::SHA256.hexdigest(salt + ":" + password) == digest)
   end
 
   def self.authenticate(email, password)
@@ -49,7 +56,7 @@ class EmailCredential < ActiveRecord::Base
   end
 
   def authenticated?(password)
-    return false unless self.hashed_password == self.class.create_hashed_password(password)
+    return false unless self.class.compare_hashed_password(password, self.hashed_password)
     return false unless self.activated?
     return true
   end
