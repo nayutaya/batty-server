@@ -1,0 +1,8 @@
+
+<h1>認証完了</h1>
+
+<div><%=h @identity_url %></div>
+
+<%- form_tag(:action => "signup") { -%>
+ <%= submit_tag("登録") %>
+<%- } -%>

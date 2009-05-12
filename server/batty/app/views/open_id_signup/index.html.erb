@@ -1,2 +1,7 @@
 
 <h1>サインアップ</h1>
+
+<%- form_tag(:action => "authenticate") { -%>
+ <%= text_field_tag("openid_url", @openid_url, :size => 20) %>
+ <%= submit_tag("次へ") %>
+<%- } -%>
