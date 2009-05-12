@@ -32,7 +32,7 @@ class AuthControllerTest < ActionController::TestCase
     post :logout
 
     assert_response(:redirect)
-    assert_redirected_to(root_path)
+    assert_redirected_to(:controller => "auth", :action => "logout_complete")
 
     assert_equal(nil, @request.session[:user_id])
   end

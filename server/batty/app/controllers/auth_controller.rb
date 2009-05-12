@@ -15,7 +15,7 @@ class AuthController < ApplicationController
   # POST ?
   def logout
     reset_session
-    redirect_to(root_path)
+    redirect_to(:action => "logout_complete")
   end
 
   # GET ?
