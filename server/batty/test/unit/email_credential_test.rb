@@ -30,22 +30,6 @@ class EmailCredentialTest < ActiveSupport::TestCase
   end
 
   #
-  # アクセサ
-  #
-
-  test "accessors" do
-    [
-      [:password,              nil, "str", "str"],
-      [:password_confirmation, nil, "str", "str"],
-    ].each { |name, default, set_value, get_value|
-      record = @klass.new
-      assert_equal(default, record.__send__(name))
-      record.__send__("#{name}=", set_value)
-      assert_equal(get_value, record.__send__(name))
-    }
-  end
-
-  #
   # 検証
   #
   # FIXME: 順序を実装と揃える

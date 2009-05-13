@@ -19,8 +19,6 @@
 class EmailCredential < ActiveRecord::Base
   belongs_to :user
 
-  attr_accessor :password, :password_confirmation
-
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
   HashedPasswordPattern = /\A([0-9a-f]{8}):([0-9a-f]{64})\z/
@@ -32,8 +30,6 @@ class EmailCredential < ActiveRecord::Base
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
   validates_format_of :hashed_password, :with => HashedPasswordPattern, :allow_nil => true
   # TODO: emailのフォーマットを検証 <- 保留
-  # TODO: password の存在を検証
-  # TODO: password/password_confirmationの一致を検証
 
   def initialize(attributes = nil)
     super

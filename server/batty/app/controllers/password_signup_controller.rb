@@ -12,7 +12,7 @@ class PasswordSignupController < ApplicationController
     @credential.attributes = params[:credential]
 
     @credential.activation_token = EmailCredential.create_unique_activation_token
-    @credential.hashed_password  = EmailCredential.create_hashed_password(@credential.password.to_s)
+    @credential.hashed_password  = EmailCredential.create_hashed_password("a") # @credential.password
 
     if @credential.valid?
       session[:email_credential] = params[:credential]
