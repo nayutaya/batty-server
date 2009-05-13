@@ -1,0 +1,2 @@
+class EmailSignupController < ApplicationController
+end
