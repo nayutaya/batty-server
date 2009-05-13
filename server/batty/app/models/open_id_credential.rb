@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 # == Schema Information
 # Schema version: 20090420021540
 #
@@ -8,7 +9,7 @@
 #  created_at   :datetime      not null
 #  user_id      :integer       not null, index_open_id_credentials_on_user_id
 #  identity_url :string(200)   not null, index_open_id_credentials_on_identity_url(unique)
-#  loggedin_at  :datetime      
+#  loggedin_at  :datetime
 #
 
 # OpenIDログイン情報

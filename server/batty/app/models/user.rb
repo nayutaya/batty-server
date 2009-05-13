@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 # == Schema Information
 # Schema version: 20090420021540
 #
@@ -8,7 +9,7 @@
 #  created_at :datetime      not null
 #  updated_at :datetime      not null
 #  user_token :string(40)    not null, index_users_on_user_token(unique)
-#  nickname   :string(40)    
+#  nickname   :string(40)
 #
 
 # ユーザ

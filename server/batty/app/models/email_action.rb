@@ -10,7 +10,7 @@
 #  enable     :boolean       not null, index_email_actions_on_enable
 #  email      :string(200)   not null
 #  subject    :string(200)   not null
-#  body       :text          
+#  body       :text
 #
 
 # メールアクション
