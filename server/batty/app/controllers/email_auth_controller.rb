@@ -18,8 +18,14 @@ class EmailAuthController < ApplicationController
       # TODO: session
       redirect_to(:controller => "auth", :action => "login_complete")
     else
-      # TODO: flash
+      set_error_now("メールアドレス、またはパスワードが違います。")
       render(:action => "index")
     end
+  end
+
+  private
+
+  def set_error_now(message)
+    flash.now[:error] = @flash_error = message
   end
 end
