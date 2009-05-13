@@ -31,13 +31,16 @@ class EmailAuthControllerTest < ActionController::TestCase
   test "POST login" do
     session_login(users(:shinya))
 
+    time = Time.local(2010, 1, 1)
     @login_form.attributes = {
       :email    => email_credentials(:yuya_gmail).email,
       :password => "yuya_gmail",
     }
     assert_equal(true, @login_form.valid?)
 
-    post :login, :login_form => @login_form.attributes
+    Kagemusha::DateTime.at(time) {
+      post :login, :login_form => @login_form.attributes
+    }
 
     assert_response(:redirect)
     assert_redirected_to(:controller => "auth", :action => "login_complete")
@@ -51,6 +54,7 @@ class EmailAuthControllerTest < ActionController::TestCase
     assert_equal(
       email_credentials(:yuya_gmail),
       assigns(:email_credential))
+    assert_equal(time, assigns(:email_credential).loggedin_at)
   end
 
   test "POST login, failed, inactive credential" do
