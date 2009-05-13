@@ -32,7 +32,6 @@ class EmailCredentialTest < ActiveSupport::TestCase
   #
   # 検証
   #
-  # FIXME: 順序を実装と揃える
 
   test "all fixtures are valid" do
     assert_equal(true, @klass.all.all?(&:valid?))
@@ -48,18 +47,24 @@ class EmailCredentialTest < ActiveSupport::TestCase
     assert_equal(true, @basic.errors.invalid?(:email))
   end
 
+  test "validates_presence_of :activation_token" do
+    @basic.activation_token = nil
+    assert_equal(false, @basic.valid?)
+    assert_equal(true, @basic.errors.invalid?(:activation_token))
+  end
+
+  test "validates_presence_of :hashed_password" do
+    @basic.hashed_password = nil
+    assert_equal(false, @basic.valid?)
+    assert_equal(true, @basic.errors.invalid?(:hashed_password))
+  end
+
   test "validates_length_of :email" do
     @basic.email = "#{'a' * 189}@example.com"
     assert_equal(201, @basic.email.size)
 
     assert_equal(false, @basic.valid?)
     assert_equal(true, @basic.errors.invalid?(:email))
-  end
-
-  test "validates_presence_of :activation_token" do
-    @basic.activation_token = nil
-    assert_equal(false, @basic.valid?)
-    assert_equal(true, @basic.errors.invalid?(:activation_token))
   end
 
   test "validates_format_of :activation_token" do
@@ -98,12 +103,6 @@ class EmailCredentialTest < ActiveSupport::TestCase
       @basic.hashed_password = value
       assert_equal(expected, @basic.valid?, value)
     }
-  end
-
-  test "validates_presence_of :hashed_password" do
-    @basic.hashed_password = nil
-    assert_equal(false, @basic.valid?)
-    assert_equal(true, @basic.errors.invalid?(:hashed_password))
   end
 
   #
