@@ -44,4 +44,24 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+
+  private
+
+  def assert_logged_in(user)
+    assert_equal(user.id, @request.session[:user_id])
+    assert_equal(user, assigns(:login_user))
+  end
+
+  def assert_not_logged_in
+    assert_equal(nil, @request.session[:user_id])
+    assert_equal(nil, assigns(:login_user))
+  end
+
+  def session_login(user)
+    @request.session[:user_id] = user.id
+  end
+
+  def session_logout
+    @request.session[:user_id] = nil
+  end
 end
