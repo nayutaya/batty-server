@@ -1,2 +1,3 @@
+
 class EmailAuthController < ApplicationController
 end

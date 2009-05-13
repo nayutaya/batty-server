@@ -1,8 +1,11 @@
+
 require 'test_helper'
 
 class EmailAuthControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  test "routes" do
+    base = {:controller => "email_auth"}
+
+    assert_routing("/auth/email",       base.merge(:action => "index"))
+    assert_routing("/auth/email/login", base.merge(:action => "login"))
   end
 end

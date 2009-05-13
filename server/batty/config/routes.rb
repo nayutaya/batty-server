@@ -42,6 +42,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "user/:user_token/energies.rdf", :controller => "user_feeds", :action => "energies", :user_token => /[0-9a-f]+/
   map.connect "user/:user_token/events.rdf",   :controller => "user_feeds", :action => "events",   :user_token => /[0-9a-f]+/
 
+  map.connect "auth/email",       :controller => "email_auth", :action => "index"
+  map.connect "auth/email/login", :controller => "email_auth", :action => "login"
+
   map.connect ":controller/:action/:id"
   map.connect ":controller/:action/:id.:format"
 end
