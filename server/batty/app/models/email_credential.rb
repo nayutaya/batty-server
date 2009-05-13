@@ -12,7 +12,7 @@
 #  email            :string(200)   not null, index_email_credentials_on_email(unique)
 #  hashed_password  :string(40)    not null
 #  activated_at     :datetime      index_email_credentials_on_activated_at
-#  loggedin_at      :datetime      
+#  loggedin_at      :datetime
 #
 
 # メールログイン情報
