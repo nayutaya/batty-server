@@ -99,23 +99,4 @@ class EmailAuthControllerTest < ActionController::TestCase
     assert_response(405)
     assert_template(nil)
   end
-
-  private
-
-  def assert_flash_empty
-    assert_nil(assigns(:flash_notice))
-    assert_nil(assigns(:flash_error))
-  end
-
-=begin
-  def assert_flash_notice
-    assert_not_nil(assigns(:flash_notice))
-    assert_nil(assigns(:flash_error))
-  end
-=end
-
-  def assert_flash_error
-    assert_nil(assigns(:flash_notice))
-    assert_not_nil(assigns(:flash_error))
-  end
 end

@@ -45,6 +45,8 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "auth/email",       :controller => "email_auth", :action => "index"
   map.connect "auth/email/login", :controller => "email_auth", :action => "login"
 
+  map.connect "signup/email", :controller => "email_signup", :action => "index"
+
   map.connect ":controller/:action/:id"
   map.connect ":controller/:action/:id.:format"
 end
