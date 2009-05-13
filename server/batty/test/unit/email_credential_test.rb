@@ -60,11 +60,20 @@ class EmailCredentialTest < ActiveSupport::TestCase
   end
 
   test "validates_length_of :email" do
-    @basic.email = "#{'a' * 189}@example.com"
-    assert_equal(201, @basic.email.size)
+    # MEMO: 下記の制約を満たしつつ、文字列長の検証のテストを行う
+    #       * ローカルパートは64文字以内
+    #       * ドメインパートは255文字以内
+    #       * ドメインパートのドットで区切られたパートは63文字以内
 
-    assert_equal(false, @basic.valid?)
-    assert_equal(true, @basic.errors.invalid?(:email))
+    [
+      ["a@b.c.d.com", 11, true ],
+      [["a" * 64 + "@" + "b" * 63, "c" * 63, "d" * 3, "com"].join("."), 200, true ],
+      [["a" * 64 + "@" + "b" * 63, "c" * 63, "d" * 4, "com"].join("."), 201, false],
+    ].each { |value, length, expected|
+      assert_equal(length, value.size)
+      @basic.email = value
+      assert_equal(expected, @basic.valid?)
+    }
   end
 
   test "validates_format_of :activation_token" do

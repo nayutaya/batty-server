@@ -30,6 +30,7 @@ class EmailCredential < ActiveRecord::Base
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
   validates_format_of :hashed_password, :with => HashedPasswordPattern, :allow_nil => true
   validates_email_format_of :email
+  # TODO: emailが一意であることを検証
 
   def initialize(attributes = nil)
     super
