@@ -1,2 +1,15 @@
 
 <h1>メールアドレスによるサインアップ</h1>
+
+<%- form_for(:signup_form, :url => {:action => "confirm"}) { |f| -%>
+ <div>
+  <%= f.text_field(:email, :size => 30) %>
+ </div>
+ <div>
+  <%= f.password_field(:password, :size => 20) %>
+ </div>
+ <div>
+  <%= f.password_field(:password_confirmation, :size => 20) %>
+ </div>
+ <div><%= submit_tag("確認画面へ") %></div>
+<%- } -%>
