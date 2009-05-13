@@ -13,4 +13,12 @@ class EmailSignupForm < ActiveForm
   validates_format_of :password, :with => /\A[\x21-\x7E]+\z/
   validates_email_format_of :email
   validates_confirmation_of :password
+  # TODO: emailが一意であることを検証する
+
+  def to_email_credential_hash
+    return {
+      :email           => self.email,
+      :hashed_password => EmailCredential.create_hashed_password(self.password.to_s),
+    }
+  end
 end

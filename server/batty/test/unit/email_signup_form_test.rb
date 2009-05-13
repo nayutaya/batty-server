@@ -4,6 +4,7 @@ require 'test_helper'
 class EmailSignupFormTest < ActiveSupport::TestCase
   def setup
     @klass = EmailSignupForm
+    @form  = @klass.new
     @basic = @klass.new(
       :email                 => "basic@example.com",
       :password              => "password",
@@ -122,5 +123,31 @@ class EmailSignupFormTest < ActiveSupport::TestCase
     @basic.password              = "aaaa"
     @basic.password_confirmation = "AAAA"
     assert_equal(false, @basic.valid?)
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "to_email_credential_hash, empty" do
+    hash = @form.to_email_credential_hash
+    assert_equal(
+      [:email, :hashed_password].map(&:to_s).sort,
+      hash.keys.map(&:to_s).sort)
+    assert_equal(nil, hash[:email])
+    assert_equal(true, EmailCredential.compare_hashed_password("", hash[:hashed_password]))
+  end
+
+  test "to_email_credential_hash, full" do
+    @form.attributes = {
+      :email    => "foo@example.com",
+      :password => "foo",
+    }
+    hash = @form.to_email_credential_hash
+    assert_equal(
+      [:email, :hashed_password].map(&:to_s).sort,
+      hash.keys.map(&:to_s).sort)
+    assert_equal(@form.email, hash[:email])
+    assert_equal(true, EmailCredential.compare_hashed_password(@form.password, hash[:hashed_password]))
   end
 end
