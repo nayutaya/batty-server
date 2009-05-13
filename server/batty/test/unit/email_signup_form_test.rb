@@ -123,7 +123,7 @@ class EmailSignupFormTest < ActiveSupport::TestCase
     }
   end
 
-  test "validates_confirmation_of :password" do
+  test "validates_each, password" do
     @basic.password              = "aaaa"
     @basic.password_confirmation = "aaaa"
     assert_equal(true, @basic.valid?)
