@@ -1,5 +1,10 @@
 
 class EmailAuthController < ApplicationController
+  verify(
+    :method => :post,
+    :render => {:text => "Method Not Allowed", :status => 405},
+    :only   => [:login])
+
   # GET auth/email
   def index
     session[:user_id] = nil

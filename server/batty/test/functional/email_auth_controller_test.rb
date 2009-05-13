@@ -89,6 +89,13 @@ class EmailAuthControllerTest < ActionController::TestCase
     assert_equal(nil, assigns(:email_credential))
   end
 
+  test "GET login, abnormal, method not allowed" do
+    get :login
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
   private
 
   def assert_flash_empty
