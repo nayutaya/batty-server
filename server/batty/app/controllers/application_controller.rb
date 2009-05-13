@@ -6,9 +6,6 @@ class ApplicationController < ActionController::Base
   GetText.locale = "ja"
   init_gettext "batty"
 
-  # Scrub sensitive parameters from your log
-  # filter_parameter_logging :password
-
   private
 
   def send_rss(rss)

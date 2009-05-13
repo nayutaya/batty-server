@@ -1,5 +1,6 @@
 
 class EmailAuthController < ApplicationController
+  filter_parameter_logging :password
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
