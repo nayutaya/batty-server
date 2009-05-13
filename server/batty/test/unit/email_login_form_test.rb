@@ -4,6 +4,7 @@ require 'test_helper'
 class EmailLoginFormTest < ActiveSupport::TestCase
   def setup
     @klass = EmailLoginForm
+    @form  = @klass.new
     @basic = @klass.new(
       :email    => "foo@example.com",
       :password => "password")
@@ -49,5 +50,27 @@ class EmailLoginFormTest < ActiveSupport::TestCase
   test "validates_presence_of :password" do
     @basic.password = nil
     assert_equal(false, @basic.valid?)
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "authenticate, success" do
+    @form.email    = email_credentials(:yuya_gmail).email
+    @form.password = "yuya_gmail"
+    assert_equal(
+      email_credentials(:yuya_gmail),
+      @form.authenticate)
+  end
+
+  test "authenticate, not activated" do
+    @form.email    = email_credentials(:yuya_nayutaya).email
+    @form.password = "yuya_nayutaya"
+    assert_equal(nil, @form.authenticate)
+  end
+
+  test "authenticate, empty" do
+    assert_equal(nil, @form.authenticate)
   end
 end

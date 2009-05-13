@@ -6,4 +6,8 @@ class EmailLoginForm < ActiveForm
 
   validates_presence_of :email
   validates_presence_of :password
+
+  def authenticate
+    return EmailCredential.authenticate(self.email, self.password)
+  end
 end
