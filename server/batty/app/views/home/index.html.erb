@@ -11,12 +11,8 @@
     <%= submit_tag("ログイン") %>
    <%- } -%>
   </div>
-  <div id="password_login_form">
-   <%- form_tag(:controller => "password_auth", :action => "login") { -%>
-    <%= text_field_tag("email") %>
-    <%= text_field_tag("password") %>
-    <%= submit_tag("ログイン") %>
-   <%- } -%>
+  <div>
+   <%= link_to(h("メールアドレスによるログイン"), :controller => "email_auth") %>
   </div>
  </div>
 <%- end -%>
