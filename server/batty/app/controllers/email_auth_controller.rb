@@ -2,9 +2,24 @@
 class EmailAuthController < ApplicationController
   # GET auth/email
   def index
+    session[:user_id] = nil
     @login_form = EmailLoginForm.new
   end
 
   # POST auth/email/login
-  # TODO: ログイン処理を実装
+  def login
+    @login_form = EmailLoginForm.new(params[:login_form])
+
+    if @login_form.valid?
+      @email_credential = @login_form.authenticate
+    end
+
+    if @email_credential
+      # TODO: session
+      redirect_to(:controller => "auth", :action => "login_complete")
+    else
+      # TODO: flash
+      render(:action => "index")
+    end
+  end
 end
