@@ -2,6 +2,10 @@
 require 'test_helper'
 
 class EmailAuthControllerTest < ActionController::TestCase
+  def setup
+    @login_form = EmailLoginForm.new
+  end
+
   test "routes" do
     base = {:controller => "email_auth"}
 
@@ -25,12 +29,13 @@ class EmailAuthControllerTest < ActionController::TestCase
   end
 
   test "POST login" do
-    login_form = EmailLoginForm.new(
+    @login_form.attributes = {
       :email    => email_credentials(:yuya_gmail).email,
-      :password => "yuya_gmail")
-    assert_equal(true, login_form.valid?)
+      :password => "yuya_gmail",
+    }
+    assert_equal(true, @login_form.valid?)
 
-    post :login, :login_form => login_form.attributes
+    post :login, :login_form => @login_form.attributes
 
     assert_response(:redirect)
     assert_redirected_to(:controller => "auth", :action => "login_complete")
@@ -38,7 +43,7 @@ class EmailAuthControllerTest < ActionController::TestCase
     # TODO: セッションのテスト
 
     assert_equal(
-      login_form.attributes,
+      @login_form.attributes,
       assigns(:login_form).attributes)
 
     assert_equal(
@@ -47,12 +52,13 @@ class EmailAuthControllerTest < ActionController::TestCase
   end
 
   test "POST login, failed, inactive credential" do
-    login_form = EmailLoginForm.new(
+    @login_form.attributes = {
       :email    => email_credentials(:yuya_nayutaya).email,
-      :password => "yuya_nayutaya")
-    assert_equal(true, login_form.valid?)
+      :password => "yuya_nayutaya",
+    }
+    assert_equal(true, @login_form.valid?)
 
-    post :login, :login_form => login_form.attributes
+    post :login, :login_form => @login_form.attributes
 
     assert_response(:success)
     assert_template("index")
@@ -63,10 +69,9 @@ class EmailAuthControllerTest < ActionController::TestCase
   end
 
   test "POST login, invalid form" do
-    login_form = EmailLoginForm.new
-    assert_equal(false, login_form.valid?)
+    assert_equal(false, @login_form.valid?)
 
-    post :login, :login_form => login_form.attributes
+    post :login, :login_form => @login_form.attributes
 
     assert_response(:success)
     assert_template("index")
