@@ -10,7 +10,7 @@ class EmailSignupForm < ActiveForm
   validates_presence_of :password_confirmation
   validates_length_of :email, :maximum => 200, :allow_nil => true
   validates_length_of :password, :in => 4..20, :allow_nil => true
-  # TODO: emailのフォーマットを検証
-  # TODO: passwordのフォーマットを検証
+  validates_format_of :password, :with => /\A[\x21-\x7E]+\z/
+  validates_email_format_of :email
   validates_confirmation_of :password
 end

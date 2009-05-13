@@ -51,13 +51,17 @@ class EmailSignupFormTest < ActiveSupport::TestCase
   end
 
   test "validates_length_of :email" do
-    postfix = "@example.com"
+    # MEMO: 下記の制約を満たしつつ、文字列長の検証のテストを行う
+    #       * ローカルパートは64文字以内
+    #       * ドメインパートは255文字以内
+    #       * ドメインパートのドットで区切られたパートは63文字以内
 
     [
-      ["a"                        + postfix, true ],
-      ["a" * (200 - postfix.size) + postfix, true ],
-      ["a" * (201 - postfix.size) + postfix, false],
-    ].each { |value, expected|
+      ["a@b.c.d.com", 11, true ],
+      [["a" * 64 + "@" + "b" * 63, "c" * 63, "d" * 3, "com"].join("."), 200, true ],
+      [["a" * 64 + "@" + "b" * 63, "c" * 63, "d" * 4, "com"].join("."), 201, false],
+    ].each { |value, length, expected|
+      assert_equal(length, value.size)
       @basic.email = value
       assert_equal(expected, @basic.valid?)
     }
@@ -76,13 +80,47 @@ class EmailSignupFormTest < ActiveSupport::TestCase
     }
   end
 
+  test "validates_format_of :password" do
+    valid_chars = (0x21..0x7E).map { |c| c.chr }.join
+
+    [
+      [valid_chars.slice!(0, 20), true ],
+      [valid_chars.slice!(0, 20), true ],
+      [valid_chars.slice!(0, 20), true ],
+      [valid_chars.slice!(0, 20), true ],
+      [valid_chars.slice!(0, 20), true ],
+      ["aaaa",   true ],
+      ["aaa ",   false],
+      ["日本語", false],
+    ].each { |value, expected|
+      @basic.password              = value
+      @basic.password_confirmation = value
+      assert_equal(expected, @basic.valid?)
+    }
+
+    assert_equal(true, valid_chars.empty?)
+  end
+
+  test "validates_email_format_of :email" do
+    [
+      ["foo@example.com",   true ],
+      ["foo@example.co.jp", true ],
+      ["foo@example",       false],
+    ].each { |value, expected|
+      @basic.email = value
+      assert_equal(
+        {:in => value, :out => expected},
+        {:in => value, :out => @basic.valid?})
+    }
+  end
+
   test "validates_confirmation_of :password" do
     @basic.password              = "aaaa"
     @basic.password_confirmation = "aaaa"
     assert_equal(true, @basic.valid?)
 
     @basic.password              = "aaaa"
-    @basic.password_confirmation = "bbbb"
+    @basic.password_confirmation = "AAAA"
     assert_equal(false, @basic.valid?)
   end
 end
