@@ -29,6 +29,8 @@ class EmailAuthControllerTest < ActionController::TestCase
   end
 
   test "POST login" do
+    session_login(users(:shinya))
+
     @login_form.attributes = {
       :email    => email_credentials(:yuya_gmail).email,
       :password => "yuya_gmail",
@@ -40,7 +42,7 @@ class EmailAuthControllerTest < ActionController::TestCase
     assert_response(:redirect)
     assert_redirected_to(:controller => "auth", :action => "login_complete")
     assert_flash_empty
-    # TODO: セッションのテスト
+    assert_logged_in(users(:yuya))
 
     assert_equal(
       @login_form.attributes,
@@ -52,6 +54,8 @@ class EmailAuthControllerTest < ActionController::TestCase
   end
 
   test "POST login, failed, inactive credential" do
+    session_login(users(:shinya))
+
     @login_form.attributes = {
       :email    => email_credentials(:yuya_nayutaya).email,
       :password => "yuya_nayutaya",
@@ -63,12 +67,15 @@ class EmailAuthControllerTest < ActionController::TestCase
     assert_response(:success)
     assert_template("index")
     assert_flash_error
+    assert_not_logged_in
 
     # TODO: パスワードがエコーされないことを確認
     assert_equal(nil, assigns(:email_credential))
   end
 
   test "POST login, invalid form" do
+    session_login(users(:shinya))
+
     assert_equal(false, @login_form.valid?)
 
     post :login, :login_form => @login_form.attributes
@@ -76,6 +83,7 @@ class EmailAuthControllerTest < ActionController::TestCase
     assert_response(:success)
     assert_template("index")
     assert_flash_error
+    assert_not_logged_in
 
     assert_equal(nil, assigns(:email_credential))
   end
