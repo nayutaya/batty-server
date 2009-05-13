@@ -4,6 +4,9 @@ require 'test_helper'
 class EmailLoginFormTest < ActiveSupport::TestCase
   def setup
     @klass = EmailLoginForm
+    @basic = @klass.new(
+      :email    => "foo@example.com",
+      :password => "password")
   end
 
   #
@@ -28,5 +31,23 @@ class EmailLoginFormTest < ActiveSupport::TestCase
       form.__send__("#{name}=", set_value)
       assert_equal(get_value, form.__send__(name))
     }
+  end
+
+  #
+  # 検証
+  #
+
+  test "basic is valid" do
+    assert_equal(true, @basic.valid?)
+  end
+
+  test "validates_presence_of :email" do
+    @basic.email = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :password" do
+    @basic.password = nil
+    assert_equal(false, @basic.valid?)
   end
 end
