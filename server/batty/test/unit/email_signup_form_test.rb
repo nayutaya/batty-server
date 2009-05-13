@@ -49,4 +49,40 @@ class EmailSignupFormTest < ActiveSupport::TestCase
     @basic.password_confirmation = nil
     assert_equal(false, @basic.valid?)
   end
+
+  test "validates_length_of :email" do
+    postfix = "@example.com"
+
+    [
+      ["a"                        + postfix, true ],
+      ["a" * (200 - postfix.size) + postfix, true ],
+      ["a" * (201 - postfix.size) + postfix, false],
+    ].each { |value, expected|
+      @basic.email = value
+      assert_equal(expected, @basic.valid?)
+    }
+  end
+
+  test "validates_length_of :password" do
+    [
+      ["a" *  3, false],
+      ["a" *  4, true ],
+      ["a" * 20, true ],
+      ["a" * 21, false],
+    ].each { |value, expected|
+      @basic.password              = value
+      @basic.password_confirmation = value
+      assert_equal(expected, @basic.valid?)
+    }
+  end
+
+  test "validates_confirmation_of :password" do
+    @basic.password              = "aaaa"
+    @basic.password_confirmation = "aaaa"
+    assert_equal(true, @basic.valid?)
+
+    @basic.password              = "aaaa"
+    @basic.password_confirmation = "bbbb"
+    assert_equal(false, @basic.valid?)
+  end
 end
