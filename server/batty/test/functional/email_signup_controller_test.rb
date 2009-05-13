@@ -2,6 +2,10 @@
 require 'test_helper'
 
 class EmailSignupControllerTest < ActionController::TestCase
+  def setup
+    @signup_form = EmailSignupForm.new
+  end
+
   test "routes" do
     base = {:controller => "email_signup"}
 
@@ -17,6 +21,7 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET index" do
+    @request.session[:signup_form] = :dummy
     session_login(users(:yuya))
 
     get :index
@@ -26,8 +31,61 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_flash_empty
     assert_not_logged_in
 
+    assert_equal(nil, @request.session[:signup_form])
+
     assert_equal(
       EmailSignupForm.new.attributes,
       assigns(:signup_form).attributes)
+  end
+
+  test "POST validate" do
+    @request.session[:signup_form] = :dummy
+    session_login(users(:yuya))
+
+    @signup_form.attributes = {
+      :email                 => "foo@example.com",
+      :password              => "password",
+      :password_confirmation => "password",
+    }
+    assert_equal(true, @signup_form.valid?)
+
+    post :validate, :signup_form => @signup_form.attributes
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "email_signup", :action => "validated")
+    # TODO: flash
+    assert_not_logged_in
+
+    assert_equal(
+      @signup_form.attributes,
+      assigns(:signup_form).attributes)
+
+    assert_equal(
+      @signup_form.attributes,
+      @request.session[:signup_form])
+  end
+
+  test "POST validate, invalid form" do
+    @request.session[:signup_form] = :dummy
+
+    @signup_form.attributes = {}
+    assert_equal(false, @signup_form.valid?)
+
+    post :validate, :signup_form => @signup_form.attributes
+
+    assert_response(:success)
+    assert_template("index")
+    # TODO: flash
+
+    assert_equal(nil, @request.session[:signup_form])
+
+    # TODO: パスワードをエコーバックしないように変更
+  end
+
+  test "GET validate, abnormal, method not allowed" do
+    get :validate
+
+    assert_response(405)
+    assert_template(nil)
   end
 end

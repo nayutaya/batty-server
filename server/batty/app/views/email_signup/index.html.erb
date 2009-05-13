@@ -1,7 +1,7 @@
 
 <h1>メールアドレスによるサインアップ</h1>
 
-<%- form_for(:signup_form, :url => {:action => "confirm"}) { |f| -%>
+<%- form_for(:signup_form, :url => {:action => "validate"}) { |f| -%>
  <div>
   <%= f.text_field(:email, :size => 30) %>
  </div>
