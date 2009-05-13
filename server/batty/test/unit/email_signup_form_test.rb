@@ -12,6 +12,14 @@ class EmailSignupFormTest < ActiveSupport::TestCase
   end
 
   #
+  # 基底クラス
+  #
+
+  test "superclass" do
+    assert_equal(ActiveForm, @klass.superclass)
+  end
+
+  #
   # カラム
   #
 
