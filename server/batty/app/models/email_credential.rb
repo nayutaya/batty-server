@@ -32,12 +32,6 @@ class EmailCredential < ActiveRecord::Base
   validates_email_format_of :email
   # TODO: emailが一意であることを検証
 
-  def initialize(attributes = nil)
-    super
-    @password              = nil
-    @password_confirmation = nil
-  end
-
   def self.create_unique_activation_token
     return TokenUtil.create_unique_token(self, :activation_token, TokenLength)
   end
