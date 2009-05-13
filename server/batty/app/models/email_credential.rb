@@ -29,7 +29,7 @@ class EmailCredential < ActiveRecord::Base
   validates_length_of :email, :maximum => 200, :allow_nil => true
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
   validates_format_of :hashed_password, :with => HashedPasswordPattern, :allow_nil => true
-  # TODO: emailのフォーマットを検証 <- 保留
+  validates_email_format_of :email
 
   def initialize(attributes = nil)
     super

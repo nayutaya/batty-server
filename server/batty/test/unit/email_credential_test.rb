@@ -105,6 +105,19 @@ class EmailCredentialTest < ActiveSupport::TestCase
     }
   end
 
+  test "validates_email_format_of :email" do
+    [
+      ["foo@example.com",   true ],
+      ["foo@example.co.jp", true ],
+      ["foo@example",       false],
+    ].each { |value, expected|
+      @basic.email = value
+      assert_equal(
+        {:in => value, :out => expected},
+        {:in => value, :out => @basic.valid?})
+    }
+  end
+
   #
   # クラスメソッド
   #
