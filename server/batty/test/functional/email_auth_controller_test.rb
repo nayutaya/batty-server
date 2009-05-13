@@ -69,7 +69,7 @@ class EmailAuthControllerTest < ActionController::TestCase
     assert_flash_error
     assert_not_logged_in
 
-    # TODO: パスワードがエコーされないことを確認
+    assert_equal(nil, assigns(:login_form).password)
     assert_equal(nil, assigns(:email_credential))
   end
 
@@ -85,6 +85,7 @@ class EmailAuthControllerTest < ActionController::TestCase
     assert_flash_error
     assert_not_logged_in
 
+    assert_equal(nil, assigns(:login_form).password)
     assert_equal(nil, assigns(:email_credential))
   end
 

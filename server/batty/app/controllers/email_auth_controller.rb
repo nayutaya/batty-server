@@ -20,6 +20,7 @@ class EmailAuthController < ApplicationController
       session[:user_id] = @login_user.id
       redirect_to(:controller => "auth", :action => "login_complete")
     else
+      @login_form.password = nil
       set_error_now("メールアドレス、またはパスワードが違います。")
       render(:action => "index")
     end
