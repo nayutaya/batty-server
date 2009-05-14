@@ -190,6 +190,10 @@ class EmailSignupControllerTest < ActionController::TestCase
       root_path(:only_path => false) + "signup/email/activation/" + assigns(:credential).activation_token,
       assigns(:activation_url))
 
+    mail = assigns(:activation_mail)
+    assert_equal(true, mail.to.include?(@signup_form.email))
+    assert_equal(true, mail.body.include?(assigns(:activation_url)))
+
     assert_equal(1, ActionMailer::Base.deliveries.size)
   end
 
