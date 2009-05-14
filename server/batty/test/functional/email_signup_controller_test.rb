@@ -32,26 +32,32 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET index" do
-    @request.session[:signup_form] = :dummy
-    session_login(users(:yuya))
-
     get :index
 
     assert_response(:success)
     assert_template("index")
     assert_flash_empty
-    assert_not_logged_in
-
-    assert_equal(nil, @request.session[:signup_form])
 
     assert_equal(
       EmailSignupForm.new.attributes,
       assigns(:signup_form).attributes)
   end
 
+  test "GET index, clean session" do
+    @request.session[:user_id]     = :dummy
+    @request.session[:signup_form] = :dummy
+
+    get :index
+
+    assert_response(:success)
+    assert_template("index")
+
+    assert_equal(nil, @request.session[:user_id])
+    assert_equal(nil, @request.session[:signup_form])
+  end
+
   test "POST validate" do
     @request.session[:signup_form] = :dummy
-    session_login(users(:yuya))
 
     @signup_form.attributes = @valid_signup_form_attributes
     assert_equal(true, @signup_form.valid?)
@@ -61,7 +67,6 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_response(:redirect)
     assert_redirected_to(:controller => "email_signup", :action => "validated")
     # TODO: flash
-    assert_not_logged_in
 
     assert_equal(
       @signup_form.attributes,
@@ -90,6 +95,18 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_equal(nil, assigns(:signup_form).password_confirmation)
   end
 
+  test "POST validate, clean session" do
+    @request.session[:user_id]     = :dummy
+    @request.session[:signup_form] = :dummy
+
+    post :validate, :signup_form => @valid_signup_form_attributes
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "email_signup", :action => "validated")
+
+    assert_equal(nil, @request.session[:user_id])
+  end
+
   test "GET validate, abnormal, method not allowed" do
     get :validate
 
@@ -101,7 +118,6 @@ class EmailSignupControllerTest < ActionController::TestCase
     @signup_form.attributes = @valid_signup_form_attributes
     assert_equal(true, @signup_form.valid?)
 
-    @request.session[:user_id]     = :dummy
     @request.session[:signup_form] = @signup_form.attributes
 
     get :validated
@@ -109,8 +125,6 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_response(:success)
     assert_template("validated")
     # TODO: flash
-
-    assert_equal(nil, @request.session[:user_id])
 
     assert_equal(
       @signup_form.attributes,
@@ -128,13 +142,22 @@ class EmailSignupControllerTest < ActionController::TestCase
     # TODO: flash
   end
 
-  # TODO: セッションにデータなし
+  test "GET validated, clean session" do
+    @request.session[:user_id]     = :dummy
+    @request.session[:signup_form] = @valid_signup_form_attributes
+
+    get :validated
+
+    assert_response(:success)
+    assert_template("validated")
+
+    assert_equal(nil, @request.session[:user_id])
+  end
 
   test "POST create" do
     @signup_form.attributes = @valid_signup_form_attributes
     assert_equal(true, @signup_form.valid?)
 
-    @request.session[:user_id]     = :dummy
     @request.session[:signup_form] = @signup_form.attributes
 
     assert_difference("EmailCredential.count", +1) {
@@ -146,8 +169,6 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_response(:redirect)
     assert_redirected_to(:controller => "email_signup", :action => "created")
     # TODO: flash
-
-    assert_equal(nil, @request.session[:user_id])
 
     assert_equal(
       @signup_form.attributes,
@@ -177,6 +198,18 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_response(:success)
     assert_template("index")
     # TODO: flash
+  end
+
+  test "POST create, clean session" do
+    @request.session[:user_id]     = :dummy
+    @request.session[:signup_form] = @valid_signup_form_attributes
+
+    post :create
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "email_signup", :action => "created")
+
+    assert_equal(nil, @request.session[:user_id])
   end
 
   test "GET create, abnormal, method not allowed" do

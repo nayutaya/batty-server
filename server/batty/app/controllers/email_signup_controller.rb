@@ -7,22 +7,16 @@ class EmailSignupController < ApplicationController
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:validate, :create, :activate])
 
-  before_filter :clear_session_user_id, :only => [:created, :activation, :activate, :activated]
-  before_filter :clear_session_signup_form, :only => [:activation, :activate, :activated]
+  before_filter :clear_session_user_id, :only => [:index, :validate, :validated, :create, :created, :activation, :activate, :activated]
+  before_filter :clear_session_signup_form, :only => [:index, :validate, :activation, :activate, :activated]
 
   # GET /signup/email
   def index
-    session[:user_id]     = nil
-    session[:signup_form] = nil
-
     @signup_form = EmailSignupForm.new
   end
 
   # POST /signup/email/validate
   def validate
-    session[:user_id]     = nil
-    session[:signup_form] = nil
-
     @signup_form = EmailSignupForm.new(params[:signup_form])
 
     if @signup_form.valid?
@@ -38,10 +32,6 @@ class EmailSignupController < ApplicationController
 
   # GET /signup/email/validated
   def validated
-    session[:user_id] = nil
-
-    # TODO: サインアップフォームを検証（メールアドレスの重複エラーが発生する可能性がある）
-
     @signup_form = EmailSignupForm.new(session[:signup_form])
     if @signup_form.valid?
       render
@@ -53,8 +43,6 @@ class EmailSignupController < ApplicationController
 
   # POST /signup/email/create
   def create
-    session[:user_id] = nil
-
     @signup_form = EmailSignupForm.new(session[:signup_form])
     if @signup_form.valid?
       User.transaction {
