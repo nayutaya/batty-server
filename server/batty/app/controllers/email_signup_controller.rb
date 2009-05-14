@@ -93,7 +93,6 @@ class EmailSignupController < ApplicationController
   # POST /signup/email/activate
   # TODO: POSTメソッドに制約
   def activate
-    # TODO: activated_atに現在日時を設定
     @credential = EmailCredential.find_by_activation_token(params[:activation_token])
 
     unless @credential
@@ -116,6 +115,7 @@ class EmailSignupController < ApplicationController
 
   # GET /signup/email/activated
   def activated
-    # nop
+    session[:user_id]     = nil
+    session[:signup_form] = nil
   end
 end

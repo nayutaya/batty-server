@@ -274,10 +274,16 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET activated" do
+    @request.session[:user_id]     = :dummy
+    @request.session[:signup_form] = :dummy
+
     get :activated
 
     assert_response(:success)
     assert_template("activated")
-    # TODO: flash   
+    assert_flash_empty
+
+    assert_equal(nil, @request.session[:user_id])
+    assert_equal(nil, @request.session[:signup_form])
   end
 end
