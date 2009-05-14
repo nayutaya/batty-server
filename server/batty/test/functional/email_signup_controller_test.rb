@@ -66,7 +66,7 @@ class EmailSignupControllerTest < ActionController::TestCase
 
     assert_response(:redirect)
     assert_redirected_to(:controller => "email_signup", :action => "validated")
-    # TODO: flash
+    assert_flash_empty
 
     assert_equal(
       @signup_form.attributes,
@@ -87,7 +87,7 @@ class EmailSignupControllerTest < ActionController::TestCase
 
     assert_response(:success)
     assert_template("index")
-    # TODO: flash
+    assert_flash_error
 
     assert_equal(nil, @request.session[:signup_form])
 
@@ -124,7 +124,7 @@ class EmailSignupControllerTest < ActionController::TestCase
 
     assert_response(:success)
     assert_template("validated")
-    # TODO: flash
+    assert_flash_empty
 
     assert_equal(
       @signup_form.attributes,
@@ -139,7 +139,7 @@ class EmailSignupControllerTest < ActionController::TestCase
 
     assert_response(:success)
     assert_template("index")
-    # TODO: flash
+    assert_flash_error
   end
 
   test "GET validated, clean session" do
@@ -168,7 +168,7 @@ class EmailSignupControllerTest < ActionController::TestCase
 
     assert_response(:redirect)
     assert_redirected_to(:controller => "email_signup", :action => "created")
-    # TODO: flash
+    assert_flash_empty
 
     assert_equal(
       @signup_form.attributes,
@@ -197,7 +197,7 @@ class EmailSignupControllerTest < ActionController::TestCase
 
     assert_response(:success)
     assert_template("index")
-    # TODO: flash
+    assert_flash_error
   end
 
   test "POST create, clean session" do
@@ -227,7 +227,7 @@ class EmailSignupControllerTest < ActionController::TestCase
 
     assert_response(:success)
     assert_template("created")
-    # TODO: flash
+    assert_flash_empty
 
     assert_equal(
       @signup_form.attributes,
@@ -256,7 +256,7 @@ class EmailSignupControllerTest < ActionController::TestCase
 
     assert_response(:success)
     assert_template("activation")
-    # TODO: flash   
+    assert_flash_empty
 
     assert_equal(credential, assigns(:credential))
     assert_equal(false, assigns(:activated))
@@ -269,7 +269,7 @@ class EmailSignupControllerTest < ActionController::TestCase
 
     assert_response(:success)
     assert_template("activation")
-    # TODO: flash
+    assert_flash_empty
 
     assert_equal(credential, assigns(:credential))
     assert_equal(true, assigns(:activated))
@@ -293,7 +293,7 @@ class EmailSignupControllerTest < ActionController::TestCase
 
     assert_response(:success)
     assert_template("activation")
-    # TODO: flash
+    assert_flash_empty
 
     assert_equal(nil, assigns(:credential))
     assert_equal(nil, assigns(:activated))

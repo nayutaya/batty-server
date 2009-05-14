@@ -25,7 +25,7 @@ class EmailSignupController < ApplicationController
     else
       @signup_form.password              = nil
       @signup_form.password_confirmation = nil
-      # TODO: error flash
+      set_error_now("入力内容を確認してください。")
       render(:action => "index")
     end
   end
@@ -36,7 +36,7 @@ class EmailSignupController < ApplicationController
     if @signup_form.valid?
       render
     else
-      # TODO: flash
+      set_error_now("入力内容を確認してください。")
       render(:action => "index")
     end
   end
@@ -45,6 +45,7 @@ class EmailSignupController < ApplicationController
   def create
     @signup_form = EmailSignupForm.new(session[:signup_form])
     if @signup_form.valid?
+      # TODO: エラー処理
       User.transaction {
         @user = User.new
         @user.user_token = User.create_unique_user_token
@@ -61,6 +62,7 @@ class EmailSignupController < ApplicationController
 
       redirect_to(:action => "created")
     else
+      set_error_now("入力内容を確認してください。")
       render(:action => "index")
     end
   end
