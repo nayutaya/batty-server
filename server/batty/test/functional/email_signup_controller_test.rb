@@ -4,6 +4,17 @@ require 'test_helper'
 class EmailSignupControllerTest < ActionController::TestCase
   def setup
     @signup_form = EmailSignupForm.new
+
+    @valid_signup_form_attributes = {
+      :email                 => "foo@example.com",
+      :password              => "password",
+      :password_confirmation => "password",
+    }
+    @invalid_sinup_form_attributes = {
+      :email                 => "a",
+      :password              => "b",
+      :password_confirmation => "c",
+    }
   end
 
   test "routes" do
@@ -42,11 +53,7 @@ class EmailSignupControllerTest < ActionController::TestCase
     @request.session[:signup_form] = :dummy
     session_login(users(:yuya))
 
-    @signup_form.attributes = {
-      :email                 => "foo@example.com",
-      :password              => "password",
-      :password_confirmation => "password",
-    }
+    @signup_form.attributes = @valid_signup_form_attributes
     assert_equal(true, @signup_form.valid?)
 
     post :validate, :signup_form => @signup_form.attributes
@@ -68,11 +75,7 @@ class EmailSignupControllerTest < ActionController::TestCase
   test "POST validate, invalid form" do
     @request.session[:signup_form] = :dummy
 
-    @signup_form.attributes = {
-      :email                 => "a",
-      :password              => "b",
-      :password_confirmation => "c",
-    }
+    @signup_form.attributes = @invalid_sinup_form_attributes
     assert_equal(false, @signup_form.valid?)
 
     post :validate, :signup_form => @signup_form.attributes
@@ -95,11 +98,7 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET validated" do
-    @signup_form.attributes = {
-      :email                 => "foo@example.com",
-      :password              => "password",
-      :password_confirmation => "password",
-    }
+    @signup_form.attributes = @valid_signup_form_attributes
     assert_equal(true, @signup_form.valid?)
 
     @request.session[:user_id]     = :dummy
@@ -119,11 +118,7 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET validated, invalid form" do
-    @signup_form.attributes = {
-      :email                 => "a",
-      :password              => "b",
-      :password_confirmation => "c",
-    }
+    @signup_form.attributes = @invalid_sinup_form_attributes
     assert_equal(false, @signup_form.valid?)
 
     get :validated
@@ -136,11 +131,7 @@ class EmailSignupControllerTest < ActionController::TestCase
   # TODO: セッションにデータなし
 
   test "POST create" do
-    @signup_form.attributes = {
-      :email                 => "foo@example.com",
-      :password              => "password",
-      :password_confirmation => "password",
-    }
+    @signup_form.attributes = @valid_signup_form_attributes
     assert_equal(true, @signup_form.valid?)
 
     @request.session[:user_id]     = :dummy
@@ -166,11 +157,6 @@ class EmailSignupControllerTest < ActionController::TestCase
   # TODO: GET method
 
   test "POST create, invalid form" do
-    @invalid_sinup_form_attributes = {
-      :email                 => "a",
-      :password              => "b",
-      :password_confirmation => "c",
-    }
     @signup_form.attributes = @invalid_signup_form_attributes
     assert_equal(false, @signup_form.valid?)
 
