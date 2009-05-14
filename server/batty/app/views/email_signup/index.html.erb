@@ -3,13 +3,20 @@
 
 <%- form_for(:signup_form, :url => {:action => "validate"}) { |f| -%>
  <div>
+  <%= f.label(:email) %>
   <%= f.text_field(:email, :size => 30) %>
+  <%= error_message_on(:signup_form, :email) %>
  </div>
  <div>
+  <%= f.label(:password) %>
   <%= f.password_field(:password, :size => 20) %>
+  <%= error_message_on(:signup_form, :password) %>
  </div>
  <div>
+  <%= f.label(:password_confirmation) %>
   <%= f.password_field(:password_confirmation, :size => 20) %>
  </div>
  <div><%= submit_tag("確認画面へ") %></div>
 <%- } -%>
+
+<%= error_messages_for(:signup_form) %>
