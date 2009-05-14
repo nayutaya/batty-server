@@ -24,6 +24,8 @@ class EmailSignupController < ApplicationController
       session[:signup_form] = @signup_form.attributes
       redirect_to(:action => "validated")
     else
+      @signup_form.password              = nil
+      @signup_form.password_confirmation = nil
       # TODO: error flash
       render(:action => "index")
     end

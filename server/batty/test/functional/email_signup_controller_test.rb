@@ -68,7 +68,11 @@ class EmailSignupControllerTest < ActionController::TestCase
   test "POST validate, invalid form" do
     @request.session[:signup_form] = :dummy
 
-    @signup_form.attributes = {}
+    @signup_form.attributes = {
+      :email                 => "a",
+      :password              => "b",
+      :password_confirmation => "c",
+    }
     assert_equal(false, @signup_form.valid?)
 
     post :validate, :signup_form => @signup_form.attributes
@@ -79,7 +83,8 @@ class EmailSignupControllerTest < ActionController::TestCase
 
     assert_equal(nil, @request.session[:signup_form])
 
-    # TODO: パスワードをエコーバックしないように変更
+    assert_equal(nil, assigns(:signup_form).password)
+    assert_equal(nil, assigns(:signup_form).password_confirmation)
   end
 
   test "GET validate, abnormal, method not allowed" do
