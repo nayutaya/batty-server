@@ -53,17 +53,21 @@ class EmailSignupController < ApplicationController
   def create
     session[:user_id] = nil
 
-    # TODO: サインアップフォームを検証（メールアドレスの重複エラーが発生する可能性がある）
-    # TODO: EmailCredentialレコードを作成
-
     @signup_form = EmailSignupForm.new(session[:signup_form])
     if @signup_form.valid?
-      # TODO: Userレコードの作成
+      User.transaction {
+        @user = User.new
+        @user.user_token = User.create_unique_user_token
+        @user.nickname   = nil
+        @user.save!
 
-      @credential = EmailCredential.new(@signup_form.to_email_credential_hash)
-      @credential.activation_token = EmailCredential.create_unique_activation_token
-      @credential.user_id          = 1 # FIXME:
-      @credential.save!
+        @credential = EmailCredential.new(@signup_form.to_email_credential_hash)
+        @credential.activation_token = EmailCredential.create_unique_activation_token
+        @credential.user_id          = @user.id
+        @credential.save!
+      }
+
+      # TODO: アクティベーションメールの送信
 
       redirect_to(:action => "created")
     else
@@ -73,8 +77,10 @@ class EmailSignupController < ApplicationController
 
   # GET /signup/email/created
   def created
-    # TODO: 不要なセッションをクリア
-    # TODO: セッションからサインアップフォームを取得
+    session[:user_id] = nil
+
+    @signup_form = EmailSignupForm.new(session[:signup_form])
+    @credential  = EmailCredential.find_by_email(@signup_form.email)
   end
 
   # GET /signup/email/activation/:activation_token

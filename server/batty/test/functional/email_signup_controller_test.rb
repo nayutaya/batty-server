@@ -138,7 +138,9 @@ class EmailSignupControllerTest < ActionController::TestCase
     @request.session[:signup_form] = @signup_form.attributes
 
     assert_difference("EmailCredential.count", +1) {
-      post :create
+      assert_difference("User.count", +1) {
+        post :create
+      }
     }
 
     assert_response(:redirect)
@@ -151,14 +153,25 @@ class EmailSignupControllerTest < ActionController::TestCase
       @signup_form.attributes,
       assigns(:signup_form).attributes)
 
-    assert_equal(@signup_form.email, assigns(:credential).email)
-    assert_equal(true, EmailCredential.compare_hashed_password(@signup_form.password, assigns(:credential).hashed_password))
+    assert_equal(nil, assigns(:user).nickname)
+
+    assert_equal(
+      assigns(:user).id,
+      assigns(:credential).user_id)
+    assert_equal(
+      @signup_form.email,
+      assigns(:credential).email)
+    assert_equal(
+      true,
+      EmailCredential.compare_hashed_password(@signup_form.password, assigns(:credential).hashed_password))
   end
   # TODO: GET method
 
   test "POST create, invalid form" do
     @signup_form.attributes = @invalid_signup_form_attributes
     assert_equal(false, @signup_form.valid?)
+
+    @request.session[:signup_form] = @signup_form.attributes
 
     post :create
 
@@ -168,11 +181,25 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET created" do
+    @signup_form.email = email_credentials(:yuya_gmail).email
+
+    @request.session[:user_id]     = :dummy
+    @request.session[:signup_form] = @signup_form.attributes
+
     get :created
 
     assert_response(:success)
     assert_template("created")
-    # TODO: flash   
+    # TODO: flash
+
+    assert_equal(nil, @request.session[:user_id])
+
+    assert_equal(
+      @signup_form.attributes,
+      assigns(:signup_form).attributes)
+    assert_equal(
+      @signup_form.email,
+      assigns(:credential).email)
   end
 
   test "GET activation" do

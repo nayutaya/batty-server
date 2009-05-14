@@ -3,4 +3,10 @@
 
 <%= render(:partial => "progress", :locals => {:step => 3}) %>
 
-<%# TODO: デバッグ用にアクティベーションURLを表示 %>
+<%=h @signup_form.email %>宛にメールを送信しました。
+
+<%- if true -%>
+ <div class="debug">
+  アクティベーショントークン: <%= link_to(h(@credential.activation_token), :action => "activation", :activation_token => @credential.activation_token) %>
+ </div>
+<%- end -%>
