@@ -137,6 +137,17 @@ class EmailSignupFormTest < ActiveSupport::TestCase
   # インスタンスメソッド
   #
 
+  test "masked_password" do
+    @form.password = nil
+    assert_equal("", @form.masked_password)
+
+    @form.password = "a"
+    assert_equal("*", @form.masked_password)
+
+    @form.password = "abc"
+    assert_equal("***", @form.masked_password)
+  end
+
   test "to_email_credential_hash, empty" do
     hash = @form.to_email_credential_hash
     assert_equal(

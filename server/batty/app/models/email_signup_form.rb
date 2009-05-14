@@ -31,6 +31,10 @@ class EmailSignupForm < ActiveForm
   }
   # TODO: emailが一意であることを検証する
 
+  def masked_password
+    return self.password.to_s.gsub(/./, "*")
+  end
+
   def to_email_credential_hash
     return {
       :email           => self.email,
