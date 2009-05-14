@@ -5,7 +5,7 @@ class EmailSignupController < ApplicationController
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:validate])
+    :only   => [:validate, :create, :activate])
 
   # GET /signup/email
   def index
@@ -49,7 +49,6 @@ class EmailSignupController < ApplicationController
   end
 
   # POST /signup/email/create
-  # TODO: POSTメソッドに制約
   def create
     session[:user_id] = nil
 
@@ -91,7 +90,6 @@ class EmailSignupController < ApplicationController
   end
 
   # POST /signup/email/activate
-  # TODO: POSTメソッドに制約
   def activate
     @credential = EmailCredential.find_by_activation_token(params[:activation_token])
 

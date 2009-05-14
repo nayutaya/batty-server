@@ -165,7 +165,6 @@ class EmailSignupControllerTest < ActionController::TestCase
       true,
       EmailCredential.compare_hashed_password(@signup_form.password, assigns(:credential).hashed_password))
   end
-  # TODO: GET method
 
   test "POST create, invalid form" do
     @signup_form.attributes = @invalid_signup_form_attributes
@@ -178,6 +177,13 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_response(:success)
     assert_template("index")
     # TODO: flash
+  end
+
+  test "GET create, abnormal, method not allowed" do
+    get :create
+
+    assert_response(405)
+    assert_template(nil)
   end
 
   test "GET created" do
@@ -255,7 +261,6 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_equal(credential.email, assigns(:credential).email)
     assert_equal(time, assigns(:credential).activated_at)
   end
-  # TODO: GET method
 
   test "POST activate, already activated" do
     post :activate, :activation_token => email_credentials(:yuya_gmail).activation_token
@@ -271,6 +276,13 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
+  end
+
+  test "GET activate, abnormal, method not allowed" do
+    get :activate
+
+    assert_response(405)
+    assert_template(nil)
   end
 
   test "GET activated" do
