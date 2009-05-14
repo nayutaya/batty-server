@@ -32,14 +32,32 @@ class EmailSignupController < ApplicationController
   end
 
   # GET /signup/email/validated
+  def validated
+    # nop
+  end
 
   # POST /signup/email/create
+  def create
+    redirect_to(:action => "created")
+  end
 
   # GET /signup/email/created
+  def created
+    # nop
+  end
 
   # GET /signup/email/activation/:activation_token
+  def activation
+    # nop
+  end
 
   # POST /signup/email/activate
+  def activate
+    redirect_to(:action => "activated")
+  end
 
   # GET /signup/email/activated
+  def activated
+    # nop
+  end
 end

@@ -93,4 +93,54 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_response(405)
     assert_template(nil)
   end
+
+  test "GET validated" do
+    get :validated
+
+    assert_response(:success)
+    assert_template("validated")
+    # TODO: flash   
+  end
+  # TODO: セッションにデータなし
+
+  test "POST create" do
+    post :create
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "email_signup", :action => "created")
+    # TODO: flash
+  end
+  # TODO: GET method
+
+  test "GET created" do
+    get :created
+
+    assert_response(:success)
+    assert_template("created")
+    # TODO: flash   
+  end
+
+  test "GET activation" do
+    get :activation
+
+    assert_response(:success)
+    assert_template("activation")
+    # TODO: flash   
+  end
+
+  test "POST activate" do
+    post :activate
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "email_signup", :action => "activated")
+    # TODO: flash
+  end
+
+  test "GET activated" do
+    get :activated
+
+    assert_response(:success)
+    assert_template("activated")
+    # TODO: flash   
+  end
 end
