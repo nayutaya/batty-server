@@ -1,7 +1,7 @@
 
 # メールサインアップ
 class EmailSignupController < ApplicationController
-  # TODO: filter_parameter_logging
+  filter_parameter_logging :password
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
