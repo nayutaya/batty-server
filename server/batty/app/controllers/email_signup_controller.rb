@@ -11,6 +11,7 @@ class EmailSignupController < ApplicationController
   def index
     session[:user_id]     = nil
     session[:signup_form] = nil
+
     @signup_form = EmailSignupForm.new
   end
 
@@ -18,6 +19,7 @@ class EmailSignupController < ApplicationController
   def validate
     session[:user_id]     = nil
     session[:signup_form] = nil
+
     @signup_form = EmailSignupForm.new(params[:signup_form])
 
     if @signup_form.valid?
@@ -33,26 +35,38 @@ class EmailSignupController < ApplicationController
 
   # GET /signup/email/validated
   def validated
-    # nop
+    # TODO: 不要なセッションをクリア
+    # TODO: セッションからサインアップフォームを取得
+    # TODO: サインアップフォームを検証（メールアドレスの重複エラーが発生する可能性がある）
   end
 
   # POST /signup/email/create
+  # TODO: POSTメソッドに制約
   def create
+    # TODO: 不要なセッションをクリア
+    # TODO: セッションからサインアップフォームを取得
+    # TODO: サインアップフォームを検証（メールアドレスの重複エラーが発生する可能性がある）
+    # TODO: EmailCredentialレコードを作成
     redirect_to(:action => "created")
   end
 
   # GET /signup/email/created
   def created
-    # nop
+    # TODO: 不要なセッションをクリア
+    # TODO: セッションからサインアップフォームを取得
   end
 
   # GET /signup/email/activation/:activation_token
   def activation
+    # TODO: activation_tokenからEmailCredentialを取得
     # nop
   end
 
   # POST /signup/email/activate
+  # TODO: POSTメソッドに制約
   def activate
+    # TODO: パラメータからEmailCredentialを取得
+    # TODO: activated_atに現在日時を設定
     redirect_to(:action => "activated")
   end
 

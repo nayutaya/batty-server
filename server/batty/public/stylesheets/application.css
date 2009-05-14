@@ -1,0 +1,22 @@
+
+ol#email-signup-progress
+{
+}
+
+ol#email-signup-progress li
+{
+    display: inline;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+
+ol#email-signup-progress li.active
+{
+    font-weight: bold;
+}
+
+ol#email-signup-progress li.inactive
+{
+    font-weight: normal;
+}

@@ -1,0 +1,14 @@
+
+<%-
+item = proc { |num, html|
+  %|<li class="#{step == num ? "active" : "inactive"}">| + html + %|</li>|
+}
+-%>
+
+<ol id="email-signup-progress">
+ <%= item[1, "ログイン情報の入力"] %>
+ <%= item[2, "ログイン情報の確認"] %>
+ <%= item[3, "仮登録の完了"] %>
+ <%= item[4, "本登録の確認"] %>
+ <%= item[5, "本登録の完了"] %>
+</ol>
