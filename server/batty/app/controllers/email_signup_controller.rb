@@ -86,7 +86,8 @@ class EmailSignupController < ApplicationController
   # GET /signup/email/activation/:activation_token
   def activation
     # TODO: activation_tokenからEmailCredentialを取得
-    # nop
+    @credential = EmailCredential.find_by_activation_token(params[:activation_token])
+    @activated  = @credential.try(:activated?)
   end
 
   # POST /signup/email/activate

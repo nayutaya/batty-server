@@ -203,11 +203,40 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET activation" do
-    get :activation
+    credential = email_credentials(:yuya_nayutaya)
+
+    get :activation, :activation_token => credential.activation_token
 
     assert_response(:success)
     assert_template("activation")
     # TODO: flash   
+
+    assert_equal(credential, assigns(:credential))
+    assert_equal(false, assigns(:activated))
+  end
+
+  test "GET activation, already activated" do
+    credential = email_credentials(:yuya_gmail)
+
+    get :activation, :activation_token => credential.activation_token
+
+    assert_response(:success)
+    assert_template("activation")
+    # TODO: flash
+
+    assert_equal(credential, assigns(:credential))
+    assert_equal(true, assigns(:activated))
+  end
+
+  test "GET activation, abnormal, no activation token" do
+    get :activation, :activation_token => nil
+
+    assert_response(:success)
+    assert_template("activation")
+    # TODO: flash
+
+    assert_equal(nil, assigns(:credential))
+    assert_equal(nil, assigns(:activated))
   end
 
   test "POST activate" do

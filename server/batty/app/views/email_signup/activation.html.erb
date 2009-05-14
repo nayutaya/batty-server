@@ -3,5 +3,18 @@
 
 <%= render(:partial => "progress", :locals => {:step => 4}) %>
 
-<%# TODO: メールアドレスを表示 %>
-<%# TODO: 確認ボタン %>
+<%- if @credential -%>
+ <div>有効なアクティベーションキー</div>
+ <%- if @activated -%>
+  <div>アクティベート済み</div>
+ <%- else -%>
+  <div>未アクティベート</div>
+  <div>メールアドレス: <%=h @credential.email %></div>
+  <%- form_tag(:action => "activate") { -%>
+   <%= hidden_field_tag("activation_token", @credential.activation_token) %>
+   <%= submit_tag("本登録") %>
+  <%- } -%>
+ <%- end -%>
+<%- else -%>
+ <div>無効なアクティベーションキー</div>
+<%- end -%>
