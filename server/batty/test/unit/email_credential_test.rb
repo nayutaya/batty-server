@@ -209,4 +209,26 @@ class EmailCredentialTest < ActiveSupport::TestCase
     assert_equal(true,  email_credentials(:yuya_gmail).activated?)
     assert_equal(false, email_credentials(:yuya_nayutaya).activated?)
   end
+
+  test "activate!" do
+    credential = email_credentials(:yuya_nayutaya)
+    time = Time.local(2010, 1, 1)
+
+    assert_equal(false, credential.activated?)
+    assert_equal(true, Kagemusha::DateTime.at(time) { credential.activate! })
+    credential.reload
+    assert_equal(true, credential.activated?)
+    assert_equal(time, credential.activated_at)
+  end
+
+  test "activate!, already activated" do
+    credential = email_credentials(:yuya_gmail)
+    time = credential.activated_at
+
+    assert_equal(true, credential.activated?)
+    assert_equal(false, credential.activate!)
+    credential.reload
+    assert_equal(true, credential.activated?)
+    assert_equal(time, credential.activated_at)
+  end
 end

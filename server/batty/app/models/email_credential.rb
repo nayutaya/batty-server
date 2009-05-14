@@ -63,4 +63,10 @@ class EmailCredential < ActiveRecord::Base
   def activated?
     return !self.activated_at.nil?
   end
+
+  def activate!
+    return false if self.activated?
+    self.update_attributes!(:activated_at => Time.now)
+    return true
+  end
 end
