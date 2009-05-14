@@ -187,9 +187,7 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET created" do
-    @signup_form.email = email_credentials(:yuya_gmail).email
-
-    @request.session[:user_id]     = :dummy
+    @signup_form.email = email_credentials(:yuya_nayutaya).email
     @request.session[:signup_form] = @signup_form.attributes
 
     get :created
@@ -198,14 +196,24 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_template("created")
     # TODO: flash
 
-    assert_equal(nil, @request.session[:user_id])
-
     assert_equal(
       @signup_form.attributes,
       assigns(:signup_form).attributes)
     assert_equal(
       @signup_form.email,
       assigns(:credential).email)
+  end
+
+  test "GET created, clean session" do
+    @request.session[:user_id]     = :dummy
+    @request.session[:signup_form] = {:email => email_credentials(:yuya_nayutaya).email}
+
+    get :created
+
+    assert_response(:success)
+    assert_template("created")
+
+    assert_equal(nil, @request.session[:user_id])
   end
 
   test "GET activation" do
@@ -232,6 +240,19 @@ class EmailSignupControllerTest < ActionController::TestCase
 
     assert_equal(credential, assigns(:credential))
     assert_equal(true, assigns(:activated))
+  end
+
+  test "GET activation, clean session" do
+    @request.session[:user_id]     = :dummy
+    @request.session[:signup_form] = :dummy
+
+    get :activation, :activation_token => email_credentials(:yuya_nayutaya).activation_token
+
+    assert_response(:success)
+    assert_template("activation")
+
+    assert_equal(nil, @request.session[:user_id])
+    assert_equal(nil, @request.session[:signup_form])
   end
 
   test "GET activation, abnormal, no activation token" do
@@ -270,6 +291,19 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
+  test "POST activate, clean session" do
+    @request.session[:user_id]     = :dummy
+    @request.session[:signup_form] = :dummy
+
+    post :activate, :activation_token => email_credentials(:yuya_nayutaya).activation_token
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "email_signup", :action => "activated")
+
+    assert_equal(nil, @request.session[:user_id])
+    assert_equal(nil, @request.session[:signup_form])
+  end
+
   test "POST activated, abnormal, no activation token" do
     post :activate, :activation_token => nil
 
@@ -286,6 +320,14 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET activated" do
+    get :activated
+
+    assert_response(:success)
+    assert_template("activated")
+    assert_flash_empty
+  end
+
+  test "GET activated, clean session" do
     @request.session[:user_id]     = :dummy
     @request.session[:signup_form] = :dummy
 
@@ -293,7 +335,6 @@ class EmailSignupControllerTest < ActionController::TestCase
 
     assert_response(:success)
     assert_template("activated")
-    assert_flash_empty
 
     assert_equal(nil, @request.session[:user_id])
     assert_equal(nil, @request.session[:signup_form])

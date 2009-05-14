@@ -7,6 +7,9 @@ class EmailSignupController < ApplicationController
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:validate, :create, :activate])
 
+  before_filter :clear_session_user_id, :only => [:created, :activation, :activate, :activated]
+  before_filter :clear_session_signup_form, :only => [:activation, :activate, :activated]
+
   # GET /signup/email
   def index
     session[:user_id]     = nil
@@ -76,15 +79,12 @@ class EmailSignupController < ApplicationController
 
   # GET /signup/email/created
   def created
-    session[:user_id] = nil
-
     @signup_form = EmailSignupForm.new(session[:signup_form])
     @credential  = EmailCredential.find_by_email(@signup_form.email)
   end
 
   # GET /signup/email/activation/:activation_token
   def activation
-    # TODO: activation_tokenからEmailCredentialを取得
     @credential = EmailCredential.find_by_activation_token(params[:activation_token])
     @activated  = @credential.try(:activated?)
   end
@@ -113,7 +113,18 @@ class EmailSignupController < ApplicationController
 
   # GET /signup/email/activated
   def activated
-    session[:user_id]     = nil
+    # nop
+  end
+
+  private
+
+  def clear_session_user_id
+    session[:user_id] = nil
+    return true
+  end
+
+  def clear_session_signup_form
     session[:signup_form] = nil
+    return true
   end
 end
