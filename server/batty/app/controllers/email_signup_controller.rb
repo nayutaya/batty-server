@@ -93,8 +93,7 @@ class EmailSignupController < ApplicationController
       return
     end
 
-    @credential.activated_at = Time.now
-    @credential.save
+    @credential.activate!
 
     redirect_to(:action => "activated")
   end
