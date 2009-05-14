@@ -58,7 +58,15 @@ class EmailSignupController < ApplicationController
         @credential.save!
       }
 
-      # TODO: アクティベーションメールの送信
+      @activation_url = url_for(
+        :only_path        => false,
+        :controller       => "email_signup",
+        :action           => "activation",
+        :activation_token => @credential.activation_token)
+
+      @activation_mail = SignupActivationMailer.deliver_request(
+        :recipients     => @credential.email,
+        :activation_url => @activation_url)
 
       redirect_to(:action => "created")
     else

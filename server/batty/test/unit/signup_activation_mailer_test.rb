@@ -8,8 +8,8 @@ class SignupActivationMailerTest < ActionMailer::TestCase
 
   test "self.create_request_params" do
     options = {
-      :recipients       => "foo@example.com",
-      :activation_token => "0" * 20,
+      :recipients     => "foo@example.com",
+      :activation_url => "http://activation/url",
     }
     expected = {
       :header => {
@@ -18,7 +18,7 @@ class SignupActivationMailerTest < ActionMailer::TestCase
         :recipients => "foo@example.com",
       },
       :body   => {
-        :activation_token => "0" * 20,
+        :activation_url => "http://activation/url",
       },
     }
     assert_equal(expected, @klass.create_request_params(options))
@@ -26,10 +26,10 @@ class SignupActivationMailerTest < ActionMailer::TestCase
 
   test "self.create_request_params, deficient parameter" do
     assert_nothing_raised {
-      @klass.create_request_params(:recipients => "", :activation_token => "")
+      @klass.create_request_params(:recipients => "", :activation_url => "")
     }
     assert_raise(ArgumentError) {
-      @klass.create_request_params(:activation_token => "")
+      @klass.create_request_params(:activation_url => "")
     }
     assert_raise(ArgumentError) {
       @klass.create_request_params(:recipients => "")
@@ -44,11 +44,11 @@ class SignupActivationMailerTest < ActionMailer::TestCase
 
   test "request" do
     options = {
-      :recipients       => email_credentials(:yuya_nayutaya).email,
-      :activation_token => email_credentials(:yuya_nayutaya).activation_token,
+      :recipients     => email_credentials(:yuya_nayutaya).email,
+      :activation_url => "http://activation/url/" + email_credentials(:yuya_nayutaya).activation_token,
     }
     assert_nothing_raised {
-      puts SignupActivationMailer.create_request(options).encoded
+      SignupActivationMailer.create_request(options).encoded
     }
   end
 end

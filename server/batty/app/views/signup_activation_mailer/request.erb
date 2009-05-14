@@ -1,11 +1,7 @@
 battyへのユーザ登録、ありがとうございます。
 下記のURLへアクセスすることにより、登録が完了します。
 
-<%= url_for(
-  :only_path        => false,
-  :controller       => "email_signup",
-  :action           => "activation",
-  :activation_token => @activation_token) %>
+<%= @activation_url %>
 
 -----
 batty

@@ -185,6 +185,12 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_equal(
       true,
       EmailCredential.compare_hashed_password(@signup_form.password, assigns(:credential).hashed_password))
+
+    assert_equal(
+      root_path(:only_path => false) + "signup/email/activation/" + assigns(:credential).activation_token,
+      assigns(:activation_url))
+
+    assert_equal(1, ActionMailer::Base.deliveries.size)
   end
 
   test "POST create, invalid form" do

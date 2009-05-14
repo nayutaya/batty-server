@@ -4,8 +4,8 @@ class SignupActivationMailer < ActionMailer::Base
 
   def self.create_request_params(options)
     options = options.dup
-    recipients       = options.delete(:recipients)       || raise(ArgumentError)
-    activation_token = options.delete(:activation_token) || raise(ArgumentError)
+    recipients     = options.delete(:recipients)     || raise(ArgumentError)
+    activation_url = options.delete(:activation_url) || raise(ArgumentError)
     raise(ArgumentError) unless options.empty?
 
     return {
@@ -15,7 +15,7 @@ class SignupActivationMailer < ActionMailer::Base
         :recipients => recipients,
       },
       :body   => {
-        :activation_token => activation_token,
+        :activation_url => activation_url,
       },
     }
   end
