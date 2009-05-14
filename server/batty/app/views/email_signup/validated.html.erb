@@ -3,4 +3,17 @@
 
 <%= render(:partial => "progress", :locals => {:step => 2}) %>
 
-<%# TODO: サインアップフォームの内容を表示 %>
+<table>
+ <tr>
+  <th>メールアドレス</th>
+  <td><%=h @signup_form.email %></td>
+ </tr>
+ <tr>
+  <th>パスワード</th>
+  <td><%=h @signup_form.password %></td>
+ </tr>
+</table>
+
+<%- form_tag(:action => "create") { -%>
+ <%= submit_tag("登録") %>
+<%- } -%>

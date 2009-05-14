@@ -35,9 +35,17 @@ class EmailSignupController < ApplicationController
 
   # GET /signup/email/validated
   def validated
-    # TODO: 不要なセッションをクリア
-    # TODO: セッションからサインアップフォームを取得
+    session[:user_id] = nil
+
     # TODO: サインアップフォームを検証（メールアドレスの重複エラーが発生する可能性がある）
+
+    @signup_form = EmailSignupForm.new(session[:signup_form])
+    if @signup_form.valid?
+      render
+    else
+      # TODO: flash
+      render(:action => "index")
+    end
   end
 
   # POST /signup/email/create

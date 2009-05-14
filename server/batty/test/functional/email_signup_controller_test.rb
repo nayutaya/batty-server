@@ -95,12 +95,44 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET validated" do
+    @signup_form.attributes = {
+      :email                 => "foo@example.com",
+      :password              => "password",
+      :password_confirmation => "password",
+    }
+    assert_equal(true, @signup_form.valid?)
+
+    @request.session[:user_id]     = :dummy
+    @request.session[:signup_form] = @signup_form.attributes
+
     get :validated
 
     assert_response(:success)
     assert_template("validated")
-    # TODO: flash   
+    # TODO: flash
+
+    assert_equal(nil, @request.session[:user_id])
+
+    assert_equal(
+      @signup_form.attributes,
+      assigns(:signup_form).attributes)
   end
+
+  test "GET validated, invalid form" do
+    @signup_form.attributes = {
+      :email                 => "a",
+      :password              => "b",
+      :password_confirmation => "c",
+    }
+    assert_equal(false, @signup_form.valid?)
+
+    get :validated
+
+    assert_response(:success)
+    assert_template("index")
+    # TODO: flash
+  end
+
   # TODO: セッションにデータなし
 
   test "POST create" do
@@ -135,6 +167,7 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_redirected_to(:controller => "email_signup", :action => "activated")
     # TODO: flash
   end
+  # TODO: GET method
 
   test "GET activated" do
     get :activated
