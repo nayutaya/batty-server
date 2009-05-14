@@ -32,11 +32,4 @@ class EmailAuthController < ApplicationController
       render(:action => "index")
     end
   end
-
-  private
-
-  def set_error_now(message)
-    flash.now[:notice] = @flash_notice = nil
-    flash.now[:error]  = @flash_error  = message
-  end
 end

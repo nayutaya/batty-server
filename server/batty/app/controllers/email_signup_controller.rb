@@ -93,8 +93,24 @@ class EmailSignupController < ApplicationController
   # POST /signup/email/activate
   # TODO: POSTメソッドに制約
   def activate
-    # TODO: パラメータからEmailCredentialを取得
     # TODO: activated_atに現在日時を設定
+    @credential = EmailCredential.find_by_activation_token(params[:activation_token])
+
+    unless @credential
+      set_error("無効なアクティベーションキーです。")
+      redirect_to(root_path)
+      return
+    end
+
+    if @credential.activated?
+      set_error("既に本登録されています。")
+      redirect_to(root_path)
+      return
+    end
+
+    @credential.activated_at = Time.now
+    @credential.save
+
     redirect_to(:action => "activated")
   end
 

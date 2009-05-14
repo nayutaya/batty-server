@@ -240,13 +240,38 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "POST activate" do
-    post :activate
+    time = Time.local(2010, 1, 1)
+    credential = email_credentials(:yuya_nayutaya)
+
+    Kagemusha::DateTime.at(time) {
+      post :activate, :activation_token => credential.activation_token
+    }
 
     assert_response(:redirect)
     assert_redirected_to(:controller => "email_signup", :action => "activated")
-    # TODO: flash
+    assert_flash_empty
+
+    assigns(:credential).reload
+    assert_equal(credential.email, assigns(:credential).email)
+    assert_equal(time, assigns(:credential).activated_at)
   end
   # TODO: GET method
+
+  test "POST activate, already activated" do
+    post :activate, :activation_token => email_credentials(:yuya_gmail).activation_token
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST activated, abnormal, no activation token" do
+    post :activate, :activation_token => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
 
   test "GET activated" do
     get :activated

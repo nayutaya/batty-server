@@ -8,6 +8,16 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def set_error(message)
+    flash[:notice] = @flash_notice = nil
+    flash[:error]  = @flash_error  = message
+  end
+
+  def set_error_now(message)
+    flash.now[:notice] = @flash_notice = nil
+    flash.now[:error]  = @flash_error  = message
+  end
+
   def send_rss(rss)
     send_data(rss.to_s, :type => "application/rss+xml", :disposition => "inline")
   end
