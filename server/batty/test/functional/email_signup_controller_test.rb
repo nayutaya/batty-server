@@ -136,13 +136,50 @@ class EmailSignupControllerTest < ActionController::TestCase
   # TODO: セッションにデータなし
 
   test "POST create" do
-    post :create
+    @signup_form.attributes = {
+      :email                 => "foo@example.com",
+      :password              => "password",
+      :password_confirmation => "password",
+    }
+    assert_equal(true, @signup_form.valid?)
+
+    @request.session[:user_id]     = :dummy
+    @request.session[:signup_form] = @signup_form.attributes
+
+    assert_difference("EmailCredential.count", +1) {
+      post :create
+    }
 
     assert_response(:redirect)
     assert_redirected_to(:controller => "email_signup", :action => "created")
     # TODO: flash
+
+    assert_equal(nil, @request.session[:user_id])
+
+    assert_equal(
+      @signup_form.attributes,
+      assigns(:signup_form).attributes)
+
+    assert_equal(@signup_form.email, assigns(:credential).email)
+    assert_equal(true, EmailCredential.compare_hashed_password(@signup_form.password, assigns(:credential).hashed_password))
   end
   # TODO: GET method
+
+  test "POST create, invalid form" do
+    @invalid_sinup_form_attributes = {
+      :email                 => "a",
+      :password              => "b",
+      :password_confirmation => "c",
+    }
+    @signup_form.attributes = @invalid_signup_form_attributes
+    assert_equal(false, @signup_form.valid?)
+
+    post :create
+
+    assert_response(:success)
+    assert_template("index")
+    # TODO: flash
+  end
 
   test "GET created" do
     get :created

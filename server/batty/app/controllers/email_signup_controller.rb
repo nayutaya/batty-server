@@ -51,11 +51,24 @@ class EmailSignupController < ApplicationController
   # POST /signup/email/create
   # TODO: POSTメソッドに制約
   def create
-    # TODO: 不要なセッションをクリア
-    # TODO: セッションからサインアップフォームを取得
+    session[:user_id] = nil
+
     # TODO: サインアップフォームを検証（メールアドレスの重複エラーが発生する可能性がある）
     # TODO: EmailCredentialレコードを作成
-    redirect_to(:action => "created")
+
+    @signup_form = EmailSignupForm.new(session[:signup_form])
+    if @signup_form.valid?
+      # TODO: Userレコードの作成
+
+      @credential = EmailCredential.new(@signup_form.to_email_credential_hash)
+      @credential.activation_token = EmailCredential.create_unique_activation_token
+      @credential.user_id          = 1 # FIXME:
+      @credential.save!
+
+      redirect_to(:action => "created")
+    else
+      render(:action => "index")
+    end
   end
 
   # GET /signup/email/created
