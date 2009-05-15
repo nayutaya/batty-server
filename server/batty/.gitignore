@@ -1,2 +1,13 @@
-env.bat
+*.bat
+*.sh
+bin/
+config/database.yml
 config/smtp.yml
+db/*.sqlite3
+db/schema.rb
+log/*.log
+nbproject/
+tmp/cache/
+tmp/pids/
+tmp/sessions/
+tmp/sockets/
