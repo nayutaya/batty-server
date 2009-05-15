@@ -2,7 +2,14 @@
 
 # OpenID認証
 class OpenIdAuthController < ApplicationController
-  # TODO: login アクションを実装する
+  verify(
+    :method => :post,
+    :render => {:text => "Method Not Allowed", :status => 405},
+    :only   => [:login])
+
+  def index
+    session[:user_id] = nil
+  end
 
   def login
     openid_url = params[:openid_url]

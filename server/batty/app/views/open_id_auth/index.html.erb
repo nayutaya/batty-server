@@ -1,0 +1,9 @@
+
+<h1>OpenID によるログイン</h1>
+
+<%- form_tag(:action => "login") { -%>
+  <div>
+    <%= text_field_tag(:openid_url, :size => 50) %>
+  </div>
+  <div><%= submit_tag("ログイン") %></div>
+<%- } -%>

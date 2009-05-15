@@ -11,7 +11,18 @@ class OpenIdAuthControllerTest < ActionController::TestCase
     # TODO 実装せよ
   end
 
-  test "POST login, successful with registered user" do
+  test "GET index" do
+    session_login(users(:yuya))
+
+    get :index
+
+    assert_response(:success)
+    assert_template("index")
+    assert_flash_empty
+    assert_not_logged_in
+  end
+
+  test "POST login, successful with registered identity_url" do
     musha = Kagemusha.new(OpenIdAuthController::Result)
     musha.def(:status) { :successful }
     musha.swap{
@@ -22,7 +33,7 @@ class OpenIdAuthControllerTest < ActionController::TestCase
     }
   end
 
-  test "POST login, successful without registered user" do
+  test "POST login, successful with unregistered identity_url" do
     musha = Kagemusha.new(OpenIdAuthController::Result)
     musha.def(:status) { :successful }
     musha.swap{
@@ -51,5 +62,11 @@ class OpenIdAuthControllerTest < ActionController::TestCase
     end
   end
 
+  test "GET login, abnormal, method not allowed" do
+    get :login
+
+    assert_response(405)
+    assert_template(nil)
+  end
 
 end
