@@ -1,14 +1,16 @@
+# -*- coding: utf-8 -*-
 
 # OpenIDサインアップ
 class OpenIdSignupController < ApplicationController
-  # GET ?
+
+  # GET /signup/openid
   def index
     session[:identity_url] = nil
     @openid_url = nil
   end
 
-  # POST ?
-  # GET ?
+  # POST /signup/openid/authenticate
+  # GET  /signup/openid/authenticate
   def authenticate
     @openid_url = params[:openid_url]
 
@@ -35,13 +37,13 @@ class OpenIdSignupController < ApplicationController
     }
   end
 
-  # GET ?
+  # GET /signup/openid/authenticated
   def authenticate_complete
     @identity_url = session[:identity_url]
   end
 
-  # POST ?
-  def signup
+  # POST /signup/openid/create
+  def create
     @identity_url = session[:identity_url]
 
     User.transaction {
@@ -59,11 +61,11 @@ class OpenIdSignupController < ApplicationController
     session[:identity_url] = nil
     session[:user_id]      = @user.id
 
-    redirect_to(:action => "signup_complete")
+    redirect_to(:action => "created")
   end
 
-  # GET ?
-  def signup_complete
+  # GET /signup/openid/created
+  def created
     # nop
   end
 end

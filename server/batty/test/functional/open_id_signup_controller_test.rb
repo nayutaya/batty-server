@@ -1,9 +1,16 @@
+# -*- coding: utf-8 -*-
 
 require 'test_helper'
 
 class OpenIdSignupControllerTest < ActionController::TestCase
   test "routes" do
-    # TODO: 実装せよ
+    base = { :controller => "open_id_signup" }
+
+    assert_routing("signup/openid",               base.merge(:action => "index"))
+    assert_routing("signup/openid/authenticate",  base.merge(:action => "authenticate"))
+    assert_routing("signup/openid/authenticated", base.merge(:action => "authenticated"))
+    assert_routing("signup/openid/create",        base.merge(:action => "create"))
+    assert_routing("signup/openid/created",       base.merge(:action => "created"))
   end
 
   test "GET index" do
@@ -17,18 +24,21 @@ class OpenIdSignupControllerTest < ActionController::TestCase
     post :authenticate, :openid_url => "livedoor.com"
 
     assert_response(:redirect)
+    # FXIME 検証を追加する？
+    # FIXME 毎回リクエストが外に飛んでいるのをなんとかする
   end
 
   test "GET authenticate, second step" do
     get :authenticate, :openid_url => nil
+    # TODO: 必要があれば検証を追加する
   end
 
-  test "POST signup" do
+  test "POST create" do
     @request.session[:identity_url] = "http://example.com/"
 
-    post :signup
+    post :create
 
     assert_response(:redirect)
-    assert_redirected_to(:controller => "open_id_signup", :action => "signup_complete")
+    assert_redirected_to(:action => "created")
   end
 end

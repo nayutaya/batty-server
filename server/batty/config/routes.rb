@@ -55,6 +55,11 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "signup/email/activation/:activation_token", :controller => "email_signup", :action => "activation", :activation_token => /[0-9a-f]+/
   map.connect "signup/email/activate",                     :controller => "email_signup", :action => "activate"
   map.connect "signup/email/activated",                    :controller => "email_signup", :action => "activated"
+  map.connect "signup/openid",               :controller => "open_id_signup", :action => "index"
+  map.connect "signup/openid/authenticate",  :controller => "open_id_signup", :action => "authenticate"
+  map.connect "signup/openid/authenticated", :controller => "open_id_signup", :action => "authenticated"
+  map.connect "signup/openid/create",        :controller => "open_id_signup", :action => "create"
+  map.connect "signup/openid/created",       :controller => "open_id_signup", :action => "created"
 
   map.connect ":controller/:action/:id"
   map.connect ":controller/:action/:id.:format"
