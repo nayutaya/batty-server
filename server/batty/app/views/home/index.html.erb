@@ -1,7 +1,7 @@
 
-<div>UserID: <%=h session[:user_id] %></div>
+<h1>batty</h1>
 
-<h1>Dashboard</h1>
+<div>UserID: <%=h session[:user_id] %></div>
 
 <%- unless logged_in? -%>
  <div id="login_form">
@@ -27,6 +27,7 @@
 <%- end -%>
 
 <%- if logged_in? -%>
+ <h2>Dashboard</h2>
  <div>
   <table border="1">
    <thead>
