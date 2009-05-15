@@ -1,6 +1,15 @@
+# -*- coding: utf-8 -*-
 Given /^the following users:$/ do |users|
   User.create!(users.hashes)
 end
+
+When /^"(.+?)" はアクティベーションを実行する$/ do |email|
+  credential = EmailCredential.find_by_email(email)
+  visit url_for(:cotroller => 'email_signup',
+                :action => 'activation',
+                :activation_token => credential.activation_token)
+end
+
 
 When /^I delete the (\d+)(?:st|nd|rd|th) user$/ do |pos|
   visit users_url
