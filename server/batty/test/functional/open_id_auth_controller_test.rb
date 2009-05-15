@@ -8,7 +8,10 @@ class OpenIdAuthControllerTest < ActionController::TestCase
   end
 
   test "routes" do
-    # TODO 実装せよ
+    base = { :controller => 'open_id_auth' }
+
+    assert_routing("/auth/openid",       base.merge(:action => "index"))
+    assert_routing("/auth/openid/login", base.merge(:action => "login"))
   end
 
   test "GET index" do
