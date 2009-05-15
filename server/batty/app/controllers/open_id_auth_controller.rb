@@ -48,7 +48,7 @@ class OpenIdAuthController < ApplicationController
         successful_login
       else
         flash[:notice] = "OpenID がまだ登録されていません。"
-        redirect_to(:controller => "open_id_signup", :action => "signup")
+        redirect_to(:controller => "open_id_signup", :action => "index")
       end
     end
   end

@@ -30,7 +30,7 @@ class OpenIdSignupController < ApplicationController
           failed["指定されたOpenIDは既に登録されているため、利用できません。"]
         else
           session[:identity_url] = identity_url
-          redirect_to(:action => "authenticate_complete")
+          redirect_to(:action => "authenticated")
         end
       else raise("BUG")
       end
