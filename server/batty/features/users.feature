@@ -22,9 +22,9 @@
   シナリオ: 新規ユーザ登録 email
     前提 言語は "ja"
     かつ "メールアドレスによるサインアップ" にアクセスしている
-    もし "メールアドレス" に "quentin@example.com" と入力する
-    かつ "パスワード" に "monkey" と入力する
-    かつ "パスワード確認" に "monkey" と入力する
+    もし "Email" に "quentin@example.com" と入力する
+    かつ "Password" に "monkey" と入力する
+    かつ "Password confirmation" に "monkey" と入力する
     かつ "確認画面へ" ボタンをクリックする
     ならば "登録確認" と表示されていること
     かつ "quentin@example.com" と表示されていること
@@ -36,8 +36,8 @@
     ならば "本登録完了" と表示されていること
     もし "ログインする" リンクをクリックする
     ならば "メールアドレスによるログイン" と表示されていること
-    もし "メールアドレス" に "quentin@example.com" と入力する
-    かつ "パスワード" に "monkey" と入力する
+    もし "Email" に "quentin@example.com" と入力する
+    かつ "Password" に "monkey" と入力する
     かつ "ログイン" ボタンをクリックする
     # ならば
 
