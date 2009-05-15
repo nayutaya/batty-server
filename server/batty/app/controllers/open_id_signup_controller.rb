@@ -38,7 +38,7 @@ class OpenIdSignupController < ApplicationController
   end
 
   # GET /signup/openid/authenticated
-  def authenticate_complete
+  def authenticated
     @identity_url = session[:identity_url]
   end
 
