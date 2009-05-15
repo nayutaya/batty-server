@@ -11,6 +11,8 @@ module NavigationHelpers
     case page_name
     when /ダッシュボード/, /ホームページ/
       '/'
+    when /メールアドレスによるサインアップ/
+      url_for(:controller => 'email_signup', :action => 'index')
     when /the new user page/
       new_user_path
 
