@@ -3,10 +3,12 @@
 
 <%- form_for(:login_form, :url => {:action => "login"}) { |f| -%>
  <div>
-  <%= f.text_field(:email, :size => 30) %>
+   <%= f.label(:email) %>
+   <%= f.text_field(:email, :size => 30) %>
  </div>
  <div>
-  <%= f.password_field(:password, :size => 30) %>
+   <%= f.label(:password) %>
+   <%= f.password_field(:password, :size => 30) %>
  </div>
  <div><%= submit_tag("ログイン") %></div>
 <%- } -%>
