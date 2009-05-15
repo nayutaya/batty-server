@@ -30,10 +30,10 @@ class OpenIdAuthControllerTest < ActionController::TestCase
     musha.def(:status) { :successful }
     musha.swap{
       post :login, :openid_url => @shinya_example.identity_url
-      assert_response(:redirect)
-      assert_redirected_to('/')
-      assert_equal('ログインしました。', @response.flash[:notice])
     }
+    assert_response(:redirect)
+    assert_redirected_to('/')
+    assert_equal('ログインしました。', @response.flash[:notice])
   end
 
   test "POST login, successful with unregistered identity_url" do
@@ -41,10 +41,10 @@ class OpenIdAuthControllerTest < ActionController::TestCase
     musha.def(:status) { :successful }
     musha.swap{
       post :login, :openid_url => 'http://example.jp/yuya'
-      assert_response(:redirect)
-      assert_redirected_to(:controller => 'open_id_signup', :action => 'signup')
-      assert_equal('OpenID がまだ登録されていません。', @response.flash[:notice])
     }
+    assert_response(:redirect)
+    assert_redirected_to(:controller => 'open_id_signup', :action => 'signup')
+    assert_equal('OpenID がまだ登録されていません。', @response.flash[:notice])
   end
 
   [
@@ -58,10 +58,10 @@ class OpenIdAuthControllerTest < ActionController::TestCase
       musha.def(:status) { status }
       musha.swap {
         post :login, :openid_url => @shinya_example.identity_url
-        assert_response(:redirect)
-        assert_redirected_to('/')
-        assert_equal(message, @response.flash[:error])
       }
+      assert_response(:redirect)
+      assert_redirected_to('/')
+      assert_equal(message, @response.flash[:error])
     end
   end
 
