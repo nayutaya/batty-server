@@ -9,10 +9,12 @@ module NavigationHelpers
   # TODO 日本語でパスの定義を書く
   def path_to(page_name)
     case page_name
-    when /ダッシュボード/, /ホームページ/
+    when /\Aダッシュボード\z/, /\Aホームページ\z/
       '/'
-    when /メールアドレスによるサインアップ/
+    when /\Aメールアドレスによるサインアップ\z/
       url_for(:controller => 'email_signup', :action => 'index')
+    when /\AOpenID によるサインアップ\z/
+      url_for(:controller => 'open_id_signup', :action => 'index')
     when /the new user page/
       new_user_path
 
