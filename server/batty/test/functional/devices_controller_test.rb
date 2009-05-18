@@ -6,7 +6,11 @@ class DevicesControllerTest < ActionController::TestCase
     @yuya     = users(:yuya)
     @yuya_pda = devices(:yuya_pda)
 
-    @edit_form = DeviceEditForm.new
+    @edit_form = DeviceEditForm.new(
+      :name           => "name",
+      :device_icon_id => device_icons(:note).id)
+
+    session_login(@yuya)
   end
 
   test "routes" do
@@ -20,8 +24,6 @@ class DevicesControllerTest < ActionController::TestCase
   end
 
   test "GET new" do
-    session_login(@yuya)
-
     get :new
 
     assert_response(:success)
@@ -45,12 +47,6 @@ class DevicesControllerTest < ActionController::TestCase
   end
 
   test "POST create" do
-    session_login(@yuya)
-
-    @edit_form.attributes = {
-      :name           => "name_",
-      :device_icon_id => device_icons(:note).id,
-    }
     assert_equal(true, @edit_form.valid?)
 
     assert_difference("Device.count", +1) {
@@ -72,8 +68,6 @@ class DevicesControllerTest < ActionController::TestCase
   end
 
   test "POST create, invalid form" do
-    session_login(@yuya)
-
     @edit_form.name = nil
     assert_equal(false, @edit_form.valid?)
 
@@ -104,8 +98,6 @@ class DevicesControllerTest < ActionController::TestCase
   end
 
   test "GET show" do
-    session_login(@yuya)
-
     get :show, :device_token => @yuya_pda.device_token
 
     assert_response(:success)
@@ -131,8 +123,6 @@ class DevicesControllerTest < ActionController::TestCase
   end
 
   test "GET show, abnormal, no device token" do
-    session_login(@yuya)
-
     get :show, :device_token => nil
 
     assert_response(:redirect)
