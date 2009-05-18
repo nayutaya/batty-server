@@ -104,13 +104,13 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal(true, @basic.valid?)
   end
 
-  test "validates_presence_of :name" do
-    @basic.name = nil
+  test "validates_presence_of :device_token" do
+    @basic.device_token = nil
     assert_equal(false, @basic.valid?)
   end
 
-  test "validates_presence_of :device_token" do
-    @basic.device_token = nil
+  test "validates_presence_of :name" do
+    @basic.name = nil
     assert_equal(false, @basic.valid?)
   end
 

@@ -25,8 +25,8 @@ class Device < ActiveRecord::Base
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
 
-  validates_presence_of :name
   validates_presence_of :device_token
+  validates_presence_of :name
   validates_length_of :name, :maximum => 50, :allow_nil => true
   validates_format_of :device_token, :with => TokenPattern, :allow_nil => true
   validates_uniqueness_of :device_token
