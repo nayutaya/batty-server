@@ -5,6 +5,9 @@ class DeviceEditFormTest < ActiveSupport::TestCase
   def setup
     @klass = DeviceEditForm
     @form  = @klass.new
+    @basic = @klass.new(
+      :name           => "name",
+      :device_icon_id => device_icons(:note).id)
   end
 
   #
@@ -28,6 +31,35 @@ class DeviceEditFormTest < ActiveSupport::TestCase
       assert_equal(default, form.__send__(name))
       form.__send__("#{name}=", set_value)
       assert_equal(get_value, form.__send__(name))
+    }
+  end
+
+  #
+  # 検証
+  #
+
+  test "basic is valid" do
+    assert_equal(true, @basic.valid?)
+  end
+
+  test "validates_presence_of :name" do
+    @basic.name = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :device_icon_id" do
+    @basic.device_icon_id = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_length_of :name" do
+    [
+      ["あ" *  1, true ],
+      ["あ" * 50, true ],
+      ["あ" * 51, false],
+    ].each { |value, expected|
+      @basic.name = value
+      assert_equal(expected, @basic.valid?)
     }
   end
 
