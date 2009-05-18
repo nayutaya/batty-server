@@ -5,6 +5,8 @@ class DevicesControllerTest < ActionController::TestCase
   def setup
     @yuya     = users(:yuya)
     @yuya_pda = devices(:yuya_pda)
+
+    @edit_form = DeviceEditForm.new
   end
 
   test "routes" do
@@ -42,7 +44,64 @@ class DevicesControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
-  # TODO: createアクションのテストを実装せよ
+  test "POST create" do
+    session_login(@yuya)
+
+    @edit_form.attributes = {
+      :name           => "name_",
+      :device_icon_id => device_icons(:note).id,
+    }
+    assert_equal(true, @edit_form.valid?)
+
+    assert_difference("Device.count", +1) {
+      post :create, :edit_form => @edit_form.attributes
+    }
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_notice
+    assert_logged_in(@yuya)
+
+    assert_equal(
+      @edit_form.attributes,
+      assigns(:edit_form).attributes)
+
+    assert_equal(@yuya.id,                  assigns(:device).user_id)
+    assert_equal(@edit_form.name,           assigns(:device).name)
+    assert_equal(@edit_form.device_icon_id, assigns(:device).device_icon_id)
+  end
+
+  test "POST create, invalid form" do
+    session_login(@yuya)
+
+    @edit_form.name = nil
+    assert_equal(false, @edit_form.valid?)
+
+    assert_difference("Device.count", 0) {
+      post :create, :edit_form => @edit_form.attributes
+    }
+
+    assert_response(:success)
+    assert_template("new")
+    assert_flash_error
+  end
+
+  test "POST create, abnormal, no login" do
+    session_logout
+
+    post :create
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET create, abnormal, method not allowed" do
+    get :create
+
+    assert_response(405)
+    assert_template(nil)
+  end
 
   test "GET show" do
     session_login(@yuya)

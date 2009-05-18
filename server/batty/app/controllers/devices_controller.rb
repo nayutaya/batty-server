@@ -1,8 +1,13 @@
 
 # デバイス
 class DevicesController < ApplicationController
-  before_filter :authentication, :only => [:new, :show]
-  before_filter :authentication_required, :only => [:new, :show]
+  verify(
+    :method => :post,
+    :render => {:text => "Method Not Allowed", :status => 405},
+    :only   => [:create])
+
+  before_filter :authentication
+  before_filter :authentication_required
   before_filter :required_param_device_token, :only => [:show]
 
   # GET /devices/new
@@ -11,6 +16,22 @@ class DevicesController < ApplicationController
   end
 
   # POST /devices/create
+  def create
+    @edit_form = DeviceEditForm.new(params[:edit_form])
+
+    if @edit_form.valid?
+      @device = Device.new(@edit_form.to_device_hash)
+      @device.device_token = Device.create_unique_device_token
+      @device.user_id      = @login_user.id
+      @device.save!
+
+      set_notice("デバイスを追加しました。")
+      redirect_to(root_path)
+    else
+      set_error_now("入力内容を確認してください。")
+      render(:action => "new")
+    end
+  end
 
   # GET /device/:device_token
   def show

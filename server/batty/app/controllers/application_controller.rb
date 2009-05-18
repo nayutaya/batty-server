@@ -8,6 +8,11 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def set_notice(message)
+    flash[:notice] = @flash_notice = message
+    flash[:error]  = @flash_error  = nil
+  end
+
   def set_error(message)
     flash[:notice] = @flash_notice = nil
     flash[:error]  = @flash_error  = message
