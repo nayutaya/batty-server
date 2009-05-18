@@ -17,21 +17,21 @@ note:
   updated_at: 2009-01-01 00:00:00
   display_order: 3
   name: "ノートパソコン"
-  url24: "http://example.jp/images/note24.png"
-  url48: "http://example.jp/images/note48.png"
+  url24: "/images/icons/devices/note24.png"
+  url48: "/images/icons/devices/note48.png"
 
 cellular:
   created_at: 2009-01-01 00:00:00
   updated_at: 2009-01-01 00:00:00
   display_order: 1
   name: "携帯電話"
-  url24: "http://example.jp/images/cellular24.png"
-  url48: "http://example.jp/images/cellular48.png"
+  url24: "/images/icons/devices/cellular24.png"
+  url48: "/images/icons/devices/cellular48.png"
 
 pda:
   created_at: 2009-01-01 00:00:00
   updated_at: 2009-01-01 00:00:00
   display_order: 2
   name: "PDA"
-  url24: "http://example.jp/images/pda24.png"
-  url48: "http://example.jp/images/pda48.png"
+  url24: "/images/icons/devices/pda24.png"
+  url48: "/images/icons/devices/pda48.png"
