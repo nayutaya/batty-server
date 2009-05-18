@@ -1,11 +1,14 @@
 
 # デバイス
 class DevicesController < ApplicationController
-  before_filter :authentication, :only => [:show]
-  before_filter :authentication_required, :only => [:show]
+  before_filter :authentication, :only => [:new, :show]
+  before_filter :authentication_required, :only => [:new, :show]
   before_filter :required_param_device_token, :only => [:show]
 
   # GET /devices/new
+  def new
+    # nop
+  end
 
   # POST /devices/create
 

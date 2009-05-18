@@ -90,3 +90,9 @@
   </table>
  </div>
 <%- end -%>
+
+<%- if logged_in? -%>
+ <ul>
+  <li><%= link_to(h("デバイスを追加する"), :controller => "devices", :action => "new") %></li>
+ </ul>
+<%- end -%>

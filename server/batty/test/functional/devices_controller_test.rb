@@ -67,4 +67,25 @@ class DevicesControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "GET new" do
+    session_login(@yuya)
+
+    get :new
+
+    assert_response(:success)
+    assert_template("new")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+  end
+
+  test "GET new, abnormal, no login" do
+    session_logout
+
+    get :new
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
 end
