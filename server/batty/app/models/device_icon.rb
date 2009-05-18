@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090420021540
+# Schema version: 20090518160518
 #
 # Table name: device_icons
 #
@@ -8,8 +8,8 @@
 #  updated_at    :datetime      not null
 #  display_order :integer       not null, index_device_icons_on_display_order
 #  name          :string(30)    not null
-#  url16         :string(200)   not null
-#  url32         :string(200)   not null
+#  url24         :string(200)   not null
+#  url48         :string(200)   not null
 #
 
 # デバイスアイコン

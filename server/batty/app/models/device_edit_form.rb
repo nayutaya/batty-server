@@ -1,3 +1,11 @@
+# == Schema Information
+# Schema version: 20090518160518
+#
+# Table name: active_forms
+#
+#  name           :text
+#  device_icon_id :integer
+#
 
 # デバイス編集フォーム
 class DeviceEditForm < ActiveForm

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # == Schema Information
-# Schema version: 20090420021540
+# Schema version: 20090518160518
 #
 # Table name: email_credentials
 #
