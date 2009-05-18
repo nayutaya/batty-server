@@ -7,7 +7,7 @@ class DevicesController < ApplicationController
 
   # GET /devices/new
   def new
-    # nop
+    @edit_form = DeviceEditForm.new
   end
 
   # POST /devices/create

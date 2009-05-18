@@ -1,2 +1,18 @@
 
 <h1>デバイスの追加</h1>
+
+<%- form_for(:edit_form, :url => {:action => "create"}) { |f| -%>
+ <div>
+  <%= f.label(:name) %>
+  <%= f.text_field(:name, :size => 30) %>
+  <%= error_message_on(:edit_form, :name) %>
+ </div>
+ <div>
+  <%= f.label(:device_icon_id) %>
+  <%= f.text_field(:device_icon_id, :size => 20) %>
+  <%= error_message_on(:edit_form, :device_icon_id) %>
+ </div>
+ <div><%= submit_tag("追加") %></div>
+<%- } -%>
+
+<%= error_messages_for(:edit_form) %>

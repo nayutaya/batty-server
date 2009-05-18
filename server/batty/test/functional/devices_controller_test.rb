@@ -26,6 +26,10 @@ class DevicesControllerTest < ActionController::TestCase
     assert_template("new")
     assert_flash_empty
     assert_logged_in(@yuya)
+
+    assert_equal(
+      DeviceEditForm.new.attributes,
+      assigns(:edit_form).attributes)
   end
 
   test "GET new, abnormal, no login" do
