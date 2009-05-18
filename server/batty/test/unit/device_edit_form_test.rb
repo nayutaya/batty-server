@@ -4,6 +4,7 @@ require 'test_helper'
 class DeviceEditFormTest < ActiveSupport::TestCase
   def setup
     @klass = DeviceEditForm
+    @form  = @klass.new
   end
 
   #
@@ -28,5 +29,29 @@ class DeviceEditFormTest < ActiveSupport::TestCase
       form.__send__("#{name}=", set_value)
       assert_equal(get_value, form.__send__(name))
     }
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "to_device_hash, empty" do
+    expected = {
+      :name           => nil,
+      :device_icon_id => nil,
+    }
+    assert_equal(expected, @form.to_device_hash)
+  end
+
+  test "to_device_hash, full" do
+    @form.attributes = {
+      :name           => "a",
+      :device_icon_id => 0,
+    }
+    expected = {
+      :name           => "a",
+      :device_icon_id => 0,
+    }
+    assert_equal(expected, @form.to_device_hash)
   end
 end
