@@ -63,6 +63,14 @@ class DeviceEditFormTest < ActiveSupport::TestCase
     }
   end
 
+  test "validates_each :device_icon_id" do
+    @basic.device_icon_id = device_icons(:pda).id
+    assert_equal(true, @basic.valid?)
+
+    @basic.device_icon_id = 0
+    assert_equal(false, @basic.valid?)
+  end
+
   #
   # インスタンスメソッド
   #
