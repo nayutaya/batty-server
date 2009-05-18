@@ -30,8 +30,11 @@ ActionController::Routing::Routes.draw do |map|
   #     # Directs /admin/products/* to Admin::ProductsController (app/controllers/admin/products_controller.rb)
   #     admin.resources :products
   #   end
+  DeviceToken = /[0-9a-f]+/
 
   map.root :controller => "home", :action => "index"
+
+  map.connect "device/:device_token", :controller => "devices", :action => "show", :device_token => DeviceToken
 
   map.connect "device/:device_token/energies.rdf", :controller => "device_feeds", :action => "energies", :device_token => /[0-9a-f]+/
   map.connect "device/:device_token/events.rdf",   :controller => "device_feeds", :action => "events",   :device_token => /[0-9a-f]+/
