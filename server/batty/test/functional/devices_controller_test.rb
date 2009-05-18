@@ -32,6 +32,20 @@ class DevicesControllerTest < ActionController::TestCase
     assert_logged_in(@yuya)
 
     assert_equal(@yuya_pda, assigns(:device))
+  
+    assert_equal( 1, assigns(:energies).current_page)
+    assert_equal(10, assigns(:energies).per_page)
+    assert_equal(true, assigns(:energies).map(&:device).all? { |d| d == @yuya_pda })
+    assert_equal(
+      assigns(:energies).sort_by { |e| [e.observed_at, e.id] }.reverse,
+      assigns(:energies))
+
+    assert_equal( 1, assigns(:events).current_page)
+    assert_equal(10, assigns(:events).per_page)
+    assert_equal(true, assigns(:events).map(&:device).all? { |d| d == @yuya_pda })
+    assert_equal(
+      assigns(:events).sort_by { |e| [e.observed_at, e.id] }.reverse,
+      assigns(:events))
   end
 
   test "GET show, abnormal, no device token" do

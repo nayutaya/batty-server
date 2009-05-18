@@ -11,7 +11,14 @@ class DevicesController < ApplicationController
 
   # GET /device/:device_token
   def show
-    # nop
+    @energies = @device.energies.paginate(
+      :order    => "energies.observed_at DESC, energies.id DESC",
+      :page     => 1,
+      :per_page => 10)
+    @events = @device.events.paginate(
+      :order    => "events.observed_at DESC, events.id DESC",
+      :page     => 1,
+      :per_page => 10)
   end
 
   private
