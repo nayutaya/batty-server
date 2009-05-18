@@ -41,7 +41,7 @@
    <tbody>
     <%- @devices.each { |device| -%>
      <tr>
-      <td><%= link_to(h(device.name)) %></td>
+      <td><%= link_to(h(device.name), :controller => "devices", :action => "show", :device_token => device.device_token) %></td>
       <td align="right"><%=h device.current_energy.try(:observed_level) || "-" %> %</td>
       <td align="right"><%=h device.triggers.enable.count %></td>
       <td>アクション</td>
@@ -62,7 +62,7 @@
       <%- @energies.each { |energy| -%>
        <tr>
         <td><%=h energy.observed_at.strftime("%m-%d %H:%M") %></td>
-        <td><%= link_to(h(energy.device.name)) %></td>
+        <td><%= link_to(h(energy.device.name), :controller => "devices", :action => "show", :device_token => energy.device.device_token) %></td>
         <td align="right"><%=h energy.observed_level %> %</td>
        </tr>
       <%- } -%>
@@ -78,7 +78,7 @@
       <%- @events.each { |event| -%>
        <tr>
         <td><%=h event.observed_at.strftime("%m-%d %H:%M") %></td>
-        <td><%= link_to(h(event.device.name)) %></td>
+        <td><%= link_to(h(event.device.name), :controller => "devices", :action => "show", :device_token => event.device.device_token) %></td>
         <td align="right"><%=h event.observed_level %> %</td>
         <td><%=h event.trigger_operator_sign %></td>
         <td align="right"><%=h event.trigger_level %> %</td>
