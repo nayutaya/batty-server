@@ -109,8 +109,18 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal(false, @basic.valid?)
   end
 
+  test "validates_presence_of :user_id" do
+    @basic.user_id = nil
+    assert_equal(false, @basic.valid?)
+  end
+
   test "validates_presence_of :name" do
     @basic.name = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :device_icon_id" do
+    @basic.device_icon_id = nil
     assert_equal(false, @basic.valid?)
   end
 
