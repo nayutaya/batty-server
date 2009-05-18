@@ -67,6 +67,14 @@ class DeviceEditFormTest < ActiveSupport::TestCase
   # インスタンスメソッド
   #
 
+  test "device_icon" do
+    @form.device_icon_id = nil
+    assert_equal(nil, @form.device_icon)
+
+    @form.device_icon_id = device_icons(:note).id
+    assert_equal(device_icons(:note), @form.device_icon)
+  end
+
   test "to_device_hash, empty" do
     expected = {
       :name           => nil,
