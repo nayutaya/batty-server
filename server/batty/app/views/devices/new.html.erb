@@ -9,9 +9,19 @@
  </div>
  <div>
   <%= f.label(:device_icon_id) %>
-  <%= f.text_field(:device_icon_id, :size => 20) %>
   <%= error_message_on(:edit_form, :device_icon_id) %>
  </div>
+ <%# FIXME: コントローラ内で検索する %>
+ <%- @device_icons = DeviceIcon.all -%>
+ <%- @device_icons.each { |device_icon| -%>
+  <div>
+   <label>
+    <%= f.radio_button(:device_icon_id, device_icon.id.to_s) %>
+    <%= image_tag(device_icon.url48, :width => 48, :height => 48, :alt => device_icon.name) %>
+    <%=h device_icon.name %>
+   </label>
+  </div>
+ <%- } -%>
  <div><%= submit_tag("追加") %></div>
 <%- } -%>
 
