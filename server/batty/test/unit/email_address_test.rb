@@ -92,4 +92,29 @@ class EmailAddressTest < ActiveSupport::TestCase
       assert_equal(expected, @basic.valid?, value)
     }
   end
+
+  #
+  # クラスメソッド
+  #
+
+  test "self.create_unique_activation_token, pattern" do
+    assert_match(
+      @klass::TokenPattern,
+      @klass.create_unique_activation_token)
+  end
+
+  test "self.create_unique_activation_token, duplication" do
+    dup_token1 = email_addresses(:yuya1).activation_token
+    dup_token2 = email_addresses(:yuya2).activation_token
+    uniq_token = "f" * @klass::TokenLength
+    tokens = [dup_token1, dup_token2, uniq_token]
+
+    musha = Kagemusha.new(TokenUtil)
+    musha.defs(:create_token) { tokens.shift }
+    musha.swap {
+      assert_equal(
+        uniq_token,
+        @klass.create_unique_activation_token)
+    }
+  end
 end
