@@ -17,12 +17,12 @@
 class EmailAction < ActiveRecord::Base
   belongs_to :trigger
 
-  # TODO: trigger_idの存在を検証
-  # TODO: emailの存在を検証
-  # TODO: emailの文字数を検証
-  # TODO: emailのフォーマットを検証
-  # TODO: subjectの存在を検証
-  # TODO: subjectの文字数を検証
-  # TODO: bodyの存在を検証
-  # TODO: bodyの文字数を検証（1000文字くらい？）
+  validates_presence_of :trigger_id
+  validates_presence_of :email
+  validates_presence_of :subject
+  validates_presence_of :body
+  validates_length_of :email, :maximum => 200
+  validates_length_of :subject, :maximum => 200
+  validates_length_of :body, :maximum => 1000
+  validates_email_format_of :email
 end

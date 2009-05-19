@@ -18,24 +18,24 @@ yuya_pda_ge90_1:
   updated_at: 2009-01-01 00:00:00
   trigger: yuya_pda_ge90
   enable: true
-  email: "email" # FIXME:
-  subject: "subject" # FIXME:
-  body: "body" # FIXME:
+  email: "email@example.jp"
+  subject: "subject"
+  body: "body"
 
 yuya_pda_ge90_2:
   created_at: 2009-01-01 00:00:00
   updated_at: 2009-01-01 00:00:00
   trigger: yuya_pda_ge90
   enable: false
-  email: "email" # FIXME:
-  subject: "subject" # FIXME:
-  body: "body" # FIXME:
+  email: "email@example.jp"
+  subject: "subject"
+  body: "body"
 
 shinya_note_ne0_1:
   created_at: 2009-01-01 00:00:00
   updated_at: 2009-01-01 00:00:00
   trigger: shinya_note_ne0
   enable: true
-  email: "email" # FIXME:
-  subject: "subject" # FIXME:
-  body: "body" # FIXME:
+  email: "email@example.jp"
+  subject: "subject"
+  body: "body"
