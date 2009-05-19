@@ -1,2 +1,23 @@
 
 <h1>トリガの追加</h1>
+
+<%- form_for(:edit_form, :url => {:action => "create"}) { |f| -%>
+ <div>
+  <%= f.label(:enable) %>
+  <%= f.check_box(:enable) %>
+  <%= error_message_on(:edit_form, :enable) %>
+ </div>
+ <div>
+  <%= f.label(:operator) %>
+  <%= f.select(:operator, @operators_for_select) %>
+  <%= error_message_on(:edit_form, :operator) %>
+ </div>
+ <div>
+  <%= f.label(:level) %>
+  <%= f.text_field(:level, :size => 4) %>
+  <%= error_message_on(:edit_form, :level) %>
+ </div>
+ <div><%= submit_tag("追加") %></div>
+<%- } -%>
+
+<%= error_messages_for(:edit_form) %>
