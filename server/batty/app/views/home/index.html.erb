@@ -1,7 +1,7 @@
 
 <h1>batty</h1>
 
-<div>UserID: <%=h session[:user_id] %></div>
+<div>UserID: <%=h @login_user.try(:id) %></div>
 
 <%- unless logged_in? -%>
  <div id="login_form">
