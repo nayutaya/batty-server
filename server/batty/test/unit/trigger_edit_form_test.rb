@@ -45,11 +45,6 @@ class TriggerEditFormTest < ActiveSupport::TestCase
     assert_equal(true, @basic.valid?)
   end
 
-  test "validates_presence_of :enable" do
-    @basic.enable = nil
-    assert_equal(false, @basic.valid?)
-  end
-
   test "validates_presence_of :operator" do
     @basic.operator = nil
     assert_equal(false, @basic.valid?)

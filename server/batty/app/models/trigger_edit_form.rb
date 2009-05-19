@@ -5,7 +5,6 @@ class TriggerEditForm < ActiveForm
   column :operator, :type => :integer
   column :level,    :type => :integer
 
-  validates_presence_of :enable
   validates_presence_of :operator
   validates_presence_of :level
   validates_inclusion_of :operator, :in => Trigger::OperatorCodes, :allow_nil => true
