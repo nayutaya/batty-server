@@ -4,6 +4,7 @@ require 'test_helper'
 class TriggerEditFormTest < ActiveSupport::TestCase
   def setup
     @klass = TriggerEditForm
+    @form  = @klass.new
     @basic = @klass.new(
       :enable   => true,
       :operator => Trigger.operator_symbol_to_code(:eq),
@@ -81,5 +82,32 @@ class TriggerEditFormTest < ActiveSupport::TestCase
       @basic.level = value
       assert_equal(expected, @basic.valid?)
     }
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "to_trigger_hash, empty" do
+    expected = {
+      :enable   => nil,
+      :operator => nil,
+      :level    => nil,
+    }
+    assert_equal(expected, @form.to_trigger_hash)
+  end
+
+  test "to_trigger_hash, full" do
+    @form.attributes = {
+      :enable   => true,
+      :operator => 0,
+      :level    => 1,
+    }
+    expected = {
+      :enable   => true,
+      :operator => 0,
+      :level    => 1,
+    }
+    assert_equal(expected, @form.to_trigger_hash)
   end
 end

@@ -10,4 +10,12 @@ class TriggerEditForm < ActiveForm
   validates_presence_of :level
   validates_inclusion_of :operator, :in => Trigger::OperatorCodes, :allow_nil => true
   validates_inclusion_of :level, :in => Energy::LevelRange, :allow_nil => true
+
+  def to_trigger_hash
+    return {
+      :enable   => self.enable,
+      :operator => self.operator,
+      :level    => self.level,
+    }
+  end
 end
