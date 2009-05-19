@@ -14,6 +14,26 @@
  </table>
 </div>
 
+<h2>トリガ</h2>
+
+<table border="1">
+  <tr>
+    <th>条件</th>
+    <th>有効/無効</th>
+    <th>アクション</th>
+  </tr>
+  <%- @triggers.each { |trigger| -%>
+    <tr>
+      <td>
+        <%=h trigger.operator_sign %>
+        <%=h trigger.level %>
+      </td>
+      <td><%=h (trigger.enable? ? "有効" : "無効") %></td>
+      <td><%=h trigger.email_actions.size %> 個</td>
+    </tr>
+  <%- } -%>
+</table>
+
 <h2>バッテリ残量</h2>
 
 <div>

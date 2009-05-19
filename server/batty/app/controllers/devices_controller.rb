@@ -35,6 +35,8 @@ class DevicesController < ApplicationController
 
   # GET /device/:device_token
   def show
+    @triggers = @device.triggers.all(
+      :order => "triggers.level ASC, triggers.id ASC")
     @energies = @device.energies.paginate(
       :order    => "energies.observed_at DESC, energies.id DESC",
       :page     => 1,

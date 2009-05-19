@@ -106,7 +106,13 @@ class DevicesControllerTest < ActionController::TestCase
     assert_logged_in(@yuya)
 
     assert_equal(@yuya_pda, assigns(:device))
-  
+
+    assert_equal(@yuya_pda.triggers.size, assigns(:triggers).size)
+    assert_equal(true, assigns(:triggers).map(&:device).all? { |d| d == @yuya_pda })
+    assert_equal(
+      assigns(:triggers).sort_by { |t| [t.level, t.id] },
+      assigns(:triggers))
+
     assert_equal( 1, assigns(:energies).current_page)
     assert_equal(10, assigns(:energies).per_page)
     assert_equal(true, assigns(:energies).map(&:device).all? { |d| d == @yuya_pda })
