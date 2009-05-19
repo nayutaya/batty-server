@@ -8,6 +8,6 @@ class TriggerEditForm < ActiveForm
   validates_presence_of :enable
   validates_presence_of :operator
   validates_presence_of :level
-  validates_inclusion_of :operator, :in => 0..5, :allow_nil => true
-  validates_inclusion_of :level, :in => 0..100, :allow_nil => true
+  validates_inclusion_of :operator, :in => Trigger::OperatorCodes, :allow_nil => true
+  validates_inclusion_of :level, :in => Energy::LevelRange, :allow_nil => true
 end
