@@ -56,6 +56,10 @@ class Trigger < ActiveRecord::Base
     return OperatorsTable[operator_code][:sign]
   end
 
+  def self.operator_code_to_description(operator_code)
+    return OperatorsTable[operator_code][:desc]
+  end
+
   def self.operator_symbol_to_code(operator_symbol)
     @_ope_sym_code ||= Operators.inject({}) { |memo, (code, symbol, block, sign, desc)|
       memo[symbol] = code

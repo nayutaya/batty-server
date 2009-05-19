@@ -126,7 +126,18 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal("＞", @klass.operator_code_to_sign(4))
     assert_equal("≧", @klass.operator_code_to_sign(5))
 
-    assert_equal(nil, @klass.operator_code_to_symbol(-1))
+    assert_equal(nil, @klass.operator_code_to_sign(-1))
+  end
+
+  test "self.operator_code_to_description" do
+    assert_equal("等しい",     @klass.operator_code_to_description(0))
+    assert_equal("等しくない", @klass.operator_code_to_description(1))
+    assert_equal("より小さい", @klass.operator_code_to_description(2))
+    assert_equal("以下",       @klass.operator_code_to_description(3))
+    assert_equal("より大きい", @klass.operator_code_to_description(4))
+    assert_equal("以上",       @klass.operator_code_to_description(5))
+
+    assert_equal(nil, @klass.operator_code_to_description(-1))
   end
 
   test "self.operator_symbol_to_code" do
