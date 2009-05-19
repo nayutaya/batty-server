@@ -1,0 +1,2 @@
+class TriggersController < ApplicationController
+end
