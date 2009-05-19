@@ -89,7 +89,7 @@ class TriggerEditFormTest < ActiveSupport::TestCase
   #
 
   test "self.opeartors_for_select" do
-    expected = [
+    items = [
       ["＝ 等しい",     "0"],
       ["≠ 等しくない", "1"],
       ["＜ より小さい", "2"],
@@ -97,7 +97,22 @@ class TriggerEditFormTest < ActiveSupport::TestCase
       ["＞ より大きい", "4"],
       ["≧ 以上",       "5"],
     ]
-    assert_equal(expected, @klass.operators_for_select)
+
+    assert_equal(
+      items,
+      @klass.operators_for_select)
+    assert_equal(
+      [["", ""]] + items,
+      @klass.operators_for_select(:include_blank => true))
+    assert_equal(
+      [["empty", ""]] + items,
+      @klass.operators_for_select(:include_blank => true, :blank_label => "empty"))
+  end
+
+  test "self.operators_for_select, invalid parameter" do
+    assert_raise(ArgumentError) {
+      @klass.operators_for_select(:invalid => true)
+    }
   end
 
   #
