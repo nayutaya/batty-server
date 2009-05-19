@@ -6,7 +6,7 @@ class EmailSignupFormTest < ActiveSupport::TestCase
     @klass = EmailSignupForm
     @form  = @klass.new
     @basic = @klass.new(
-      :email                 => "basic@example.com",
+      :email                 => "email@example.jp",
       :password              => "password",
       :password_confirmation => "password")
   end

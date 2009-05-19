@@ -5,7 +5,7 @@ class EventTest < ActiveSupport::TestCase
   def setup
     @klass = Event
     @basic = @klass.new(
-      :device           => devices(:yuya_pda),
+      :device_id        => devices(:yuya_pda).id,
       :trigger_operator => 0,
       :trigger_level    => 0,
       :observed_level   => 0,

@@ -6,7 +6,7 @@ class EmailLoginFormTest < ActiveSupport::TestCase
     @klass = EmailLoginForm
     @form  = @klass.new
     @basic = @klass.new(
-      :email    => "foo@example.com",
+      :email    => "email@example.jp",
       :password => "password")
   end
 

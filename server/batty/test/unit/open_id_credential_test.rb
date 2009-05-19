@@ -6,8 +6,8 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
   def setup
     @klass = OpenIdCredential
     @basic = @klass.new(
-      :user         => users(:yuya),
-      :identity_url => "http://example.com/foo")
+      :user_id      => users(:yuya).id,
+      :identity_url => "http://example.jp/identity_url")
 
     @yuya_livedoor  = open_id_credentials(:yuya_livedoor)
     @shinya_example = open_id_credentials(:shinya_example)

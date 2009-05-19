@@ -7,7 +7,7 @@ class UserTest < ActiveSupport::TestCase
     @klass = User
     @basic = @klass.new(
       :user_token => "0" * 20,
-      :nickname   => "name")
+      :nickname   => "nickname")
 
     @yuya   = users(:yuya)
     @shinya = users(:shinya)

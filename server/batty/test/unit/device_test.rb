@@ -6,10 +6,10 @@ class DeviceTest < ActiveSupport::TestCase
   def setup
     @klass = Device
     @basic = @klass.new(
-      :user         => users(:yuya),
-      :name         => "name",
-      :device_token => "0" * 20,
-      :device_icon  => device_icons(:note))
+      :user_id        => users(:yuya).id,
+      :name           => "name",
+      :device_token   => "0" * 20,
+      :device_icon_id => device_icons(:note).id)
 
     @yuya_pda      = devices(:yuya_pda)
     @yuya_cellular = devices(:yuya_cellular)
