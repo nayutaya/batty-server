@@ -169,13 +169,23 @@ class UserTest < ActiveSupport::TestCase
   # クラスメソッド
   #
 
-  test "create_unique_user_token" do
-    tokens = [users(:yuya).user_token, "b" * 20]
+  test "self.create_unique_user_token, pattern" do
+    assert_match(
+      @klass::TokenPattern,
+      @klass.create_unique_user_token)
+  end
+
+  test "self.create_unique_user_token, duplication" do
+    dup_token1 = @yuya.user_token
+    dup_token2 = @shinya.user_token
+    uniq_token = "f" * @klass::TokenLength
+    tokens = [dup_token1, dup_token2, uniq_token]
+
     musha = Kagemusha.new(TokenUtil)
     musha.defs(:create_token) { tokens.shift }
     musha.swap {
       assert_equal(
-        "b" * 20,
+        uniq_token,
         @klass.create_unique_user_token)
     }
   end

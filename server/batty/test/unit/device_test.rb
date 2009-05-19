@@ -153,13 +153,23 @@ class DeviceTest < ActiveSupport::TestCase
   # クラスメソッド
   #
 
-  test "create_unique_device_token" do
-    tokens = [devices(:yuya_pda).device_token, "b" * 20]
+  test "create_unique_device_token, pattern" do
+    assert_match(
+      @klass::TokenPattern,
+      @klass.create_unique_device_token)
+  end
+
+  test "create_unique_device_token, duplication" do
+    dup_token1 = @yuya_pda.device_token
+    dup_token2 = @shinya_note.device_token
+    uniq_token = "f" * @klass::TokenLength
+    tokens = [dup_token1, dup_token2, uniq_token]
+
     musha = Kagemusha.new(TokenUtil)
     musha.defs(:create_token) { tokens.shift }
     musha.swap {
       assert_equal(
-        "b" * 20,
+        uniq_token,
         @klass.create_unique_device_token)
     }
   end

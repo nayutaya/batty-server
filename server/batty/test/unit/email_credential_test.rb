@@ -131,13 +131,23 @@ class EmailCredentialTest < ActiveSupport::TestCase
   # クラスメソッド
   #
 
-  test "self.create_unique_activation_token" do
-    tokens = [@yuya_gmail.activation_token, "b" * 20]
+  test "self.create_unique_activation_token, pattern" do
+    assert_match(
+      @klass::TokenPattern,
+      @klass.create_unique_activation_token)
+  end
+
+  test "self.create_unique_activation_token, duplication" do
+    dup_token1 = @yuya_gmail.activation_token
+    dup_token2 = @risa_example.activation_token
+    uniq_token = "f" * @klass::TokenLength
+    tokens = [dup_token1, dup_token2, uniq_token]
+
     musha = Kagemusha.new(TokenUtil)
     musha.defs(:create_token) { tokens.shift }
     musha.swap {
       assert_equal(
-        "b" * 20,
+        uniq_token,
         @klass.create_unique_activation_token)
     }
   end
