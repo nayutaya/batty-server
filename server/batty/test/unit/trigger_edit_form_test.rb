@@ -90,19 +90,19 @@ class TriggerEditFormTest < ActiveSupport::TestCase
 
   test "self.opeartors_for_select" do
     items = [
-      ["＝ 等しい",     "0"],
-      ["≠ 等しくない", "1"],
-      ["＜ より小さい", "2"],
-      ["≦ 以下",       "3"],
-      ["＞ より大きい", "4"],
-      ["≧ 以上",       "5"],
+      ["＝ 等しい",     0],
+      ["≠ 等しくない", 1],
+      ["＜ より小さい", 2],
+      ["≦ 以下",       3],
+      ["＞ より大きい", 4],
+      ["≧ 以上",       5],
     ]
 
     assert_equal(
       items,
       @klass.operators_for_select)
     assert_equal(
-      [["(選択してください)", ""]] + items,
+      [["(選択してください)", nil]] + items,
       @klass.operators_for_select(:include_blank => true))
   end
 

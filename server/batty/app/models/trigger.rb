@@ -75,11 +75,11 @@ class Trigger < ActiveRecord::Base
     raise(ArgumentError) unless options.empty?
 
     items  = []
-    items += [[blank_label, ""]] if include_blank
+    items += [[blank_label, nil]] if include_blank
     items += OperatorCodes.map { |code|
       sign = self.operator_code_to_sign(code)
       desc = self.operator_code_to_description(code)
-      [format("%s %s", sign, desc), code.to_s]
+      [format("%s %s", sign, desc), code]
     }
 
     return items

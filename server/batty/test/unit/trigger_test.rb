@@ -153,22 +153,22 @@ class TriggerTest < ActiveSupport::TestCase
 
   test "self.opeartors_for_select" do
     items = [
-      ["＝ 等しい",     "0"],
-      ["≠ 等しくない", "1"],
-      ["＜ より小さい", "2"],
-      ["≦ 以下",       "3"],
-      ["＞ より大きい", "4"],
-      ["≧ 以上",       "5"],
+      ["＝ 等しい",     0],
+      ["≠ 等しくない", 1],
+      ["＜ より小さい", 2],
+      ["≦ 以下",       3],
+      ["＞ より大きい", 4],
+      ["≧ 以上",       5],
     ]
 
     assert_equal(
       items,
       @klass.operators_for_select)
     assert_equal(
-      [["", ""]] + items,
+      [["", nil]] + items,
       @klass.operators_for_select(:include_blank => true))
     assert_equal(
-      [["empty", ""]] + items,
+      [["empty", nil]] + items,
       @klass.operators_for_select(:include_blank => true, :blank_label => "empty"))
   end
 
