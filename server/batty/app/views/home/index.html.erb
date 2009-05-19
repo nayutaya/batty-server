@@ -43,16 +43,19 @@
      <th></th>
      <th>デバイス</th>
      <th>バッテリー残量</th>
+     <th>更新日時</th>
      <th>トリガー</th>
      <th>アクション</th>
     </tr>
    </thead>
    <tbody>
     <%- @devices.each { |device| -%>
+     <%- current_energy = device.current_energy -%>
      <tr>
       <td><%= device_icon48(device.device_icon) %></td>
       <td><%= link_to(h(device.name), :controller => "devices", :action => "show", :device_token => device.device_token) %></td>
-      <td align="right"><%=h device.current_energy.try(:observed_level) || "-" %> %</td>
+      <td align="right"><%=h current_energy.try(:observed_level) || "-" %> %</td>
+      <td><%=h current_energy.try(:observed_at).try(:strftime, "%m-%d %H:%M") || "-" %></td>
       <td align="right"><%=h device.triggers.enable.count %></td>
       <td>アクション</td>
      </tr>
