@@ -46,30 +46,4 @@ class DevicesController < ApplicationController
       :page     => 1,
       :per_page => 10)
   end
-
-  private
-
-  def authentication(user_id = session[:user_id])
-    @login_user = User.find_by_id(user_id)
-    return true
-  end
-
-  def authentication_required
-    return true if @login_user
-
-    set_error("ログインが必要です。")
-    redirect_to(root_path)
-
-    return false
-  end
-
-  def required_param_device_token(device_token = params[:device_token])
-    @device = Device.find_by_device_token(device_token)
-    return true if @device
-
-    set_error("デバイストークンが正しくありません。")
-    redirect_to(root_path)
-
-    return false
-  end
 end
