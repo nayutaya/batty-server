@@ -16,13 +16,11 @@
 class DeviceIcon < ActiveRecord::Base
   has_many :devices
 
-  # TODO: display_orderの存在を検証
-  # TODO: nameの存在を検証
-  # TODO: nameの文字数を検証
-  # TODO: url16の存在を検証
-  # TODO: url16の文字数を検証
-  # TODO: url16のフォーマットを検証
-  # TODO: url32の存在を検証
-  # TODO: url32の文字数を検証
-  # TODO: url32のフォーマットを検証
+  validates_presence_of :display_order
+  validates_presence_of :name
+  validates_presence_of :url24
+  validates_presence_of :url48
+  validates_length_of :name, :maximum => 30, :allow_nil => true
+  validates_length_of :url24, :maximum => 200, :allow_nil => true
+  validates_length_of :url48, :maximum => 200, :allow_nil => true
 end
