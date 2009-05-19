@@ -68,6 +68,23 @@ class Trigger < ActiveRecord::Base
     return @_ope_sym_code[operator_symbol]
   end
 
+  def self.operators_for_select(options = {})
+    options = options.dup
+    include_blank = (options.delete(:include_blank) == true)
+    blank_label   = (options.delete(:blank_label) || "")
+    raise(ArgumentError) unless options.empty?
+
+    items  = []
+    items += [[blank_label, ""]] if include_blank
+    items += OperatorCodes.map { |code|
+      sign = self.operator_code_to_sign(code)
+      desc = self.operator_code_to_description(code)
+      [format("%s %s", sign, desc), code.to_s]
+    }
+
+    return items
+  end
+
   def operator_symbol
     return self.class.operator_code_to_symbol(self.operator)
   end

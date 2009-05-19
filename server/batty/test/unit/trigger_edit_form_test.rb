@@ -102,11 +102,8 @@ class TriggerEditFormTest < ActiveSupport::TestCase
       items,
       @klass.operators_for_select)
     assert_equal(
-      [["", ""]] + items,
+      [["(選択してください)", ""]] + items,
       @klass.operators_for_select(:include_blank => true))
-    assert_equal(
-      [["empty", ""]] + items,
-      @klass.operators_for_select(:include_blank => true, :blank_label => "empty"))
   end
 
   test "self.operators_for_select, invalid parameter" do
