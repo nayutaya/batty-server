@@ -15,11 +15,15 @@
 class EmailAddress < ActiveRecord::Base
   belongs_to :user
 
-  # TODO: emailの存在を検証
-  # TODO: emailの文字数を検証
-  # TODO: emailのフォーマットを検証
-  # TODO: activation_tokenの存在を検証
-  # TODO: activation_tokenのフォーマットを検証
+  TokenLength  = 20
+  TokenPattern = TokenUtil.create_token_regexp(TokenLength)
+
+  validates_presence_of :activation_token
+  validates_presence_of :user_id
+  validates_presence_of :email
+  validates_length_of :email, :maximum => 200
+  validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
+  validates_email_format_of :email
 
   # TODO: activation_tokenを生成するメソッドを実装
   # TODO: 一意なactivation_tokenを生成するメソッドを実装
