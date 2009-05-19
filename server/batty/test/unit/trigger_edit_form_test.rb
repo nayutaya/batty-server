@@ -85,6 +85,22 @@ class TriggerEditFormTest < ActiveSupport::TestCase
   end
 
   #
+  # クラスメソッド
+  #
+
+  test "self.opeartors_for_select" do
+    expected = [
+      ["＝ 等しい",     "0"],
+      ["≠ 等しくない", "1"],
+      ["＜ より小さい", "2"],
+      ["≦ 以下",       "3"],
+      ["＞ より大きい", "4"],
+      ["≧ 以上",       "5"],
+    ]
+    assert_equal(expected, @klass.operators_for_select)
+  end
+
+  #
   # インスタンスメソッド
   #
 
