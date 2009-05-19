@@ -1,4 +1,12 @@
 
+<%-
+  if logged_in?
+    @additional_head_html = <<-END_OF_HTML
+      <meta http-equiv="refresh" content="#{5.minutes}" />
+    END_OF_HTML
+  end
+-%>
+
 <h1>batty</h1>
 
 <div>UserID: <%=h @login_user.try(:id) %></div>
