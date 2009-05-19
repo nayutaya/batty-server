@@ -30,4 +30,14 @@ class EmailAddress < ActiveRecord::Base
   def self.create_unique_activation_token
     return TokenUtil.create_unique_token(self, :activation_token, TokenLength)
   end
+
+  def activated?
+    return !self.activated_at.nil?
+  end
+
+  def activate!
+    return false if self.activated?
+    self.update_attributes!(:activated_at => Time.now)
+    return true
+  end
 end

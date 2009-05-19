@@ -3,8 +3,9 @@ require 'test_helper'
 
 class EmailAddressTest < ActiveSupport::TestCase
   def setup
-    @klass = EmailAddress
-    @basic = @klass.new(
+    @klass  = EmailAddress
+    @record = @klass.new
+    @basic  = @klass.new(
       :activation_token => "0" * 20,
       :user_id          => users(:yuya).id,
       :email            => "email@example.jp")
@@ -116,5 +117,39 @@ class EmailAddressTest < ActiveSupport::TestCase
         uniq_token,
         @klass.create_unique_activation_token)
     }
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "activated?" do
+    @record.activated_at = nil
+    assert_equal(false, @record.activated?)
+
+    @record.activated_at = Time.local(2009, 1, 1)
+    assert_equal(true, @record.activated?)
+  end
+
+  test "activate!, no activated yet" do
+    address = email_addresses(:yuya2)
+    time = Time.local(2010, 1, 1)
+
+    assert_equal(false, address.activated?)
+    assert_equal(true,  Kagemusha::DateTime.at(time) { address.activate! })
+    address.reload
+    assert_equal(true,  address.activated?)
+    assert_equal(time,  address.activated_at)
+  end
+
+  test "activate!, already activated" do
+    address = email_addresses(:yuya1)
+    time = address.activated_at
+
+    assert_equal(true,  address.activated?)
+    assert_equal(false, address.activate!)
+    address.reload
+    assert_equal(true,  address.activated?)
+    assert_equal(time,  address.activated_at)
   end
 end
