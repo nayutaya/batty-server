@@ -12,7 +12,7 @@ class TokenUtilTest < ActiveSupport::TestCase
     assert_match(/\A[0-9a-f]{20}\z/, @mod.create_token(20))
     assert_match(/\A[0-9a-f]{30}\z/, @mod.create_token(30))
 
-    # MEMO: 結果が乱数に依存するため、ごく稀にテストが失敗する可能性がある
+    srand(0)
     assert_not_equal(
       @mod.create_token(20),
       @mod.create_token(20))
@@ -23,7 +23,7 @@ class TokenUtilTest < ActiveSupport::TestCase
     assert_match(/\A[0-9a-f]{20}\z/, @mod.create_unique_token(User, :user_token, 20))
     assert_match(/\A[0-9a-f]{30}\z/, @mod.create_unique_token(User, :user_token, 30))
 
-    # MEMO: 結果が乱数に依存するため、ごく稀にテストが失敗する可能性がある
+    srand(0)
     assert_not_equal(
       @mod.create_unique_token(User, :user_token, 20),
       @mod.create_unique_token(User, :user_token, 20))
