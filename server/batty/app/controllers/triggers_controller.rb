@@ -9,6 +9,7 @@ class TriggersController < ApplicationController
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_device_token
+  before_filter :required_param_trigger_id, :only => [:show]
 
   # GET /device/:device_token/triggers/new
   def new
@@ -34,7 +35,23 @@ class TriggersController < ApplicationController
     end
   end
 
+  # GET /device/:device_token/trigger/:trigger_id
+  def show
+    # nop
+  end
+
   private
+
+  def required_param_trigger_id(trigger_id = params[:trigger_id])
+    @trigger = Trigger.find_by_id(trigger_id)
+    if @trigger
+      return true
+    else
+      set_error("トリガIDが正しくありません。")
+      redirect_to(root_path)
+      return false
+    end
+  end
 
   def set_operators_for_select
     @operators_for_select = TriggerEditForm.operators_for_select(

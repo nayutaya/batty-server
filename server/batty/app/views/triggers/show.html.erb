@@ -1,0 +1,16 @@
+
+<h1>トリガの詳細</h1>
+
+<table border="1">
+  <tr>
+    <th>条件</th>
+    <td>
+      <%=h @trigger.operator_sign %>
+      <%=h @trigger.level %>
+    </td>
+  </tr>
+  <tr>
+    <th>有効/無効</th>
+    <td><%=h (@trigger.enable? ? "有効" : "無効") %></td>
+  </tr>
+</table>

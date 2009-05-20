@@ -3,8 +3,9 @@ require 'test_helper'
 
 class TriggersControllerTest < ActionController::TestCase
   def setup
-    @yuya = users(:yuya)
-    @yuya_pda = devices(:yuya_pda)
+    @yuya          = users(:yuya)
+    @yuya_pda      = devices(:yuya_pda)
+    @yuya_pda_ge90 = triggers(:yuya_pda_ge90)
 
     @edit_form = TriggerEditForm.new(
       :enable   => true,
@@ -21,6 +22,9 @@ class TriggersControllerTest < ActionController::TestCase
     assert_routing("/device/abcdef/triggers/new",        base.merge(:action => "new", :device_token => "abcdef"))
     assert_routing("/device/0123456789/triggers/create", base.merge(:action => "create", :device_token => "0123456789"))
     assert_routing("/device/abcdef/triggers/create",     base.merge(:action => "create", :device_token => "abcdef"))
+
+    assert_routing("/device/0123456789/trigger/12345", base.merge(:action => "show", :device_token => "0123456789", :trigger_id => "12345"))
+    assert_routing("/device/abcdef/trigger/67890",     base.merge(:action => "show", :device_token => "abcdef", :trigger_id => "67890"))
   end
 
   test "GET new" do
@@ -128,5 +132,51 @@ class TriggersControllerTest < ActionController::TestCase
 
     assert_response(405)
     assert_template(nil)
+  end
+
+  test "GET show" do
+    get :show, :device_token => @yuya_pda.device_token, :trigger_id => @yuya_pda_ge90.id
+
+    assert_response(:success)
+    assert_template("show")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+    assert_equal(@yuya_pda_ge90, assigns(:trigger))
+  end
+
+  test "GET show, abnormal, no device token" do
+    get :show, :device_token => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET show, abnormal, other's device" do
+    # TODO: 実装せよ
+  end
+
+  test "GET show, abnormal, no trigger id" do
+    get :show, :device_token => @yuya_pda.device_token, :trigger_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET show, abnormal, other's trigger" do
+    # TODO: 実装せよ
+  end
+
+  test "GET show, abnormal, no login" do
+    session_logout
+
+    get :show
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 end
