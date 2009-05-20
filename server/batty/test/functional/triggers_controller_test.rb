@@ -144,6 +144,12 @@ class TriggersControllerTest < ActionController::TestCase
 
     assert_equal(@yuya_pda, assigns(:device))
     assert_equal(@yuya_pda_ge90, assigns(:trigger))
+
+    assert_equal(@yuya_pda_ge90.email_actions.size, assigns(:email_actions).size)
+    assert_equal(true, assigns(:email_actions).map(&:trigger).all? { |t| t == @yuya_pda_ge90 })
+    assert_equal(
+      assigns(:email_actions).sort_by { |act| [act.email, act.id] },
+      assigns(:email_actions))
   end
 
   test "GET show, abnormal, no device token" do

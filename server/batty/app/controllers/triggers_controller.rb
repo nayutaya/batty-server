@@ -37,7 +37,8 @@ class TriggersController < ApplicationController
 
   # GET /device/:device_token/trigger/:trigger_id
   def show
-    # nop
+    @email_actions = @trigger.email_actions.all(
+      :order => "email_actions.email ASC, email_actions.id ASC")
   end
 
   private

@@ -14,3 +14,18 @@
     <td><%=h (@trigger.enable? ? "有効" : "無効") %></td>
   </tr>
 </table>
+
+<h2>メールアクション</h2>
+
+<table border="1">
+  <tr>
+    <th>メールアドレス</th>
+    <th>タイトル</th>
+  </tr>
+  <%- @email_actions.each { |email_action| -%>
+    <tr>
+      <td><%=h email_action.email %></td>
+      <td><%=h email_action.subject %></td>
+    </tr>
+  <%- } -%>
+</table>
