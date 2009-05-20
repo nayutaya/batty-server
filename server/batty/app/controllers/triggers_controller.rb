@@ -43,17 +43,6 @@ class TriggersController < ApplicationController
 
   private
 
-  def required_param_trigger_id(trigger_id = params[:trigger_id])
-    @trigger = Trigger.find_by_id(trigger_id)
-    if @trigger
-      return true
-    else
-      set_error("トリガIDが正しくありません。")
-      redirect_to(root_path)
-      return false
-    end
-  end
-
   def set_operators_for_select
     @operators_for_select = TriggerEditForm.operators_for_select(
       :include_blank => true)
