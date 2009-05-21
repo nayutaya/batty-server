@@ -97,10 +97,10 @@ class TriggerTest < ActiveSupport::TestCase
   # 名前付きスコープ
   #
 
-  test "enabled" do
-    assert_equal(true, @klass.count > @klass.enable.count)
-    assert_equal(true, @klass.all.any? { |t| !t.enable? })
-    assert_equal(true, @klass.enable.all.all? { |t| t.enable? })
+  test "enable" do
+    assert_equal(true,  (@klass.count > @klass.enable.count))
+    assert_equal(false, @klass.all.all?(&:enable?))
+    assert_equal(true,  @klass.enable.all.all?(&:enable?))
   end
 
   #
