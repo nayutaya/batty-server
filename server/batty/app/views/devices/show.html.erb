@@ -1,4 +1,9 @@
 
+<%-
+  @additional_head_html  = rss_auto_discovery(:title => "バッテリ履歴", :href => url_for(:controller => "device_feeds", :action => "energies", :device_token => @device.device_token))
+  @additional_head_html += rss_auto_discovery(:title => "イベント履歴", :href => url_for(:controller => "device_feeds", :action => "events", :device_token => @device.device_token))
+-%>
+
 <div>
   <%= link_to(h("トップ"), root_path) %> &gt;
   <em><%=h @device.name %></em>
