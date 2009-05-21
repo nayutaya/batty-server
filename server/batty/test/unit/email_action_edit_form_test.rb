@@ -4,6 +4,7 @@ require 'test_helper'
 class EmailActionEditFormTest < ActiveSupport::TestCase
   def setup
     @klass = EmailActionEditForm
+    @form  = @klass.new
     @basic = @klass.new(
       :email   => "email@example.jp",
       :subject => "subject",
@@ -108,5 +109,35 @@ class EmailActionEditFormTest < ActiveSupport::TestCase
       @basic.email = value
       assert_equal(expected, @basic.valid?, value)
     }
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "to_email_action_hash, empty" do
+    expected = {
+      :enable  => nil,
+      :email   => nil,
+      :subject => nil,
+      :body    => nil,
+    }
+    assert_equal(expected, @form.to_email_action_hash)
+  end
+
+  test "to_email_action_hash, full" do
+    @form.attributes = {
+      :enable  => true,
+      :email   => "a",
+      :subject => "b",
+      :body    => "c",
+    }
+    expected = {
+      :enable  => true,
+      :email   => "a",
+      :subject => "b",
+      :body    => "c",
+    }
+    assert_equal(expected, @form.to_email_action_hash)
   end
 end
