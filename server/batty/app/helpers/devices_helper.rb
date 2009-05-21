@@ -1,20 +1,28 @@
 
 module DevicesHelper
-  def device_icon24(device_icon)
+  def device_icon24(device_icon, options = {})
+    options = options.dup
+    name = options.delete(:name) || device_icon.name
+    raise(ArgumentError) unless options.empty?
+
     return image_tag(
       device_icon.url24,
       :width  => 24,
       :height => 24,
-      :alt    => device_icon.name,
-      :title  => device_icon.name)
+      :alt    => name,
+      :title  => name)
   end
 
-  def device_icon48(device_icon)
+  def device_icon48(device_icon, options = {})
+    options = options.dup
+    name = options.delete(:name) || device_icon.name
+    raise(ArgumentError) unless options.empty?
+
     return image_tag(
       device_icon.url48,
       :width  => 48,
       :height => 48,
-      :alt    => device_icon.name,
-      :title  => device_icon.name)
+      :alt    => name,
+      :title  => name)
   end
 end
