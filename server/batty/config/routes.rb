@@ -41,7 +41,8 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "device/:device_token/triggers/create",     :controller => "triggers", :action => "create", :device_token => DeviceToken
   map.connect "device/:device_token/trigger/:trigger_id", :controller => "triggers", :action => "show", :device_token => DeviceToken, :trigger_id => TriggerId
 
-  map.connect "device/:device_token/trigger/:trigger_id/acts/email/new", :controller => "email_actions", :action => "new", :device_token => DeviceToken, :trigger_id => TriggerId
+  map.connect "device/:device_token/trigger/:trigger_id/acts/email/new",    :controller => "email_actions", :action => "new", :device_token => DeviceToken, :trigger_id => TriggerId
+  map.connect "device/:device_token/trigger/:trigger_id/acts/email/create", :controller => "email_actions", :action => "create", :device_token => DeviceToken, :trigger_id => TriggerId
 
   map.connect "device/:device_token/energies.rdf", :controller => "device_feeds", :action => "energies", :device_token => /[0-9a-f]+/
   map.connect "device/:device_token/events.rdf",   :controller => "device_feeds", :action => "events",   :device_token => /[0-9a-f]+/
