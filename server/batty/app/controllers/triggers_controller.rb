@@ -8,16 +8,16 @@ class TriggersController < ApplicationController
 
   before_filter :authentication
   before_filter :authentication_required
-  before_filter :required_param_device_token
+  before_filter :required_param_device_id
   before_filter :required_param_trigger_id, :only => [:show]
 
-  # GET /device/:device_token/triggers/new
+  # GET /device/:device_id/triggers/new
   def new
     @edit_form = TriggerEditForm.new
     set_operators_for_select
   end
 
-  # POST /device/:device_token/triggers/create
+  # POST /device/:device_id/triggers/create
   def create
     @edit_form = TriggerEditForm.new(params[:edit_form])
 
@@ -27,7 +27,7 @@ class TriggersController < ApplicationController
       @trigger.save!
 
       set_notice("トリガを追加しました。")
-      redirect_to(:controller => "devices", :action => "show", :device_token => @device.device_token)
+      redirect_to(:controller => "devices", :action => "show", :device_id => @device.id)
     else
       set_operators_for_select
       set_error_now("入力内容を確認してください。")
@@ -35,7 +35,7 @@ class TriggersController < ApplicationController
     end
   end
 
-  # GET /device/:device_token/trigger/:trigger_id
+  # GET /device/:device_id/trigger/:trigger_id
   def show
     @email_actions = @trigger.email_actions.all(
       :order => "email_actions.email ASC, email_actions.id ASC")

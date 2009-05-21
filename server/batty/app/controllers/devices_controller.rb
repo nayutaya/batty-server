@@ -8,7 +8,7 @@ class DevicesController < ApplicationController
 
   before_filter :authentication
   before_filter :authentication_required
-  before_filter :required_param_device_token, :only => [:show]
+  before_filter :required_param_device_id, :only => [:show]
 
   # GET /devices/new
   def new
@@ -33,7 +33,7 @@ class DevicesController < ApplicationController
     end
   end
 
-  # GET /device/:device_token
+  # GET /device/:device_id
   def show
     @triggers = @device.triggers.all(
       :order => "triggers.level ASC, triggers.id ASC")

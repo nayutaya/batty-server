@@ -19,14 +19,12 @@ class EmailActionsControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "email_actions"}
 
-    assert_routing("/device/01234567/trigger/12345/acts/email/new",    base.merge(:action => "new", :device_token => "01234567", :trigger_id => "12345"))
-    assert_routing("/device/89abcdef/trigger/67890/acts/email/new",    base.merge(:action => "new", :device_token => "89abcdef", :trigger_id => "67890"))
-    assert_routing("/device/01234567/trigger/12345/acts/email/create", base.merge(:action => "create", :device_token => "01234567", :trigger_id => "12345"))
-    assert_routing("/device/89abcdef/trigger/67890/acts/email/create", base.merge(:action => "create", :device_token => "89abcdef", :trigger_id => "67890"))
+    assert_routing("/device/1234567890/trigger/2345678901/acts/email/new",    base.merge(:action => "new", :device_id => "1234567890", :trigger_id => "2345678901"))
+    assert_routing("/device/1234567890/trigger/2345678901/acts/email/create", base.merge(:action => "create", :device_id => "1234567890", :trigger_id => "2345678901"))
   end
 
   test "GET new" do
-    get :new, :device_token => @yuya_pda.device_token, :trigger_id => @yuya_pda_ge90.id
+    get :new, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id
 
     assert_response(:success)
     assert_template("new")
@@ -51,8 +49,8 @@ class EmailActionsControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
-  test "GET new, abnormal, no device token" do
-    get :new, :device_token => nil
+  test "GET new, abnormal, no device id" do
+    get :new, :device_id => nil
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -60,7 +58,7 @@ class EmailActionsControllerTest < ActionController::TestCase
   end
 
   test "GET new, abnormal, no trigger" do
-    get :new, :device_token => @yuya_pda.device_token, :trigger_id => nil
+    get :new, :device_id => @yuya_pda.id, :trigger_id => nil
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -79,11 +77,11 @@ class EmailActionsControllerTest < ActionController::TestCase
     assert_equal(true, @edit_form.valid?)
 
     assert_difference("EmailAction.count", +1) {
-      post :create, :device_token => @yuya_pda.device_token, :trigger_id => @yuya_pda_ge90.id, :edit_form => @edit_form.attributes
+      post :create, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :edit_form => @edit_form.attributes
     }
 
     assert_response(:redirect)
-    assert_redirected_to(:controller => "devices", :action => "show", :device_token => @yuya_pda.device_token)
+    assert_redirected_to(:controller => "devices", :action => "show", :device_id => @yuya_pda.id)
     assert_flash_notice
     assert_logged_in(@yuya)
   
@@ -106,7 +104,7 @@ class EmailActionsControllerTest < ActionController::TestCase
     assert_equal(false, @edit_form.valid?)
 
     assert_difference("EmailAction.count", 0) {
-      post :create, :device_token => @yuya_pda.device_token, :trigger_id => @yuya_pda_ge90.id, :edit_form => @edit_form.attributes
+      post :create, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :edit_form => @edit_form.attributes
     }
 
     assert_response(:success)
@@ -131,8 +129,8 @@ class EmailActionsControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
-  test "POST create, abnormal, no device token" do
-    post :create, :device_token => nil
+  test "POST create, abnormal, no device id" do
+    post :create, :device_id => nil
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -140,7 +138,7 @@ class EmailActionsControllerTest < ActionController::TestCase
   end
 
   test "POST create, abnormal, no trigger id" do
-    post :create, :device_token => @yuya_pda.device_token, :trigger_id => nil
+    post :create, :device_id => @yuya_pda.id, :trigger_id => nil
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
