@@ -117,6 +117,11 @@ class EmailSignupController < ApplicationController
 
     @credential.activate!
 
+    # TODO: テスト
+    # TODO: 非同期化
+    SignupActivationMailer.deliver_complete(
+      :recipients => @credential.email)
+
     redirect_to(:action => "activated")
   end
 

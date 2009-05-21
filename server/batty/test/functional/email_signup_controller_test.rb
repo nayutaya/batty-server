@@ -15,6 +15,8 @@ class EmailSignupControllerTest < ActionController::TestCase
       :password              => "b",
       :password_confirmation => "c",
     }
+
+    ActionMailer::Base.deliveries = []
   end
 
   test "routes" do
