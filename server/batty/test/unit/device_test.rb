@@ -348,10 +348,9 @@ class DeviceTest < ActiveSupport::TestCase
     time   = Time.local(2009, 1, 4)
 
     assert_difference("Energy.count", +1) {
-      ret = device.update_energy(
+      device.update_energy(
         :observed_level => level,
         :observed_at    => time)
-      assert_equal(nil, ret)
     }
 
     energy = Energy.first(:order => "energies.id DESC")
@@ -365,19 +364,21 @@ class DeviceTest < ActiveSupport::TestCase
 
     assert_difference("Event.count", 0) {
       assert_difference("Energy.count", +1) {
-        device.update_energy(
+        ret = device.update_energy(
           :observed_level => 80,
           :observed_at    => Time.local(2009, 1, 4),
           :update_event   => false)
+        assert_equal(nil, ret)
       }
     }
 
     assert_difference("Event.count", 0) {
       assert_difference("Energy.count", +1) {
-        device.update_energy(
+        ret = device.update_energy(
           :observed_level => 90,
           :observed_at    => Time.local(2009, 1, 5),
           :update_event   => false)
+        assert_equal(nil, ret)
       }
     }
   end
@@ -387,19 +388,23 @@ class DeviceTest < ActiveSupport::TestCase
 
     assert_difference("Event.count", 0) {
       assert_difference("Energy.count", +1) {
-        device.update_energy(
+        ret = device.update_energy(
           :observed_level => 80,
           :observed_at    => Time.local(2009, 1, 4),
           :update_event   => true)
+        assert_equal(0, ret.size)
       }
     }
 
     assert_difference("Event.count", +1) {
       assert_difference("Energy.count", +1) {
-        device.update_energy(
+        ret = device.update_energy(
           :observed_level => 90,
           :observed_at    => Time.local(2009, 1, 5),
           :update_event   => true)
+        assert_equal(1, ret.size)
+        assert_equal(90, ret[0][:energy].observed_level)
+        assert_equal(90, ret[0][:event].observed_level)
       }
     }
   end

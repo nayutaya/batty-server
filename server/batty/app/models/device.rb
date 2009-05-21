@@ -91,10 +91,10 @@ class Device < ActiveRecord::Base
         :observed_at    => observed_at)
 
       if update_event
-        self.update_event
+        return self.update_event
+      else
+        return nil
       end
     }
-
-    return nil
   end
 end
