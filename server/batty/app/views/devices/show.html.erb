@@ -23,25 +23,25 @@
 
 <table border="1">
   <tr>
+    <th></th>
     <th>条件</th>
-    <th>有効/無効</th>
     <th>メール通知</th>
     <th>Web Hook</th>
     <th></th>
   </tr>
   <%- @triggers.each { |trigger| -%>
     <tr>
+      <td><%= enable_or_disable_icon(trigger.enable?) %></td>
       <td>
         残量
         <%=h trigger.operator_sign %>
         <%=h trigger.level %>
       </td>
-      <td><%=h (trigger.enable? ? "有効" : "無効") %></td>
       <td>
         <table>
           <%- trigger.email_actions.each { |email_action| -%>
             <tr>
-              <td><%=h (email_action.enable? ? "有効" : "無効") %></td>
+              <td><%= enable_or_disable_icon(email_action.enable?) %></td>
               <td><%=h email_action.email %></td>
             </tr>
           <%- } -%>
