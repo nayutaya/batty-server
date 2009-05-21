@@ -9,6 +9,7 @@ class TriggersController < ApplicationController
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_device_token
+  before_filter :required_param_trigger_id, :only => [:show]
 
   # GET /device/:device_token/triggers/new
   def new
@@ -32,6 +33,12 @@ class TriggersController < ApplicationController
       set_error_now("入力内容を確認してください。")
       render(:action => "new")
     end
+  end
+
+  # GET /device/:device_token/trigger/:trigger_id
+  def show
+    @email_actions = @trigger.email_actions.all(
+      :order => "email_actions.email ASC, email_actions.id ASC")
   end
 
   private

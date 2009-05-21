@@ -26,6 +26,7 @@
     <th>条件</th>
     <th>有効/無効</th>
     <th>アクション</th>
+    <th></th>
   </tr>
   <%- @triggers.each { |trigger| -%>
     <tr>
@@ -35,6 +36,7 @@
       </td>
       <td><%=h (trigger.enable? ? "有効" : "無効") %></td>
       <td><%=h trigger.email_actions.size %> 個</td>
+      <td><%= link_to(h("詳細"), :controller => "triggers", :action => "show", :trigger_id => trigger.id) %></td>
     </tr>
   <%- } -%>
 </table>
