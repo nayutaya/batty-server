@@ -25,4 +25,6 @@ class EmailAction < ActiveRecord::Base
   validates_length_of :subject, :maximum => 200, :allow_nil => true
   validates_length_of :body, :maximum => 1000, :allow_nil => true
   validates_email_format_of :email
+
+  named_scope :enable, :conditions => {:enable => true}
 end
