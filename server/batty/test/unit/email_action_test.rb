@@ -108,4 +108,14 @@ class EmailActionTest < ActiveSupport::TestCase
         {:in => value, :out => @basic.valid?})
     }
   end
+
+  #
+  # 名前付きスコープ
+  #
+
+  test "enable" do
+    assert_equal(true,  (@klass.count > @klass.enable.count))
+    assert_equal(false, @klass.all.all?(&:enable?))
+    assert_equal(true,  @klass.enable.all.all?(&:enable?))
+  end
 end

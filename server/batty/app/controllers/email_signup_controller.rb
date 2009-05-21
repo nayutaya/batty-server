@@ -64,9 +64,21 @@ class EmailSignupController < ApplicationController
         :action           => "activation",
         :activation_token => @credential.activation_token)
 
-      @activation_mail = SignupActivationMailer.deliver_request(
+      request_options = {
         :recipients     => @credential.email,
-        :activation_url => @activation_url)
+        :activation_url => @activation_url,
+      }
+
+      @email_queue = Queue.new
+      Thread.new {
+        begin
+          @email_queue << SignupActivationMailer.deliver_request(request_options)
+        rescue Exception => e
+          logger.add(
+            logger.class::ERROR,
+            format("%s\n%s: %s\n%s\n%s", "-" * 50, e.class.name, e.message, e.backtrace[0, 5].join("\n"), "-" * 50))
+        end
+      }
 
       redirect_to(:action => "created")
     else

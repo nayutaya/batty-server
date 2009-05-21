@@ -265,16 +265,21 @@ class DeviceTest < ActiveSupport::TestCase
     }
 
     e2 = device.energies.create!(:observed_level => 90, :observed_at => Time.local(2009, 1, 5))
+    t2 = triggers(:yuya_pda_ge90)
 
     # 該当するトリガあり、かつイベント未生成
     assert_difference("Event.count", +1) {
-      events = device.update_event
-      assert_equal(1, events.size)
-      assert_equal(e2.device_id,      events[0].device_id)
-      assert_equal(e2.observed_level, events[0].observed_level)
-      assert_equal(e2.observed_at,    events[0].observed_at)
-      assert_equal(triggers(:yuya_pda_ge90).operator, events[0].trigger_operator)
-      assert_equal(triggers(:yuya_pda_ge90).level,    events[0].trigger_level)
+      records = device.update_event
+      assert_equal(1, records.size)
+
+      energy0, trigger0, event0 = records[0][:energy], records[0][:trigger], records[0][:event]
+      assert_equal(e2,                energy0)
+      assert_equal(t2,                trigger0)
+      assert_equal(e2.device_id,      event0.device_id)
+      assert_equal(e2.observed_level, event0.observed_level)
+      assert_equal(e2.observed_at,    event0.observed_at)
+      assert_equal(t2.operator,       event0.trigger_operator)
+      assert_equal(t2.level,          event0.trigger_level)
     }
   end
 
@@ -283,17 +288,30 @@ class DeviceTest < ActiveSupport::TestCase
 
     e1 = device.energies.create!(:observed_level =>  80, :observed_at => Time.local(2009, 1, 4))
     e2 = device.energies.create!(:observed_level => 100, :observed_at => Time.local(2009, 1, 5))
+    t2a, t2b = [triggers(:yuya_pda_ge90), triggers(:yuya_pda_eq100)].sort_by(&:id)
 
     # 該当するトリガあり、かつイベント未生成
     assert_difference("Event.count", +2) {
-      events = device.update_event
-      assert_equal(2, events.size)
-      assert_equal(e2.device_id,      events[0].device_id)
-      assert_equal(e2.observed_level, events[0].observed_level)
-      assert_equal(e2.observed_at,    events[0].observed_at)
-      assert_equal(e2.device_id,      events[1].device_id)
-      assert_equal(e2.observed_level, events[1].observed_level)
-      assert_equal(e2.observed_at,    events[1].observed_at)
+      records = device.update_event
+      assert_equal(2, records.size)
+
+      energy0, trigger0, event0 = records[0][:energy], records[0][:trigger], records[0][:event]
+      assert_equal(e2,                energy0)
+      assert_equal(t2a,               trigger0)
+      assert_equal(e2.device_id,      event0.device_id)
+      assert_equal(e2.observed_level, event0.observed_level)
+      assert_equal(e2.observed_at,    event0.observed_at)
+      assert_equal(t2a.operator,      event0.trigger_operator)
+      assert_equal(t2a.level,         event0.trigger_level)
+
+      energy1, trigger1, event1 = records[1][:energy], records[1][:trigger], records[1][:event]
+      assert_equal(e2,                energy1)
+      assert_equal(t2b,               trigger1)
+      assert_equal(e2.device_id,      event1.device_id)
+      assert_equal(e2.observed_level, event1.observed_level)
+      assert_equal(e2.observed_at,    event1.observed_at)
+      assert_equal(t2b.operator,      event1.trigger_operator)
+      assert_equal(t2b.level,         event1.trigger_level)
     }
   end
 
@@ -306,16 +324,21 @@ class DeviceTest < ActiveSupport::TestCase
     }
 
     e1 = device.energies.create!(:observed_level => 10, :observed_at => Time.local(2009, 1, 2))
+    t1 = triggers(:shinya_note_ne0)
 
     # 該当するトリガあり、かつイベント未生成
     assert_difference("Event.count", +1) {
-      events = device.update_event
-      assert_equal(1, events.size)
-      assert_equal(e1.device_id,      events[0].device_id)
-      assert_equal(e1.observed_level, events[0].observed_level)
-      assert_equal(e1.observed_at,    events[0].observed_at)
-      assert_equal(triggers(:shinya_note_ne0).operator, events[0].trigger_operator)
-      assert_equal(triggers(:shinya_note_ne0).level,    events[0].trigger_level)
+      records = device.update_event
+      assert_equal(1, records.size)
+
+      energy0, trigger0, event0 = records[0][:energy], records[0][:trigger], records[0][:event]
+      assert_equal(e1,                energy0)
+      assert_equal(t1,                trigger0)
+      assert_equal(e1.device_id,      event0.device_id)
+      assert_equal(e1.observed_level, event0.observed_level)
+      assert_equal(e1.observed_at,    event0.observed_at)
+      assert_equal(t1.operator,       event0.trigger_operator)
+      assert_equal(t1.level,          event0.trigger_level)
     }
   end
 
@@ -325,10 +348,9 @@ class DeviceTest < ActiveSupport::TestCase
     time   = Time.local(2009, 1, 4)
 
     assert_difference("Energy.count", +1) {
-      ret = device.update_energy(
+      device.update_energy(
         :observed_level => level,
         :observed_at    => time)
-      assert_equal(nil, ret)
     }
 
     energy = Energy.first(:order => "energies.id DESC")
@@ -342,19 +364,21 @@ class DeviceTest < ActiveSupport::TestCase
 
     assert_difference("Event.count", 0) {
       assert_difference("Energy.count", +1) {
-        device.update_energy(
+        ret = device.update_energy(
           :observed_level => 80,
           :observed_at    => Time.local(2009, 1, 4),
           :update_event   => false)
+        assert_equal(nil, ret)
       }
     }
 
     assert_difference("Event.count", 0) {
       assert_difference("Energy.count", +1) {
-        device.update_energy(
+        ret = device.update_energy(
           :observed_level => 90,
           :observed_at    => Time.local(2009, 1, 5),
           :update_event   => false)
+        assert_equal(nil, ret)
       }
     }
   end
@@ -364,19 +388,23 @@ class DeviceTest < ActiveSupport::TestCase
 
     assert_difference("Event.count", 0) {
       assert_difference("Energy.count", +1) {
-        device.update_energy(
+        ret = device.update_energy(
           :observed_level => 80,
           :observed_at    => Time.local(2009, 1, 4),
           :update_event   => true)
+        assert_equal(0, ret.size)
       }
     }
 
     assert_difference("Event.count", +1) {
       assert_difference("Energy.count", +1) {
-        device.update_energy(
+        ret = device.update_energy(
           :observed_level => 90,
           :observed_at    => Time.local(2009, 1, 5),
           :update_event   => true)
+        assert_equal(1, ret.size)
+        assert_equal(90, ret[0][:energy].observed_level)
+        assert_equal(90, ret[0][:event].observed_level)
       }
     }
   end
