@@ -1,5 +1,9 @@
 
 module DevicesHelper
+  def device_name_link(device)
+    return link_to(h(device.name), :controller => "devices", :action => "show", :device_id => device.id)
+  end
+
   def device_icon24(device_icon, options = {})
     options = options.dup
     name = options.delete(:name) || device_icon.name
