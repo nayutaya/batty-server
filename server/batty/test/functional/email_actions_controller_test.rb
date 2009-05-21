@@ -114,6 +114,13 @@ class EmailActionsControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
+  test "GET create, abnormal, method not allowed" do
+    get :create
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
   test "POST create, abnormal, no login" do
     session_logout
 
@@ -145,10 +152,6 @@ class EmailActionsControllerTest < ActionController::TestCase
   end
 
   test "POST create, abnormal, other's trigger" do
-    # TODO: 実装せよ
-  end
-
-  test "GET create, abnormal, method not allowed" do
     # TODO: 実装せよ
   end
 end
