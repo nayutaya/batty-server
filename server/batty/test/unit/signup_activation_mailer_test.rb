@@ -48,7 +48,7 @@ class SignupActivationMailerTest < ActionMailer::TestCase
       :activation_url => "http://activation/url/" + email_credentials(:yuya_nayutaya).activation_token,
     }
     assert_nothing_raised {
-      SignupActivationMailer.create_request(options).encoded
+      @klass.create_request(options).encoded
     }
   end
 end

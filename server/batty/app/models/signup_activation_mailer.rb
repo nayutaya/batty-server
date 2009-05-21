@@ -1,4 +1,5 @@
 
+# サインアップアクティベーションメール
 class SignupActivationMailer < ActionMailer::Base
   def self.create_request_params(options)
     options = options.dup
