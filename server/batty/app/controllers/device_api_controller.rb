@@ -8,8 +8,8 @@ class DeviceApiController < ApplicationController
     :method => :post,
     :render => {:text => "", :status => 405})
 
-  # POST /device/:device_token/energies/update/:level
-  # POST /device/:device_token/energies/update/:level/:time
+  # POST /device/token/:device_token/energies/update/:level
+  # POST /device/token/:device_token/energies/update/:level/:time
   def update_energy
     level_str = params[:level]
     time_str  = params[:time]

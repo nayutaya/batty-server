@@ -32,6 +32,16 @@ class ApplicationController < ActionController::Base
     return false
   end
 
+  def required_param_device_id(device_id = params[:device_id])
+    @device = Device.find_by_id(device_id)
+    return true if @device
+
+    set_error("デバイスIDが正しくありません。")
+    redirect_to(root_path)
+
+    return false
+  end
+
   def required_param_trigger_id(trigger_id = params[:trigger_id])
     @trigger = Trigger.find_by_id(trigger_id)
     if @trigger

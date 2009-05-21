@@ -53,7 +53,7 @@
      <%- current_energy = device.current_energy -%>
      <tr>
       <td><%= device_icon48(device.device_icon, :name => device.name) %></td>
-      <td><%= link_to(h(device.name), :controller => "devices", :action => "show", :device_token => device.device_token) %></td>
+      <td><%= link_to(h(device.name), :controller => "devices", :action => "show", :device_id => device.id) %></td>
       <td align="right"><%=h current_energy.try(:observed_level) || "-" %> %</td>
       <td><%=h current_energy.try(:observed_at).try(:strftime, "%m-%d %H:%M") || "-" %></td>
       <td align="right"><%=h device.triggers.enable.count %></td>
@@ -77,7 +77,7 @@
         <td><%=h energy.observed_at.strftime("%m-%d %H:%M") %></td>
         <td>
          <%= device_icon24(energy.device.device_icon, :name => energy.device.name) %>
-         <%= link_to(h(energy.device.name), :controller => "devices", :action => "show", :device_token => energy.device.device_token) %>
+         <%= link_to(h(energy.device.name), :controller => "devices", :action => "show", :device_id => energy.device.id) %>
         </td>
         <td align="right"><%=h energy.observed_level %> %</td>
        </tr>
@@ -96,7 +96,7 @@
         <td><%=h event.observed_at.strftime("%m-%d %H:%M") %></td>
         <td>
          <%= device_icon24(event.device.device_icon, :name => event.device.name) %>
-         <%= link_to(h(event.device.name), :controller => "devices", :action => "show", :device_token => event.device.device_token) %>
+         <%= link_to(h(event.device.name), :controller => "devices", :action => "show", :device_id => event.device.id) %>
         </td>
         <td align="right"><%=h event.observed_level %> %</td>
         <td><%=h event.trigger_operator_sign %></td>

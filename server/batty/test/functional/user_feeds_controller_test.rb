@@ -10,10 +10,10 @@ class UserFeedsControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "user_feeds"}
 
-    assert_routing("/user/0123456789/energies.rdf", base.merge(:action => "energies", :user_token => "0123456789"))
-    assert_routing("/user/abcdef/energies.rdf",     base.merge(:action => "energies", :user_token => "abcdef"))
-    assert_routing("/user/0123456789/events.rdf",   base.merge(:action => "events", :user_token => "0123456789"))
-    assert_routing("/user/abcdef/events.rdf",       base.merge(:action => "events", :user_token => "abcdef"))
+    assert_routing("/user/token/01234567/energies.rdf", base.merge(:action => "energies", :user_token => "01234567"))
+    assert_routing("/user/token/89abcdef/energies.rdf", base.merge(:action => "energies", :user_token => "89abcdef"))
+    assert_routing("/user/token/01234567/events.rdf",   base.merge(:action => "events", :user_token => "01234567"))
+    assert_routing("/user/token/89abcdef/events.rdf",   base.merge(:action => "events", :user_token => "89abcdef"))
   end
 
   test "GET energies" do

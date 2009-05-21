@@ -19,8 +19,7 @@ class DevicesControllerTest < ActionController::TestCase
     assert_routing("/devices/new",    base.merge(:action => "new"))
     assert_routing("/devices/create", base.merge(:action => "create"))
 
-    assert_routing("/device/0123456789", base.merge(:action => "show", :device_token => "0123456789"))
-    assert_routing("/device/abcdef",     base.merge(:action => "show", :device_token => "abcdef"))
+    assert_routing("/device/1234567890", base.merge(:action => "show", :device_id => "1234567890"))
   end
 
   test "GET new" do
@@ -98,7 +97,7 @@ class DevicesControllerTest < ActionController::TestCase
   end
 
   test "GET show" do
-    get :show, :device_token => @yuya_pda.device_token
+    get :show, :device_id => @yuya_pda.id
 
     assert_response(:success)
     assert_template("show")
@@ -128,8 +127,8 @@ class DevicesControllerTest < ActionController::TestCase
       assigns(:events))
   end
 
-  test "GET show, abnormal, no device token" do
-    get :show, :device_token => nil
+  test "GET show, abnormal, no device id" do
+    get :show, :device_id => nil
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -139,7 +138,7 @@ class DevicesControllerTest < ActionController::TestCase
   test "GET show, abnormal, no login" do
     session_logout
 
-    get :show, :device_token => @yuya_pda.device_token
+    get :show, :device_id => @yuya_pda.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
