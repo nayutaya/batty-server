@@ -1,4 +1,10 @@
 
+<div>
+  <%= link_to(h("トップ"), root_path) %> &gt;
+  <%= link_to(h(@device.name), :controller => "devices", :action => "show") %> &gt;
+  <em>トリガの追加</em>
+</div>
+
 <h1>トリガの追加</h1>
 
 <%- form_for(:edit_form, :url => {:action => "create"}) { |f| -%>
