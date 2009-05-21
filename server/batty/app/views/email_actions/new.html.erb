@@ -1,4 +1,10 @@
 
+<div>
+  <%= link_to(h("トップ"), root_path) %> &gt;
+  <%= link_to(h(@device.name), :controller => "devices", :action => "show") %> &gt;
+  <em>メールアクションの追加</em>
+</div>
+
 <h1>メールアクションの追加</h1>
 
 <%- form_for(:edit_form, :url => {:action => "create"}) { |f| -%>

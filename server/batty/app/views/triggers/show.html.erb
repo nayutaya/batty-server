@@ -1,4 +1,10 @@
 
+<div>
+  <%= link_to(h("トップ"), root_path) %> &gt;
+  <%= link_to(h(@device.name), :controller => "devices", :action => "show") %> &gt;
+  <em>トリガ</em>
+</div>
+
 <h1>トリガの詳細</h1>
 
 <table border="1">
