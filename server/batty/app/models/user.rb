@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # == Schema Information
-# Schema version: 20090518160518
+# Schema version: 20090519031040
 #
 # Table name: users
 #

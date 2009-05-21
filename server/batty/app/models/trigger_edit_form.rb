@@ -1,3 +1,12 @@
+# == Schema Information
+# Schema version: 20090519031040
+#
+# Table name: active_forms
+#
+#  enable   :boolean
+#  operator :integer
+#  level    :integer
+#
 
 # トリガ編集フォーム
 class TriggerEditForm < ActiveForm

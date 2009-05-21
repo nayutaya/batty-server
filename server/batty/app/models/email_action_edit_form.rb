@@ -1,3 +1,13 @@
+# == Schema Information
+# Schema version: 20090519031040
+#
+# Table name: active_forms
+#
+#  enable  :boolean
+#  email   :text
+#  subject :text
+#  body    :text
+#
 
 # メールアクション編集フォーム
 class EmailActionEditForm < ActiveForm
