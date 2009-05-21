@@ -27,6 +27,10 @@ class EmailActionsControllerTest < ActionController::TestCase
 
     assert_equal(@yuya_pda, assigns(:device))
     assert_equal(@yuya_pda_ge90, assigns(:trigger))
+
+    assert_equal(
+      EmailActionEditForm.new.attributes,
+      assigns(:edit_form).attributes)
   end
 
   test "GET new, abnormal, no login" do

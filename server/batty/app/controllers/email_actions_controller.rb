@@ -8,6 +8,6 @@ class EmailActionsController < ApplicationController
 
   # GET /device/:device_token/trigger/:trigger_id/acts/email/new
   def new
-    # nop
+    @edit_form = EmailActionEditForm.new
   end
 end
