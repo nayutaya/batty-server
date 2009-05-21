@@ -9,92 +9,96 @@
   <em><%=h @device.name %></em>
 </div>
 
-<h1>デバイス: <%=h @device.name %></h1>
+<h1>
+  <%= device_icon48(@device.device_icon, :name => @device.name) %>
+  <%=h @device.name %>
+</h1>
 
 <div>
- <table>
-  <tr>
-   <th>名称</th>
-   <td><%=h @device.name %></td>
-  </tr>
-  <tr>
-   <th>トークン</th>
-   <td><%=h @device.device_token %></td>
-  </tr>
- </table>
-</div>
-
-<h2>トリガ</h2>
-
-<table border="1">
-  <tr>
-    <th></th>
-    <th>条件</th>
-    <th>メール通知</th>
-    <th>Web Hook</th>
-    <th></th>
-  </tr>
-  <%- @triggers.each { |trigger| -%>
+  <table border="1">
     <tr>
-      <td><%= enable_or_disable_icon(trigger.enable?) %></td>
       <td>
-        <%= trigger_condition(trigger) %>
-      </td>
-      <td>
-        <table>
-          <%- trigger.email_actions.each { |email_action| -%>
+        <h2>バッテリ残量</h2>
+
+        <table border="1">
+          <%- @energies.each { |energy| -%>
             <tr>
-              <td><%= enable_or_disable_icon(email_action.enable?) %></td>
-              <td><%=h email_action.email %></td>
+              <td><%=h energy.observed_at.strftime("%m-%d %H:%M") %></td>
+              <td>
+                <div style="width: 100px;">
+                  <div style="background-color: red; width: <%= [[energy.observed_level, 1].max, 100].min %>px">&nbsp;</div>
+                </div>
+              </td>
+              <td align="right"><%=h energy.observed_level %> %</td>
             </tr>
           <%- } -%>
         </table>
-        <div><%= link_to(h("メール通知を追加する"), :controller => "email_actions", :action => "new", :trigger_id => trigger.id) %></div>
+        <div>すべて見る &gt;&gt;</div>
       </td>
       <td>
-        <div>Web Hookを追加する</div>
+        <h2>イベント</h2>
+
+        <table border="1">
+          <tr>
+            <th>日時</th>
+            <th colspan="3">残量</th>
+          </tr>
+          <%- @events.each { |event| -%>
+            <tr>
+              <td><%=h event.observed_at.strftime("%m-%d %H:%M") %></td>
+              <td align="right"><%=h event.observed_level %> %</td>
+              <td><%=h event.trigger_operator_sign %></td>
+              <td align="right"><%=h event.trigger_level %> %</td>
+            </tr>
+          <%- } -%>
+        </table>
+        <div>すべて見る &gt;&gt;</div>
       </td>
-      <td><%= link_to(h("詳細"), :controller => "triggers", :action => "show", :trigger_id => trigger.id) %></td>
     </tr>
-  <%- } -%>
-</table>
-
-<div><%= link_to(h("トリガを追加する"), :controller => "triggers", :action => "new") %></div>
-
-<h2>バッテリ残量</h2>
-
-<div>
- <table border="1">
-  <tr>
-   <th>日時</th>
-   <th>残量</th>
-  </tr>
-  <%- @energies.each { |energy| -%>
-   <tr>
-    <td><%=h energy.observed_at.strftime("%m-%d %H:%M") %></td>
-    <td align="right"><%=h energy.observed_level %> %</td>
-   </tr>
-  <%- } -%>
- </table>
- <div>すべて見る &gt;&gt;</div>
+    <tr>
+      <td colspan="2">
+        <h2>トリガ</h2>
+        <table border="1">
+          <tr>
+            <th></th>
+            <th>条件</th>
+            <th>メール通知</th>
+            <th>Web Hook</th>
+            <th></th>
+          </tr>
+          <%- @triggers.each { |trigger| -%>
+            <tr>
+              <td><%= enable_or_disable_icon(trigger.enable?) %></td>
+              <td>
+                <%= trigger_condition(trigger) %>
+              </td>
+              <td>
+                <table>
+                  <%- trigger.email_actions.each { |email_action| -%>
+                    <tr>
+                      <td><%= enable_or_disable_icon(email_action.enable?) %></td>
+                      <td><%=h email_action.email %></td>
+                    </tr>
+                  <%- } -%>
+                </table>
+                <div><%= link_to(h("メール通知を追加する"), :controller => "email_actions", :action => "new", :trigger_id => trigger.id) %></div>
+              </td>
+              <td>
+                <div>Web Hookを追加する</div>
+              </td>
+              <td><%= link_to(h("詳細"), :controller => "triggers", :action => "show", :trigger_id => trigger.id) %></td>
+            </tr>
+          <%- } -%>
+        </table>
+        <div><%= link_to(h("トリガを追加する"), :controller => "triggers", :action => "new") %></div>
+      </td>
+    </tr>
+  </table>
 </div>
 
-<h2>イベント</h2>
+<h2>API</h2>
 
-<div>
- <table border="1">
-  <tr>
-   <th>日時</th>
-   <th colspan="3">残量</th>
-  </tr>
-  <%- @events.each { |event| -%>
-   <tr>
-    <td><%=h event.observed_at.strftime("%m-%d %H:%M") %></td>
-    <td align="right"><%=h event.observed_level %> %</td>
-    <td><%=h event.trigger_operator_sign %></td>
-    <td align="right"><%=h event.trigger_level %> %</td>
-   </tr>
-  <%- } -%>
- </table>
- <div>すべて見る &gt;&gt;</div>
-</div>
+<div>このデバイスのトークンは <%=h @device.device_token %> です。</div>
+
+<div><%=h url_for(:only_path => false, :controller => "device_api", :action => "update_energy", :device_token => @device.device_token, :level => "000") %></div>
+<div><%=h url_for(:only_path => false, :controller => "device_api", :action => "update_energy", :device_token => @device.device_token, :level => "000", :time => "00000000000000") %></div>
