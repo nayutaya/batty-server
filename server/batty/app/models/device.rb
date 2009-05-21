@@ -60,15 +60,16 @@ class Device < ActiveRecord::Base
       energies = self.energies_for_trigger
       triggers = self.active_triggers(energies.map(&:observed_level))
 
-      events = triggers.map { |trigger|
-        {:device_id => self.id}.
-          merge(energies.first.to_event_hash).
-          merge(trigger.to_event_hash)
-      }
-
-      return events.
-        reject { |attrs| Event.exists?(attrs) }.
-        map    { |attrs| Event.create!(attrs) }
+      return triggers.
+        map { |trigger|
+          energy = energies.first
+          event = {:device_id => self.id}
+          event.merge!(energy.to_event_hash)
+          event.merge!(trigger.to_event_hash)
+          [energy, trigger, event]
+        }.
+        reject { |energy, trigger, event| Event.exists?(event) }.
+        map    { |energy, trigger, event| [energy, trigger, Event.create!(event)] }
     }
   end
 
@@ -79,11 +80,15 @@ class Device < ActiveRecord::Base
     update_event   = (options.delete(:update_event) == true)
     raise(ArgumentError) unless options.empty?
 
-    self.energies.create!(
-      :observed_level => observed_level,
-      :observed_at    => observed_at)
+    self.transaction {
+      self.energies.create!(
+        :observed_level => observed_level,
+        :observed_at    => observed_at)
 
-    self.update_event if update_event
+      if update_event
+        self.update_event
+      end
+    }
 
     return nil
   end
