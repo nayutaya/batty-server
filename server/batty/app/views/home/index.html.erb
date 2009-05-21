@@ -52,7 +52,7 @@
     <%- @devices.each { |device| -%>
      <%- current_energy = device.current_energy -%>
      <tr>
-      <td><%= device_icon48(device.device_icon, :name => device.name) %></td>
+      <td><%= device_icon48_link(device) %></td>
       <td><%= device_name_link(device) %></td>
       <td align="right"><%=h current_energy.try(:observed_level) || "-" %> %</td>
       <td><%=h current_energy.try(:observed_at).try(:strftime, "%m-%d %H:%M") || "-" %></td>
@@ -76,7 +76,7 @@
        <tr>
         <td><%=h energy.observed_at.strftime("%m-%d %H:%M") %></td>
         <td>
-         <%= device_icon24(energy.device.device_icon, :name => energy.device.name) %>
+         <%= device_icon24_link(energy.device) %>
          <%= device_name_link(energy.device) %>
         </td>
         <td align="right"><%=h energy.observed_level %> %</td>
@@ -95,7 +95,7 @@
        <tr>
         <td><%=h event.observed_at.strftime("%m-%d %H:%M") %></td>
         <td>
-         <%= device_icon24(event.device.device_icon, :name => event.device.name) %>
+         <%= device_icon24_link(event.device) %>
          <%= device_name_link(event.device) %>
         </td>
         <td align="right"><%=h event.observed_level %> %</td>
