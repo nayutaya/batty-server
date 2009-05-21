@@ -69,10 +69,10 @@ class EmailSignupController < ApplicationController
         :activation_url => @activation_url,
       }
 
-      #@activation_mail = nil
+      @email_queue = Queue.new
       Thread.new {
         begin
-          SignupActivationMailer.deliver_request(request_options)
+          @email_queue << SignupActivationMailer.deliver_request(request_options)
         rescue Exception => e
           logger.add(
             logger.class::ERROR,
