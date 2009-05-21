@@ -38,9 +38,7 @@
     <tr>
       <td><%= enable_or_disable_icon(trigger.enable?) %></td>
       <td>
-        残量
-        <%=h trigger.operator_sign %>
-        <%=h trigger.level %>
+        <%= trigger_condition(trigger) %>
       </td>
       <td>
         <table>
