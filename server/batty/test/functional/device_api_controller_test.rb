@@ -28,7 +28,7 @@ class DeviceApiControllerTest < ActionController::TestCase
       raise unless options[:observed_at]    == time
       raise unless options[:update_event]   == true
       called = true
-      nil
+      []
     }
 
     musha.swap {
