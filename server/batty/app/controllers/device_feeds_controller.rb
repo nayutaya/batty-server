@@ -5,7 +5,7 @@ require "rss"
 class DeviceFeedsController < ApplicationController
   before_filter :required_param_device_token
 
-  # GET /device/:device_token/energies.rdf
+  # GET /device/token/:device_token/energies.rdf
   def energies
     @energies = @device.energies.paginate(
       :order    => "energies.observed_at DESC, energies.id DESC",
@@ -29,7 +29,7 @@ class DeviceFeedsController < ApplicationController
     send_rss(rss)
   end
 
-  # GET /device/:device_token/events.rdf
+  # GET /device/token/:device_token/events.rdf
   def events
     @events = @device.events.paginate(
       :order    => "events.observed_at DESC, events.id DESC",

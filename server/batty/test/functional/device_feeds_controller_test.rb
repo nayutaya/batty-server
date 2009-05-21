@@ -10,10 +10,10 @@ class DeviceFeedsControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "device_feeds"}
 
-    assert_routing("/device/0123456789/energies.rdf", base.merge(:action => "energies", :device_token => "0123456789"))
-    assert_routing("/device/abcdef/energies.rdf",     base.merge(:action => "energies", :device_token => "abcdef"))
-    assert_routing("/device/0123456789/events.rdf",   base.merge(:action => "events", :device_token => "0123456789"))
-    assert_routing("/device/abcdef/events.rdf",       base.merge(:action => "events", :device_token => "abcdef"))
+    assert_routing("/device/token/01234567/energies.rdf", base.merge(:action => "energies", :device_token => "01234567"))
+    assert_routing("/device/token/89abcdef/energies.rdf", base.merge(:action => "energies", :device_token => "89abcdef"))
+    assert_routing("/device/token/01234567/events.rdf",   base.merge(:action => "events", :device_token => "01234567"))
+    assert_routing("/device/token/89abcdef/events.rdf",   base.merge(:action => "events", :device_token => "89abcdef"))
   end
 
   test "GET energies" do

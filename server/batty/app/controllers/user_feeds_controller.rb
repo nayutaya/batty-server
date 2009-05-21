@@ -5,7 +5,7 @@ require "rss"
 class UserFeedsController < ApplicationController
   before_filter :required_param_user_token
 
-  # GET /user/:user_token/energies.rdf
+  # GET /user/token/:user_token/energies.rdf
   def energies
     @energies = @user.energies.paginate(
       :order    => "energies.observed_at DESC, energies.id DESC",
@@ -29,7 +29,7 @@ class UserFeedsController < ApplicationController
     send_rss(rss)
   end
 
-  # GET /user/:user_token/events.rdf
+  # GET /user/token/:user_token/events.rdf
   def events
     @events = @user.events.paginate(
       :order    => "events.observed_at DESC, events.id DESC",
