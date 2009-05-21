@@ -4,6 +4,8 @@
     @additional_head_html = <<-END_OF_HTML
       <meta http-equiv="refresh" content="#{5.minutes}" />
     END_OF_HTML
+    @additional_head_html += rss_auto_discovery(:title => "バッテリ履歴", :href => url_for(:controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token))
+    @additional_head_html += rss_auto_discovery(:title => "イベント履歴", :href => url_for(:controller => "user_feeds", :action => "events", :user_token => @login_user.user_token))
   end
 -%>
 
