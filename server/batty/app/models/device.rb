@@ -58,18 +58,23 @@ class Device < ActiveRecord::Base
   def update_event
     self.transaction {
       energies = self.energies_for_trigger
+      energy   = energies.first
       triggers = self.active_triggers(energies.map(&:observed_level))
 
-      return triggers.
-        map { |trigger|
-          energy = energies.first
-          event = {:device_id => self.id}
-          event.merge!(energy.to_event_hash)
-          event.merge!(trigger.to_event_hash)
-          [energy, trigger, event]
-        }.
-        reject { |energy, trigger, event| Event.exists?(event) }.
-        map    { |energy, trigger, event| [energy, trigger, Event.create!(event)] }
+      return triggers.map { |trigger|
+        event = {:device_id => self.id}
+        event.merge!(energy.to_event_hash)
+        event.merge!(trigger.to_event_hash)
+        [energy, trigger, event]
+      }.reject { |energy, trigger, event|
+        Event.exists?(event)
+      }.map { |energy, trigger, event|
+        {
+          :energy  => energy,
+          :trigger => trigger,
+          :event   => Event.create!(event),
+        }
+      }
     }
   end
 

@@ -272,7 +272,7 @@ class DeviceTest < ActiveSupport::TestCase
       records = device.update_event
       assert_equal(1, records.size)
 
-      energy0, trigger0, event0 = records[0]
+      energy0, trigger0, event0 = records[0][:energy], records[0][:trigger], records[0][:event]
       assert_equal(e2,                energy0)
       assert_equal(t2,                trigger0)
       assert_equal(e2.device_id,      event0.device_id)
@@ -295,7 +295,7 @@ class DeviceTest < ActiveSupport::TestCase
       records = device.update_event
       assert_equal(2, records.size)
 
-      energy0, trigger0, event0 = records[0]
+      energy0, trigger0, event0 = records[0][:energy], records[0][:trigger], records[0][:event]
       assert_equal(e2,                energy0)
       assert_equal(t2a,               trigger0)
       assert_equal(e2.device_id,      event0.device_id)
@@ -304,7 +304,7 @@ class DeviceTest < ActiveSupport::TestCase
       assert_equal(t2a.operator,      event0.trigger_operator)
       assert_equal(t2a.level,         event0.trigger_level)
 
-      energy1, trigger1, event1 = records[1]
+      energy1, trigger1, event1 = records[1][:energy], records[1][:trigger], records[1][:event]
       assert_equal(e2,                energy1)
       assert_equal(t2b,               trigger1)
       assert_equal(e2.device_id,      event1.device_id)
@@ -331,7 +331,7 @@ class DeviceTest < ActiveSupport::TestCase
       records = device.update_event
       assert_equal(1, records.size)
 
-      energy0, trigger0, event0 = records[0]
+      energy0, trigger0, event0 = records[0][:energy], records[0][:trigger], records[0][:event]
       assert_equal(e1,                energy0)
       assert_equal(t1,                trigger0)
       assert_equal(e1.device_id,      event0.device_id)
