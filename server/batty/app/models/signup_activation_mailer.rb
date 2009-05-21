@@ -19,8 +19,32 @@ class SignupActivationMailer < ActionMailer::Base
     }
   end
 
+  def self.create_complete_params(options)
+    options = options.dup
+    recipients = options.delete(:recipients) || raise(ArgumentError)
+    raise(ArgumentError) unless options.empty?
+
+    return {
+      :header => {
+        :subject    => "[batty] ユーザ登録完了",
+        :from       => "batty-no-reply@nayutaya.jp",
+        :recipients => recipients,
+      },
+      :body   => {},
+    }
+  end
+
   def request(options)
     params = self.class.create_request_params(options)
+    subject(params[:header][:subject])
+    from(params[:header][:from])
+    recipients(params[:header][:recipients])
+    sent_on(Time.now)
+    body(params[:body])
+  end
+
+  def complete(options)
+    params = self.class.create_complete_params(options)
     subject(params[:header][:subject])
     from(params[:header][:from])
     recipients(params[:header][:recipients])

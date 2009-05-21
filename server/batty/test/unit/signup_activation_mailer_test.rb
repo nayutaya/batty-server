@@ -42,6 +42,36 @@ class SignupActivationMailerTest < ActionMailer::TestCase
     }
   end
 
+  test "self.create_complete_params" do
+    options = {
+      :recipients => "recipients@example.jp",
+    }
+    expected = {
+      :header => {
+        :subject    => "[batty] ユーザ登録完了",
+        :from       => "batty-no-reply@nayutaya.jp",
+        :recipients => "recipients@example.jp",
+      },
+      :body   => {},
+    }
+    assert_equal(expected, @klass.create_complete_params(options))
+  end
+
+  test "self.create_complete_params, deficient parameter" do
+    assert_nothing_raised {
+      @klass.create_complete_params(:recipients => "")
+    }
+    assert_raise(ArgumentError) {
+      @klass.create_complete_params({})
+    }
+  end
+
+  test "self.create_complete_params, invalid parameter" do
+    assert_raise(ArgumentError) {
+      @klass.create_complete_params(:invalid => true)
+    }
+  end
+
   test "request" do
     options = {
       :recipients     => email_credentials(:yuya_nayutaya).email,
@@ -49,6 +79,15 @@ class SignupActivationMailerTest < ActionMailer::TestCase
     }
     assert_nothing_raised {
       @klass.create_request(options).encoded
+    }
+  end
+
+  test "complete" do
+    options = {
+      :recipients => email_credentials(:yuya_nayutaya).email,
+    }
+    assert_nothing_raised {
+      @klass.create_complete(options).encoded
     }
   end
 end
