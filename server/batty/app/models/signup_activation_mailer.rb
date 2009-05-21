@@ -1,7 +1,5 @@
 
 class SignupActivationMailer < ActionMailer::Base
-  self.default_url_options[:host] = "localhost"
-
   def self.create_request_params(options)
     options = options.dup
     recipients     = options.delete(:recipients)     || raise(ArgumentError)
