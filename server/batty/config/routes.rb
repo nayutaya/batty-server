@@ -30,6 +30,7 @@ ActionController::Routing::Routes.draw do |map|
   #     # Directs /admin/products/* to Admin::ProductsController (app/controllers/admin/products_controller.rb)
   #     admin.resources :products
   #   end
+  UserToken   = /[0-9a-f]+/
   DeviceToken = /[0-9a-f]+/
   DeviceId    = /[0-9]+/
   TriggerId   = /[0-9]+/
@@ -43,13 +44,13 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "device/:device_id/trigger/:trigger_id/acts/email/new",    :controller => "email_actions", :action => "new",    :device_id => DeviceId, :trigger_id => TriggerId
   map.connect "device/:device_id/trigger/:trigger_id/acts/email/create", :controller => "email_actions", :action => "create", :device_id => DeviceId, :trigger_id => TriggerId
 
-  map.connect "device/token/:device_token/energies.rdf", :controller => "device_feeds", :action => "energies", :device_token => /[0-9a-f]+/
-  map.connect "device/token/:device_token/events.rdf",   :controller => "device_feeds", :action => "events",   :device_token => /[0-9a-f]+/
-  map.connect "device/token/:device_token/energies/update/:level",       :controller => "device_api", :action => "update_energy", :device_token => /[0-9a-f]+/
-  map.connect "device/token/:device_token/energies/update/:level/:time", :controller => "device_api", :action => "update_energy", :device_token => /[0-9a-f]+/, :time => /\d+/
+  map.connect "device/token/:device_token/energies.rdf", :controller => "device_feeds", :action => "energies", :device_token => DeviceToken
+  map.connect "device/token/:device_token/events.rdf",   :controller => "device_feeds", :action => "events",   :device_token => DeviceToken
+  map.connect "device/token/:device_token/energies/update/:level",       :controller => "device_api", :action => "update_energy", :device_token => DeviceToken
+  map.connect "device/token/:device_token/energies/update/:level/:time", :controller => "device_api", :action => "update_energy", :device_token => DeviceToken, :time => /\d+/
 
-  map.connect "user/token/:user_token/energies.rdf", :controller => "user_feeds", :action => "energies", :user_token => /[0-9a-f]+/
-  map.connect "user/token/:user_token/events.rdf",   :controller => "user_feeds", :action => "events",   :user_token => /[0-9a-f]+/
+  map.connect "user/token/:user_token/energies.rdf", :controller => "user_feeds", :action => "energies", :user_token => UserToken
+  map.connect "user/token/:user_token/events.rdf",   :controller => "user_feeds", :action => "events",   :user_token => UserToken
 
   map.connect "auth/email/:action",  :controller => "email_auth"
   map.connect "auth/openid/:action", :controller => "open_id_auth"
