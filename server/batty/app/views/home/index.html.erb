@@ -17,7 +17,8 @@
  <div id="login_form">
   <div id="open_id_login_form">
    <%- form_tag(:controller => "open_id_auth", :action => "login") { -%>
-    <%= text_field_tag("openid_url") %>
+    <%= label_tag(:openid_url, "OpenID URL") %>
+    <%= text_field_tag(:openid_url, '', :size => 50) %>
     <%= submit_tag("ログイン") %>
    <%- } -%>
   </div>
