@@ -1,0 +1,2 @@
+class HttpActionsController < ApplicationController
+end
