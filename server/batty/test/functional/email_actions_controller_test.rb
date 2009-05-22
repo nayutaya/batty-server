@@ -57,7 +57,7 @@ class EmailActionsControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
-  test "GET new, abnormal, no trigger" do
+  test "GET new, abnormal, no trigger id" do
     get :new, :device_id => @yuya_pda.id, :trigger_id => nil
 
     assert_response(:redirect)

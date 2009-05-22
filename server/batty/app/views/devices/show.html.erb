@@ -84,7 +84,7 @@
                 <div><%= link_to(h("メール通知を追加する"), :controller => "email_actions", :action => "new", :trigger_id => trigger.id) %></div>
               </td>
               <td>
-                <div>Web Hookを追加する</div>
+                <div><%= link_to(h("Web Hookを追加する"), :controller => "http_actions", :action => "new", :trigger_id => trigger.id) %></div>
               </td>
               <td><%= link_to(h("詳細"), :controller => "triggers", :action => "show", :trigger_id => trigger.id) %></td>
             </tr>
