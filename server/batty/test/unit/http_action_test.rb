@@ -14,7 +14,15 @@ class HttpActionTest < ActiveSupport::TestCase
   # 関連
   #
 
-  # TODO: 実装せよ
+  test "belongs_to :trigger" do
+    assert_equal(
+      triggers(:yuya_pda_ge90),
+      http_actions(:yuya_pda_ge90_1).trigger)
+
+    assert_equal(
+      triggers(:shinya_note_ne0),
+      http_actions(:shinya_note_ne0_1).trigger)
+  end
 
   #
   # 検証

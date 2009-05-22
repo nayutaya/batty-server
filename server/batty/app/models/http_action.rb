@@ -18,6 +18,8 @@ class HttpAction < ActiveRecord::Base
   UrlMaximumLength  = 200
   BodyMaximumLength = 1000
 
+  belongs_to :trigger
+
   validates_presence_of :trigger_id
   validates_presence_of :http_method
   validates_presence_of :url
