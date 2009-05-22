@@ -29,6 +29,8 @@ class HttpAction < ActiveRecord::Base
   validates_inclusion_of :http_method, :in => HttpMethods, :allow_nil => true
   validates_format_of :url, :with => URI.regexp(["http"]), :allow_nil => true
 
+  named_scope :enable, :conditions => {:enable => true}
+
   def self.http_methods_for_select(options = {})
     options = options.dup
     include_blank = (options.delete(:include_blank) == true)
