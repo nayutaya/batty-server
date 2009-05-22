@@ -6,3 +6,29 @@
 </div>
 
 <h1>Web Hookの追加</h1>
+
+<%- form_for(:edit_form, :url => {:action => "create"}) { |f| -%>
+ <div>
+  <%= f.label(:enable) %>
+  <%= f.check_box(:enable) %>
+  <%= error_message_on(:edit_form, :enable) %>
+ </div>
+ <div>
+  <%= f.label(:http_method) %>
+  <%= f.text_field(:http_method, :size => 10) %>
+  <%= error_message_on(:edit_form, :http_method) %>
+ </div>
+ <div>
+  <%= f.label(:url) %>
+  <%= f.text_field(:url, :size => 40) %>
+  <%= error_message_on(:edit_form, :url) %>
+ </div>
+ <div>
+  <%= f.label(:body) %>
+  <%= f.text_area(:body, :cols => 40, :rows => 10) %>
+  <%= error_message_on(:edit_form, :body) %>
+ </div>
+ <div><%= submit_tag("追加") %></div>
+<%- } -%>
+
+<%= error_messages_for(:edit_form) %>

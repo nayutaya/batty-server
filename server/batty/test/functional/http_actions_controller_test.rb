@@ -7,6 +7,11 @@ class HttpActionsControllerTest < ActionController::TestCase
     @yuya_pda      = devices(:yuya_pda)
     @yuya_pda_ge90 = triggers(:yuya_pda_ge90)
 
+    @edit_form = HttpActionEditForm.new(
+      :enable      => true,
+      :http_method => "GET",
+      :url         => "http://example.jp/")
+
     session_login(@yuya)
   end
 
@@ -68,27 +73,75 @@ class HttpActionsControllerTest < ActionController::TestCase
   end
 
   test "POST create" do
-    # TODO: 実装せよ
+    assert_equal(true, @edit_form.valid?)
+
+    assert_difference("HttpAction.count", +1) {
+      post :create, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :edit_form => @edit_form.attributes
+    }
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "devices", :action => "show", :device_id => @yuya_pda.id)
+    assert_flash_notice
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+    assert_equal(@yuya_pda_ge90, assigns(:trigger))
+
+    assert_equal(
+      @edit_form.attributes,
+      assigns(:edit_form).attributes)
+
+    assert_equal(@yuya_pda_ge90.id,      assigns(:action).trigger_id)
+    assert_equal(@edit_form.enable,      assigns(:action).enable)
+    assert_equal(@edit_form.http_method, assigns(:action).http_method)
+    assert_equal(@edit_form.url,         assigns(:action).url)
+    assert_equal(@edit_form.body,        assigns(:action).body)
   end
 
   test "POST create, invalid form" do
-    # TODO: 実装せよ
+    @edit_form.http_method = nil
+    assert_equal(false, @edit_form.valid?)
+
+    assert_difference("HttpAction.count", 0) {
+      post :create, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :edit_form => @edit_form.attributes
+    }
+
+    assert_response(:success)
+    assert_template("new")
+    assert_flash_error
   end
 
   test "GET create, abnormal, method not allowed" do
-    # TODO: 実装せよ
+    get :create
+
+    assert_response(405)
+    assert_template(nil)
   end
 
   test "POST create, abnormal, no login" do
-    # TODO: 実装せよ
+    session_logout
+
+    post :create
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "POST create, abnormal, no device id" do
-    # TODO: 実装せよ
+    post :create, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "POST create, abnormal, no trigger id" do
-    # TODO: 実装せよ
+    post :create, :device_id => @yuya_pda.id, :trigger_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "POST create, abnormal, other's device" do
