@@ -17,6 +17,7 @@
 class HttpAction < ActiveRecord::Base
   UrlMaximumLength  = 200
   BodyMaximumLength = 1000
+  HttpMethods = %w[HEAD GET POST].freeze.each(&:freeze)
 
   belongs_to :trigger
 
@@ -25,6 +26,19 @@ class HttpAction < ActiveRecord::Base
   validates_presence_of :url
   validates_length_of :url, :maximum => UrlMaximumLength, :allow_nil => true
   validates_length_of :body, :maximum => BodyMaximumLength, :allow_nil => true
-  validates_inclusion_of :http_method, :in => %w[HEAD GET POST], :allow_nil => true
+  validates_inclusion_of :http_method, :in => HttpMethods, :allow_nil => true
   validates_format_of :url, :with => URI.regexp(["http"]), :allow_nil => true
+
+  def self.http_methods_for_select(options = {})
+    options = options.dup
+    include_blank = (options.delete(:include_blank) == true)
+    blank_label   = (options.delete(:blank_label) || "")
+    raise(ArgumentError) unless options.empty?
+
+    items  = []
+    items += [[blank_label, nil]] if include_blank
+    items += HttpMethods.map { |name| [name, name] }
+
+    return items
+  end
 end
