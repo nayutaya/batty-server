@@ -9,6 +9,9 @@ class TriggerTest < ActiveSupport::TestCase
       :device_id => devices(:yuya_pda).id,
       :operator  => 0,
       :level     => 0)
+
+    @yuya_pda_ge90   = triggers(:yuya_pda_ge90)
+    @shinya_note_ne0 = triggers(:shinya_note_ne0)
   end
 
   #
@@ -30,6 +33,23 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal(
       expected.sort_by(&:id),
       triggers(:shinya_note_ne0).email_actions.all(:order => "email_actions.id ASC"))
+  end
+
+  test "has_many :http_actions" do
+    expected = [
+      http_actions(:yuya_pda_ge90_1),
+      http_actions(:yuya_pda_ge90_2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @yuya_pda_ge90.http_actions.all(:order => "http_actions.id ASC"))
+
+    expected = [
+      http_actions(:shinya_note_ne0_1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @shinya_note_ne0.http_actions.all(:order => "http_actions.id ASC"))
   end
 
   test "belongs_to :device" do

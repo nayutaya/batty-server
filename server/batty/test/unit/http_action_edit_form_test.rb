@@ -1,44 +1,48 @@
 
 require 'test_helper'
 
-class HttpActionTest < ActiveSupport::TestCase
+class HttpActionEditFormTest < ActiveSupport::TestCase
   def setup
-    @klass = HttpAction
+    @klass = HttpActionEditForm
+    @form  = @klass.new
     @basic = @klass.new(
-      :trigger_id  => triggers(:yuya_pda_ge90).id,
       :http_method => "GET",
       :url         => "http://example.jp/")
   end
 
   #
-  # 関連
+  # 基底クラス
   #
 
-  test "belongs_to :trigger" do
-    assert_equal(
-      triggers(:yuya_pda_ge90),
-      http_actions(:yuya_pda_ge90_1).trigger)
+  test "superclass" do
+    assert_equal(ActiveForm, @klass.superclass)
+  end
 
-    assert_equal(
-      triggers(:shinya_note_ne0),
-      http_actions(:shinya_note_ne0_1).trigger)
+  #
+  # カラム
+  #
+
+  test "columns" do
+    [
+      [:enable,      nil, "1", true ],
+      [:enable,      nil, "0", false],
+      [:http_method, nil, "1", "1"],
+      [:url,         nil, "1", "1"],
+      [:body,        nil, "1", "1"],
+    ].each { |name, default, set_value, get_value|
+      form = @klass.new
+      assert_equal(default, form.__send__(name), name)
+      form.__send__("#{name}=", set_value)
+      assert_equal(get_value, form.__send__(name), name)
+    }
   end
 
   #
   # 検証
   #
 
-  test "all fixtures are valid" do
-    assert_equal(true, @klass.all.all?(&:valid?))
-  end
-
   test "basic is valid" do
     assert_equal(true, @basic.valid?)
-  end
-
-  test "validates_presence_of :trigger_id" do
-    @basic.trigger_id = nil
-    assert_equal(false, @basic.valid?)
   end
 
   test "validates_presence_of :http_method" do
@@ -101,16 +105,6 @@ class HttpActionTest < ActiveSupport::TestCase
   end
 
   #
-  # 名前付きスコープ
-  #
-
-  test "named_scope :enable" do
-    assert_equal(true,  (@klass.count > @klass.enable.count))
-    assert_equal(false, @klass.all.all?(&:enable?))
-    assert_equal(true,  @klass.enable.all.all?(&:enable?))
-  end
-
-  #
   # クラスメソッド
   #
 
@@ -125,16 +119,43 @@ class HttpActionTest < ActiveSupport::TestCase
       items,
       @klass.http_methods_for_select)
     assert_equal(
-      [["", nil]] + items,
+      [["(選択してください)", nil]] + items,
       @klass.http_methods_for_select(:include_blank => true))
-    assert_equal(
-      [["empty", nil]] + items,
-      @klass.http_methods_for_select(:include_blank => true, :blank_label => "empty"))
   end
 
-  test "self.http_methods_for_select, invalid paramter" do
+  test "self.http_methods_for_select, invalid_parameter" do
     assert_raise(ArgumentError) {
       @klass.http_methods_for_select(:invalid => true)
     }
+  end
+
+  #
+  #　インスタンスメソッド
+  #
+
+  test "to_http_action_hash, empty" do
+    expected = {
+      :enable      => nil,
+      :http_method => nil,
+      :url         => nil,
+      :body        => nil,
+    }
+    assert_equal(expected, @form.to_http_action_hash)
+  end
+
+  test "to_http_action_hash, full" do
+    @form.attributes = {
+      :enable      => true,
+      :http_method => "a",
+      :url         => "b",
+      :body        => "c",
+    }
+    expected = {
+      :enable      => true,
+      :http_method => "a",
+      :url         => "b",
+      :body        => "c",
+    }
+    assert_equal(expected, @form.to_http_action_hash)
   end
 end

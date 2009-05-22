@@ -1,26 +1,25 @@
 
 require 'test_helper'
 
-class EmailActionsControllerTest < ActionController::TestCase
+class HttpActionsControllerTest < ActionController::TestCase
   def setup
     @yuya          = users(:yuya)
     @yuya_pda      = devices(:yuya_pda)
     @yuya_pda_ge90 = triggers(:yuya_pda_ge90)
 
-    @edit_form = EmailActionEditForm.new(
-      :enable  => true,
-      :email   => "email@example.jp",
-      :subject => "subject",
-      :body    => "body")
+    @edit_form = HttpActionEditForm.new(
+      :enable      => true,
+      :http_method => "GET",
+      :url         => "http://example.jp/")
 
     session_login(@yuya)
   end
 
   test "routes" do
-    base = {:controller => "email_actions"}
+    base = {:controller => "http_actions"}
 
-    assert_routing("/device/1234567890/trigger/2345678901/acts/email/new",    base.merge(:action => "new", :device_id => "1234567890", :trigger_id => "2345678901"))
-    assert_routing("/device/1234567890/trigger/2345678901/acts/email/create", base.merge(:action => "create", :device_id => "1234567890", :trigger_id => "2345678901"))
+    assert_routing("/device/1234567890/trigger/2345678901/acts/http/new",    base.merge(:action => "new", :device_id => "1234567890", :trigger_id => "2345678901"))
+    assert_routing("/device/1234567890/trigger/2345678901/acts/http/create", base.merge(:action => "create", :device_id => "1234567890", :trigger_id => "2345678901"))
   end
 
   test "GET new" do
@@ -35,7 +34,7 @@ class EmailActionsControllerTest < ActionController::TestCase
     assert_equal(@yuya_pda_ge90, assigns(:trigger))
 
     assert_equal(
-      EmailActionEditForm.new.attributes,
+      HttpActionEditForm.new.attributes,
       assigns(:edit_form).attributes)
   end
 
@@ -76,7 +75,7 @@ class EmailActionsControllerTest < ActionController::TestCase
   test "POST create" do
     assert_equal(true, @edit_form.valid?)
 
-    assert_difference("EmailAction.count", +1) {
+    assert_difference("HttpAction.count", +1) {
       post :create, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :edit_form => @edit_form.attributes
     }
 
@@ -84,7 +83,7 @@ class EmailActionsControllerTest < ActionController::TestCase
     assert_redirected_to(:controller => "devices", :action => "show", :device_id => @yuya_pda.id)
     assert_flash_notice
     assert_logged_in(@yuya)
-  
+
     assert_equal(@yuya_pda, assigns(:device))
     assert_equal(@yuya_pda_ge90, assigns(:trigger))
 
@@ -92,18 +91,18 @@ class EmailActionsControllerTest < ActionController::TestCase
       @edit_form.attributes,
       assigns(:edit_form).attributes)
 
-    assert_equal(@yuya_pda_ge90.id,  assigns(:action).trigger_id)
-    assert_equal(@edit_form.enable,  assigns(:action).enable)
-    assert_equal(@edit_form.email,   assigns(:action).email)
-    assert_equal(@edit_form.subject, assigns(:action).subject)
-    assert_equal(@edit_form.body,    assigns(:action).body)
+    assert_equal(@yuya_pda_ge90.id,      assigns(:action).trigger_id)
+    assert_equal(@edit_form.enable,      assigns(:action).enable)
+    assert_equal(@edit_form.http_method, assigns(:action).http_method)
+    assert_equal(@edit_form.url,         assigns(:action).url)
+    assert_equal(@edit_form.body,        assigns(:action).body)
   end
 
   test "POST create, invalid form" do
-    @edit_form.email = nil
+    @edit_form.http_method = nil
     assert_equal(false, @edit_form.valid?)
 
-    assert_difference("EmailAction.count", 0) {
+    assert_difference("HttpAction.count", 0) {
       post :create, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :edit_form => @edit_form.attributes
     }
 

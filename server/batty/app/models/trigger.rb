@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # == Schema Information
-# Schema version: 20090519031040
+# Schema version: 20090522102421
 #
 # Table name: triggers
 #
@@ -17,6 +17,7 @@
 # トリガ
 class Trigger < ActiveRecord::Base
   has_many :email_actions
+  has_many :http_actions
   belongs_to :device
 
   Operators = [
