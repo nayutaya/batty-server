@@ -51,10 +51,8 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "user/token/:user_token/energies.rdf", :controller => "user_feeds", :action => "energies", :user_token => /[0-9a-f]+/
   map.connect "user/token/:user_token/events.rdf",   :controller => "user_feeds", :action => "events",   :user_token => /[0-9a-f]+/
 
-  map.connect "auth/email",        :controller => "email_auth", :action => "index"
-  map.connect "auth/email/login",  :controller => "email_auth", :action => "login"
-  map.connect "auth/openid",       :controller => "open_id_auth", :action => "index"
-  map.connect "auth/openid/login", :controller => "open_id_auth", :action => "login"
+  map.connect "auth/email/:action",  :controller => "email_auth"
+  map.connect "auth/openid/:action", :controller => "open_id_auth"
 
   map.connect "signup/email/:action",                      :controller => "email_signup"
   map.connect "signup/email/activation/:activation_token", :controller => "email_signup", :action => "activation", :activation_token => /[0-9a-f]+/
