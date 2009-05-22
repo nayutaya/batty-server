@@ -13,5 +13,16 @@
 #  body        :text
 #
 
+# HTTPアクション
 class HttpAction < ActiveRecord::Base
+  UrlMaximumLength  = 200
+  BodyMaximumLength = 1000
+
+  validates_presence_of :trigger_id
+  validates_presence_of :http_method
+  validates_presence_of :url
+  validates_length_of :url, :maximum => UrlMaximumLength, :allow_nil => true
+  validates_length_of :body, :maximum => BodyMaximumLength, :allow_nil => true
+  validates_inclusion_of :http_method, :in => %w[HEAD GET POST], :allow_nil => true
+  validates_format_of :url, :with => URI.regexp(["http"]), :allow_nil => true
 end
