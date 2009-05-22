@@ -56,19 +56,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "auth/openid",       :controller => "open_id_auth", :action => "index"
   map.connect "auth/openid/login", :controller => "open_id_auth", :action => "login"
 
-  map.connect "signup/email",                              :controller => "email_signup", :action => "index"
-  map.connect "signup/email/validate",                     :controller => "email_signup", :action => "validate"
-  map.connect "signup/email/validated",                    :controller => "email_signup", :action => "validated"
-  map.connect "signup/email/create",                       :controller => "email_signup", :action => "create"
-  map.connect "signup/email/created",                      :controller => "email_signup", :action => "created"
+  map.connect "signup/email/:action",                      :controller => "email_signup"
   map.connect "signup/email/activation/:activation_token", :controller => "email_signup", :action => "activation", :activation_token => /[0-9a-f]+/
-  map.connect "signup/email/activate",                     :controller => "email_signup", :action => "activate"
-  map.connect "signup/email/activated",                    :controller => "email_signup", :action => "activated"
-  map.connect "signup/openid",               :controller => "open_id_signup", :action => "index"
-  map.connect "signup/openid/authenticate",  :controller => "open_id_signup", :action => "authenticate"
-  map.connect "signup/openid/authenticated", :controller => "open_id_signup", :action => "authenticated"
-  map.connect "signup/openid/create",        :controller => "open_id_signup", :action => "create"
-  map.connect "signup/openid/created",       :controller => "open_id_signup", :action => "created"
+  map.connect "signup/openid/:action",                     :controller => "open_id_signup"
 
   map.connect ":controller/:action/:id"
   map.connect ":controller/:action/:id.:format"
