@@ -12,4 +12,13 @@ class HttpActionEditForm < ActiveForm
   validates_length_of :body, :maximum => HttpAction::BodyMaximumLength, :allow_nil => true
   validates_inclusion_of :http_method, :in => HttpAction::HttpMethods, :allow_nil => true
   validates_format_of :url, :with => URI.regexp(["http"]), :allow_nil => true
+
+  def to_http_action_hash
+    return {
+      :enable      => self.enable,
+      :http_method => self.http_method,
+      :url         => self.url,
+      :body        => self.body,
+    }
+  end
 end

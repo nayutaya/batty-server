@@ -4,6 +4,7 @@ require 'test_helper'
 class HttpActionEditFormTest < ActiveSupport::TestCase
   def setup
     @klass = HttpActionEditForm
+    @form  = @klass.new
     @basic = @klass.new(
       :http_method => "GET",
       :url         => "http://example.jp/")
@@ -101,5 +102,35 @@ class HttpActionEditFormTest < ActiveSupport::TestCase
       @basic.url = value
       assert_equal(expected, @basic.valid?, value)
     }
+  end
+
+  #
+  #　インスタンスメソッド
+  #
+
+  test "to_http_action_hash, empty" do
+    expected = {
+      :enable      => nil,
+      :http_method => nil,
+      :url         => nil,
+      :body        => nil,
+    }
+    assert_equal(expected, @form.to_http_action_hash)
+  end
+
+  test "to_http_action_hash, full" do
+    @form.attributes = {
+      :enable      => true,
+      :http_method => "a",
+      :url         => "b",
+      :body        => "c",
+    }
+    expected = {
+      :enable      => true,
+      :http_method => "a",
+      :url         => "b",
+      :body        => "c",
+    }
+    assert_equal(expected, @form.to_http_action_hash)
   end
 end
