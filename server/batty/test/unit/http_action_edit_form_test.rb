@@ -105,6 +105,31 @@ class HttpActionEditFormTest < ActiveSupport::TestCase
   end
 
   #
+  # クラスメソッド
+  #
+
+  test "self.http_methods_for_select" do
+    items = [
+      ["HEAD", "HEAD"],
+      ["GET",  "GET" ],
+      ["POST", "POST"],
+    ]
+
+    assert_equal(
+      items,
+      @klass.http_methods_for_select)
+    assert_equal(
+      [["(選択してください)", nil]] + items,
+      @klass.http_methods_for_select(:include_blank => true))
+  end
+
+  test "self.http_methods_for_select, invalid_parameter" do
+    assert_raise(ArgumentError) {
+      @klass.http_methods_for_select(:invalid => true)
+    }
+  end
+
+  #
   #　インスタンスメソッド
   #
 
