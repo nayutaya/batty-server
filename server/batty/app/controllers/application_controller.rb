@@ -67,6 +67,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def specified_trigger_belongs_to_device
+    if @trigger.device_id == @device.id
+      return true
+    else
+      set_error("トリガIDが正しくありません。")
+      redirect_to(root_path)
+      return false
+    end
+  end
+
   def set_notice(message)
     flash[:notice] = @flash_notice = message
     flash[:error]  = @flash_error  = nil

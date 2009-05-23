@@ -10,6 +10,7 @@ class HttpActionsController < ApplicationController
   before_filter :required_param_device_id
   before_filter :required_param_trigger_id
   before_filter :specified_device_belongs_to_login_user
+  before_filter :specified_trigger_belongs_to_device
 
   # GET /device/:device_id/trigger/:trigger_id/acts/http/new
   def new

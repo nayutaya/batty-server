@@ -3,10 +3,11 @@ require 'test_helper'
 
 class HttpActionsControllerTest < ActionController::TestCase
   def setup
-    @yuya          = users(:yuya)
-    @yuya_pda      = devices(:yuya_pda)
-    @shinya_note   = devices(:shinya_note)
-    @yuya_pda_ge90 = triggers(:yuya_pda_ge90)
+    @yuya            = users(:yuya)
+    @yuya_pda        = devices(:yuya_pda)
+    @shinya_note     = devices(:shinya_note)
+    @yuya_pda_ge90   = triggers(:yuya_pda_ge90)
+    @shinya_note_ne0 = triggers(:shinya_note_ne0)
 
     @edit_form = HttpActionEditForm.new(
       :enable      => true,
@@ -74,7 +75,11 @@ class HttpActionsControllerTest < ActionController::TestCase
   end
 
   test "GET new, abnormal, other's trigger" do
-    # TODO: 実装せよ
+    get :new, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "POST create" do
@@ -158,6 +163,10 @@ class HttpActionsControllerTest < ActionController::TestCase
   end
 
   test "POST create, abnormal, other's trigger" do
-    # TODO: 実装せよ
+    post :create, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 end
