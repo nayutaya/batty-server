@@ -3,6 +3,9 @@ require 'test_helper'
 
 class EmailSignupControllerTest < ActionController::TestCase
   def setup
+    @yuya_gmail    = email_credentials(:yuya_gmail)
+    @yuya_nayutaya = email_credentials(:yuya_nayutaya)
+
     @signup_form = EmailSignupForm.new
 
     @valid_signup_form_attributes = {
@@ -22,15 +25,14 @@ class EmailSignupControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "email_signup"}
 
-    assert_routing("/signup/email",                       base.merge(:action => "index"))
-    assert_routing("/signup/email/validate",              base.merge(:action => "validate"))
-    assert_routing("/signup/email/validated",             base.merge(:action => "validated"))
-    assert_routing("/signup/email/create",                base.merge(:action => "create"))
-    assert_routing("/signup/email/created",               base.merge(:action => "created"))
-    assert_routing("/signup/email/activation/0123456789", base.merge(:action => "activation", :activation_token => "0123456789"))
-    assert_routing("/signup/email/activation/abcdef",     base.merge(:action => "activation", :activation_token => "abcdef"))
-    assert_routing("/signup/email/activate",              base.merge(:action => "activate"))
-    assert_routing("/signup/email/activated",             base.merge(:action => "activated"))
+    assert_routing("/signup/email",           base.merge(:action => "index"))
+    assert_routing("/signup/email/validate",  base.merge(:action => "validate"))
+    assert_routing("/signup/email/validated", base.merge(:action => "validated"))
+    assert_routing("/signup/email/create",    base.merge(:action => "create"))
+    assert_routing("/signup/email/created",   base.merge(:action => "created"))
+    assert_routing("/signup/email/activation/0123456789abcdef", base.merge(:action => "activation", :activation_token => "0123456789abcdef"))
+    assert_routing("/signup/email/activate",  base.merge(:action => "activate"))
+    assert_routing("/signup/email/activated", base.merge(:action => "activated"))
   end
 
   test "GET index" do
@@ -234,7 +236,7 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET created" do
-    @signup_form.email = email_credentials(:yuya_nayutaya).email
+    @signup_form.email = @yuya_nayutaya.email
     @request.session[:signup_form] = @signup_form.attributes
 
     get :created
@@ -253,7 +255,7 @@ class EmailSignupControllerTest < ActionController::TestCase
 
   test "GET created, clean session" do
     @request.session[:user_id]     = :dummy
-    @request.session[:signup_form] = {:email => email_credentials(:yuya_nayutaya).email}
+    @request.session[:signup_form] = {:email => @yuya_nayutaya.email}
 
     get :created
 
@@ -264,28 +266,24 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET activation" do
-    credential = email_credentials(:yuya_nayutaya)
-
-    get :activation, :activation_token => credential.activation_token
+    get :activation, :activation_token => @yuya_nayutaya.activation_token
 
     assert_response(:success)
     assert_template("activation")
     assert_flash_empty
 
-    assert_equal(credential, assigns(:credential))
+    assert_equal(@yuya_nayutaya, assigns(:credential))
     assert_equal(false, assigns(:activated))
   end
 
   test "GET activation, already activated" do
-    credential = email_credentials(:yuya_gmail)
-
-    get :activation, :activation_token => credential.activation_token
+    get :activation, :activation_token => @yuya_gmail.activation_token
 
     assert_response(:success)
     assert_template("activation")
     assert_flash_empty
 
-    assert_equal(credential, assigns(:credential))
+    assert_equal(@yuya_gmail, assigns(:credential))
     assert_equal(true, assigns(:activated))
   end
 
@@ -293,7 +291,7 @@ class EmailSignupControllerTest < ActionController::TestCase
     @request.session[:user_id]     = :dummy
     @request.session[:signup_form] = :dummy
 
-    get :activation, :activation_token => email_credentials(:yuya_nayutaya).activation_token
+    get :activation, :activation_token => @yuya_nayutaya.activation_token
 
     assert_response(:success)
     assert_template("activation")
@@ -315,10 +313,9 @@ class EmailSignupControllerTest < ActionController::TestCase
 
   test "POST activate" do
     time = Time.local(2010, 1, 1)
-    credential = email_credentials(:yuya_nayutaya)
 
     Kagemusha::DateTime.at(time) {
-      post :activate, :activation_token => credential.activation_token
+      post :activate, :activation_token => @yuya_nayutaya.activation_token
     }
 
     assert_response(:redirect)
@@ -326,12 +323,12 @@ class EmailSignupControllerTest < ActionController::TestCase
     assert_flash_empty
 
     assigns(:credential).reload
-    assert_equal(credential.email, assigns(:credential).email)
+    assert_equal(@yuya_nayutaya.email, assigns(:credential).email)
     assert_equal(time, assigns(:credential).activated_at)
   end
 
   test "POST activate, already activated" do
-    post :activate, :activation_token => email_credentials(:yuya_gmail).activation_token
+    post :activate, :activation_token => @yuya_gmail.activation_token
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -342,7 +339,7 @@ class EmailSignupControllerTest < ActionController::TestCase
     @request.session[:user_id]     = :dummy
     @request.session[:signup_form] = :dummy
 
-    post :activate, :activation_token => email_credentials(:yuya_nayutaya).activation_token
+    post :activate, :activation_token => @yuya_nayutaya.activation_token
 
     assert_response(:redirect)
     assert_redirected_to(:controller => "email_signup", :action => "activated")
