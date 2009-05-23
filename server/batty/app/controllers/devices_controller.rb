@@ -5,7 +5,6 @@ class DevicesController < ApplicationController
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:create])
-
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_device_id, :only => [:show]

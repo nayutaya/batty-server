@@ -6,7 +6,6 @@ class EmailSignupController < ApplicationController
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:validate, :create, :activate])
-
   before_filter :clear_session_user_id, :only => [:index, :validate, :validated, :create, :created, :activation, :activate, :activated]
   before_filter :clear_session_signup_form, :only => [:index, :validate, :activation, :activate, :activated]
 
@@ -33,6 +32,7 @@ class EmailSignupController < ApplicationController
   # GET /signup/email/validated
   def validated
     @signup_form = EmailSignupForm.new(session[:signup_form])
+
     if @signup_form.valid?
       render
     else
@@ -44,6 +44,7 @@ class EmailSignupController < ApplicationController
   # POST /signup/email/create
   def create
     @signup_form = EmailSignupForm.new(session[:signup_form])
+
     if @signup_form.valid?
       # TODO: エラー処理
       User.transaction {
