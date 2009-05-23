@@ -57,6 +57,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def specified_device_belongs_to_login_user
+    if @device.user_id == @login_user.id
+      return true
+    else
+      set_error("デバイスIDが正しくありません。")
+      redirect_to(root_path)
+      return false
+    end
+  end
+
   def set_notice(message)
     flash[:notice] = @flash_notice = message
     flash[:error]  = @flash_error  = nil

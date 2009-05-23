@@ -3,8 +3,9 @@ require 'test_helper'
 
 class DevicesControllerTest < ActionController::TestCase
   def setup
-    @yuya     = users(:yuya)
-    @yuya_pda = devices(:yuya_pda)
+    @yuya        = users(:yuya)
+    @yuya_pda    = devices(:yuya_pda)
+    @shinya_note = devices(:shinya_note)
 
     @edit_form = DeviceEditForm.new(
       :name           => "name",
@@ -148,6 +149,10 @@ class DevicesControllerTest < ActionController::TestCase
   end
 
   test "GET show, abnormal, other's device" do
-    # TODO: 実装せよ
+    get :show, :device_id => @shinya_note.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 end

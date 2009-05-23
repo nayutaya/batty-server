@@ -9,6 +9,7 @@ class EmailActionsController < ApplicationController
   before_filter :authentication_required
   before_filter :required_param_device_id
   before_filter :required_param_trigger_id
+  before_filter :specified_device_belongs_to_login_user
 
   # GET /device/:device_id/trigger/:trigger_id/acts/email/new
   def new

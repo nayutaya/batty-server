@@ -8,6 +8,7 @@ class DevicesController < ApplicationController
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_device_id, :only => [:show]
+  before_filter :specified_device_belongs_to_login_user, :only => [:show]
 
   # GET /devices/new
   def new

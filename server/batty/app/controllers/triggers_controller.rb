@@ -8,6 +8,7 @@ class TriggersController < ApplicationController
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_device_id
+  before_filter :specified_device_belongs_to_login_user
 
   # GET /device/:device_id/triggers/new
   def new
