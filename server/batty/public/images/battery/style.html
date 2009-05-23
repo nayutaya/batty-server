@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>style</title>
+    <style type="text/css">
+      body
+      {
+        background-color: #F0F0F0;
+      }
+
+      div.battery-cell
+      {
+        margin: 0;
+        padding: 4px 7px 4px 5px;
+        width: 100px;
+        height: 13px;
+        background-image: url(cell.png);
+        background-repeat: no-repeat;
+      }
+
+      div.battery-level
+      {
+        margin: 0;
+        padding: 0;
+        height: 13px;
+        background-repeat: repeat-x;
+      }
+
+      div.battery-high
+      {
+        background-image: url(level-green.png);
+      }
+
+      div.battery-middle
+      {
+        background-image: url(level-orange.png);
+      }
+
+      div.battery-low
+      {
+        background-image: url(level-yellow.png);
+      }
+
+      div.battery-empty
+      {
+        background-image: url(level-red.png);
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <img src="cell.png" />
+      <img src="level-green.png" />
+      <img src="level-orange.png" />
+      <img src="level-yellow.png" />
+      <img src="level-red.png" />
+    </div>
+    <div>
+      <div class="battery-cell"><div class="battery-level battery-high" style="width: 100px;"></div></div>
+      <div class="battery-cell"><div class="battery-level battery-high" style="width: 90px;"></div></div>
+      <div class="battery-cell"><div class="battery-level battery-high" style="width: 80px;"></div></div>
+      <div class="battery-cell"><div class="battery-level battery-high" style="width: 70px;"></div></div>
+      <div class="battery-cell"><div class="battery-level battery-high" style="width: 60px;"></div></div>
+      <div class="battery-cell"><div class="battery-level battery-high" style="width: 50px;"></div></div>
+      <div class="battery-cell"><div class="battery-level battery-middle" style="width: 40px;"></div></div>
+      <div class="battery-cell"><div class="battery-level battery-low" style="width: 30px;"></div></div>
+      <div class="battery-cell"><div class="battery-level battery-empty" style="width: 20px;"></div></div>
+      <div class="battery-cell"><div class="battery-level battery-empty" style="width: 10px;"></div></div>
+      <div class="battery-cell"><div class="battery-level battery-empty" style="width: 1px;"></div></div>
+    </div>
+  </body>
+</html>
