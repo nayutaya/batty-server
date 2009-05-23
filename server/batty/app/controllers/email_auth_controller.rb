@@ -6,13 +6,13 @@ class EmailAuthController < ApplicationController
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:login])
 
-  # GET auth/email
+  # GET /auth/email
   def index
     session[:user_id] = nil
     @login_form = EmailLoginForm.new
   end
 
-  # POST auth/email/login
+  # POST /auth/email/login
   def login
     session[:user_id] = nil
     @login_form = EmailLoginForm.new(params[:login_form])

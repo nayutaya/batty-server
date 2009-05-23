@@ -5,7 +5,6 @@ class TriggersController < ApplicationController
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:create])
-
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_device_id
@@ -27,7 +26,7 @@ class TriggersController < ApplicationController
       @trigger.save!
 
       set_notice("トリガを追加しました。")
-      redirect_to(:controller => "devices", :action => "show", :device_id => @device.id)
+      redirect_to(device_path(:device_id => @device.id))
     else
       set_operators_for_select
       set_error_now("入力内容を確認してください。")

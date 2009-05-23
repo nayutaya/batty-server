@@ -25,7 +25,7 @@ class HttpActionsController < ApplicationController
       @action.save!
 
       set_notice("アクションを追加しました。")
-      redirect_to(:controller => "devices", :action => "show", :device_id => @device.id)
+      redirect_to(device_path(:device_id => @device.id))
     else
       set_error_now("入力内容を確認してください。")
       render(:action => "new")
