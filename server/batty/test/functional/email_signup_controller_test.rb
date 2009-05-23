@@ -6,18 +6,10 @@ class EmailSignupControllerTest < ActionController::TestCase
     @yuya_gmail    = email_credentials(:yuya_gmail)
     @yuya_nayutaya = email_credentials(:yuya_nayutaya)
 
-    @signup_form = EmailSignupForm.new
-
-    @valid_signup_form_attributes = {
+    @signup_form = EmailSignupForm.new(
       :email                 => "foo@example.com",
       :password              => "password",
-      :password_confirmation => "password",
-    }
-    @invalid_sinup_form_attributes = {
-      :email                 => "a",
-      :password              => "b",
-      :password_confirmation => "c",
-    }
+      :password_confirmation => "password")
 
     ActionMailer::Base.deliveries = []
   end
@@ -61,9 +53,6 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "POST validate" do
-    @request.session[:signup_form] = :dummy
-
-    @signup_form.attributes = @valid_signup_form_attributes
     assert_equal(true, @signup_form.valid?)
 
     post :validate, :signup_form => @signup_form.attributes
@@ -84,7 +73,7 @@ class EmailSignupControllerTest < ActionController::TestCase
   test "POST validate, invalid form" do
     @request.session[:signup_form] = :dummy
 
-    @signup_form.attributes = @invalid_sinup_form_attributes
+    @signup_form.email = nil
     assert_equal(false, @signup_form.valid?)
 
     post :validate, :signup_form => @signup_form.attributes
@@ -103,7 +92,7 @@ class EmailSignupControllerTest < ActionController::TestCase
     @request.session[:user_id]     = :dummy
     @request.session[:signup_form] = :dummy
 
-    post :validate, :signup_form => @valid_signup_form_attributes
+    post :validate, :signup_form => @signup_form.attributes
 
     assert_response(:redirect)
     assert_redirected_to(:controller => "email_signup", :action => "validated")
@@ -119,7 +108,6 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET validated" do
-    @signup_form.attributes = @valid_signup_form_attributes
     assert_equal(true, @signup_form.valid?)
 
     @request.session[:signup_form] = @signup_form.attributes
@@ -136,7 +124,7 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "GET validated, invalid form" do
-    @signup_form.attributes = @invalid_sinup_form_attributes
+    @signup_form.email = nil
     assert_equal(false, @signup_form.valid?)
 
     get :validated
@@ -148,7 +136,7 @@ class EmailSignupControllerTest < ActionController::TestCase
 
   test "GET validated, clean session" do
     @request.session[:user_id]     = :dummy
-    @request.session[:signup_form] = @valid_signup_form_attributes
+    @request.session[:signup_form] = @signup_form.attributes
 
     get :validated
 
@@ -159,7 +147,6 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "POST create" do
-    @signup_form.attributes = @valid_signup_form_attributes
     assert_equal(true, @signup_form.valid?)
 
     @request.session[:signup_form] = @signup_form.attributes
@@ -204,7 +191,7 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "POST create, invalid form" do
-    @signup_form.attributes = @invalid_signup_form_attributes
+    @signup_form.email = nil
     assert_equal(false, @signup_form.valid?)
 
     @request.session[:signup_form] = @signup_form.attributes
@@ -218,7 +205,7 @@ class EmailSignupControllerTest < ActionController::TestCase
 
   test "POST create, clean session" do
     @request.session[:user_id]     = :dummy
-    @request.session[:signup_form] = @valid_signup_form_attributes
+    @request.session[:signup_form] = @signup_form.attributes
 
     post :create
 
