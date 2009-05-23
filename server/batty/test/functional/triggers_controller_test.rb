@@ -20,8 +20,6 @@ class TriggersControllerTest < ActionController::TestCase
 
     assert_routing("/device/1234567890/triggers/new",    base.merge(:action => "new", :device_id => "1234567890"))
     assert_routing("/device/1234567890/triggers/create", base.merge(:action => "create", :device_id => "1234567890"))
-
-    assert_routing("/device/1234567890/trigger/2345678901", base.merge(:action => "show", :device_id => "1234567890", :trigger_id => "2345678901"))
   end
 
   test "GET new" do
@@ -129,57 +127,5 @@ class TriggersControllerTest < ActionController::TestCase
 
     assert_response(405)
     assert_template(nil)
-  end
-
-  test "GET show" do
-    get :show, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id
-
-    assert_response(:success)
-    assert_template("show")
-    assert_flash_empty
-    assert_logged_in(@yuya)
-
-    assert_equal(@yuya_pda, assigns(:device))
-    assert_equal(@yuya_pda_ge90, assigns(:trigger))
-
-    assert_equal(@yuya_pda_ge90.email_actions.size, assigns(:email_actions).size)
-    assert_equal(true, assigns(:email_actions).map(&:trigger).all? { |t| t == @yuya_pda_ge90 })
-    assert_equal(
-      assigns(:email_actions).sort_by { |act| [act.email, act.id] },
-      assigns(:email_actions))
-  end
-
-  test "GET show, abnormal, no device id" do
-    get :show, :device_id => nil
-
-    assert_response(:redirect)
-    assert_redirected_to(root_path)
-    assert_flash_error
-  end
-
-  test "GET show, abnormal, other's device" do
-    # TODO: 実装せよ
-  end
-
-  test "GET show, abnormal, no trigger id" do
-    get :show, :device_id => @yuya_pda.id, :trigger_id => nil
-
-    assert_response(:redirect)
-    assert_redirected_to(root_path)
-    assert_flash_error
-  end
-
-  test "GET show, abnormal, other's trigger" do
-    # TODO: 実装せよ
-  end
-
-  test "GET show, abnormal, no login" do
-    session_logout
-
-    get :show
-
-    assert_response(:redirect)
-    assert_redirected_to(root_path)
-    assert_flash_error
   end
 end
