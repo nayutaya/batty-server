@@ -20,6 +20,8 @@ class DevicesControllerTest < ActionController::TestCase
     assert_routing("/devices/create", base.merge(:action => "create"))
 
     assert_routing("/device/1234567890", base.merge(:action => "show", :device_id => "1234567890"))
+
+    assert_equal("/device/1234567890", device_path(:device_id => "1234567890"))
   end
 
   test "GET new" do

@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => "home", :action => "index"
 
   map.connect "devices/:action",   :controller => "devices"
-  map.connect "device/:device_id", :controller => "devices", :action => "show", :device_id => DeviceId
+  map.device  "device/:device_id", :controller => "devices", :action => "show", :device_id => DeviceId
   map.connect "device/:device_id/triggers/:action",    :controller => "triggers", :device_id => DeviceId
   map.connect "device/:device_id/trigger/:trigger_id", :controller => "triggers", :action => "show", :device_id => DeviceId, :trigger_id => TriggerId
   map.connect "device/:device_id/trigger/:trigger_id/acts/email/:action", :controller => "email_actions", :device_id => DeviceId, :trigger_id => TriggerId
