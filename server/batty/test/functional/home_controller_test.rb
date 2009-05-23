@@ -57,7 +57,7 @@ class HomeControllerTest < ActionController::TestCase
     assert_logged_in(users(:shinya))
   end
 
-  test "GET index, anonymous" do
+  test "GET index, no login" do
     session_logout
 
     get :index

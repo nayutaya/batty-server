@@ -100,16 +100,11 @@ class TriggersControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
-  test "POST create, abnormal, no device id" do
-    post :create, :device_id => nil
+  test "GET create, abnormal, method not allowed" do
+    get :create
 
-    assert_response(:redirect)
-    assert_redirected_to(root_path)
-    assert_flash_error
-  end
-
-  test "POST create, abnormal, other's device" do
-    # TODO: 実装せよ
+    assert_response(405)
+    assert_template(nil)
   end
 
   test "POST create, abnormal, no login" do
@@ -122,10 +117,15 @@ class TriggersControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
-  test "GET create, abnormal, method not allowed" do
-    get :create
+  test "POST create, abnormal, no device id" do
+    post :create, :device_id => nil
 
-    assert_response(405)
-    assert_template(nil)
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST create, abnormal, other's device" do
+    # TODO: 実装せよ
   end
 end
