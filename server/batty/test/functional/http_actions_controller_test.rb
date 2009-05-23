@@ -38,6 +38,10 @@ class HttpActionsControllerTest < ActionController::TestCase
     assert_equal(
       HttpActionEditForm.new.attributes,
       assigns(:edit_form).attributes)
+
+    assert_equal(
+      HttpActionEditForm.http_methods_for_select(:include_blank => true),
+      assigns(:http_methods_for_select))
   end
 
   test "GET new, abnormal, no login" do
@@ -119,6 +123,10 @@ class HttpActionsControllerTest < ActionController::TestCase
     assert_response(:success)
     assert_template("new")
     assert_flash_error
+
+    assert_equal(
+      HttpActionEditForm.http_methods_for_select(:include_blank => true),
+      assigns(:http_methods_for_select))
   end
 
   test "GET create, abnormal, method not allowed" do

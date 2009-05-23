@@ -15,6 +15,7 @@ class HttpActionsController < ApplicationController
   # GET /device/:device_id/trigger/:trigger_id/acts/http/new
   def new
     @edit_form = HttpActionEditForm.new
+    set_http_methods_for_select
   end
 
   # POST /device/:device_id/trigger/:trigger_id/acts/http/create
@@ -29,8 +30,16 @@ class HttpActionsController < ApplicationController
       set_notice("アクションを追加しました。")
       redirect_to(device_path(:device_id => @device.id))
     else
+      set_http_methods_for_select
       set_error_now("入力内容を確認してください。")
       render(:action => "new")
     end
+  end
+
+  private
+
+  def set_http_methods_for_select
+    @http_methods_for_select = HttpActionEditForm.http_methods_for_select(
+      :include_blank => true)
   end
 end
