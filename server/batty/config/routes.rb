@@ -7,21 +7,18 @@ ActionController::Routing::Routes.draw do |map|
 
   map.root :controller => "home", :action => "index"
 
+  map.connect "devices/:action",   :controller => "devices"
   map.connect "device/:device_id", :controller => "devices", :action => "show", :device_id => DeviceId
-  map.connect "device/:device_id/triggers/new",        :controller => "triggers", :action => "new",    :device_id => DeviceId
-  map.connect "device/:device_id/triggers/create",     :controller => "triggers", :action => "create", :device_id => DeviceId
-  map.connect "device/:device_id/trigger/:trigger_id", :controller => "triggers", :action => "show",   :device_id => DeviceId, :trigger_id => TriggerId
-  map.connect "device/:device_id/trigger/:trigger_id/acts/email/new",    :controller => "email_actions", :action => "new",    :device_id => DeviceId, :trigger_id => TriggerId
-  map.connect "device/:device_id/trigger/:trigger_id/acts/email/create", :controller => "email_actions", :action => "create", :device_id => DeviceId, :trigger_id => TriggerId
-  map.connect "device/:device_id/trigger/:trigger_id/acts/http/:action", :controller => "http_actions", :device_id => DeviceId, :trigger_id => TriggerId
+  map.connect "device/:device_id/triggers/:action",    :controller => "triggers", :device_id => DeviceId
+  map.connect "device/:device_id/trigger/:trigger_id", :controller => "triggers", :action => "show", :device_id => DeviceId, :trigger_id => TriggerId
+  map.connect "device/:device_id/trigger/:trigger_id/acts/email/:action", :controller => "email_actions", :device_id => DeviceId, :trigger_id => TriggerId
+  map.connect "device/:device_id/trigger/:trigger_id/acts/http/:action",  :controller => "http_actions", :device_id => DeviceId, :trigger_id => TriggerId
 
-  map.connect "device/token/:device_token/energies.rdf", :controller => "device_feeds", :action => "energies", :device_token => DeviceToken
-  map.connect "device/token/:device_token/events.rdf",   :controller => "device_feeds", :action => "events",   :device_token => DeviceToken
+  map.connect "device/token/:device_token/:action.rdf", :controller => "device_feeds", :device_token => DeviceToken
   map.connect "device/token/:device_token/energies/update/:level",       :controller => "device_api", :action => "update_energy", :device_token => DeviceToken, :level => /\d+/
   map.connect "device/token/:device_token/energies/update/:level/:time", :controller => "device_api", :action => "update_energy", :device_token => DeviceToken, :level => /\d+/, :time => /\d+/
 
-  map.connect "user/token/:user_token/energies.rdf", :controller => "user_feeds", :action => "energies", :user_token => UserToken
-  map.connect "user/token/:user_token/events.rdf",   :controller => "user_feeds", :action => "events",   :user_token => UserToken
+  map.connect "user/token/:user_token/:action.rdf", :controller => "user_feeds", :user_token => UserToken
 
   map.connect "auth/email/:action",  :controller => "email_auth"
   map.connect "auth/openid/:action", :controller => "open_id_auth"
