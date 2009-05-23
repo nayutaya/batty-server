@@ -6,19 +6,19 @@ class AuthController < ApplicationController
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:logout])
 
-  # GET ?
+  # GET /auth/login_complete
   def login_complete
     @return_path = params[:return_path]
     @return_path = root_path if @return_path.blank?
   end
 
-  # POST ?
+  # POST /auth/logout
   def logout
     reset_session
     redirect_to(:action => "logout_complete")
   end
 
-  # GET ?
+  # GET /logout_complete
   def logout_complete
     @return_path = params[:return_path]
     @return_path = root_path if @return_path.blank?
