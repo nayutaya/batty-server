@@ -1,4 +1,59 @@
 
+body
+{
+    background-color: #F0F0F0;
+}
+
+div.battery-cell
+{
+    margin: 0;
+    padding: 4px 7px 4px 5px;
+    width: 100px;
+    height: 13px;
+    background-image: url(/images/battery/cell.png);
+    background-repeat: no-repeat;
+}
+
+div.battery-level
+{
+    margin: 0;
+    padding: 0;
+    width: 100px;
+    height: 13px;
+}
+
+div.battery-high,
+div.battery-middle,
+div.battery-low,
+div.battery-empty
+{
+    margin: 0;
+    padding: 0;
+    height: 13px;
+    background-repeat: repeat-x;
+}
+
+div.battery-high
+{
+    background-image: url(/images/battery/level-green.png);
+}
+
+div.battery-middle
+{
+    background-image: url(/images/battery/level-orange.png);
+}
+
+div.battery-low
+{
+    background-image: url(/images/battery/level-yellow.png);
+}
+
+div.battery-empty
+{
+    background-image: url(/images/battery/level-red.png);
+}
+
+
 ol#email-signup-progress
 {
 }

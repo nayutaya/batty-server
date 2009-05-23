@@ -37,4 +37,21 @@ module DevicesHelper
       :alt    => name,
       :title  => name)
   end
+
+  def energy_meter(level)
+    klass =
+      case [[level, 0].max, 100].min
+      when  0...15 then "empty"
+      when 15...30 then "low"
+      when 30...45 then "middle"
+      when 45..100 then "high"
+      else raise(ArgumentError)
+      end
+    width = [[level, 1].max, 100].min
+    html  = %|<div class="battery-cell">|
+    html += %|<div class="battery-level">|
+    html += %|<div class="battery-#{klass}" style="width: #{width}px;">|
+    html += %|</div></div></div>|
+    return html
+  end
 end

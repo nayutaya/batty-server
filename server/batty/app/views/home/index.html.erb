@@ -44,7 +44,7 @@
     <tr>
      <th></th>
      <th>デバイス</th>
-     <th>バッテリー残量</th>
+     <th colspan="2">残量</th>
      <th>更新日時</th>
      <th>トリガー</th>
      <th>アクション</th>
@@ -56,6 +56,7 @@
      <tr>
       <td><%= device_icon48_link(device) %></td>
       <td><%= device_name_link(device) %></td>
+      <td><%= energy_meter(current_energy.try(:observed_level) || 0) %></td>
       <td align="right"><%=h current_energy.try(:observed_level) || "-" %> %</td>
       <td><%=h current_energy.try(:observed_at).try(:strftime, "%m-%d %H:%M") || "-" %></td>
       <td align="right"><%=h device.triggers.enable.count %></td>
