@@ -81,6 +81,13 @@ class DevicesControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
+  test "GET create, abnormal, method not allowed" do
+    get :create
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
   test "POST create, abnormal, no login" do
     session_logout
 
@@ -89,13 +96,6 @@ class DevicesControllerTest < ActionController::TestCase
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
-  end
-
-  test "GET create, abnormal, method not allowed" do
-    get :create
-
-    assert_response(405)
-    assert_template(nil)
   end
 
   test "GET show" do
@@ -129,14 +129,6 @@ class DevicesControllerTest < ActionController::TestCase
       assigns(:events))
   end
 
-  test "GET show, abnormal, no device id" do
-    get :show, :device_id => nil
-
-    assert_response(:redirect)
-    assert_redirected_to(root_path)
-    assert_flash_error
-  end
-
   test "GET show, abnormal, no login" do
     session_logout
 
@@ -145,5 +137,17 @@ class DevicesControllerTest < ActionController::TestCase
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
+  end
+
+  test "GET show, abnormal, no device id" do
+    get :show, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET show, abnormal, other's device" do
+    # TODO: 実装せよ
   end
 end
