@@ -6,7 +6,7 @@ class DeviceApiController < ApplicationController
 
   verify(
     :method => :post,
-    :render => {:text => "", :status => 405})
+    :render => {:text => "Method Not Allowed", :status => 405})
 
   # POST /device/token/:device_token/energies/update/:level
   # POST /device/token/:device_token/energies/update/:level/:time
@@ -72,11 +72,8 @@ class DeviceApiController < ApplicationController
   private
 
   def required_param_device_token(device_token = params[:device_token])
-    @device = Device.find_by_device_token(device_token)
-    return true if @device
-
-    render(:text => "", :status => 404)
-
-    return false
+    return super(device_token) {
+      render(:text => "Not Found", :status => 404)
+    }
   end
 end

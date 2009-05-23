@@ -26,8 +26,12 @@ class ApplicationController < ActionController::Base
     @device = Device.find_by_device_token(device_token)
     return true if @device
 
-    set_error("デバイストークンが正しくありません。")
-    redirect_to(root_path)
+    if block_given?
+      yield
+    else
+      set_error("デバイストークンが正しくありません。")
+      redirect_to(root_path)
+    end
 
     return false
   end
