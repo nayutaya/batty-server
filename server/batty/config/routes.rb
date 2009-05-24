@@ -21,6 +21,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.namespace :signup do |signup|
     signup.connect "openid/:action", :controller => "open_id"
+    signup.connect "email/activation/:activation_token", :controller => "email", :action => "activation", :activation_token => /[0-9a-f]+/
   end
 
 #   map.connect "auth/email/:action",  :controller => "email_auth"

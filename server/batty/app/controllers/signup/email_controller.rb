@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 
 # メールサインアップ
-class EmailSignupController < ApplicationController
+class Signup::EmailController < ApplicationController
   filter_parameter_logging :password
   verify(
     :method => :post,
@@ -61,7 +62,7 @@ class EmailSignupController < ApplicationController
 
       @activation_url = url_for(
         :only_path        => false,
-        :controller       => "email_signup",
+        :controller       => "signup/email",
         :action           => "activation",
         :activation_token => @credential.activation_token)
 

@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 
 require 'test_helper'
 
-class EmailSignupControllerTest < ActionController::TestCase
+class Signup::EmailControllerTest < ActionController::TestCase
   def setup
     @yuya_gmail    = email_credentials(:yuya_gmail)
     @yuya_nayutaya = email_credentials(:yuya_nayutaya)
@@ -15,7 +16,7 @@ class EmailSignupControllerTest < ActionController::TestCase
   end
 
   test "routes" do
-    base = {:controller => "email_signup"}
+    base = {:controller => "signup/email"}
 
     assert_routing("/signup/email",           base.merge(:action => "index"))
     assert_routing("/signup/email/validate",  base.merge(:action => "validate"))
@@ -58,7 +59,7 @@ class EmailSignupControllerTest < ActionController::TestCase
     post :validate, :signup_form => @signup_form.attributes
 
     assert_response(:redirect)
-    assert_redirected_to(:controller => "email_signup", :action => "validated")
+    assert_redirected_to(:controller => "email", :action => "validated")
     assert_flash_empty
 
     assert_equal(
@@ -95,7 +96,7 @@ class EmailSignupControllerTest < ActionController::TestCase
     post :validate, :signup_form => @signup_form.attributes
 
     assert_response(:redirect)
-    assert_redirected_to(:controller => "email_signup", :action => "validated")
+    assert_redirected_to(:controller => "email", :action => "validated")
 
     assert_equal(nil, @request.session[:user_id])
   end
@@ -158,7 +159,7 @@ class EmailSignupControllerTest < ActionController::TestCase
     }
 
     assert_response(:redirect)
-    assert_redirected_to(:controller => "email_signup", :action => "created")
+    assert_redirected_to(:controller => "email", :action => "created")
     assert_flash_empty
 
     assert_equal(
@@ -210,7 +211,7 @@ class EmailSignupControllerTest < ActionController::TestCase
     post :create
 
     assert_response(:redirect)
-    assert_redirected_to(:controller => "email_signup", :action => "created")
+    assert_redirected_to(:controller => "email", :action => "created")
 
     assert_equal(nil, @request.session[:user_id])
   end
@@ -306,7 +307,7 @@ class EmailSignupControllerTest < ActionController::TestCase
     }
 
     assert_response(:redirect)
-    assert_redirected_to(:controller => "email_signup", :action => "activated")
+    assert_redirected_to(:controller => "email", :action => "activated")
     assert_flash_empty
 
     assigns(:credential).reload
@@ -329,7 +330,7 @@ class EmailSignupControllerTest < ActionController::TestCase
     post :activate, :activation_token => @yuya_nayutaya.activation_token
 
     assert_response(:redirect)
-    assert_redirected_to(:controller => "email_signup", :action => "activated")
+    assert_redirected_to(:controller => "email", :action => "activated")
 
     assert_equal(nil, @request.session[:user_id])
     assert_equal(nil, @request.session[:signup_form])
