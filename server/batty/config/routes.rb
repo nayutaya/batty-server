@@ -24,12 +24,12 @@ ActionController::Routing::Routes.draw do |map|
     signup.connect "email/activation/:activation_token", :controller => "email", :action => "activation", :activation_token => /[0-9a-f]+/
   end
 
+  map.namespace :auth do |auth|
+    auth.connect "openid/:action", :controller => "open_id"
+  end
+
 #   map.connect "auth/email/:action",  :controller => "email_auth"
 #   map.connect "auth/openid/:action", :controller => "open_id_auth"
-# 
-#   map.connect "signup/email/:action",                      :controller => "email_signup"
-#   map.connect "signup/email/activation/:activation_token", :controller => "email_signup", :action => "activation", :activation_token => /[0-9a-f]+/
-#   map.connect "signup/openid/:action",                     :controller => "open_id_signup"
 
   map.connect ":controller/:action/:id"
   map.connect ":controller/:action/:id.:format"

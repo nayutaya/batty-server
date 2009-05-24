@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # OpenID認証
-class OpenIdAuthController < ApplicationController
+class Auth::OpenIdController < ApplicationController
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
@@ -51,7 +51,7 @@ class OpenIdAuthController < ApplicationController
         successful_login
       else
         flash[:notice] = "OpenID がまだ登録されていません。"
-        redirect_to(:controller => "open_id_signup", :action => "index")
+        redirect_to(:controller => "signup/open_id", :action => "index")
       end
     end
   end

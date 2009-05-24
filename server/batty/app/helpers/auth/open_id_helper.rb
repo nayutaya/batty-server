@@ -1,0 +1,2 @@
+module Auth::OpenIdHelper
+end

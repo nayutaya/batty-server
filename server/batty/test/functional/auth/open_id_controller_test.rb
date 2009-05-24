@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 require 'test_helper'
 
-class OpenIdAuthControllerTest < ActionController::TestCase
+class Auth::OpenIdControllerTest < ActionController::TestCase
 
   def setup
     @shinya_example = open_id_credentials(:shinya_example)
   end
 
   test "routes" do
-    base = { :controller => 'open_id_auth' }
+    base = { :controller => 'auth/open_id' }
 
     assert_routing("/auth/openid",       base.merge(:action => "index"))
     assert_routing("/auth/openid/login", base.merge(:action => "login"))
@@ -26,7 +26,7 @@ class OpenIdAuthControllerTest < ActionController::TestCase
   end
 
   test "POST login, successful with registered identity_url" do
-    musha = Kagemusha.new(OpenIdAuthController::Result)
+    musha = Kagemusha.new(Auth::OpenIdController::Result)
     musha.def(:status) { :successful }
     musha.swap{
       post :login, :openid_url => @shinya_example.identity_url
@@ -37,13 +37,13 @@ class OpenIdAuthControllerTest < ActionController::TestCase
   end
 
   test "POST login, successful with unregistered identity_url" do
-    musha = Kagemusha.new(OpenIdAuthController::Result)
+    musha = Kagemusha.new(Auth::OpenIdController::Result)
     musha.def(:status) { :successful }
     musha.swap{
       post :login, :openid_url => 'http://example.jp/yuya'
     }
     assert_response(:redirect)
-    assert_redirected_to(:controller => 'open_id_signup', :action => 'index')
+    assert_redirected_to(:controller => 'signup/open_id', :action => 'index')
     assert_equal('OpenID がまだ登録されていません。', @response.flash[:notice])
   end
 
@@ -54,7 +54,7 @@ class OpenIdAuthControllerTest < ActionController::TestCase
    [:failed,   'OpenID の検証が失敗しました。'],
   ].each do |status, message|
     test "POST login, #{status}" do
-      musha = Kagemusha.new(OpenIdAuthController::Result)
+      musha = Kagemusha.new(Auth::OpenIdController::Result)
       musha.def(:status) { status }
       musha.swap {
         post :login, :openid_url => @shinya_example.identity_url
