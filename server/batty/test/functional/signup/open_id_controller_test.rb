@@ -2,9 +2,9 @@
 
 require 'test_helper'
 
-class OpenIdSignupControllerTest < ActionController::TestCase
+class Signup::OpenIdControllerTest < ActionController::TestCase
   test "routes" do
-    base = { :controller => "open_id_signup" }
+    base = { :controller => "signup/open_id" }
 
     assert_routing("signup/openid",               base.merge(:action => "index"))
     assert_routing("signup/openid/authenticate",  base.merge(:action => "authenticate"))
