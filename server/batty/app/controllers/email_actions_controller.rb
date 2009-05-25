@@ -4,15 +4,15 @@ class EmailActionsController < ApplicationController
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create, :update])
-  before_filter :authentication, :except => [:destroy]
-  before_filter :authentication_required, :except => [:destroy]
-  before_filter :required_param_device_id, :except => [:destroy]
-  before_filter :required_param_trigger_id, :except => [:destroy]
-  before_filter :required_param_email_action_id, :only => [:edit, :update, :delete]
-  before_filter :specified_device_belongs_to_login_user, :except => [:destroy]
-  before_filter :specified_trigger_belongs_to_device, :except => [:destroy]
-  before_filter :specified_email_action_belongs_to_trigger, :only => [:edit, :update, :delete]
+    :only   => [:create, :update, :destroy])
+  before_filter :authentication
+  before_filter :authentication_required
+  before_filter :required_param_device_id
+  before_filter :required_param_trigger_id
+  before_filter :required_param_email_action_id, :only => [:edit, :update, :delete, :destroy]
+  before_filter :specified_device_belongs_to_login_user
+  before_filter :specified_trigger_belongs_to_device
+  before_filter :specified_email_action_belongs_to_trigger, :only => [:edit, :update, :delete, :destroy]
 
   # GET /device/:device_id/trigger/:trigger_id/acts/email/new
   def new
@@ -67,6 +67,12 @@ class EmailActionsController < ApplicationController
   end
 
   # POST /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/destroy
+  def destroy
+    @email_action.destroy
+
+    set_notice("メール通知を削除しました。")
+    redirect_to(device_path(:device_id => @device.id))
+  end
 
   private
 
