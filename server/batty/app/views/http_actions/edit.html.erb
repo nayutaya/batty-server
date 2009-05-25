@@ -1,0 +1,34 @@
+
+<div>
+  <%= link_to(h("トップ"), root_path) %> &gt;
+  <%= device_name_link(@device) %> &gt;
+  <em>Web Hookの編集</em>
+</div>
+
+<h1>Web Hookの編集</h1>
+
+<%- form_for(:edit_form, :url => {:action => "update"}) { |f| -%>
+ <div>
+  <%= f.label(:enable) %>
+  <%= f.check_box(:enable) %>
+  <%= error_message_on(:edit_form, :enable) %>
+ </div>
+ <div>
+  <%= f.label(:http_method) %>
+  <%= f.select(:http_method, @http_methods_for_select) %>
+  <%= error_message_on(:edit_form, :http_method) %>
+ </div>
+ <div>
+  <%= f.label(:url) %>
+  <%= f.text_field(:url, :size => 40) %>
+  <%= error_message_on(:edit_form, :url) %>
+ </div>
+ <div>
+  <%= f.label(:body) %>
+  <%= f.text_area(:body, :cols => 40, :rows => 10) %>
+  <%= error_message_on(:edit_form, :body) %>
+ </div>
+ <div><%= submit_tag("保存") %></div>
+<%- } -%>
+
+<%= error_messages_for(:edit_form) %>

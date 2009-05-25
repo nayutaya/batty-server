@@ -1,5 +1,6 @@
 
 # メールアクション
+# FIXME: EditFormClass = EmailActionEditForm
 class EmailActionsController < ApplicationController
   verify(
     :method => :post,

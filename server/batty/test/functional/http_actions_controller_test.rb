@@ -3,11 +3,13 @@ require 'test_helper'
 
 class HttpActionsControllerTest < ActionController::TestCase
   def setup
-    @yuya            = users(:yuya)
-    @yuya_pda        = devices(:yuya_pda)
-    @shinya_note     = devices(:shinya_note)
-    @yuya_pda_ge90   = triggers(:yuya_pda_ge90)
-    @shinya_note_ne0 = triggers(:shinya_note_ne0)
+    @yuya              = users(:yuya)
+    @yuya_pda          = devices(:yuya_pda)
+    @shinya_note       = devices(:shinya_note)
+    @yuya_pda_ge90     = triggers(:yuya_pda_ge90)
+    @shinya_note_ne0   = triggers(:shinya_note_ne0)
+    @yuya_pda_ge90_1   = http_actions(:yuya_pda_ge90_1)
+    @shinya_note_ne0_1 = http_actions(:shinya_note_ne0_1)
 
     @edit_form = HttpActionEditForm.new(
       :enable      => true,
@@ -182,4 +184,340 @@ class HttpActionsControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "GET edit" do
+    get :edit, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :http_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:success)
+    assert_template("edit")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+    assert_equal(@yuya_pda_ge90, assigns(:trigger))
+    assert_equal(@yuya_pda_ge90_1, assigns(:http_action))
+
+    assert_equal(@yuya_pda_ge90_1.enable,      assigns(:edit_form).enable)
+    assert_equal(@yuya_pda_ge90_1.http_method, assigns(:edit_form).http_method)
+    assert_equal(@yuya_pda_ge90_1.url,         assigns(:edit_form).url)
+    assert_equal(@yuya_pda_ge90_1.body,        assigns(:edit_form).body)
+
+    assert_equal(
+      HttpActionEditForm.http_methods_for_select(:include_blank => false),
+      assigns(:http_methods_for_select))
+  end
+
+  test "GET edit, abnormal, no login" do
+    session_logout
+
+    get :edit
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET edit, abnormal, no device id" do
+    get :edit, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET edit, abnormal, no trigger id" do
+    get :edit, :device_id => @yuya_pda.id, :trigger_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET edit, abnormal, no http action id" do
+    get :edit, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :http_action_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET edit, abnormal, other's device" do
+    get :edit, :device_id => @shinya_note.id, :trigger_id => @yuya_pda_ge90.id, :http_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET edit, abnormal, other's trigger" do
+    get :edit, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id, :http_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET edit, abnormal, other's http action" do
+    get :edit, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :http_action_id => @shinya_note_ne0_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+=begin
+  test "POST update" do
+    @edit_form.enable = false
+    assert_equal(true, @edit_form.valid?)
+
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id, :edit_form => @edit_form.attributes
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "devices", :action => "show", :device_id => @yuya_pda.id)
+    assert_flash_notice
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+    assert_equal(@yuya_pda_ge90, assigns(:trigger))
+    assert_equal(@yuya_pda_ge90_1, assigns(:email_action))
+
+    @yuya_pda_ge90_1.reload
+    assert_equal(@edit_form.enable,  @yuya_pda_ge90_1.enable)
+    assert_equal(@edit_form.email,   @yuya_pda_ge90_1.email)
+    assert_equal(@edit_form.subject, @yuya_pda_ge90_1.subject)
+    assert_equal(@edit_form.body,    @yuya_pda_ge90_1.body)
+  end
+
+  test "POST update, invalid form" do
+    @edit_form.email = nil
+    assert_equal(false, @edit_form.valid?)
+
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id, :edit_form => @edit_form.attributes
+
+    assert_response(:success)
+    assert_template("edit")
+    assert_flash_error
+
+    @yuya_pda_ge90_1.reload
+    assert_not_equal(@edit_form.email, @yuya_pda_ge90_1.email)
+  end
+
+  test "GET update, abnormal, method not allowed" do
+    get :update
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
+  test "POST update, abnormal, no login" do
+    session_logout
+
+    post :update
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST update, abnormal, no device id" do
+    post :update, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST update, abnormal, no trigger id" do
+    post :update, :device_id => @yuya_pda.id, :trigger_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST update, abnormal, no email action id" do
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST update, abnormal, other's device" do
+    post :update, :device_id => @shinya_note.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST update, abnormal, other's trigger" do
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id, :email_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST update, abnormal, other's email action" do
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @shinya_note_ne0_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete" do
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:success)
+    assert_template("delete")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+    assert_equal(@yuya_pda_ge90, assigns(:trigger))
+    assert_equal(@yuya_pda_ge90_1, assigns(:email_action))
+  end
+
+  test "GET delete, abnormal, no login" do
+    session_logout
+
+    get :delete
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete, abnormal, no device id" do
+    get :delete, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete, abnormal, no trigger id" do
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete, abnormal, no email action id" do
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete, abnormal, other's device" do
+    get :delete, :device_id => @shinya_note.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete, abnormal, other's trigger" do
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id, :email_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete, abnormal, other's email action" do
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @shinya_note_ne0_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy" do
+    assert_difference("EmailAction.count", -1) {
+      post :destroy, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id
+    }
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "devices", :action => "show", :device_id => @yuya_pda.id)
+    assert_flash_notice
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+    assert_equal(@yuya_pda_ge90, assigns(:trigger))
+    assert_equal(@yuya_pda_ge90_1, assigns(:email_action))
+
+    assert_equal(nil, EmailAction.find_by_id(@yuya_pda_ge90_1.id))
+  end
+
+  test "GET destroy, abnormal, method not allowed" do
+    get :destroy
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
+  test "POST destroy, abnormal, no login" do
+    session_logout
+
+    post :destroy
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, no device id" do
+    post :destroy, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, no trigger id" do
+    post :destroy, :device_id => @yuya_pda.id, :trigger_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, no email action id" do
+    post :destroy, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, other's device" do
+    post :destroy, :device_id => @shinya_note.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, other's trigger" do
+    post :destroy, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id, :email_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, other's email action" do
+    post :destroy, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @shinya_note_ne0_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+=end
 end
