@@ -5,14 +5,14 @@ class EmailActionsController < ApplicationController
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:create, :update])
-  before_filter :authentication, :except => [:delete, :destroy]
-  before_filter :authentication_required, :except => [:delete, :destroy]
-  before_filter :required_param_device_id, :except => [:delete, :destroy]
-  before_filter :required_param_trigger_id, :except => [:delete, :destroy]
-  before_filter :required_param_email_action_id, :only => [:edit, :update]
-  before_filter :specified_device_belongs_to_login_user, :except => [:delete, :destroy]
-  before_filter :specified_trigger_belongs_to_device, :except => [:delete, :destroy]
-  before_filter :specified_email_action_belongs_to_trigger, :only => [:edit, :update]
+  before_filter :authentication, :except => [:destroy]
+  before_filter :authentication_required, :except => [:destroy]
+  before_filter :required_param_device_id, :except => [:destroy]
+  before_filter :required_param_trigger_id, :except => [:destroy]
+  before_filter :required_param_email_action_id, :only => [:edit, :update, :delete]
+  before_filter :specified_device_belongs_to_login_user, :except => [:destroy]
+  before_filter :specified_trigger_belongs_to_device, :except => [:destroy]
+  before_filter :specified_email_action_belongs_to_trigger, :only => [:edit, :update, :delete]
 
   # GET /device/:device_id/trigger/:trigger_id/acts/email/new
   def new
@@ -62,6 +62,9 @@ class EmailActionsController < ApplicationController
   end
 
   # GET /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/delete
+  def delete
+    # nop
+  end
 
   # POST /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/destroy
 

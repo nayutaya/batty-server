@@ -80,6 +80,7 @@
                       <td><%= enable_or_disable_icon(email_action.enable?) %></td>
                       <td><%=h email_action.email %></td>
                       <td><%= link_to(h("編集"), :controller => "email_actions", :action => "edit", :trigger_id => trigger.id, :email_action_id => email_action.id) %></td>
+                      <td><%= link_to(h("削除"), :controller => "email_actions", :action => "delete", :trigger_id => trigger.id, :email_action_id => email_action.id) %></td>
                     </tr>
                   <%- } -%>
                 </table>

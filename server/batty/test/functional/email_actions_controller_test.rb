@@ -356,35 +356,74 @@ class EmailActionsControllerTest < ActionController::TestCase
   end
 
   test "GET delete" do
-    # TODO: 実装せよ
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:success)
+    assert_template("delete")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+    assert_equal(@yuya_pda_ge90, assigns(:trigger))
+    assert_equal(@yuya_pda_ge90_1, assigns(:email_action))
   end
 
   test "GET delete, abnormal, no login" do
-    # TODO: 実装せよ
+    session_logout
+
+    get :delete
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "GET delete, abnormal, no device id" do
-    # TODO: 実装せよ
+    get :delete, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "GET delete, abnormal, no trigger id" do
-    # TODO: 実装せよ
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "GET delete, abnormal, no email action id" do
-    # TODO: 実装せよ
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "GET delete, abnormal, other's device" do
-    # TODO: 実装せよ
+    get :delete, :device_id => @shinya_note.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "GET delete, abnormal, other's trigger" do
-    # TODO: 実装せよ
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id, :email_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "GET delete, abnormal, other's email action" do
-    # TODO: 実装せよ
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @shinya_note_ne0_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "POST destroy" do
