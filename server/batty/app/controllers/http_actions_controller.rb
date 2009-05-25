@@ -5,15 +5,15 @@ class HttpActionsController < ApplicationController
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create, :update])
-  before_filter :authentication, :except => [:destroy]
-  before_filter :authentication_required, :except => [:destroy]
-  before_filter :required_param_device_id, :except => [:destroy]
-  before_filter :required_param_trigger_id, :except => [:destroy]
-  before_filter :required_param_http_action_id, :only => [:edit, :update, :delete]
-  before_filter :specified_device_belongs_to_login_user, :except => [:destroy]
-  before_filter :specified_trigger_belongs_to_device, :except => [:destroy]
-  before_filter :specified_http_action_belongs_to_trigger, :only => [:edit, :update, :delete]
+    :only   => [:create, :update, :destroy])
+  before_filter :authentication
+  before_filter :authentication_required
+  before_filter :required_param_device_id
+  before_filter :required_param_trigger_id
+  before_filter :required_param_http_action_id, :only => [:edit, :update, :delete, :destroy]
+  before_filter :specified_device_belongs_to_login_user
+  before_filter :specified_trigger_belongs_to_device
+  before_filter :specified_http_action_belongs_to_trigger, :only => [:edit, :update, :delete, :destroy]
 
   # GET /device/:device_id/trigger/:trigger_id/acts/http/new
   def new
@@ -72,7 +72,12 @@ class HttpActionsController < ApplicationController
   end
 
   # POST /device/:device_id/trigger/:trigger_id/act/http/:http_action_id/destroy
-  # TODO: 実装せよ
+  def destroy
+    @http_action.destroy
+
+    set_notice("Web Hookを削除しました。")
+    redirect_to(device_path(:device_id => @device.id))
+  end
 
   private
 

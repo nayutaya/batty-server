@@ -445,10 +445,9 @@ class HttpActionsControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
-=begin
   test "POST destroy" do
-    assert_difference("EmailAction.count", -1) {
-      post :destroy, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id
+    assert_difference("HttpAction.count", -1) {
+      post :destroy, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :http_action_id => @yuya_pda_ge90_1.id
     }
 
     assert_response(:redirect)
@@ -458,9 +457,9 @@ class HttpActionsControllerTest < ActionController::TestCase
 
     assert_equal(@yuya_pda, assigns(:device))
     assert_equal(@yuya_pda_ge90, assigns(:trigger))
-    assert_equal(@yuya_pda_ge90_1, assigns(:email_action))
+    assert_equal(@yuya_pda_ge90_1, assigns(:http_action))
 
-    assert_equal(nil, EmailAction.find_by_id(@yuya_pda_ge90_1.id))
+    assert_equal(nil, HttpAction.find_by_id(@yuya_pda_ge90_1.id))
   end
 
   test "GET destroy, abnormal, method not allowed" do
@@ -496,8 +495,8 @@ class HttpActionsControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
-  test "POST destroy, abnormal, no email action id" do
-    post :destroy, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => nil
+  test "POST destroy, abnormal, no http action id" do
+    post :destroy, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :http_action_id => nil
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -505,7 +504,7 @@ class HttpActionsControllerTest < ActionController::TestCase
   end
 
   test "POST destroy, abnormal, other's device" do
-    post :destroy, :device_id => @shinya_note.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id
+    post :destroy, :device_id => @shinya_note.id, :trigger_id => @yuya_pda_ge90.id, :http_action_id => @yuya_pda_ge90_1.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -513,19 +512,18 @@ class HttpActionsControllerTest < ActionController::TestCase
   end
 
   test "POST destroy, abnormal, other's trigger" do
-    post :destroy, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id, :email_action_id => @yuya_pda_ge90_1.id
+    post :destroy, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id, :http_action_id => @yuya_pda_ge90_1.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "POST destroy, abnormal, other's email action" do
-    post :destroy, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @shinya_note_ne0_1.id
+  test "POST destroy, abnormal, other's http action" do
+    post :destroy, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :http_action_id => @shinya_note_ne0_1.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
-=end
 end
