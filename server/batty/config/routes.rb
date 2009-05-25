@@ -1,10 +1,11 @@
 
 ActionController::Routing::Routes.draw do |map|
-  UserToken   = /[0-9a-f]+/
-  DeviceToken = /[0-9a-f]+/
-  DeviceId    = /[0-9]+/
-  TriggerId   = /[0-9]+/
+  UserToken     = /[0-9a-f]+/
+  DeviceToken   = /[0-9a-f]+/
+  DeviceId      = /[0-9]+/
+  TriggerId     = /[0-9]+/
   EmailActionId = /[0-9]+/
+  HttpActionId  = /[0-9]+/
 
   map.root :controller => "home", :action => "index"
 
@@ -13,6 +14,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "device/:device_id/triggers/:action", :controller => "triggers", :device_id => DeviceId
   map.connect "device/:device_id/trigger/:trigger_id/act/email/:email_action_id/:action", :controller => "email_actions", :device_id => DeviceId, :trigger_id => TriggerId, :email_action_id => EmailActionId
   map.connect "device/:device_id/trigger/:trigger_id/acts/email/:action", :controller => "email_actions", :device_id => DeviceId, :trigger_id => TriggerId
+  map.connect "device/:device_id/trigger/:trigger_id/act/http/:http_action_id/:action", :controller => "http_actions", :device_id => DeviceId, :trigger_id => TriggerId, :http_action_id => HttpActionId
   map.connect "device/:device_id/trigger/:trigger_id/acts/http/:action",  :controller => "http_actions", :device_id => DeviceId, :trigger_id => TriggerId
 
   map.connect "device/token/:device_token/:action.rdf", :controller => "device_feeds", :device_token => DeviceToken
