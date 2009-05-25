@@ -6,14 +6,14 @@ class HttpActionsController < ApplicationController
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:create, :update])
-  before_filter :authentication, :except => [:delete, :destroy]
-  before_filter :authentication_required, :except => [:delete, :destroy]
-  before_filter :required_param_device_id, :except => [:delete, :destroy]
-  before_filter :required_param_trigger_id, :except => [:delete, :destroy]
-  before_filter :required_param_http_action_id, :only => [:edit, :update]
-  before_filter :specified_device_belongs_to_login_user, :except => [:delete, :destroy]
-  before_filter :specified_trigger_belongs_to_device, :except => [:delete, :destroy]
-  before_filter :specified_http_action_belongs_to_trigger, :only => [:edit, :update]
+  before_filter :authentication, :except => [:destroy]
+  before_filter :authentication_required, :except => [:destroy]
+  before_filter :required_param_device_id, :except => [:destroy]
+  before_filter :required_param_trigger_id, :except => [:destroy]
+  before_filter :required_param_http_action_id, :only => [:edit, :update, :delete]
+  before_filter :specified_device_belongs_to_login_user, :except => [:destroy]
+  before_filter :specified_trigger_belongs_to_device, :except => [:destroy]
+  before_filter :specified_http_action_belongs_to_trigger, :only => [:edit, :update, :delete]
 
   # GET /device/:device_id/trigger/:trigger_id/acts/http/new
   def new
@@ -67,7 +67,9 @@ class HttpActionsController < ApplicationController
   end
 
   # GET /device/:device_id/trigger/:trigger_id/act/http/:http_action_id/delete
-  # TODO: 実装せよ
+  def delete
+    # nop
+  end
 
   # POST /device/:device_id/trigger/:trigger_id/act/http/:http_action_id/destroy
   # TODO: 実装せよ

@@ -94,6 +94,7 @@
                       <td><%=h http_action.http_method %></td>
                       <td><%=h URI.parse(http_action.url).host %></td>
                       <td><%= link_to(h("編集"), :controller => "http_actions", :action => "edit", :trigger_id => trigger.id, :http_action_id => http_action.id) %></td>
+                      <td><%= link_to(h("削除"), :controller => "http_actions", :action => "delete", :trigger_id => trigger.id, :http_action_id => http_action.id) %></td>
                     </tr>
                   <%- } -%>
                 </table>

@@ -374,9 +374,8 @@ class HttpActionsControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
-=begin
   test "GET delete" do
-    get :delete, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :http_action_id => @yuya_pda_ge90_1.id
 
     assert_response(:success)
     assert_template("delete")
@@ -385,7 +384,7 @@ class HttpActionsControllerTest < ActionController::TestCase
 
     assert_equal(@yuya_pda, assigns(:device))
     assert_equal(@yuya_pda_ge90, assigns(:trigger))
-    assert_equal(@yuya_pda_ge90_1, assigns(:email_action))
+    assert_equal(@yuya_pda_ge90_1, assigns(:http_action))
   end
 
   test "GET delete, abnormal, no login" do
@@ -414,8 +413,8 @@ class HttpActionsControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
-  test "GET delete, abnormal, no email action id" do
-    get :delete, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => nil
+  test "GET delete, abnormal, no http action id" do
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :http_action_id => nil
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -423,7 +422,7 @@ class HttpActionsControllerTest < ActionController::TestCase
   end
 
   test "GET delete, abnormal, other's device" do
-    get :delete, :device_id => @shinya_note.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id
+    get :delete, :device_id => @shinya_note.id, :trigger_id => @yuya_pda_ge90.id, :http_action_id => @yuya_pda_ge90_1.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -431,21 +430,22 @@ class HttpActionsControllerTest < ActionController::TestCase
   end
 
   test "GET delete, abnormal, other's trigger" do
-    get :delete, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id, :email_action_id => @yuya_pda_ge90_1.id
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id, :http_action_id => @yuya_pda_ge90_1.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET delete, abnormal, other's email action" do
-    get :delete, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @shinya_note_ne0_1.id
+  test "GET delete, abnormal, other's http action" do
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :http_action_id => @shinya_note_ne0_1.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
+=begin
   test "POST destroy" do
     assert_difference("EmailAction.count", -1) {
       post :destroy, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id
