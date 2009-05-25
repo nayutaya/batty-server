@@ -114,3 +114,7 @@
   </table>
  </div>
 <%- end -%>
+
+<%- if logged_in? -%>
+  <div><%= link_to(h("ログイン情報を表示/変更する"), :controller => "credentials") %></div>
+<%- end -%>
