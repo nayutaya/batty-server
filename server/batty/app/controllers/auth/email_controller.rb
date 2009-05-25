@@ -26,7 +26,7 @@ class Auth::EmailController < ApplicationController
       @email_credential.update_attributes!(:loggedin_at => Time.now)
       @login_user = @email_credential.user
       session[:user_id] = @login_user.id
-      redirect_to(:controller => "auth", :action => "login_complete")
+      redirect_to(:controller => "/auth", :action => "login_complete")
     else
       @login_form.password = nil
       set_error_now("メールアドレス、またはパスワードが違います。")
