@@ -1,7 +1,8 @@
 
 # メールアクション
-# FIXME: EditFormClass = EmailActionEditForm
 class EmailActionsController < ApplicationController
+  EditFormClass = EmailActionEditForm
+
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
@@ -17,12 +18,12 @@ class EmailActionsController < ApplicationController
 
   # GET /device/:device_id/trigger/:trigger_id/acts/email/new
   def new
-    @edit_form = EmailActionEditForm.new
+    @edit_form = EditFormClass.new
   end
 
   # POST /device/:device_id/trigger/:trigger_id/acts/email/create
   def create
-    @edit_form = EmailActionEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
     if @edit_form.valid?
       @action = EmailAction.new(@edit_form.to_email_action_hash)
@@ -39,7 +40,7 @@ class EmailActionsController < ApplicationController
 
   # GET /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/edit
   def edit
-    @edit_form = EmailActionEditForm.new(
+    @edit_form = EditFormClass.new(
       :enable  => @email_action.enable,
       :email   => @email_action.email,
       :subject => @email_action.subject,
@@ -48,7 +49,7 @@ class EmailActionsController < ApplicationController
 
   # POST /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/update
   def update
-    @edit_form = EmailActionEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
     if @edit_form.valid?
       @email_action.attributes = @edit_form.to_email_action_hash

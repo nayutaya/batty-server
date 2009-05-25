@@ -1,7 +1,8 @@
 
 # HTTPアクション
-# FIXME: EditFormClass = HttpActionEditForm
 class HttpActionsController < ApplicationController
+  EditFormClass = HttpActionEditForm
+
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
@@ -17,13 +18,13 @@ class HttpActionsController < ApplicationController
 
   # GET /device/:device_id/trigger/:trigger_id/acts/http/new
   def new
-    @edit_form = HttpActionEditForm.new
+    @edit_form = EditFormClass.new
     set_http_methods_for_select(true)
   end
 
   # POST /device/:device_id/trigger/:trigger_id/acts/http/create
   def create
-    @edit_form = HttpActionEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
     if @edit_form.valid?
       @action = HttpAction.new(@edit_form.to_http_action_hash)
@@ -41,7 +42,7 @@ class HttpActionsController < ApplicationController
 
   # GET /device/:device_id/trigger/:trigger_id/act/http/:http_action_id/edit
   def edit
-    @edit_form = HttpActionEditForm.new(
+    @edit_form = EditFormClass.new(
       :enable      => @http_action.enable,
       :http_method => @http_action.http_method,
       :url         => @http_action.url,
@@ -51,7 +52,7 @@ class HttpActionsController < ApplicationController
 
   # POST /device/:device_id/trigger/:trigger_id/act/http/:http_action_id/update
   def update
-    @edit_form = HttpActionEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
     if @edit_form.valid?
       @http_action.attributes = @edit_form.attributes
