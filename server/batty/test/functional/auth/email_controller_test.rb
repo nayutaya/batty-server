@@ -43,7 +43,7 @@ class Auth::EmailControllerTest < ActionController::TestCase
     }
 
     assert_response(:redirect)
-    assert_redirected_to(:controller => "auth", :action => "login_complete")
+    assert_redirected_to(:controller => "/auth", :action => "login_complete")
     assert_flash_empty
     assert_logged_in(users(:yuya))
 
