@@ -20,4 +20,22 @@ module ApplicationHelper
   def enable_or_disable_icon(enable)
     return (enable ? enable_icon : disable_icon)
   end
+
+  def edit_icon
+    return image_tag(
+      "icons/fam/cog.png",
+      :width  => 16,
+      :height => 16,
+      :alt    => "編集",
+      :title  => "編集")
+  end
+
+  def delete_icon
+    return image_tag(
+      "icons/fam/bomb.png",
+      :width  => 16,
+      :height => 16,
+      :alt    => "削除",
+      :title  => "削除")
+  end
 end
