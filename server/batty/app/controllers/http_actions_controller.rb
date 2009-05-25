@@ -5,15 +5,15 @@ class HttpActionsController < ApplicationController
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create])
-  before_filter :authentication, :except => [:update, :delete, :destroy]
-  before_filter :authentication_required, :except => [:update, :delete, :destroy]
-  before_filter :required_param_device_id, :except => [:update, :delete, :destroy]
-  before_filter :required_param_trigger_id, :except => [:update, :delete, :destroy]
-  before_filter :required_param_http_action_id, :only => [:edit]
-  before_filter :specified_device_belongs_to_login_user, :except => [:update, :delete, :destroy]
-  before_filter :specified_trigger_belongs_to_device, :except => [:update, :delete, :destroy]
-  before_filter :specified_http_action_belongs_to_trigger, :only => [:edit]
+    :only   => [:create, :update])
+  before_filter :authentication, :except => [:delete, :destroy]
+  before_filter :authentication_required, :except => [:delete, :destroy]
+  before_filter :required_param_device_id, :except => [:delete, :destroy]
+  before_filter :required_param_trigger_id, :except => [:delete, :destroy]
+  before_filter :required_param_http_action_id, :only => [:edit, :update]
+  before_filter :specified_device_belongs_to_login_user, :except => [:delete, :destroy]
+  before_filter :specified_trigger_belongs_to_device, :except => [:delete, :destroy]
+  before_filter :specified_http_action_belongs_to_trigger, :only => [:edit, :update]
 
   # GET /device/:device_id/trigger/:trigger_id/acts/http/new
   def new
@@ -44,15 +44,33 @@ class HttpActionsController < ApplicationController
     @edit_form = HttpActionEditForm.new(
       :enable      => @http_action.enable,
       :http_method => @http_action.http_method,
-      :url         => @http_action.url)
+      :url         => @http_action.url,
+      :body        => @http_action.body)
     set_http_methods_for_select(false)
   end
 
   # POST /device/:device_id/trigger/:trigger_id/act/http/:http_action_id/update
+  def update
+    @edit_form = HttpActionEditForm.new(params[:edit_form])
+
+    if @edit_form.valid?
+      @http_action.attributes = @edit_form.attributes
+      @http_action.save!
+
+      set_notice("Web Hookを更新しました。")
+      redirect_to(device_path(:device_id => @device.id))
+    else
+      set_http_methods_for_select(false)
+      set_error_now("入力内容を確認してください。")
+      render(:action => "edit")
+    end
+  end
 
   # GET /device/:device_id/trigger/:trigger_id/act/http/:http_action_id/delete
+  # TODO: 実装せよ
 
   # POST /device/:device_id/trigger/:trigger_id/act/http/:http_action_id/destroy
+  # TODO: 実装せよ
 
   private
 
