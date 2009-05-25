@@ -34,6 +34,9 @@
           <%- } -%>
         </table>
         <div>すべて見る &gt;&gt;</div>
+        <div>
+          <%= link_to(feed_icon + "RSS", :controller => "device_feeds", :action => "energies", :device_token => @device.device_token) %>
+        </div>
       </td>
       <td>
         <h2>イベント</h2>
@@ -55,6 +58,9 @@
           <%- } -%>
         </table>
         <div>すべて見る &gt;&gt;</div>
+        <div>
+          <%= link_to(feed_icon + "RSS", :controller => "device_feeds", :action => "events", :device_token => @device.device_token) %>
+        </div>
       </td>
     </tr>
     <tr>

@@ -57,4 +57,13 @@ module ApplicationHelper
       :alt    => "削除",
       :title  => "削除")
   end
+
+  def feed_icon
+    return image_tag(
+      "icons/fam/feed.png",
+      :width  => 16,
+      :height => 16,
+      :alt    => "フィード",
+      :title  => "フィード")
+  end
 end
