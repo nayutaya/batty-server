@@ -16,17 +16,17 @@
 <%- unless logged_in? -%>
  <div id="login_form">
   <div id="open_id_login_form">
-   <%- form_tag(:controller => "open_id_auth", :action => "login") { -%>
+   <%- form_tag(:controller => "auth/open_id", :action => "login") { -%>
     <%= label_tag(:openid_url, "OpenID URL") %>
     <%= text_field_tag(:openid_url, '', :size => 50) %>
     <%= submit_tag("ログイン") %>
    <%- } -%>
   </div>
   <div>
-   <%= link_to(h("メールアドレスによるログイン"), :controller => "email_auth") %>
+   <%= link_to(h("メールアドレスによるログイン"), :controller => "auth/email") %>
   </div>
   <div>
-   <%= link_to(h("メールアドレスによるサインアップ"), :controller => "email_signup") %>
+   <%= link_to(h("メールアドレスによるサインアップ"), :controller => "signup/email") %>
   </div>
  </div>
 <%- end -%>

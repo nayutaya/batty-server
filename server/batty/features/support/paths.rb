@@ -12,9 +12,9 @@ module NavigationHelpers
     when /\Aダッシュボード\z/, /\Aホームページ\z/
       '/'
     when /\Aメールアドレスによるサインアップ\z/
-      url_for(:controller => 'email_signup', :action => 'index')
+      url_for(:controller => 'signup/email', :action => 'index')
     when /\AOpenID によるサインアップ\z/
-      url_for(:controller => 'open_id_signup', :action => 'index')
+      url_for(:controller => 'signup/open_id', :action => 'index')
     when /the new user page/
       new_user_path
 

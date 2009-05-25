@@ -21,12 +21,14 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect "user/token/:user_token/:action.rdf", :controller => "user_feeds", :user_token => UserToken
 
-  map.connect "auth/email/:action",  :controller => "email_auth"
-  map.connect "auth/openid/:action", :controller => "open_id_auth"
+  map.namespace :signup do |signup|
+    signup.connect "openid/:action", :controller => "open_id"
+    signup.connect "email/activation/:activation_token", :controller => "email", :action => "activation", :activation_token => /[0-9a-f]+/
+  end
 
-  map.connect "signup/email/:action",                      :controller => "email_signup"
-  map.connect "signup/email/activation/:activation_token", :controller => "email_signup", :action => "activation", :activation_token => /[0-9a-f]+/
-  map.connect "signup/openid/:action",                     :controller => "open_id_signup"
+  map.namespace :auth do |auth|
+    auth.connect "openid/:action", :controller => "open_id"
+  end
 
   map.connect ":controller/:action/:id"
   map.connect ":controller/:action/:id.:format"

@@ -1,13 +1,13 @@
 
 require 'test_helper'
 
-class EmailAuthControllerTest < ActionController::TestCase
+class Auth::EmailControllerTest < ActionController::TestCase
   def setup
     @login_form = EmailLoginForm.new
   end
 
   test "routes" do
-    base = {:controller => "email_auth"}
+    base = {:controller => "auth/email"}
 
     assert_routing("/auth/email",       base.merge(:action => "index"))
     assert_routing("/auth/email/login", base.merge(:action => "login"))
@@ -43,7 +43,7 @@ class EmailAuthControllerTest < ActionController::TestCase
     }
 
     assert_response(:redirect)
-    assert_redirected_to(:controller => "auth", :action => "login_complete")
+    assert_redirected_to(:controller => "/auth", :action => "login_complete")
     assert_flash_empty
     assert_logged_in(users(:yuya))
 

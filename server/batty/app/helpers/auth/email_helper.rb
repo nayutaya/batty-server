@@ -1,0 +1,2 @@
+module Auth::EmailHelper
+end

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # OpenIDサインアップ
-class OpenIdSignupController < ApplicationController
+class Signup::OpenIdController < ApplicationController
 
   # GET /signup/openid
   def index
