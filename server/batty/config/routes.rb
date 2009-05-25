@@ -28,9 +28,6 @@ ActionController::Routing::Routes.draw do |map|
     auth.connect "openid/:action", :controller => "open_id"
   end
 
-#   map.connect "auth/email/:action",  :controller => "email_auth"
-#   map.connect "auth/openid/:action", :controller => "open_id_auth"
-
   map.connect ":controller/:action/:id"
   map.connect ":controller/:action/:id.:format"
 end
