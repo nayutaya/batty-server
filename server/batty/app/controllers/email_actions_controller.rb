@@ -5,12 +5,14 @@ class EmailActionsController < ApplicationController
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:create])
-  before_filter :authentication
-  before_filter :authentication_required
-  before_filter :required_param_device_id
-  before_filter :required_param_trigger_id
-  before_filter :specified_device_belongs_to_login_user
-  before_filter :specified_trigger_belongs_to_device
+  before_filter :authentication, :except => [:update, :delete, :destroy]
+  before_filter :authentication_required, :except => [:update, :delete, :destroy]
+  before_filter :required_param_device_id, :except => [:update, :delete, :destroy]
+  before_filter :required_param_trigger_id, :except => [:update, :delete, :destroy]
+  before_filter :required_param_email_action_id, :only => [:edit]
+  before_filter :specified_device_belongs_to_login_user, :except => [:update, :delete, :destroy]
+  before_filter :specified_trigger_belongs_to_device, :except => [:update, :delete, :destroy]
+  before_filter :specified_email_action_belongs_to_trigger, :only => [:edit]
 
   # GET /device/:device_id/trigger/:trigger_id/acts/email/new
   def new
@@ -35,7 +37,40 @@ class EmailActionsController < ApplicationController
   end
 
   # GET /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/edit
+  def edit
+    @edit_form = EmailActionEditForm.new(
+      :enable  => @email_action.enable,
+      :email   => @email_action.email,
+      :subject => @email_action.subject,
+      :body    => @email_action.body)
+  end
+
   # POST /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/update
+
   # GET /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/delete
+
   # POST /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/destroy
+
+  private
+
+  def required_param_email_action_id(email_action_id = params[:email_action_id])
+    @email_action = EmailAction.find_by_id(email_action_id)
+    if @email_action
+      return true
+    else
+      set_error("メール通知IDが正しくありません。")
+      redirect_to(root_path)
+      return false
+    end
+  end
+
+  def specified_email_action_belongs_to_trigger
+    if @email_action.trigger_id == @trigger.id
+      return true
+    else
+      set_error("メール通知IDが正しくありません。")
+      redirect_to(root_path)
+      return false
+    end
+  end
 end
