@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 
-class EmailAuthController < ApplicationController
+class Auth::EmailController < ApplicationController
   filter_parameter_logging :password
   verify(
     :method => :post,
