@@ -1,0 +1,18 @@
+
+<table border="1">
+  <tr>
+    <th>日時</th>
+    <th>デバイス</th>
+    <th>残量</th>
+  </tr>
+  <%- @energies.each { |energy| -%>
+    <tr>
+      <td><%=h energy.observed_at.strftime("%m-%d %H:%M") %></td>
+      <td>
+        <%= device_icon24_link(energy.device) %>
+        <%= device_name_link(energy.device) %>
+      </td>
+      <td align="right"><%=h energy.observed_level %> %</td>
+    </tr>
+  <%- } -%>
+</table>

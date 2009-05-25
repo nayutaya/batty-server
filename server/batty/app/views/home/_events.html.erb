@@ -1,0 +1,20 @@
+
+<table border="1">
+  <tr>
+    <th>日時</th>
+    <th>デバイス</th>
+    <th colspan="3">残量</th>
+  </tr>
+  <%- @events.each { |event| -%>
+    <tr>
+      <td><%=h event.observed_at.strftime("%m-%d %H:%M") %></td>
+      <td>
+        <%= device_icon24_link(event.device) %>
+        <%= device_name_link(event.device) %>
+      </td>
+      <td align="right"><%=h event.observed_level %> %</td>
+      <td><%=h event.trigger_operator_sign %></td>
+      <td align="right"><%=h event.trigger_level %> %</td>
+    </tr>
+  <%- } -%>
+</table>
