@@ -84,7 +84,7 @@
                     </tr>
                   <%- } -%>
                 </table>
-                <div><%= link_to(h("メール通知を追加する"), :controller => "email_actions", :action => "new", :trigger_id => trigger.id) %></div>
+                <div><%= link_to(add_icon + h("メール通知を追加する"), :controller => "email_actions", :action => "new", :trigger_id => trigger.id) %></div>
               </td>
               <td>
                 <table>
@@ -98,12 +98,12 @@
                     </tr>
                   <%- } -%>
                 </table>
-                <div><%= link_to(h("Web Hookを追加する"), :controller => "http_actions", :action => "new", :trigger_id => trigger.id) %></div>
+                <div><%= link_to(add_icon + h("Web Hookを追加する"), :controller => "http_actions", :action => "new", :trigger_id => trigger.id) %></div>
               </td>
             </tr>
           <%- } -%>
         </table>
-        <div><%= link_to(h("トリガを追加する"), :controller => "triggers", :action => "new") %></div>
+        <div><%= link_to(add_icon + h("トリガを追加する"), :controller => "triggers", :action => "new") %></div>
       </td>
     </tr>
   </table>
