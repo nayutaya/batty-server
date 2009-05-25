@@ -1,7 +1,7 @@
 
 <div>
   <%= link_to(h("トップ"), root_path) %> &gt;
-  <%= link_to(h(@device.name), :controller => "devices", :action => "show") %> &gt;
+  <%= device_name_link(@device) %> &gt;
   <em>メールアクションの追加</em>
 </div>
 
