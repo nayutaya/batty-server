@@ -4,15 +4,15 @@ class EmailActionsController < ApplicationController
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create])
-  before_filter :authentication, :except => [:update, :delete, :destroy]
-  before_filter :authentication_required, :except => [:update, :delete, :destroy]
-  before_filter :required_param_device_id, :except => [:update, :delete, :destroy]
-  before_filter :required_param_trigger_id, :except => [:update, :delete, :destroy]
-  before_filter :required_param_email_action_id, :only => [:edit]
-  before_filter :specified_device_belongs_to_login_user, :except => [:update, :delete, :destroy]
-  before_filter :specified_trigger_belongs_to_device, :except => [:update, :delete, :destroy]
-  before_filter :specified_email_action_belongs_to_trigger, :only => [:edit]
+    :only   => [:create, :update])
+  before_filter :authentication, :except => [:delete, :destroy]
+  before_filter :authentication_required, :except => [:delete, :destroy]
+  before_filter :required_param_device_id, :except => [:delete, :destroy]
+  before_filter :required_param_trigger_id, :except => [:delete, :destroy]
+  before_filter :required_param_email_action_id, :only => [:edit, :update]
+  before_filter :specified_device_belongs_to_login_user, :except => [:delete, :destroy]
+  before_filter :specified_trigger_belongs_to_device, :except => [:delete, :destroy]
+  before_filter :specified_email_action_belongs_to_trigger, :only => [:edit, :update]
 
   # GET /device/:device_id/trigger/:trigger_id/acts/email/new
   def new
@@ -46,6 +46,20 @@ class EmailActionsController < ApplicationController
   end
 
   # POST /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/update
+  def update
+    @edit_form = EmailActionEditForm.new(params[:edit_form])
+
+    if @edit_form.valid?
+      @email_action.attributes = @edit_form.to_email_action_hash
+      @email_action.save!
+
+      set_notice("メール通知を更新しました。")
+      redirect_to(device_path(:device_id => @device.id))
+    else
+      set_error_now("入力内容を確認してください。")
+      render(:action => "edit")
+    end
+  end
 
   # GET /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/delete
 

@@ -255,43 +255,104 @@ class EmailActionsControllerTest < ActionController::TestCase
   end
 
   test "POST update" do
-    # TODO: 実装せよ
+    @edit_form.enable = false
+    assert_equal(true, @edit_form.valid?)
+
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id, :edit_form => @edit_form.attributes
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "devices", :action => "show", :device_id => @yuya_pda.id)
+    assert_flash_notice
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+    assert_equal(@yuya_pda_ge90, assigns(:trigger))
+    assert_equal(@yuya_pda_ge90_1, assigns(:email_action))
+
+    @yuya_pda_ge90_1.reload
+    assert_equal(@edit_form.enable,  @yuya_pda_ge90_1.enable)
+    assert_equal(@edit_form.email,   @yuya_pda_ge90_1.email)
+    assert_equal(@edit_form.subject, @yuya_pda_ge90_1.subject)
+    assert_equal(@edit_form.body,    @yuya_pda_ge90_1.body)
   end
 
   test "POST update, invalid form" do
-    # TODO: 実装せよ
+    @edit_form.email = nil
+    assert_equal(false, @edit_form.valid?)
+
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id, :edit_form => @edit_form.attributes
+
+    assert_response(:success)
+    assert_template("edit")
+    assert_flash_error
+
+    @yuya_pda_ge90_1.reload
+    assert_not_equal(@edit_form.email, @yuya_pda_ge90_1.email)
   end
 
   test "GET update, abnormal, method not allowed" do
-    # TODO: 実装せよ
+    get :update
+
+    assert_response(405)
+    assert_template(nil)
   end
 
   test "POST update, abnormal, no login" do
-    # TODO: 実装せよ
+    session_logout
+
+    post :update
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "POST update, abnormal, no device id" do
-    # TODO: 実装せよ
+    post :update, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "POST update, abnormal, no trigger id" do
-    # TODO: 実装せよ
+    post :update, :device_id => @yuya_pda.id, :trigger_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "POST update, abnormal, no email action id" do
-    # TODO: 実装せよ
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "POST update, abnormal, other's device" do
-    # TODO: 実装せよ
+    post :update, :device_id => @shinya_note.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "POST update, abnormal, other's trigger" do
-    # TODO: 実装せよ
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id, :email_action_id => @yuya_pda_ge90_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "POST update, abnormal, other's email action" do
-    # TODO: 実装せよ
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :email_action_id => @shinya_note_ne0_1.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
   end
 
   test "GET delete" do
