@@ -175,4 +175,144 @@ class EmailActionsControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "GET edit" do
+    # TODO: 実装せよ
+  end
+
+  test "GET edit, abnormal, no login" do
+    # TODO: 実装せよ
+  end
+
+  test "GET edit, abnormal, no device id" do
+    # TODO: 実装せよ
+  end
+
+  test "GET edit, abnormal, no trigger id" do
+    # TODO: 実装せよ
+  end
+
+  test "GET edit, abnormal, no email action id" do
+    # TODO: 実装せよ
+  end
+
+  test "GET edit, abnormal, other's device" do
+    # TODO: 実装せよ
+  end
+
+  test "GET edit, abnormal, other's trigger" do
+    # TODO: 実装せよ
+  end
+
+  test "GET edit, abnormal, other's email action" do
+    # TODO: 実装せよ
+  end
+
+  test "POST update" do
+    # TODO: 実装せよ
+  end
+
+  test "POST update, invalid form" do
+    # TODO: 実装せよ
+  end
+
+  test "GET update, abnormal, method not allowed" do
+    # TODO: 実装せよ
+  end
+
+  test "POST update, abnormal, no login" do
+    # TODO: 実装せよ
+  end
+
+  test "POST update, abnormal, no device id" do
+    # TODO: 実装せよ
+  end
+
+  test "POST update, abnormal, no trigger id" do
+    # TODO: 実装せよ
+  end
+
+  test "POST update, abnormal, no email action id" do
+    # TODO: 実装せよ
+  end
+
+  test "POST update, abnormal, other's device" do
+    # TODO: 実装せよ
+  end
+
+  test "POST update, abnormal, other's trigger" do
+    # TODO: 実装せよ
+  end
+
+  test "POST update, abnormal, other's email action" do
+    # TODO: 実装せよ
+  end
+
+  test "GET delete" do
+    # TODO: 実装せよ
+  end
+
+  test "GET delete, abnormal, no login" do
+    # TODO: 実装せよ
+  end
+
+  test "GET delete, abnormal, no device id" do
+    # TODO: 実装せよ
+  end
+
+  test "GET delete, abnormal, no trigger id" do
+    # TODO: 実装せよ
+  end
+
+  test "GET delete, abnormal, no email action id" do
+    # TODO: 実装せよ
+  end
+
+  test "GET delete, abnormal, other's device" do
+    # TODO: 実装せよ
+  end
+
+  test "GET delete, abnormal, other's trigger" do
+    # TODO: 実装せよ
+  end
+
+  test "GET delete, abnormal, other's email action" do
+    # TODO: 実装せよ
+  end
+
+  test "POST destroy" do
+    # TODO: 実装せよ
+  end
+
+  test "GET destroy, abnormal, method not allowed" do
+    # TODO: 実装せよ
+  end
+
+  test "POST destroy, abnormal, no login" do
+    # TODO: 実装せよ
+  end
+
+  test "POST destroy, abnormal, no device id" do
+    # TODO: 実装せよ
+  end
+
+  test "POST destroy, abnormal, no trigger id" do
+    # TODO: 実装せよ
+  end
+
+  test "POST destroy, abnormal, no email action id" do
+    # TODO: 実装せよ
+  end
+
+  test "POST destroy, abnormal, other's device" do
+    # TODO: 実装せよ
+  end
+
+  test "POST destroy, abnormal, other's trigger" do
+    # TODO: 実装せよ
+  end
+
+  test "POST destroy, abnormal, other's email action" do
+    # TODO: 実装せよ
+  end
 end
