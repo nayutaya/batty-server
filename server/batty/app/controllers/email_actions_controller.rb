@@ -33,4 +33,9 @@ class EmailActionsController < ApplicationController
       render(:action => "new")
     end
   end
+
+  # GET /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/edit
+  # POST /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/update
+  # GET /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/delete
+  # POST /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/destroy
 end

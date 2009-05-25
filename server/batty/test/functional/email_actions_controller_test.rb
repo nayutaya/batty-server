@@ -21,8 +21,13 @@ class EmailActionsControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "email_actions"}
 
-    assert_routing("/device/1234567890/trigger/2345678901/acts/email/new",    base.merge(:action => "new", :device_id => "1234567890", :trigger_id => "2345678901"))
+    assert_routing("/device/1234567890/trigger/2345678901/acts/email/new",    base.merge(:action => "new",    :device_id => "1234567890", :trigger_id => "2345678901"))
     assert_routing("/device/1234567890/trigger/2345678901/acts/email/create", base.merge(:action => "create", :device_id => "1234567890", :trigger_id => "2345678901"))
+
+    assert_routing("/device/1234567890/trigger/2345678901/act/email/3456789012/edit",    base.merge(:action => "edit",    :device_id => "1234567890", :trigger_id => "2345678901", :email_action_id => "3456789012"))
+    assert_routing("/device/1234567890/trigger/2345678901/act/email/3456789012/update",  base.merge(:action => "update",  :device_id => "1234567890", :trigger_id => "2345678901", :email_action_id => "3456789012"))
+    assert_routing("/device/1234567890/trigger/2345678901/act/email/3456789012/delete",  base.merge(:action => "delete",  :device_id => "1234567890", :trigger_id => "2345678901", :email_action_id => "3456789012"))
+    assert_routing("/device/1234567890/trigger/2345678901/act/email/3456789012/destroy", base.merge(:action => "destroy", :device_id => "1234567890", :trigger_id => "2345678901", :email_action_id => "3456789012"))
   end
 
   test "GET new" do
