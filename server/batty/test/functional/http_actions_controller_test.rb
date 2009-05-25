@@ -22,6 +22,11 @@ class HttpActionsControllerTest < ActionController::TestCase
 
     assert_routing("/device/1234567890/trigger/2345678901/acts/http/new",    base.merge(:action => "new", :device_id => "1234567890", :trigger_id => "2345678901"))
     assert_routing("/device/1234567890/trigger/2345678901/acts/http/create", base.merge(:action => "create", :device_id => "1234567890", :trigger_id => "2345678901"))
+
+    assert_routing("/device/1234567890/trigger/2345678901/act/http/3456789012/edit",    base.merge(:action => "edit",    :device_id => "1234567890", :trigger_id => "2345678901", :http_action_id => "3456789012"))
+    assert_routing("/device/1234567890/trigger/2345678901/act/http/3456789012/update",  base.merge(:action => "update",  :device_id => "1234567890", :trigger_id => "2345678901", :http_action_id => "3456789012"))
+    assert_routing("/device/1234567890/trigger/2345678901/act/http/3456789012/delete",  base.merge(:action => "delete",  :device_id => "1234567890", :trigger_id => "2345678901", :http_action_id => "3456789012"))
+    assert_routing("/device/1234567890/trigger/2345678901/act/http/3456789012/destroy", base.merge(:action => "destroy", :device_id => "1234567890", :trigger_id => "2345678901", :http_action_id => "3456789012"))
   end
 
   test "GET new" do
