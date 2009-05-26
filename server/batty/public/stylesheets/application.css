@@ -1,8 +1,66 @@
 
 body
 {
+    margin: 0;
+    padding: 0;
+    width: 100%;
     background-color: #F0F0F0;
 }
+
+
+div#head-outer
+{
+    width: 100%;
+    min-width: 700px;
+    height: 100px;
+background-color:red;
+}
+
+div#body-outer
+{
+    position : relative;
+    min-width: 700px;
+    width: 100%;
+/*background-color:green;*/
+/*
+background-image: url(../images/background.png);
+background-repeat: repeat-y;
+background-position: right;
+*/
+}
+
+div#content-column-outer
+{
+    margin: 0px 200px 0px 0px;
+}
+
+div#content-column-inner
+{
+    padding: 10px;
+/*background-color:gray;*/
+}
+
+div#side-column-outer
+{
+    width: 200px;
+    min-height: 400px;
+    float: right;
+/*background-color:yellow;*/
+}
+
+div#side-column-inner
+{
+    padding: 10px;
+}
+
+div#foot-outer
+{
+    width: 100%;
+    min-width: 700px;
+    height: 100px;
+background-color:blue;
+}
+
 
 div.battery-cell
 {
