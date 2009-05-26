@@ -21,7 +21,12 @@ div#body-outer
     position : relative;
     min-width: 700px;
     width: 100%;
-background-color:green;
+/*background-color:green;*/
+/*
+background-image: url(../images/background.png);
+background-repeat: repeat-y;
+background-position: right;
+*/
 }
 
 div#content-column-outer
@@ -32,15 +37,15 @@ div#content-column-outer
 div#content-column-inner
 {
     padding: 10px;
-background-color:gray;
+/*background-color:gray;*/
 }
 
 div#side-column-outer
 {
     width: 200px;
-    min-height: 300px;
+    min-height: 400px;
     float: right;
-background-color:yellow;
+/*background-color:yellow;*/
 }
 
 div#side-column-inner
