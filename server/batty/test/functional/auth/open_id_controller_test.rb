@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
+
 require 'test_helper'
 
 class Auth::OpenIdControllerTest < ActionController::TestCase
-
   def setup
     @shinya_example = open_id_credentials(:shinya_example)
   end
 
   test "routes" do
-    base = { :controller => 'auth/open_id' }
+    base = {:controller => "auth/open_id"}
 
-    assert_routing("/auth/openid",       base.merge(:action => "index"))
-    assert_routing("/auth/openid/login", base.merge(:action => "login"))
+    assert_routing("/auth/open_id",       base.merge(:action => "index"))
+    assert_routing("/auth/open_id/login", base.merge(:action => "login"))
   end
 
   test "GET index" do

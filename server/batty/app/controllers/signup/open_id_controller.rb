@@ -3,14 +3,14 @@
 # OpenIDサインアップ
 class Signup::OpenIdController < ApplicationController
 
-  # GET /signup/openid
+  # GET /signup/open_id
   def index
     session[:identity_url] = nil
     @openid_url = nil
   end
 
-  # POST /signup/openid/authenticate
-  # GET  /signup/openid/authenticate
+  # POST /signup/open_id/authenticate
+  # GET  /signup/open_id/authenticate
   def authenticate
     @openid_url = params[:openid_url]
 
@@ -37,12 +37,12 @@ class Signup::OpenIdController < ApplicationController
     }
   end
 
-  # GET /signup/openid/authenticated
+  # GET /signup/open_id/authenticated
   def authenticated
     @identity_url = session[:identity_url]
   end
 
-  # POST /signup/openid/create
+  # POST /signup/open_id/create
   def create
     @identity_url = session[:identity_url]
 
@@ -64,7 +64,7 @@ class Signup::OpenIdController < ApplicationController
     redirect_to(:action => "created")
   end
 
-  # GET /signup/openid/created
+  # GET /signup/open_id/created
   def created
     # nop
   end

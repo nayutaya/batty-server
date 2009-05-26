@@ -4,13 +4,13 @@ require 'test_helper'
 
 class Signup::OpenIdControllerTest < ActionController::TestCase
   test "routes" do
-    base = { :controller => "signup/open_id" }
+    base = {:controller => "signup/open_id"}
 
-    assert_routing("signup/openid",               base.merge(:action => "index"))
-    assert_routing("signup/openid/authenticate",  base.merge(:action => "authenticate"))
-    assert_routing("signup/openid/authenticated", base.merge(:action => "authenticated"))
-    assert_routing("signup/openid/create",        base.merge(:action => "create"))
-    assert_routing("signup/openid/created",       base.merge(:action => "created"))
+    assert_routing("signup/open_id",               base.merge(:action => "index"))
+    assert_routing("signup/open_id/authenticate",  base.merge(:action => "authenticate"))
+    assert_routing("signup/open_id/authenticated", base.merge(:action => "authenticated"))
+    assert_routing("signup/open_id/create",        base.merge(:action => "create"))
+    assert_routing("signup/open_id/created",       base.merge(:action => "created"))
   end
 
   test "GET index" do

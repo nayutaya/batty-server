@@ -7,13 +7,13 @@ class Auth::OpenIdController < ApplicationController
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:login])
 
-  # GET /auth/openid
+  # GET /auth/open_id
   def index
     session[:user_id] = nil
   end
 
-  # POST /auth/openid/login
-  # GET /auth/openid/login
+  # POST /auth/open_id/login
+  # GET  /auth/open_id/login
   def login
     openid_url = params[:openid_url]
 
