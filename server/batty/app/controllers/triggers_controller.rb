@@ -4,13 +4,13 @@ class TriggersController < ApplicationController
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create, :update])
-  before_filter :authentication, :except => [:destroy]
-  before_filter :authentication_required, :except => [:destroy]
-  before_filter :required_param_device_id, :except => [:destroy]
-  before_filter :required_param_trigger_id, :only => [:edit, :update, :delete]
-  before_filter :specified_device_belongs_to_login_user, :except => [:destroy]
-  before_filter :specified_trigger_belongs_to_device, :only => [:edit, :update, :delete]
+    :only   => [:create, :update, :destroy])
+  before_filter :authentication
+  before_filter :authentication_required
+  before_filter :required_param_device_id
+  before_filter :required_param_trigger_id, :only => [:edit, :update, :delete, :destroy]
+  before_filter :specified_device_belongs_to_login_user
+  before_filter :specified_trigger_belongs_to_device, :only => [:edit, :update, :delete, :destroy]
 
   # GET /device/:device_id/triggers/new
   def new
@@ -68,7 +68,12 @@ class TriggersController < ApplicationController
   end
 
   # POST /device/:device_id/trigger/:trigger_id/destroy
-  # TODO: 実装せよ
+  def destroy
+    @trigger.destroy
+
+    set_notice("トリガを削除しました。")
+    redirect_to(device_path(:device_id => @device.id))
+  end
 
   private
 
