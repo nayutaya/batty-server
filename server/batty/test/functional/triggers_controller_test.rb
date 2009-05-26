@@ -19,8 +19,13 @@ class TriggersControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "triggers"}
 
-    assert_routing("/device/1234567890/triggers/new",    base.merge(:action => "new", :device_id => "1234567890"))
+    assert_routing("/device/1234567890/triggers/new",    base.merge(:action => "new",    :device_id => "1234567890"))
     assert_routing("/device/1234567890/triggers/create", base.merge(:action => "create", :device_id => "1234567890"))
+
+    assert_routing("/device/1234567890/trigger/2345678901/edit",    base.merge(:action => "edit",    :device_id => "1234567890", :trigger_id => "2345678901"))
+    assert_routing("/device/1234567890/trigger/2345678901/update",  base.merge(:action => "update",  :device_id => "1234567890", :trigger_id => "2345678901"))
+    assert_routing("/device/1234567890/trigger/2345678901/delete",  base.merge(:action => "delete",  :device_id => "1234567890", :trigger_id => "2345678901"))
+    assert_routing("/device/1234567890/trigger/2345678901/destroy", base.merge(:action => "destroy", :device_id => "1234567890", :trigger_id => "2345678901"))
   end
 
   test "GET new" do
