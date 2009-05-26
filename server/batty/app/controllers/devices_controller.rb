@@ -5,10 +5,10 @@ class DevicesController < ApplicationController
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:create, :update])
-  before_filter :authentication, :except => [:delete, :destroy]
-  before_filter :authentication_required, :except => [:delete, :destroy]
-  before_filter :required_param_device_id, :only => [:show, :edit, :update]
-  before_filter :specified_device_belongs_to_login_user, :only => [:show, :edit, :update]
+  before_filter :authentication, :except => [:destroy]
+  before_filter :authentication_required, :except => [:destroy]
+  before_filter :required_param_device_id, :only => [:show, :edit, :update, :delete]
+  before_filter :specified_device_belongs_to_login_user, :only => [:show, :edit, :update, :delete]
 
   # GET /devices/new
   def new
@@ -70,7 +70,9 @@ class DevicesController < ApplicationController
   end
 
   # GET /device/:device_id/delete
-  # TODO: 実装せよ
+  def delete
+    # nop
+  end
 
   # POST /device/:device_id/destroy
   # TODO: 実装せよ

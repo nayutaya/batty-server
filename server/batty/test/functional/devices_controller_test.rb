@@ -268,4 +268,41 @@ class DevicesControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "GET delete" do
+    get :delete, :device_id => @yuya_pda.id
+
+    assert_response(:success)
+    assert_template("delete")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+  end
+
+  test "GET delete, abnormal, no login" do
+    session_logout
+
+    get :delete
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete, abnormal, no device id" do
+    get :delete, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete, abnormal, other's device" do
+    get :delete, :device_id => @shinya_note.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
 end
