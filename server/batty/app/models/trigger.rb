@@ -16,8 +16,8 @@
 
 # トリガ
 class Trigger < ActiveRecord::Base
-  has_many :email_actions
-  has_many :http_actions
+  has_many :email_actions, :dependent => :destroy
+  has_many :http_actions, :dependent => :destroy
   belongs_to :device
 
   Operators = [
