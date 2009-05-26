@@ -1,0 +1,14 @@
+
+<div>
+  <%= link_to(h("トップ"), root_path) %> &gt;
+  <%= device_name_link(@device) %> &gt;
+  <em>トリガの削除</em>
+</div>
+
+<h1>トリガの削除</h1>
+
+<div>削除します。よろしいですか？</div>
+
+<%- form_tag(:action => "destroy") { -%>
+  <%= submit_tag("削除") %>
+<%- } -%>
