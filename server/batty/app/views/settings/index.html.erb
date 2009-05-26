@@ -10,8 +10,11 @@
   <tr>
     <th>ニックネーム</th>
     <td>
-      <span id="nickname"><%= @login_user.nickname %></span>
-      <span id="nickname-edit">[編集]</span>
+      <div>
+        <span id="nickname"><%= (@login_user.nickname.blank? ? "名無しさん" : h(@login_user.nickname)) %></span>
+        <span id="nickname-edit">[編集]</span>
+      </div>
+      <div id="nickname-error"></div>
     </td>
   </tr>
   <tr>
@@ -23,11 +26,24 @@
 <script type="text/javascript">
   //<![CDATA[
   var authenticity_token = "<%= form_authenticity_token %>";
+  var get_url = "<%= url_for(:action => "get_nickname") %>";
+  var set_url = "<%= url_for(:action => "set_nickname") %>";
   new Ajax.InPlaceEditor(
     "nickname",
-    "/settings/set_user_nickname/965563735",
+    set_url,
     {
       callback: function(form) { return Form.serialize(form) + "&authenticity_token=" + encodeURIComponent(authenticity_token) },
+      onEnterEditMode: function() {
+        $("nickname-error").innerHTML = "";
+      },
+      onFailure: function(ipe, transport) {
+        if ( transport.request.url.indexOf(get_url) == 0 ) {
+          alert("エラーが発生しました。編集モードに入ることができません。");
+        } else if ( transport.request.url.indexOf(set_url) == 0 ) {
+          $("nickname-error").innerHTML = transport.responseText;
+        }
+      },
+      loadTextURL: get_url,
       externalControl: "nickname-edit",
       externalControlOnly: true,
       okControl: "link",
@@ -37,6 +53,9 @@
       loadingText: "読込中...",
       savingText: "保存中...",
       clickToEditText: "",
+      textBeforeControls: "[ ",
+      textBetweenControls: " | ",
+      textAfterControls: " ]",
       size:30
     });
   //]]>
