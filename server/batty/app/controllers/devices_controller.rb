@@ -4,11 +4,11 @@ class DevicesController < ApplicationController
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create])
-  before_filter :authentication, :except => [:update, :delete, :destroy]
-  before_filter :authentication_required, :except => [:update, :delete, :destroy]
-  before_filter :required_param_device_id, :only => [:show, :edit]
-  before_filter :specified_device_belongs_to_login_user, :only => [:show, :edit]
+    :only   => [:create, :update])
+  before_filter :authentication, :except => [:delete, :destroy]
+  before_filter :authentication_required, :except => [:delete, :destroy]
+  before_filter :required_param_device_id, :only => [:show, :edit, :update]
+  before_filter :specified_device_belongs_to_login_user, :only => [:show, :edit, :update]
 
   # GET /devices/new
   def new
@@ -55,7 +55,19 @@ class DevicesController < ApplicationController
   end
 
   # POST /device/:device_id/update
-  # TODO: 実装せよ
+  def update
+    @edit_form = DeviceEditForm.new(params[:edit_form])
+
+    @device.attributes = @edit_form.to_device_hash
+
+    if @edit_form.valid? && @device.save
+      set_notice("デバイスを更新しました。")
+      redirect_to(device_path(:device_id => @device.id))
+    else
+      set_error_now("入力内容を確認してください。")
+      render(:action => "edit")
+    end
+  end
 
   # GET /device/:device_id/delete
   # TODO: 実装せよ

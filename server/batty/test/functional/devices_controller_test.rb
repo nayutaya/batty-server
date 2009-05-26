@@ -199,4 +199,73 @@ class DevicesControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "POST update" do
+    @edit_form.name = "name"
+    assert_equal(true, @edit_form.valid?)
+
+    post :update, :device_id => @yuya_pda.id, :edit_form => @edit_form.attributes
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "devices", :action => "show", :device_id => @yuya_pda.id)
+    assert_flash_notice
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+
+    assert_equal(
+      @edit_form.attributes,
+      assigns(:edit_form).attributes)
+
+    @yuya_pda.reload
+    assert_equal(@edit_form.name,           @yuya_pda.name)
+    assert_equal(@edit_form.device_icon_id, @yuya_pda.device_icon_id)
+  end
+
+  test "POST update, invalid form" do
+    @edit_form.name = nil
+    assert_equal(false, @edit_form.valid?)
+
+    post :update, :device_id => @yuya_pda.id, :edit_form => @edit_form.attributes
+
+    assert_response(:success)
+    assert_template("edit")
+    assert_flash_error
+
+    @yuya_pda.reload
+    assert_not_equal(@edit_form.name, @yuya_pda.name)
+  end
+
+  test "GET update, abnormal, method not allowed" do
+    get :update
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
+  test "POST update, abnormal, no login" do
+    session_logout
+
+    post :update
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST update, abnormal, no device id" do
+    post :update, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST update, abnormal, other's device" do
+    post :update, :device_id => @shinya_note.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
 end
