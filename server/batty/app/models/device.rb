@@ -16,9 +16,9 @@
 
 # デバイス
 class Device < ActiveRecord::Base
-  has_many :energies
-  has_many :triggers
-  has_many :events
+  has_many :energies, :dependent => :destroy
+  has_many :triggers, :dependent => :destroy
+  has_many :events, :dependent => :destroy
   belongs_to :user
   belongs_to :device_icon
 

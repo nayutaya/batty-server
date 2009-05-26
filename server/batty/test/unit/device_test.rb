@@ -38,6 +38,16 @@ class DeviceTest < ActiveSupport::TestCase
       @shinya_note.energies.all(:order => "energies.id ASC"))
   end
 
+  test "has_many :energies, :dependent => :destroy" do
+    assert_difference("Energy.count", -@yuya_pda.energies.size) {
+      @yuya_pda.destroy
+    }
+
+    assert_difference("Energy.count", -@shinya_note.energies.size) {
+      @shinya_note.destroy
+    }
+  end
+
   test "has_many :triggers" do
     expected = [
       triggers(:yuya_pda_ge90),
@@ -55,6 +65,16 @@ class DeviceTest < ActiveSupport::TestCase
       @shinya_note.triggers.all(:order => "triggers.id ASC"))
   end
 
+  test "has_many :triggers, :dependent => :destroy" do
+    assert_difference("Trigger.count", -@yuya_pda.triggers.size) {
+      @yuya_pda.destroy
+    }
+
+    assert_difference("Trigger.count", -@shinya_note.triggers.size) {
+      @shinya_note.destroy
+    }
+  end
+
   test "has_many :events" do
     expected = [
       events(:yuya_pda_ge90_1),
@@ -70,6 +90,16 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal(
       expected.sort_by(&:id),
       @yuya_cellular.events.all(:order => "events.id ASC"))
+  end
+
+  test "has_many :events, :dependent => :destroy" do
+    assert_difference("Event.count", -@yuya_pda.events.size) {
+      @yuya_pda.destroy
+    }
+
+    assert_difference("Event.count", -@shinya_note.events.size) {
+      @shinya_note.destroy
+    }
   end
 
   test "belongs_to :user" do
