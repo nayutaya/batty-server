@@ -19,6 +19,7 @@
 class EmailCredential < ActiveRecord::Base
   belongs_to :user
 
+  EmailMaximumLength = 200
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
   HashedPasswordPattern = /\A([0-9a-f]{8}):([0-9a-f]{64})\z/
@@ -26,7 +27,7 @@ class EmailCredential < ActiveRecord::Base
   validates_presence_of :email
   validates_presence_of :activation_token
   validates_presence_of :hashed_password
-  validates_length_of :email, :maximum => 200, :allow_nil => true
+  validates_length_of :email, :maximum => EmailMaximumLength, :allow_nil => true
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
   validates_format_of :hashed_password, :with => HashedPasswordPattern, :allow_nil => true
   validates_email_format_of :email
