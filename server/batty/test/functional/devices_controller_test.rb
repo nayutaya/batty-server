@@ -20,7 +20,11 @@ class DevicesControllerTest < ActionController::TestCase
     assert_routing("/devices/new",    base.merge(:action => "new"))
     assert_routing("/devices/create", base.merge(:action => "create"))
 
-    assert_routing("/device/1234567890", base.merge(:action => "show", :device_id => "1234567890"))
+    assert_routing("/device/1234567890",         base.merge(:action => "show",    :device_id => "1234567890"))
+    assert_routing("/device/1234567890/edit",    base.merge(:action => "edit",    :device_id => "1234567890"))
+    assert_routing("/device/1234567890/update",  base.merge(:action => "update",  :device_id => "1234567890"))
+    assert_routing("/device/1234567890/delete",  base.merge(:action => "delete",  :device_id => "1234567890"))
+    assert_routing("/device/1234567890/destroy", base.merge(:action => "destroy", :device_id => "1234567890"))
 
     assert_equal("/device/1234567890", device_path(:device_id => "1234567890"))
   end

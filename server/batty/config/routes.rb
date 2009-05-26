@@ -9,8 +9,12 @@ ActionController::Routing::Routes.draw do |map|
 
   map.root :controller => "home", :action => "index"
 
-  map.connect "devices/:action",   :controller => "devices"
-  map.device  "device/:device_id", :controller => "devices", :action => "show", :device_id => DeviceId
+  map.with_options :controller => "devices" do |devices|
+    devices.connect "devices/:action",           :action => /(new|create)/
+    devices.device  "device/:device_id",         :action => "show", :device_id => DeviceId
+    devices.connect "device/:device_id/:action", :action => /(edit|update|delete|destroy)/, :device_id => DeviceId
+  end
+
   map.connect "device/:device_id/trigger/:trigger_id/:action", :controller => "triggers", :device_id => DeviceId, :trigger_id => TriggerId
   map.connect "device/:device_id/triggers/:action",            :controller => "triggers", :device_id => DeviceId
   map.connect "device/:device_id/trigger/:trigger_id/act/email/:email_action_id/:action", :controller => "email_actions", :device_id => DeviceId, :trigger_id => TriggerId, :email_action_id => EmailActionId

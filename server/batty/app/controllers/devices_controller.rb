@@ -46,4 +46,16 @@ class DevicesController < ApplicationController
       :page     => 1,
       :per_page => 10)
   end
+
+  # GET /device/:device_id/edit
+  # TODO: 実装せよ
+
+  # POST /device/:device_id/update
+  # TODO: 実装せよ
+
+  # GET /device/:device_id/delete
+  # TODO: 実装せよ
+
+  # POST /device/:device_id/destroy
+  # TODO: 実装せよ
 end
