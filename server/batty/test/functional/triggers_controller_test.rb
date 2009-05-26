@@ -205,4 +205,95 @@ class TriggersControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "POST update" do
+    @edit_form.enable = false
+    assert_equal(true, @edit_form.valid?)
+
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :edit_form => @edit_form.attributes
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "devices", :action => "show", :device_id => @yuya_pda.id)
+    assert_flash_notice
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+    assert_equal(@yuya_pda_ge90, assigns(:trigger))
+
+    assert_equal(
+      @edit_form.attributes,
+      assigns(:edit_form).attributes)
+
+    @yuya_pda_ge90.reload
+    assert_equal(@edit_form.enable,   @yuya_pda_ge90.enable)
+    assert_equal(@edit_form.operator, @yuya_pda_ge90.operator)
+    assert_equal(@edit_form.level,    @yuya_pda_ge90.level)
+  end
+
+  test "POST update, invalid form" do
+    @edit_form.operator = nil
+    assert_equal(false, @edit_form.valid?)
+
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id, :edit_form => @edit_form.attributes
+
+    assert_response(:success)
+    assert_template("edit")
+    assert_flash_error
+
+    @yuya_pda_ge90.reload
+    assert_not_equal(@edit_form.operator, @yuya_pda_ge90.operator)
+
+    assert_equal(
+      TriggerEditForm.operators_for_select(:include_blank => false),
+      assigns(:operators_for_select))
+  end
+
+  test "GET update, abnormal, method not allowed" do
+    get :update
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
+  test "POST update, abnormal, no login" do
+    session_logout
+
+    post :update
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST update, abnormal, no device id" do
+    post :update, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST update, abnormal, no trigger id" do
+    post :update, :device_id => @yuya_pda.id, :trigger_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST update, abnormal, other's device" do
+    post :update, :device_id => @shinya_note.id, :trigger_id => @yuya_pda_ge90.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST update, abnormal, other's trigger" do
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
 end
