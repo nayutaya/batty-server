@@ -10,11 +10,8 @@
   <tr>
     <th>ニックネーム</th>
     <td>
-      <%= @login_user.nickname || "(未設定)" %>
-      <span>[変更]</span>
-    </td>
-    <td>
-      <%= in_place_editor_field :user, "nickname" %>
+      <span id="nickname"><%= @login_user.nickname || "(未設定)" %></span>
+      <span id="nickname-edit">[変更]</span>
     </td>
   </tr>
   <tr>
@@ -22,3 +19,21 @@
     <td><%= yyyymmdd(@login_user.created_at) %></td>
   </tr>
 </table>
+
+<script type="text/javascript">
+  //<![CDATA[
+  new Ajax.InPlaceEditor(
+    'nickname',
+    '/settings/set_user_nickname/965563735',
+    {
+      callback: function(form) { return Form.serialize(form) + '&authenticity_token=' + encodeURIComponent('hlJ4/bJpopQjNOsRaArxEPtTKZbFLkJssw4usZkAB64=') },
+      cancelText:'キャンセル',
+      externalControl:'nickname-edit',
+      externalControlOnly: true,
+      loadingText:'読み込み中...',
+      okText:'保存',
+      savingText:'保存中...',
+      size:30
+    });
+  //]]>
+</script>
