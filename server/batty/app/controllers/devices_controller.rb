@@ -4,11 +4,11 @@ class DevicesController < ApplicationController
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create, :update])
-  before_filter :authentication, :except => [:destroy]
-  before_filter :authentication_required, :except => [:destroy]
-  before_filter :required_param_device_id, :only => [:show, :edit, :update, :delete]
-  before_filter :specified_device_belongs_to_login_user, :only => [:show, :edit, :update, :delete]
+    :only   => [:create, :update, :destroy])
+  before_filter :authentication
+  before_filter :authentication_required
+  before_filter :required_param_device_id, :only => [:show, :edit, :update, :delete, :destroy]
+  before_filter :specified_device_belongs_to_login_user, :only => [:show, :edit, :update, :delete, :destroy]
 
   # GET /devices/new
   def new
@@ -75,5 +75,10 @@ class DevicesController < ApplicationController
   end
 
   # POST /device/:device_id/destroy
-  # TODO: 実装せよ
+  def destroy
+    @device.destroy
+
+    set_notice("デバイスを削除しました。")
+    redirect_to(root_path)
+  end
 end

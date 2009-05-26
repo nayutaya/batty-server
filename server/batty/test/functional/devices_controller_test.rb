@@ -305,4 +305,52 @@ class DevicesControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "POST destroy" do
+    assert_difference("Device.count", -1) {
+      post :destroy, :device_id => @yuya_pda.id
+    }
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_notice
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+
+    assert_equal(nil, Device.find_by_id(@yuya_pda.id))
+  end
+
+  test "GET destroy, abnormal, method not allowed" do
+    get :destroy
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
+  test "POST destroy, abnormal, no login" do
+    session_logout
+
+    post :destroy
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, no device id" do
+    post :destroy, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, other's device" do
+    post :destroy, :device_id => @shinya_note.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
 end
