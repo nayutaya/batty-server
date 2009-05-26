@@ -19,6 +19,8 @@ class Credentials::EmailControllerTest < ActionController::TestCase
 
     assert_routing("/credential/email/1234567890/edit_password",   base.merge(:action => "edit_password",   :email_credential_id => "1234567890"))
     assert_routing("/credential/email/1234567890/update_password", base.merge(:action => "update_password", :email_credential_id => "1234567890"))
+    assert_routing("/credential/email/1234567890/delete",          base.merge(:action => "delete",          :email_credential_id => "1234567890"))
+    assert_routing("/credential/email/1234567890/destroy",         base.merge(:action => "destroy",         :email_credential_id => "1234567890"))
   end
 
   test "GET edit_password" do

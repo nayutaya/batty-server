@@ -32,6 +32,12 @@ class Credentials::EmailController < ApplicationController
     end
   end
 
+  # GET /credential/email/:email_credential_id/delete
+  # TODO: 実装せよ
+
+  # POST /credential/email/:email_credential_id/destroy
+  # TODO: 実装せよ
+
   private
 
   def required_param_email_credential_id(email_credential_id = params[:email_credential_id])
