@@ -27,7 +27,9 @@ class Credentials::EmailControllerTest < ActionController::TestCase
 
     assert_equal(@yuya_gmail, assigns(:email_credential))
 
-    # TODO: 編集フォームの処理を実装せよ
+    assert_equal(
+      EmailPasswordEditForm.new.attributes,
+      assigns(:edit_form).attributes)
   end
 
   test "GET edit_password, abnormal, no login" do

@@ -8,7 +8,7 @@ class Credentials::EmailController < ApplicationController
 
   # GET /credential/email/:email_credential_id/edit_password
   def edit_password
-    # TODO: 編集用フォームを生成
+    @edit_form = EmailPasswordEditForm.new
   end
 
   # POST /credential/email/:email_credential_id/update_password
