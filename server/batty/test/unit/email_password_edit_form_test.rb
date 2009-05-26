@@ -4,6 +4,7 @@ require 'test_helper'
 class EmailPasswordEditFormTest < ActiveSupport::TestCase
   def setup
     @klass = EmailPasswordEditForm
+    @form  = @klass.new
     @basic = @klass.new(
       :password              => "password",
       :password_confirmation => "password")
@@ -93,5 +94,24 @@ class EmailPasswordEditFormTest < ActiveSupport::TestCase
     @basic.password              = "aaaa"
     @basic.password_confirmation = "AAAA"
     assert_equal(false, @basic.valid?)
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "to_email_credential_hash, empty" do
+    hash = @form.to_email_credential_hash
+    assert_equal([:hashed_password], hash.keys)
+    assert_equal(true, EmailCredential.compare_hashed_password("", hash[:hashed_password]))
+  end
+
+  test "to_email_credential_hash, full" do
+    @form.attributes = {
+      :password => "foo",
+    }
+    hash = @form.to_email_credential_hash
+    assert_equal([:hashed_password], hash.keys)
+    assert_equal(true, EmailCredential.compare_hashed_password(@form.password, hash[:hashed_password]))
   end
 end

@@ -4,6 +4,7 @@ class EmailPasswordEditForm < ActiveForm
   column :password,              :type => :text
   column :password_confirmation, :type => :text
 
+  # FIXME: 検証のパラメータを共通化
   validates_presence_of :password
   validates_presence_of :password_confirmation
   validates_length_of :password, :in => 4..20, :allow_nil => true
@@ -16,4 +17,10 @@ class EmailPasswordEditForm < ActiveForm
       record.errors.add(attr, :confirmation)
     end
   }
+
+  def to_email_credential_hash
+    return {
+      :hashed_password => EmailCredential.create_hashed_password(self.password.to_s),
+    }
+  end
 end
