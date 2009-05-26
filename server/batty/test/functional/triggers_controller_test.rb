@@ -3,10 +3,11 @@ require 'test_helper'
 
 class TriggersControllerTest < ActionController::TestCase
   def setup
-    @yuya          = users(:yuya)
-    @yuya_pda      = devices(:yuya_pda)
-    @shinya_note   = devices(:shinya_note)
-    @yuya_pda_ge90 = triggers(:yuya_pda_ge90)
+    @yuya            = users(:yuya)
+    @yuya_pda        = devices(:yuya_pda)
+    @shinya_note     = devices(:shinya_note)
+    @yuya_pda_ge90   = triggers(:yuya_pda_ge90)
+    @shinya_note_ne0 = triggers(:shinya_note_ne0)
 
     @edit_form = TriggerEditForm.new(
       :enable   => true,
@@ -137,6 +138,68 @@ class TriggersControllerTest < ActionController::TestCase
 
   test "POST create, abnormal, other's device" do
     post :create, :device_id => @shinya_note.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET edit" do
+    get :edit, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id
+
+    assert_response(:success)
+    assert_template("edit")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+    assert_equal(@yuya_pda_ge90, assigns(:trigger))
+
+    assert_equal(@yuya_pda_ge90.enable,   assigns(:edit_form).enable)
+    assert_equal(@yuya_pda_ge90.operator, assigns(:edit_form).operator)
+    assert_equal(@yuya_pda_ge90.level,    assigns(:edit_form).level)
+
+    assert_equal(
+      TriggerEditForm.operators_for_select(:include_blank => false),
+      assigns(:operators_for_select))
+  end
+
+  test "GET edit, abnormal, no login" do
+    session_logout
+
+    get :edit
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET edit, abnormal, no device id" do
+    get :edit, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET edit, abnormal, no trigger id" do
+    get :edit, :device_id => @yuya_pda.id, :trigger_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET edit, abnormal, other's device" do
+    get :edit, :device_id => @shinya_note.id, :trigger_id => @yuya_pda_ge90.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET edit, abnormal, other's trigger" do
+    get :edit, :device_id => @yuya_pda.id, :trigger_id => @shinya_note_ne0.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)

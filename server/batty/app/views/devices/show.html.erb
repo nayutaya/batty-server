@@ -70,15 +70,15 @@
           <tr>
             <th></th>
             <th>条件</th>
+            <th></th>
             <th>メール通知</th>
             <th>Web Hook</th>
           </tr>
           <%- @triggers.each { |trigger| -%>
             <tr>
               <td><%= enable_or_disable_icon(trigger.enable?) %></td>
-              <td>
-                <%= trigger_condition(trigger) %>
-              </td>
+              <td><%= trigger_condition(trigger) %></td>
+              <td><%= link_to(edit_icon, :controller => "triggers", :action => "edit", :trigger_id => trigger.id) %></td>
               <td>
                 <table>
                   <%- trigger.email_actions.sort_by(&:id).each { |email_action| -%>
