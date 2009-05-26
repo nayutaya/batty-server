@@ -21,11 +21,12 @@ class User < ActiveRecord::Base
   has_many :events, :through => :devices
   has_many :email_addresses
 
+  NicknameMaximumLength = 40
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
 
   validates_presence_of :user_token
-  validates_length_of :nickname, :maximum => 40, :allow_nil => true
+  validates_length_of :nickname, :maximum => NicknameMaximumLength, :allow_nil => true
   validates_format_of :user_token, :with => TokenPattern, :allow_nil => true
 
   def self.create_unique_user_token

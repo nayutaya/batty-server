@@ -66,4 +66,8 @@ module ApplicationHelper
       :alt    => "フィード",
       :title  => "フィード")
   end
+
+  def yyyymmdd(date, null = "-")
+    return date.try(:strftime, "%Y年%m月%d日") || null
+  end
 end
