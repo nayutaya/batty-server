@@ -47,6 +47,16 @@ class TriggersControllerTest < ActionController::TestCase
       assigns(:operators_for_select))
   end
 
+  test "GET new, abnormal, no login" do
+    session_logout
+
+    get :new
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
   test "GET new, abnormal, no device id" do
     get :new, :device_id => nil
 
@@ -57,16 +67,6 @@ class TriggersControllerTest < ActionController::TestCase
 
   test "GET new, abnormal, other's device" do
     get :new, :device_id => @shinya_note.id
-
-    assert_response(:redirect)
-    assert_redirected_to(root_path)
-    assert_flash_error
-  end
-
-  test "GET new, abnormal, no login" do
-    session_logout
-
-    get :new
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
