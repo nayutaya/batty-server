@@ -6,7 +6,7 @@ class SettingsController < ApplicationController
 
   # GET /settings
   def index
-    @user = @login_user
+    # nop
   end
 
   def get_nickname
@@ -16,11 +16,11 @@ class SettingsController < ApplicationController
   def set_nickname
     @login_user.nickname = params[:value]
     if @login_user.save
-      render(:text => @login_user.nickname)
+      render(:text => ERB::Util.h(@login_user.nickname))
     else
       message = @login_user.errors.on(:nickname)
       message = message.join(", ") if message.kind_of?(Array)
-      render(:text => message, :status => 400)
+      render(:text => ERB::Util.h(message), :status => 400)
     end
   end
 end
