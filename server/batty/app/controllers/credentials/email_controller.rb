@@ -4,11 +4,11 @@ class Credentials::EmailController < ApplicationController
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:update_password])
-  before_filter :authentication, :except => [:destroy]
-  before_filter :authentication_required, :except => [:destroy]
-  before_filter :required_param_email_credential_id, :only => [:edit_password, :update_password, :delete]
-  before_filter :specified_email_credential_belongs_to_login_user, :only => [:edit_password, :update_password, :delete]
+    :only   => [:update_password, :destroy])
+  before_filter :authentication
+  before_filter :authentication_required
+  before_filter :required_param_email_credential_id
+  before_filter :specified_email_credential_belongs_to_login_user
 
   # GET /credential/email/:email_credential_id/edit_password
   def edit_password
@@ -38,7 +38,12 @@ class Credentials::EmailController < ApplicationController
   end
 
   # POST /credential/email/:email_credential_id/destroy
-  # TODO: 実装せよ
+  def destroy
+    @email_credential.destroy
+
+    set_notice("メールログイン情報を削除しました。")
+    redirect_to(:controller => "/credentials")
+  end
 
   private
 
