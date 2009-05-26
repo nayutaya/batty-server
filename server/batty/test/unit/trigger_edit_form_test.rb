@@ -55,6 +55,22 @@ class TriggerEditFormTest < ActiveSupport::TestCase
     assert_equal(false, @basic.valid?)
   end
 
+  test "validates_numericality_of :operator" do
+    @basic.operator = "x"
+    assert_equal(false, @basic.valid?)
+
+    @basic.operator = "0.1"
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_numericality_of :level" do
+    @basic.level = "x"
+    assert_equal(false, @basic.valid?)
+
+    @basic.level = "0.1"
+    assert_equal(false, @basic.valid?)
+  end
+
   test "validates_inclusion_of :operator" do
     [
       [-1, false],
