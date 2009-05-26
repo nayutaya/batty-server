@@ -16,6 +16,7 @@ class DeviceEditForm < ActiveForm
   validates_presence_of :device_icon_id
   # FIXME: デバイス名の最大長を定数化（Deviceクラス）
   validates_length_of :name, :maximum => 50, :allow_nil => true
+  validates_numericality_of :device_icon_id, :only_integer => true, :allow_nil => true
   validates_each :device_icon_id do |record, attr, value|
     unless record.device_icon
       # FIXME: エラーメッセージを指定せよ
