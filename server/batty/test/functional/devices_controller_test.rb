@@ -159,4 +159,44 @@ class DevicesControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "GET edit" do
+    get :edit, :device_id => @yuya_pda.id
+
+    assert_response(:success)
+    assert_template("edit")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+
+    assert_equal(@yuya_pda.name,           assigns(:edit_form).name)
+    assert_equal(@yuya_pda.device_icon_id, assigns(:edit_form).device_icon_id)
+  end
+
+  test "GET edit, abnormal, no login" do
+    session_logout
+
+    get :edit
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET edit, abnormal, no device id" do
+    get :edit, :device_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET edit, abnormal, other's device" do
+    get :edit, :device_id => @shinya_note.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
 end

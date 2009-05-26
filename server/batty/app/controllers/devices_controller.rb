@@ -5,10 +5,10 @@ class DevicesController < ApplicationController
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:create])
-  before_filter :authentication
-  before_filter :authentication_required
-  before_filter :required_param_device_id, :only => [:show]
-  before_filter :specified_device_belongs_to_login_user, :only => [:show]
+  before_filter :authentication, :except => [:update, :delete, :destroy]
+  before_filter :authentication_required, :except => [:update, :delete, :destroy]
+  before_filter :required_param_device_id, :only => [:show, :edit]
+  before_filter :specified_device_belongs_to_login_user, :only => [:show, :edit]
 
   # GET /devices/new
   def new
@@ -48,7 +48,11 @@ class DevicesController < ApplicationController
   end
 
   # GET /device/:device_id/edit
-  # TODO: 実装せよ
+  def edit
+    @edit_form = DeviceEditForm.new(
+      :name           => @device.name,
+      :device_icon_id => @device.device_icon_id)
+  end
 
   # POST /device/:device_id/update
   # TODO: 実装せよ
