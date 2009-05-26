@@ -26,24 +26,26 @@ background-color:green;
 
 div#content-column-outer
 {
-margin: 0px -200px 0px 0px;
-/*padding: 0px 200px 0px 0px;*/
-width: 100%;
-float: left;
+    margin: 0px 200px 0px 0px;
 }
 
 div#content-column-inner
 {
-margin: 0px 200px 0px 0px;
+    padding: 10px;
 background-color:gray;
 }
 
 div#side-column-outer
 {
-width: 200px;
-min-height: 400px;
-float: right;
+    width: 200px;
+    min-height: 300px;
+    float: right;
 background-color:yellow;
+}
+
+div#side-column-inner
+{
+    padding: 10px;
 }
 
 div#foot-outer
