@@ -10,8 +10,8 @@
   <tr>
     <th>ニックネーム</th>
     <td>
-      <span id="nickname"><%= @login_user.nickname || "(未設定)" %></span>
-      <span id="nickname-edit">[変更]</span>
+      <span id="nickname"><%= @login_user.nickname %></span>
+      <span id="nickname-edit">[編集]</span>
     </td>
   </tr>
   <tr>
@@ -22,17 +22,21 @@
 
 <script type="text/javascript">
   //<![CDATA[
+  var authenticity_token = "<%= form_authenticity_token %>";
   new Ajax.InPlaceEditor(
-    'nickname',
-    '/settings/set_user_nickname/965563735',
+    "nickname",
+    "/settings/set_user_nickname/965563735",
     {
-      callback: function(form) { return Form.serialize(form) + '&authenticity_token=' + encodeURIComponent('hlJ4/bJpopQjNOsRaArxEPtTKZbFLkJssw4usZkAB64=') },
-      cancelText:'キャンセル',
-      externalControl:'nickname-edit',
+      callback: function(form) { return Form.serialize(form) + "&authenticity_token=" + encodeURIComponent(authenticity_token) },
+      externalControl: "nickname-edit",
       externalControlOnly: true,
-      loadingText:'読み込み中...',
-      okText:'保存',
-      savingText:'保存中...',
+      okControl: "link",
+      cancelControl: "link",
+      okText: "保存",
+      cancelText: "キャンセル",
+      loadingText: "読込中...",
+      savingText: "保存中...",
+      clickToEditText: "",
       size:30
     });
   //]]>
