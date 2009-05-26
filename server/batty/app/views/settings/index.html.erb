@@ -13,6 +13,9 @@
       <%= @login_user.nickname || "(未設定)" %>
       <span>[変更]</span>
     </td>
+    <td>
+      <%= in_place_editor_field :user, "nickname" %>
+    </td>
   </tr>
   <tr>
     <th>登録日</th>
