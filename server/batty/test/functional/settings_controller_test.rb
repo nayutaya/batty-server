@@ -74,4 +74,65 @@ class SettingsControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "XHR POST set_nickname" do
+    nickname = "new-nickname"
+
+    xhr :post, :set_nickname, :value => nickname
+
+    assert_response(:success)
+    assert_template(nil)
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assigns(:login_user).reload
+    assert_equal(nickname, assigns(:login_user).nickname)
+    assert_equal(nickname, @response.body)
+  end
+
+  test "XHR POST set_nickname, html" do
+    xhr :post, :set_nickname, :value => "<&>"
+
+    assert_response(:success)
+    assert_template(nil)
+    assert_flash_empty
+
+    assert_equal("&lt;&amp;&gt;", @response.body)
+  end
+
+  test "XHR POST set_nickname, invalid value" do
+    xhr :post, :set_nickname, :value => "a" * (User::NicknameMaximumLength + 1)
+
+    assert_response(422)
+    assert_template(nil)
+    assert_flash_empty
+
+    assert_equal(
+      ERB::Util.h(assigns(:login_user).errors.on(:nickname).to_s),
+      @response.body)
+  end
+
+  test "POST set_nickname, abnormal, method not allowed" do
+    post :set_nickname
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
+  test "XHR GET set_nickname, abnormal, method not allowed" do
+    xhr :get, :set_nickname
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
+  test "XHR POST set_nickname, abnormal, no login" do
+    session_logout
+
+    xhr :post, :set_nickname
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
 end
