@@ -19,6 +19,8 @@ class Credentials::EmailControllerTest < ActionController::TestCase
 
     assert_routing("/credential/email/1234567890/edit_password",   base.merge(:action => "edit_password",   :email_credential_id => "1234567890"))
     assert_routing("/credential/email/1234567890/update_password", base.merge(:action => "update_password", :email_credential_id => "1234567890"))
+    assert_routing("/credential/email/1234567890/delete",          base.merge(:action => "delete",          :email_credential_id => "1234567890"))
+    assert_routing("/credential/email/1234567890/destroy",         base.merge(:action => "destroy",         :email_credential_id => "1234567890"))
   end
 
   test "GET edit_password" do
@@ -125,6 +127,91 @@ class Credentials::EmailControllerTest < ActionController::TestCase
 
   test "POST update_password, abnormal, other's email credential" do
     post :update_password, :email_credential_id => @risa_example.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete" do
+    get :delete, :email_credential_id => @yuya_gmail.id
+
+    assert_response(:success)
+    assert_template("delete")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_gmail, assigns(:email_credential))
+  end
+
+  test "GET delete, abnormal, no login" do
+    session_logout
+
+    get :delete
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete, abnormal, no email credential id" do
+    get :delete, :email_credential_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete, abnormal, other's email credential" do
+    get :delete, :email_credential_id => @risa_example.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy" do
+    assert_difference("EmailCredential.count", -1) {
+      post :destroy, :email_credential_id => @yuya_gmail.id
+    }
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "/credentials", :action => "index")
+    assert_flash_notice
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_gmail, assigns(:email_credential))
+
+    assert_equal(nil, EmailCredential.find_by_id(@yuya_gmail.id))
+  end
+
+  test "GET destroy, abnormal, method not allowed" do
+    get :destroy
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
+  test "POST destroy, abnormal, no login" do
+    session_logout
+
+    post :destroy
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, no email credential id" do
+    post :destroy, :email_credential_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, other's email credential" do
+    post :destroy, :email_credential_id => @risa_example.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
