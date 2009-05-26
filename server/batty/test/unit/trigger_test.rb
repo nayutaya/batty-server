@@ -25,14 +25,24 @@ class TriggerTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      triggers(:yuya_pda_ge90).email_actions.all(:order => "email_actions.id ASC"))
+      @yuya_pda_ge90.email_actions.all(:order => "email_actions.id ASC"))
 
     expected = [
       email_actions(:shinya_note_ne0_1),
     ]
     assert_equal(
       expected.sort_by(&:id),
-      triggers(:shinya_note_ne0).email_actions.all(:order => "email_actions.id ASC"))
+      @shinya_note_ne0.email_actions.all(:order => "email_actions.id ASC"))
+  end
+
+  test "has_many :email_actions, :dependent => :destroy" do
+    assert_difference("EmailAction.count", -@yuya_pda_ge90.email_actions.size) {
+      @yuya_pda_ge90.destroy
+    }
+
+    assert_difference("EmailAction.count", -@shinya_note_ne0.email_actions.size) {
+      @shinya_note_ne0.destroy
+    }
   end
 
   test "has_many :http_actions" do
@@ -50,6 +60,16 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal(
       expected.sort_by(&:id),
       @shinya_note_ne0.http_actions.all(:order => "http_actions.id ASC"))
+  end
+
+  test "has_many :http_actions, :dependent => :destroy" do
+    assert_difference("HttpAction.count", -@yuya_pda_ge90.http_actions.size) {
+      @yuya_pda_ge90.destroy
+    }
+
+    assert_difference("HttpAction.count", -@shinya_note_ne0.http_actions.size) {
+      @shinya_note_ne0.destroy
+    }
   end
 
   test "belongs_to :device" do
