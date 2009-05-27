@@ -39,6 +39,15 @@ body
 {
 }
 
+#content-outer
+{
+}
+
+#content-inner
+{
+    padding: 10px;
+}
+
 #content-column-outer
 {
     margin: 0px 200px 0px 0px;
