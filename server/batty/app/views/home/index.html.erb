@@ -1,18 +1,23 @@
 
+<%- if logged_in? -%>
+  <%- additional_head { -%>
+    <meta http-equiv="refresh" content="<%=h 5.minutes %>" />
+  <%- } -%>
+<%- end -%>
+
 <%-
   if logged_in?
-    @additional_head_html = <<-END_OF_HTML
-      <meta http-equiv="refresh" content="#{5.minutes}" />
-    END_OF_HTML
     @additional_head_html += rss_auto_discovery(:title => "バッテリ履歴", :href => url_for(:controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token))
     @additional_head_html += rss_auto_discovery(:title => "イベント履歴", :href => url_for(:controller => "user_feeds", :action => "events", :user_token => @login_user.user_token))
   end
 -%>
 
-<%- side_column { -%>
-  <div>TODO: OpenIDログインフォームを追加</div>
-  <div>TODO: メールログインフォームを追加</div>
-<%- } -%>
+<%- unless logged_in? -%>
+  <%- side_column { -%>
+    <div>TODO: OpenIDログインフォームを追加</div>
+    <div>TODO: メールログインフォームを追加</div>
+  <%- } -%>
+<%- end -%>
 
 <%- unless logged_in? -%>
   <div id="login_form">
@@ -32,32 +37,7 @@
 
 <%- if logged_in? -%>
   <h1>ダッシュボード</h1>
-  <table border="1">
-    <thead>
-      <tr>
-        <th></th>
-        <th>デバイス</th>
-        <th colspan="2">残量</th>
-        <th>更新日時</th>
-        <th>トリガー</th>
-        <th>アクション</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%- @devices.each { |device| -%>
-        <%- current_energy = device.current_energy -%>
-        <tr>
-          <td><%= device_icon48_link(device) %></td>
-          <td><%= device_name_link(device) %></td>
-          <td><%= energy_meter(current_energy.try(:observed_level) || 0) %></td>
-          <td align="right"><%=h current_energy.try(:observed_level) || "-" %> %</td>
-          <td><%=h current_energy.try(:observed_at).try(:strftime, "%m-%d %H:%M") || "-" %></td>
-          <td align="right"><%=h device.triggers.enable.count %></td>
-          <td>アクション</td>
-        </tr>
-      <%- } -%>
-    </tbody>
-  </table>
+  <%= render(:partial => "devices")  %>
   <div>[ <%= link_to(add_icon + h(" デバイスを追加する"), :controller => "devices", :action => "new") %> ]</div>
 
   <div>
