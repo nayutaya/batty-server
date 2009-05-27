@@ -4,26 +4,28 @@
   <em>エネルギー履歴</em>
 </div>
 
-<%- @energies.each_slice(10) { |energies| -%>
-  <div style="float: left;">
-    <table border="1">
-      <tr>
-        <th>日時</th>
-        <th></th>
-        <th>デバイス</th>
-        <th>残量</th>
-      </tr>
-      <%- energies.each { |energy| -%>
+<div>
+  <%- @energies.each_slice(10) { |energies| -%>
+    <div style="float: left;">
+      <table border="1">
         <tr>
-          <td><%=h yyyymmdd_hhmm(energy.observed_at) %></td>
-          <td><%= device_icon24_link(energy.device) %></td>
-          <td><%= device_name_link(energy.device) %></td>
-          <td align="right"><%=h energy.observed_level %> %</td>
+          <th>日時</th>
+          <th></th>
+          <th>デバイス</th>
+          <th>残量</th>
         </tr>
-      <%- } -%>
-    </table>
-  </div>
-<%- } -%>
-<div style="clear: both;"></div>
+        <%- energies.each { |energy| -%>
+          <tr>
+            <td><%=h yyyymmdd_hhmm(energy.observed_at) %></td>
+            <td><%= device_icon24_link(energy.device) %></td>
+            <td><%= device_name_link(energy.device) %></td>
+            <td align="right"><%=h energy.observed_level %> %</td>
+          </tr>
+        <%- } -%>
+      </table>
+    </div>
+  <%- } -%>
+  <div style="clear: left;"></div>
+</div>
 
 <div><%= will_paginate(@energies) %></div>

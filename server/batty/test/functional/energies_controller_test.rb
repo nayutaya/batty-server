@@ -7,6 +7,7 @@ class EnergiesControllerTest < ActionController::TestCase
 
     session_login(@yuya)
   end
+
   test "routes" do
     base = {:controller => "energies"}
 
@@ -40,6 +41,7 @@ class EnergiesControllerTest < ActionController::TestCase
     assert_equal( 2, assigns(:energies).current_page)
     assert_equal(20, assigns(:energies).per_page)
   end
+
   test "GET index, abnormal, no login" do
     session_logout
 

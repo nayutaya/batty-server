@@ -53,7 +53,7 @@
       <%= render(:partial => "events") %>
       <div>
         [ <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "events", :user_token => @login_user.user_token) %>
-        | すべて (<%=h @events.total_entries %>) ]
+        | <%= link_to(h("すべて"), :controller => "events") %> (<%=h @events.total_entries %>) ]
       </div>
     </div>
     <div style="clear: both;"></div>
