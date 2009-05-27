@@ -6,8 +6,9 @@
       <th>デバイス</th>
       <th colspan="2">残量</th>
       <th>更新日時</th>
-      <th>トリガー</th>
-      <th>アクション</th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -19,8 +20,12 @@
         <td><%= energy_meter(current_energy.try(:observed_level) || 0) %></td>
         <td align="right"><%=h current_energy.try(:observed_level) || "-" %> %</td>
         <td><%=h current_energy.try(:observed_at).try(:strftime, "%m-%d %H:%M") || "-" %></td>
-        <td align="right"><%=h device.triggers.enable.count %></td>
-        <td>アクション</td>
+        <td>
+          <%= icon16("icons/fam/lightning.png", "トリガ") %>
+          <%=h device.triggers.enable.count %>
+        </td>
+        <td></td>
+        <td></td>
       </tr>
     <%- } -%>
   </tbody>

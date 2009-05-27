@@ -19,6 +19,15 @@ module ApplicationHelper
     @side_column_html  += capture(&block)
   end
 
+  def icon16(path, alt)
+    return image_tag(
+      path,
+      :width  => 16,
+      :height => 16,
+      :alt    => alt,
+      :title  => alt)
+  end
+
   def enable_icon
     return image_tag(
       "icons/fam/tick.png",
