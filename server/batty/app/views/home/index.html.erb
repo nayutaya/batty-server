@@ -30,10 +30,6 @@
   <%- end -%>
 
   <%- if logged_in? -%>
-    <div><%= link_to(h("ログアウト"), {:controller => "auth", :action => "logout"}, :method => :post) %></div>
-  <%- end -%>
-
-  <%- if logged_in? -%>
     <h2>Dashboard</h2>
     <table border="1">
       <thead>
