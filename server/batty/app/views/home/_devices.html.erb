@@ -31,8 +31,12 @@
           <%= icon16("icons/fam/lightning.png", "トリガ") %>
           <%=h device.triggers.enable.count %>
         </td>
-        <td></td>
-        <td></td>
+        <td>
+          <%=h device.email_actions.enable.count(:id, :conditions => ["triggers.enable = ?", true]) %>
+        </td>
+        <td>
+          <%=h device.http_actions.enable.count(:id, :conditions => ["triggers.enable = ?", true]) %>
+        </td>
       </tr>
     <%- } -%>
   </tbody>
