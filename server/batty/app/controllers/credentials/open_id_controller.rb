@@ -1,6 +1,10 @@
 
 # OpenIDログイン情報コントローラ
 class Credentials::OpenIdController < ApplicationController
+  verify(
+    :method => :post,
+    :render => {:text => "Method Not Allowed", :status => 405},
+    :only   => [:destroy])
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_open_id_credential_id
@@ -12,7 +16,12 @@ class Credentials::OpenIdController < ApplicationController
   end
 
   # POST /credential/open_id/:open_id_credential_id/destroy
-  # TODO: 実装せよ
+  def destroy
+    @open_id_credential.destroy
+
+    set_notice("OpenIDログイン情報を削除しました。")
+    redirect_to(:controller => "/credentials")
+  end
 
   private
 

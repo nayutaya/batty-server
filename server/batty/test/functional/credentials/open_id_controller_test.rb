@@ -53,4 +53,52 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "POST destroy" do
+    assert_difference("OpenIdCredential.count", -1) {
+      post :destroy, :open_id_credential_id => @yuya_livedoor.id
+    }
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "/credentials", :action => "index")
+    assert_flash_notice
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_livedoor, assigns(:open_id_credential))
+
+    assert_equal(nil, OpenIdCredential.find_by_id(@yuya_livedoor.id))
+  end
+
+  test "GET destroy, abnormal, method not allowed" do
+    get :destroy
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
+  test "POST destroy, abnormal, no login" do
+    session_logout
+
+    post :destroy
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, no openid credential id" do
+    post :destroy, :open_id_credential_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, other's openid credential" do
+    post :destroy, :open_id_credential_id => @shinya_example.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
 end
