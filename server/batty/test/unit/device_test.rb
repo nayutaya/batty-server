@@ -75,6 +75,40 @@ class DeviceTest < ActiveSupport::TestCase
     }
   end
 
+  test "has_many :email_actions, :through => :triggers" do
+    expected = [
+      email_actions(:yuya_pda_ge90_1),
+      email_actions(:yuya_pda_ge90_2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @yuya_pda.email_actions.all.sort_by(&:id))
+
+    expected = [
+      email_actions(:shinya_note_ne0_1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @shinya_note.email_actions.all.sort_by(&:id))
+  end
+
+  test "has_many :http_actions, :through => :triggers" do
+    expected = [
+      http_actions(:yuya_pda_ge90_1),
+      http_actions(:yuya_pda_ge90_2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @yuya_pda.http_actions.all.sort_by(&:id))
+
+    expected = [
+      http_actions(:shinya_note_ne0_1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @shinya_note.http_actions.all.sort_by(&:id))
+  end
+
   test "has_many :events" do
     expected = [
       events(:yuya_pda_ge90_1),
