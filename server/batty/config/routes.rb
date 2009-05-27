@@ -26,6 +26,10 @@ ActionController::Routing::Routes.draw do |map|
     email_credentials.connect "credential/email/:email_credential_id/:action", :action => /(edit_password|update_password|delete|destroy)/, :email_credential_id => /[0-9]+/
   end
 
+  map.with_options :controller => "credentials/open_id" do |open_id_credentials|
+    open_id_credentials.connect "credential/open_id/:open_id_credential_id/:action", :action => /(delete|destroy)/, :open_id_credential_id => /[0-9]+/
+  end
+
   map.connect "device/token/:device_token/:action.rdf", :controller => "device_feeds", :device_token => DeviceToken
   map.connect "device/token/:device_token/energies/update/:level",       :controller => "device_api", :action => "update_energy", :device_token => DeviceToken, :level => /\d+/
   map.connect "device/token/:device_token/energies/update/:level/:time", :controller => "device_api", :action => "update_energy", :device_token => DeviceToken, :level => /\d+/, :time => /\d+/
