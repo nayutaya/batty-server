@@ -1,18 +1,16 @@
 
 <%- @enable_side_column = false -%>
-<%-
-  # MEMO: meta要素による自動遷移は無効化されている可能性があるため、JavaScriptによる遷移を併用する
-  @additional_head_html = <<-END_OF_HTML
-    <meta http-equiv="refresh" content="1; URL=#{URI.escape(@return_path)}" />
-    <script type="text/javascript">
-      // <![CDATA[
-      setTimeout(function() {
-        window.location = "#{URI.escape(@return_path)}";
-      }, 2000);
-      // ]]>
-    </script>
-  END_OF_HTML
--%>
+<%- additional_head { -%>
+  <%# MEMO: meta要素による自動遷移は無効化されている可能性があるため、JavaScriptによる遷移を併用する %>
+  <meta http-equiv="refresh" content="1; URL=<%= URI.escape(@return_path) %>" />
+  <script type="text/javascript">
+    // <![CDATA[
+    setTimeout(function() {
+      window.location = "<%= URI.escape(@return_path) %>";
+    }, 2000);
+    // ]]>
+  </script>
+<%- } -%>
 
 <div>ログインしました</div>
 <div>ページが切り替わらない場合は <%= link_to(h(@return_path), @return_path) %> をクリックしてください。</div>
