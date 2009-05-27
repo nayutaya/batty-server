@@ -1,11 +1,6 @@
 
 <%- additional_head { -%>
   <style type="text/css">
-    table#dashboard
-    {
-        border-collapse: collapse;
-    }
-
     table#dashboard img
     {
         vertical-align: text-top;
@@ -13,37 +8,12 @@
 
     table#dashboard thead tr th
     {
-        padding: 0.4em;
-        border-width: 1px;
-        border-style: solid;
-        border-color: #F0F0F0;
-        color: #CCCCCC;
-        background-color: #333333;
         font-size: 80%;
-    }
-
-    table#dashboard tbody tr
-    {
-        border-width: 1px;
-        border-style: solid;
-        border-color: #F0F0F0;
     }
 
     table#dashboard tbody tr td
     {
-        padding: 0.2em 0.4em;
-        border-width: 0;
         font-size: 90%;
-    }
-
-    table#dashboard tbody tr.even td
-    {
-        background-color: #E0E0E0;
-    }
-
-    table#dashboard tbody tr.odd td
-    {
-        background-color: #D0D0D0;
     }
 
     table#dashboard tfoot td
@@ -53,7 +23,7 @@
   </style>
 <%- } -%>
 
-<table id="dashboard">
+<table id="dashboard" class="list">
   <thead>
     <tr>
       <th colspan="2">デバイス</th>
