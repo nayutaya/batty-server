@@ -1,5 +1,5 @@
 
-# エネルギー
+# エネルギー履歴
 class EnergiesController < ApplicationController
   before_filter :authentication
   before_filter :authentication_required

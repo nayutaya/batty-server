@@ -1,7 +1,7 @@
 
 require 'test_helper'
 
-class EnergiesControllerTest < ActionController::TestCase
+class EventsControllerTest < ActionController::TestCase
   def setup
     @yuya = users(:yuya)
 
@@ -9,9 +9,9 @@ class EnergiesControllerTest < ActionController::TestCase
   end
 
   test "routes" do
-    base = {:controller => "energies"}
+    base = {:controller => "events"}
 
-    assert_routing("/energies", base.merge(:action => "index"))
+    assert_routing("/events", base.merge(:action => "index"))
   end
 
   test "GET index" do
@@ -22,13 +22,13 @@ class EnergiesControllerTest < ActionController::TestCase
     assert_flash_empty
     assert_logged_in(@yuya)
 
-    assert_equal(@yuya.energies.size, assigns(:energies).total_entries)
-    assert_equal( 1, assigns(:energies).current_page)
-    assert_equal(20, assigns(:energies).per_page)
-    assert_equal(true, assigns(:energies).all? { |e| e.device.user == @yuya })
+    assert_equal(@yuya.events.size, assigns(:events).total_entries)
+    assert_equal( 1, assigns(:events).current_page)
+    assert_equal(20, assigns(:events).per_page)
+    assert_equal(true, assigns(:events).all? { |e| e.device.user == @yuya })
     assert_equal(
-      assigns(:energies).sort_by { |e| [e.observed_at, e.id] }.reverse,
-      assigns(:energies))
+      assigns(:events).sort_by { |e| [e.observed_at, e.id] }.reverse,
+      assigns(:events))
   end
 
   test "GET index, page 2" do
@@ -38,8 +38,8 @@ class EnergiesControllerTest < ActionController::TestCase
     assert_template("index")
     assert_flash_empty
 
-    assert_equal( 2, assigns(:energies).current_page)
-    assert_equal(20, assigns(:energies).per_page)
+    assert_equal( 2, assigns(:events).current_page)
+    assert_equal(20, assigns(:events).per_page)
   end
 
   test "GET index, abnormal, no login" do
