@@ -15,6 +15,13 @@
     <div id="head-outer">
       <div id="head-inner">
         <div style="font-size: 140%;"><%= link_to(h("batty"), root_path) %></div>
+        <%- if logged_in? -%>
+          <div style="text-align: right;">
+            <span><%= user_nickname(@login_user) %></span> |
+            <span><%= link_to(h("ユーザ設定"), :controller => "settings") %></span> |
+            <span><%= link_to(h("ログイン設定"), :controller => "credentials") %></span>
+          </div>
+        <%- end -%>
       </div>
     </div>
     <div id="body-outer">

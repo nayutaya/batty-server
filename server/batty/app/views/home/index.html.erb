@@ -10,9 +10,6 @@
 -%>
 
 <div id="content-column-outer"><div id="content-column-inner">
-
-  <div>UserID: <%=h @login_user.try(:id) %></div>
-
   <%- unless logged_in? -%>
     <div id="login_form">
       <div id="open_id_login_form">
@@ -75,8 +72,5 @@
         </td>
       </tr>
     </table>
-
-    <div><%= link_to(h("ユーザ設定"), :controller => "settings") %></div>
-    <div><%= link_to(h("ログイン情報を表示/変更する"), :controller => "credentials") %></div>
   <%- end -%>
 </div></div>
