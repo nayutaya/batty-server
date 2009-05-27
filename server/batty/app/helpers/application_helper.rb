@@ -19,6 +19,10 @@ module ApplicationHelper
     @side_column_html  += capture(&block)
   end
 
+  def even_or_odd(index)
+    return %w[even odd][index % 2]
+  end
+
   def icon16(path, alt = nil)
     return image_tag(
       path,
@@ -62,6 +66,10 @@ module ApplicationHelper
 
   def yyyymmdd_hhmm(time, null = "-")
     return time.try(:strftime, "%Y年%m月%d日 %H時%M分") || null
+  end
+
+  def mmdd_hhmm(time, null = "-")
+    return time.try(:strftime, "%m月%d日 %H時%M分") || null
   end
 
   def user_nickname(user)

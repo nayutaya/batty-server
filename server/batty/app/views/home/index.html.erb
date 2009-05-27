@@ -12,6 +12,48 @@
   end
 -%>
 
+<%- additional_head { -%>
+  <style type="text/css">
+    table.list
+    {
+        border-collapse: collapse;
+    }
+
+    table.list thead tr th
+    {
+        padding: 0.4em;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #F0F0F0;
+        color: #CCCCCC;
+        background-color: #333333;
+    }
+
+    table.list tbody tr
+    {
+        border-width: 1px;
+        border-style: solid;
+        border-color: #F0F0F0;
+    }
+
+    table.list tbody tr td
+    {
+        padding: 0.2em 0.4em;
+        border-width: 0;
+    }
+
+    table.list tbody tr.even td
+    {
+        background-color: #E0E0E0;
+    }
+
+    table.list tbody tr.odd td
+    {
+        background-color: #D0D0D0;
+    }
+  </style>
+<%- } -%>
+
 <%- unless logged_in? -%>
   <%- side_column { -%>
     <div>TODO: OpenIDログインフォームを追加</div>
@@ -37,25 +79,16 @@
 
 <%- if logged_in? -%>
   <h1>ダッシュボード</h1>
-  <%= render(:partial => "devices")  %>
-
+  <div><%= render(:partial => "devices")  %></div>
   <div>
-    <div style="float: left;">
-      <h1>エネルギー履歴</h1>
+    <div style="float: left; margin-right: 10px;">
+      <h2>エネルギー履歴</h2>
       <%= render(:partial => "energies") %>
-      <div>
-        [ <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token) %>
-        | <%= link_to(h("すべて"), :controller => "energies") %> (<%=h @energies.total_entries %>) ]
-      </div>
     </div>
     <div style="float: left;">
-      <h1>イベント履歴</h1>
+      <h2>イベント履歴</h2>
       <%= render(:partial => "events") %>
-      <div>
-        [ <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "events", :user_token => @login_user.user_token) %>
-        | <%= link_to(h("すべて"), :controller => "events") %> (<%=h @events.total_entries %>) ]
-      </div>
     </div>
-    <div style="clear: both;"></div>
+    <div style="clear: left;"></div>
   </div>
 <%- end -%>

@@ -1,18 +1,54 @@
 
-<table border="1">
-  <tr>
-    <th>日時</th>
-    <th>デバイス</th>
-    <th>残量</th>
-  </tr>
-  <%- @energies.each { |energy| -%>
+<%- additional_head { -%>
+  <style type="text/css">
+    table#energies img
+    {
+        vertical-align: text-top;
+    }
+
+    table#energies thead tr th
+    {
+        font-size: 70%;
+    }
+
+    table#energies tbody tr td
+    {
+        font-size: 80%;
+    }
+
+    table#energies tfoot td
+    {
+        color: #999999;
+        text-align: right;
+    }
+  </style>
+<%- } -%>
+
+<table id="energies" class="list">
+  <thead>
     <tr>
-      <td><%=h energy.observed_at.strftime("%m-%d %H:%M") %></td>
-      <td>
-        <%= device_icon24_link(energy.device) %>
-        <%= device_name_link(energy.device) %>
-      </td>
-      <td align="right"><%=h energy.observed_level %> %</td>
+      <th>更新日時</th>
+      <th colspan="2">デバイス</th>
+      <th></th>
     </tr>
-  <%- } -%>
+  </thead>
+  <tfoot>
+    <tr>
+      <td colspan="4">
+        <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token) %>
+        | <%= link_to(h("すべて"), :controller => "energies") %>
+        (<%=h @energies.total_entries %>)
+      </td>
+    </tr>
+  </tfoot>
+  <tbody>
+    <%- @energies.each_with_index { |energy, index| -%>
+      <tr class="<%= even_or_odd(index) %>">
+        <td><%=h mmdd_hhmm(energy.observed_at) %></td>
+        <td><%= device_icon24_link(energy.device) %></td>
+        <td><%= device_name_link(energy.device) %></td>
+        <td align="right"><%=h energy.observed_level %> %</td>
+      </tr>
+    <%- } -%>
+  </tbody>
 </table>

@@ -1,38 +1,65 @@
 
-<table border="1">
+<%- additional_head { -%>
+  <style type="text/css">
+    table#dashboard img
+    {
+        vertical-align: text-top;
+    }
+
+    table#dashboard thead tr th
+    {
+        font-size: 80%;
+    }
+
+    table#dashboard tbody tr td
+    {
+        font-size: 90%;
+    }
+
+    table#dashboard tfoot td
+    {
+        text-align: right;
+    }
+  </style>
+<%- } -%>
+
+<table id="dashboard" class="list">
   <thead>
     <tr>
-      <th></th>
-      <th>デバイス</th>
-      <th colspan="2">残量</th>
+      <th colspan="2">デバイス</th>
+      <th colspan="2">エネルギー</th>
       <th>更新日時</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th colspan="3">情報</th>
     </tr>
   </thead>
   <tfoot>
     <tr>
       <td colspan="8">
-        [ <%= link_to(add_icon + h(" デバイスを追加する"), :controller => "devices", :action => "new") %> ]
+        <%= link_to(add_icon + h(" デバイスを追加する"), :controller => "devices", :action => "new") %>
       </td>
     </tr>
   </tfoot>
   <tbody>
-    <%- @devices.each { |device| -%>
+    <%- @devices.each_with_index { |device, index| -%>
       <%- current_energy = device.current_energy -%>
-      <tr>
+      <tr class="<%=h even_or_odd(index) %>">
         <td><%= device_icon48_link(device) %></td>
         <td><%= device_name_link(device) %></td>
         <td><%= energy_meter(current_energy.try(:observed_level) || 0) %></td>
         <td align="right"><%=h current_energy.try(:observed_level) || "-" %> %</td>
         <td><%=h yyyymmdd_hhmm(current_energy.try(:observed_at)) %></td>
         <td>
-          <%= icon16("icons/fam/lightning.png", "トリガ") %>
+          <%= icon16("icons/fam/lightning.png", "有効なトリガ") %>
           <%=h device.triggers.enable.count %>
         </td>
-        <td></td>
-        <td></td>
+        <td>
+          <%= icon16("icons/fam/email.png", "有効なメール通知") %>
+          <%=h device.email_actions.enable.count(:id, :conditions => ["triggers.enable = ?", true]) %>
+        </td>
+        <td>
+          <%= icon16("icons/fam/plugin.png", "有効なWebHook") %>
+          <%=h device.http_actions.enable.count(:id, :conditions => ["triggers.enable = ?", true]) %>
+        </td>
       </tr>
     <%- } -%>
   </tbody>

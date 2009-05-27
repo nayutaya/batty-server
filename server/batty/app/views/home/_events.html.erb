@@ -1,20 +1,56 @@
 
-<table border="1">
-  <tr>
-    <th>日時</th>
-    <th>デバイス</th>
-    <th colspan="3">残量</th>
-  </tr>
-  <%- @events.each { |event| -%>
+<%- additional_head { -%>
+  <style type="text/css">
+    table#events img
+    {
+        vertical-align: text-top;
+    }
+
+    table#events thead tr th
+    {
+        font-size: 70%;
+    }
+
+    table#events tbody tr td
+    {
+        font-size: 80%;
+    }
+
+    table#events tfoot td
+    {
+        color: #999999;
+        text-align: right;
+    }
+  </style>
+<%- } -%>
+
+<table id="events" class="list">
+  <thead>
     <tr>
-      <td><%=h event.observed_at.strftime("%m-%d %H:%M") %></td>
-      <td>
-        <%= device_icon24_link(event.device) %>
-        <%= device_name_link(event.device) %>
-      </td>
-      <td align="right"><%=h event.observed_level %> %</td>
-      <td><%=h event.trigger_operator_sign %></td>
-      <td align="right"><%=h event.trigger_level %> %</td>
+      <th>発生日時</th>
+      <th colspan="2">デバイス</th>
+      <th colspan="3"></th>
     </tr>
-  <%- } -%>
+  </thead>
+  <tfoot>
+    <tr>
+      <td colspan="6">
+        <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "events", :user_token => @login_user.user_token) %>
+        | <%= link_to(h("すべて"), :controller => "events") %>
+        (<%=h @events.total_entries %>)
+      </td>
+    </tr>
+  </tfoot>
+  <tbody>
+    <%- @events.each_with_index { |event, index| -%>
+      <tr class="<%=h even_or_odd(index) %>">
+        <td><%=h mmdd_hhmm(event.observed_at) %></td>
+        <td><%= device_icon24_link(event.device) %></td>
+        <td><%= device_name_link(event.device) %></td>
+        <td align="right"><%=h event.observed_level %> %</td>
+        <td align="center"><%=h event.trigger_operator_sign %></td>
+        <td align="right"><%=h event.trigger_level %> %</td>
+      </tr>
+    <%- } -%>
+  </tbody>
 </table>
