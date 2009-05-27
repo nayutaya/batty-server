@@ -1,2 +1,29 @@
-<h1>Energies#index</h1>
-<p>Find me in app/views/energies/index.html.erb</p>
+
+<div>
+  <%= link_to(h("トップ"), root_path) %> &gt;
+  <em>エネルギー履歴</em>
+</div>
+
+<%- @energies.each_slice(10) { |energies| -%>
+  <div style="float: left;">
+    <table border="1">
+      <tr>
+        <th>日時</th>
+        <th></th>
+        <th>デバイス</th>
+        <th>残量</th>
+      </tr>
+      <%- energies.each { |energy| -%>
+        <tr>
+          <td><%=h yyyymmdd_hhmm(energy.observed_at) %></td>
+          <td><%= device_icon24_link(energy.device) %></td>
+          <td><%= device_name_link(energy.device) %></td>
+          <td align="right"><%=h energy.observed_level %> %</td>
+        </tr>
+      <%- } -%>
+    </table>
+  </div>
+<%- } -%>
+<div style="clear: both;"></div>
+
+<div><%= will_paginate(@energies) %></div>
