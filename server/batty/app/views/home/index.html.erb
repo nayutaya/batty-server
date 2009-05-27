@@ -9,85 +9,67 @@
   end
 -%>
 
-<h1>batty</h1>
+<div id="side-column-outer"><div id="side-column-inner">
+</div></div>
 
-<div>UserID: <%=h @login_user.try(:id) %></div>
+<div id="content-column-outer"><div id="content-column-inner">
+  <%- unless logged_in? -%>
+    <div id="login_form">
+      <div id="open_id_login_form">
+        <%- form_tag(:controller => "auth/open_id", :action => "login") { -%>
+          <div>
+            <%= label_tag(:openid_url, "OpenID URL") %>
+            <%= text_field_tag(:openid_url, '', :size => 50) %>
+            <%= submit_tag("ログイン") %>
+          </div>
+        <%- } -%>
+      </div>
+      <div><%= link_to(h("メールアドレスによるログイン"), :controller => "auth/email") %></div>
+      <div><%= link_to(h("メールアドレスによるサインアップ"), :controller => "signup/email") %></div>
+    </div>
+  <%- end -%>
 
-<%- unless logged_in? -%>
- <div id="login_form">
-  <div id="open_id_login_form">
-   <%- form_tag(:controller => "auth/open_id", :action => "login") { -%>
-    <%= label_tag(:openid_url, "OpenID URL") %>
-    <%= text_field_tag(:openid_url, '', :size => 50) %>
-    <%= submit_tag("ログイン") %>
-   <%- } -%>
-  </div>
-  <div>
-   <%= link_to(h("メールアドレスによるログイン"), :controller => "auth/email") %>
-  </div>
-  <div>
-   <%= link_to(h("メールアドレスによるサインアップ"), :controller => "signup/email") %>
-  </div>
- </div>
-<%- end -%>
+  <%- if logged_in? -%>
+    <h2>Dashboard</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th></th>
+          <th>デバイス</th>
+          <th colspan="2">残量</th>
+          <th>更新日時</th>
+          <th>トリガー</th>
+          <th>アクション</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%- @devices.each { |device| -%>
+          <%- current_energy = device.current_energy -%>
+          <tr>
+            <td><%= device_icon48_link(device) %></td>
+            <td><%= device_name_link(device) %></td>
+            <td><%= energy_meter(current_energy.try(:observed_level) || 0) %></td>
+            <td align="right"><%=h current_energy.try(:observed_level) || "-" %> %</td>
+            <td><%=h current_energy.try(:observed_at).try(:strftime, "%m-%d %H:%M") || "-" %></td>
+            <td align="right"><%=h device.triggers.enable.count %></td>
+            <td>アクション</td>
+          </tr>
+        <%- } -%>
+      </tbody>
+    </table>
+    <div><%= link_to(add_icon + h("デバイスを追加する"), :controller => "devices", :action => "new") %></div>
 
-<%- if logged_in? -%>
- <div>
-  <%= link_to(h("ログアウト"), {:controller => "auth", :action => "logout"}, :method => :post) %>
- </div>
-<%- end -%>
-
-<%- if logged_in? -%>
- <h2>Dashboard</h2>
- <div>
-  <table border="1">
-   <thead>
-    <tr>
-     <th></th>
-     <th>デバイス</th>
-     <th colspan="2">残量</th>
-     <th>更新日時</th>
-     <th>トリガー</th>
-     <th>アクション</th>
-    </tr>
-   </thead>
-   <tbody>
-    <%- @devices.each { |device| -%>
-     <%- current_energy = device.current_energy -%>
-     <tr>
-      <td><%= device_icon48_link(device) %></td>
-      <td><%= device_name_link(device) %></td>
-      <td><%= energy_meter(current_energy.try(:observed_level) || 0) %></td>
-      <td align="right"><%=h current_energy.try(:observed_level) || "-" %> %</td>
-      <td><%=h current_energy.try(:observed_at).try(:strftime, "%m-%d %H:%M") || "-" %></td>
-      <td align="right"><%=h device.triggers.enable.count %></td>
-      <td>アクション</td>
-     </tr>
-    <%- } -%>
-   </tbody>
-  </table>
-  <div><%= link_to(add_icon + h("デバイスを追加する"), :controller => "devices", :action => "new") %></div>
-
-  <table border="1">
-   <tr>
-    <td valign="top">
-     <%= render(:partial => "energies") %>
-     <div>
-       <%= link_to(feed_icon + "RSS", :controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token) %>
-     </div>
-    </td>
-    <td valign="top">
-     <%= render(:partial => "events") %>
-     <div>
-       <%= link_to(feed_icon + "RSS", :controller => "user_feeds", :action => "events", :user_token => @login_user.user_token) %>
-     </div>
-    </td>
-   </tr>
-  </table>
- </div>
-<%- end -%>
-
-<%- if logged_in? -%>
-  <div><%= link_to(h("ユーザ設定"), :controller => "settings") %></div>
-  <div><%= link_to(h("ログイン情報を表示/変更する"), :controller => "credentials") %></div>
-<%- end -%>
+    <table border="1">
+      <tr>
+        <td valign="top">
+          <%= render(:partial => "energies") %>
+          <div><%= link_to(feed_icon + "RSS", :controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token) %></div>
+        </td>
+        <td valign="top">
+          <%= render(:partial => "events") %>
+          <div><%= link_to(feed_icon + "RSS", :controller => "user_feeds", :action => "events", :user_token => @login_user.user_token) %></div>
+        </td>
+      </tr>
+    </table>
+  <%- end -%>
+</div></div>

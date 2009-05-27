@@ -11,7 +11,7 @@
     <th>ニックネーム</th>
     <td>
       <div>
-        <span id="nickname"><%= (@login_user.nickname.blank? ? "名無しさん" : h(@login_user.nickname)) %></span>
+        <span id="nickname"><%= user_nickname(@login_user) %></span>
         <span id="nickname-edit">[ 編集 ]</span>
       </div>
       <div id="nickname-error" style="color: red; font-size: 90%;"></div>

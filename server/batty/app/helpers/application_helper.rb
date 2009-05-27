@@ -70,4 +70,8 @@ module ApplicationHelper
   def yyyymmdd(date, null = "-")
     return date.try(:strftime, "%Y年%m月%d日") || null
   end
+
+  def user_nickname(user)
+    return (user.nickname.blank? ? h("名無しさん") : h(user.nickname))
+  end
 end

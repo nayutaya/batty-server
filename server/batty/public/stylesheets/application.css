@@ -7,60 +7,73 @@ body
     background-color: #F0F0F0;
 }
 
+/* head */
 
-div#head-outer
+#head-outer
 {
     width: 100%;
     min-width: 700px;
-    height: 100px;
-background-color:red;
+    /*height: 100px;*/
+    background-color: #999999;
 }
 
-div#body-outer
+#head-inner
 {
-    position : relative;
-    min-width: 700px;
+}
+
+/* body */
+
+#body-outer
+{
+    position: relative;
     width: 100%;
-/*background-color:green;*/
+    min-width: 700px;
 /*
-background-image: url(../images/background.png);
-background-repeat: repeat-y;
-background-position: right;
+    background-image: url(../images/background.png);
+    background-repeat: repeat-y;
+    background-position: right;
 */
 }
 
-div#content-column-outer
+#body-inner
+{
+}
+
+#content-column-outer
 {
     margin: 0px 200px 0px 0px;
 }
 
-div#content-column-inner
+#content-column-inner
 {
     padding: 10px;
-/*background-color:gray;*/
 }
 
-div#side-column-outer
+#side-column-outer
 {
+    float: right;
     width: 200px;
     min-height: 400px;
-    float: right;
-/*background-color:yellow;*/
 }
 
-div#side-column-inner
+#side-column-inner
 {
     padding: 10px;
 }
 
-div#foot-outer
+/* foot */
+
+#foot-outer
 {
     width: 100%;
     min-width: 700px;
-    height: 100px;
-background-color:blue;
+    /*height: 100px;*/
+    background-color: #E0E0E0;
 }
 
+#foot-inner
+{
+}
 
 div.battery-cell
 {

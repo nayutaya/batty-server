@@ -1,19 +1,42 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta http-equiv="Content-Script-Type" content="text/javascript" />
-  <meta http-equiv="Content-Style-Type" content="text/css" />
-  <title>batty - <%=h @title %></title>
-  <%= javascript_include_tag(:defaults) %>
-  <%= javascript_include_tag(@javascripts || []) %>
-  <%= stylesheet_link_tag("application") %>
-  <%= stylesheet_link_tag(@stylesheets || []) %>
-  <%= @additional_head_html %>
- </head>
- <body>
-  <div style="color: #009900;"><%=h flash[:notice] %></div>
-  <div style="color: #990000;"><%=h flash[:error] %></div>
-  <%= yield %>
- </body>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <title>batty - <%=h @title %></title>
+    <%= javascript_include_tag(:defaults) %>
+    <%= javascript_include_tag(@javascripts || []) %>
+    <%= stylesheet_link_tag("application") %>
+    <%= stylesheet_link_tag(@stylesheets || []) %>
+    <%= @additional_head_html %>
+  </head>
+  <body>
+    <div id="head-outer">
+      <div id="head-inner">
+        <div style="font-size: 140%;"><%= link_to(h("batty"), root_path) %></div>
+        <%- if logged_in? -%>
+          <div style="text-align: right;">
+            <span><%= user_nickname(@login_user) %></span>
+            [ <span><%= link_to(h("ユーザ設定"), :controller => "settings") %></span>
+            | <span><%= link_to(h("ログイン設定"), :controller => "credentials") %></span> ]
+            [ <span><%= link_to(h("ログアウト"), {:controller => "auth", :action => "logout"}, :method => :post) %></span> ]
+          </div>
+        <%- end -%>
+      </div>
+    </div>
+    <div id="body-outer">
+      <div id="body-inner">
+        <div style="color: #009900;"><%=h flash[:notice] %></div>
+        <div style="color: #990000;"><%=h flash[:error] %></div>
+        <%= yield %>
+        <div style="clear: both;"></div>
+      </div>
+    </div>
+    <div id="foot-outer">
+      <div id="foot-inner">
+        <div>Nayutaya, Inc.</div>
+      </div>
+    </div>
+  </body>
 </html>
