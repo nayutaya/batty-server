@@ -1,18 +1,14 @@
 
-<div id="content-column-outer"><div id="content-column-inner">
+<h1>メールアドレスによるログイン</h1>
 
-  <h1>メールアドレスによるログイン</h1>
-
-  <%- form_for(:login_form, :url => {:action => "login"}) { |f| -%>
-    <div>
-      <%= f.label(:email) %>
-      <%= f.text_field(:email, :size => 30) %>
-    </div>
-    <div>
-      <%= f.label(:password) %>
-      <%= f.password_field(:password, :size => 30) %>
-    </div>
-    <div><%= submit_tag("ログイン") %></div>
-  <%- } -%>
-
-</div></div>
+<%- form_for(:login_form, :url => {:action => "login"}) { |f| -%>
+  <div>
+    <%= f.label(:email) %>
+    <%= f.text_field(:email, :size => 30) %>
+  </div>
+  <div>
+    <%= f.label(:password) %>
+    <%= f.password_field(:password, :size => 30) %>
+  </div>
+  <div><%= submit_tag("ログイン") %></div>
+<%- } -%>
