@@ -19,6 +19,10 @@ module ApplicationHelper
     @side_column_html  += capture(&block)
   end
 
+  def even_or_odd(index)
+    return %w[even odd][index % 2]
+  end
+
   def icon16(path, alt = nil)
     return image_tag(
       path,

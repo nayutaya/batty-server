@@ -1,27 +1,73 @@
 
-<table border="1">
+<%- additional_head { -%>
+  <style type="text/css">
+table#dashboard
+{
+    border-collapse: collapse;
+}
+
+table#dashboard thead tr th
+{
+    padding: 0.4em;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #F0F0F0;
+    color: #CCCCCC;
+    background-color: #333333;
+    font-size: 80%;
+}
+
+table#dashboard tbody tr
+{
+    border-width: 1px;
+    border-style: solid;
+    border-color: #F0F0F0;
+}
+
+table#dashboard tbody tr td
+{
+    padding: 0.2em 0.4em;
+    border-width: 0;
+    font-size: 90%;
+}
+
+table#dashboard tbody tr.even td
+{
+    background-color: #E0E0E0;
+}
+
+table#dashboard tbody tr.odd td
+{
+    background-color: #D0D0D0;
+}
+
+table#dashboard tfoot td
+{
+    text-align: right;
+}
+  </style>
+<%- } -%>
+
+<table id="dashboard">
   <thead>
     <tr>
-      <th></th>
-      <th>デバイス</th>
-      <th colspan="2">残量</th>
+      <th colspan="2">デバイス</th>
+      <th colspan="2">エネルギー</th>
       <th>更新日時</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th colspan="3">情報</th>
     </tr>
   </thead>
   <tfoot>
     <tr>
       <td colspan="8">
-        [ <%= link_to(add_icon + h(" デバイスを追加する"), :controller => "devices", :action => "new") %> ]
+        <%= link_to(add_icon + h(" デバイスを追加する"), :controller => "devices", :action => "new") %>
       </td>
     </tr>
   </tfoot>
   <tbody>
-    <%- @devices.each { |device| -%>
+    <%- @devices.each_with_index { |device, index| -%>
       <%- current_energy = device.current_energy -%>
-      <tr>
+      <tr class="<%=h even_or_odd(index) %>">
         <td><%= device_icon48_link(device) %></td>
         <td><%= device_name_link(device) %></td>
         <td><%= energy_meter(current_energy.try(:observed_level) || 0) %></td>
