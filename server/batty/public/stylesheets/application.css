@@ -39,6 +39,15 @@ body
 {
 }
 
+#content-outer
+{
+}
+
+#content-inner
+{
+    padding: 10px;
+}
+
 #content-column-outer
 {
     margin: 0px 200px 0px 0px;
@@ -54,6 +63,7 @@ body
     float: right;
     width: 200px;
     min-height: 400px;
+background-color: #E0E0E0;
 }
 
 #side-column-inner
@@ -73,6 +83,18 @@ body
 
 #foot-inner
 {
+}
+
+/* generic */
+
+a
+{
+    text-decoration: none;
+}
+
+a img
+{
+    border-width: 0;
 }
 
 div.battery-cell

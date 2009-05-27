@@ -18,7 +18,8 @@
         <%- if logged_in? -%>
           <div style="text-align: right;">
             <span><%= user_nickname(@login_user) %></span>
-            [ <span><%= link_to(h("ユーザ設定"), :controller => "settings") %></span>
+            [ <span><%= link_to(h("ダッシュボード"), :controller => "home") %></span>
+            | <span><%= link_to(h("ユーザ設定"), :controller => "settings") %></span>
             | <span><%= link_to(h("ログイン設定"), :controller => "credentials") %></span> ]
             [ <span><%= link_to(h("ログアウト"), {:controller => "auth", :action => "logout"}, :method => :post) %></span> ]
           </div>
@@ -27,10 +28,29 @@
     </div>
     <div id="body-outer">
       <div id="body-inner">
-        <div style="color: #009900;"><%=h flash[:notice] %></div>
-        <div style="color: #990000;"><%=h flash[:error] %></div>
-        <%= yield %>
-        <div style="clear: both;"></div>
+        <%- if (@enable_side_column != false) -%>
+          <div id="side-column-outer">
+            <div id="side-column-inner">
+              <%= @side_column_html %>
+            </div>
+          </div>
+          <div id="content-column-outer">
+            <div id="content-column-inner">
+              <div style="color: #009900;"><%=h flash[:notice] %></div>
+              <div style="color: #990000;"><%=h flash[:error] %></div>
+              <%= yield %>
+            </div>
+          </div>
+          <div style="clear: both;"></div>
+        <%- else -%>
+          <div id="content-outer">
+            <div id="content-inner">
+              <div style="color: #009900;"><%=h flash[:notice] %></div>
+              <div style="color: #990000;"><%=h flash[:error] %></div>
+              <%= yield %>
+            </div>
+          </div>
+        <%- end -%>
       </div>
     </div>
     <div id="foot-outer">

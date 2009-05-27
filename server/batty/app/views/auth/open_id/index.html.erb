@@ -1,14 +1,10 @@
 
-<div id="content-column-outer"><div id="content-column-inner">
+<h1>OpenID によるログイン</h1>
 
-  <h1>OpenID によるログイン</h1>
-
-  <%- form_tag(:action => "login") { -%>
-    <div>
-      <%= label_tag(:openid_url, 'OpenID URL') %>
-      <%= text_field_tag(:openid_url, '', :size => 50) %>
-    </div>
-    <div><%= submit_tag("ログイン") %></div>
-  <%- } -%>
-
-</div></div>
+<%- form_tag(:action => "login") { -%>
+  <div>
+    <%= label_tag(:openid_url, 'OpenID URL') %>
+    <%= text_field_tag(:openid_url, '', :size => 50) %>
+  </div>
+  <div><%= submit_tag("ログイン") %></div>
+<%- } -%>

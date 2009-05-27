@@ -9,6 +9,16 @@ module ApplicationHelper
     return %|<link rel="alternate" type="application/rss+xml" title="#{h(title)}" href="#{h(href)}" />|
   end
 
+  def additional_head(&block)
+    @additional_head_html ||= ""
+    @additional_head_html  += capture(&block)
+  end
+
+  def side_column(&block)
+    @side_column_html ||= ""
+    @side_column_html  += capture(&block)
+  end
+
   def enable_icon
     return image_tag(
       "icons/fam/tick.png",
