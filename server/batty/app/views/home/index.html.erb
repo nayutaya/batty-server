@@ -31,7 +31,7 @@
 <%- end -%>
 
 <%- if logged_in? -%>
-  <h2>ダッシュボード</h2>
+  <h1>ダッシュボード</h1>
   <table border="1">
     <thead>
       <tr>
@@ -58,18 +58,25 @@
       <%- } -%>
     </tbody>
   </table>
-  <div><%= link_to(add_icon + h("デバイスを追加する"), :controller => "devices", :action => "new") %></div>
+  <div>[ <%= link_to(add_icon + h(" デバイスを追加する"), :controller => "devices", :action => "new") %> ]</div>
 
-  <table border="1">
-    <tr>
-      <td valign="top">
-        <%= render(:partial => "energies") %>
-        <div><%= link_to(feed_icon + "RSS", :controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token) %></div>
-      </td>
-      <td valign="top">
-        <%= render(:partial => "events") %>
-        <div><%= link_to(feed_icon + "RSS", :controller => "user_feeds", :action => "events", :user_token => @login_user.user_token) %></div>
-      </td>
-    </tr>
-  </table>
+  <div>
+    <div style="float: left;">
+      <h1>エネルギー履歴</h1>
+      <%= render(:partial => "energies") %>
+      <div>
+        [ <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token) %>
+        | すべて (<%=h @energies.total_entries %>) ]
+      </div>
+    </div>
+    <div style="float: left;">
+      <h1>イベント履歴</h1>
+      <%= render(:partial => "events") %>
+      <div>
+        [ <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "events", :user_token => @login_user.user_token) %>
+        | すべて (<%=h @events.total_entries %>) ]
+      </div>
+    </div>
+    <div style="clear: both;"></div>
+  </div>
 <%- end -%>

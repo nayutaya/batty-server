@@ -76,6 +76,18 @@ background-color: #E0E0E0;
 {
 }
 
+/* generic */
+
+a
+{
+    text-decoration: none;
+}
+
+a img
+{
+    border-width: 0;
+}
+
 div.battery-cell
 {
     margin: 0;
