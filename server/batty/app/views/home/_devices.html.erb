@@ -28,13 +28,15 @@
         <td align="right"><%=h current_energy.try(:observed_level) || "-" %> %</td>
         <td><%=h yyyymmdd_hhmm(current_energy.try(:observed_at)) %></td>
         <td>
-          <%= icon16("icons/fam/lightning.png", "トリガ") %>
+          <%= icon16("icons/fam/lightning.png", "有効なトリガ") %>
           <%=h device.triggers.enable.count %>
         </td>
         <td>
+          <%= icon16("icons/fam/email.png", "有効なメール通知") %>
           <%=h device.email_actions.enable.count(:id, :conditions => ["triggers.enable = ?", true]) %>
         </td>
         <td>
+          <%= icon16("icons/fam/plugin.png", "有効なWebHook") %>
           <%=h device.http_actions.enable.count(:id, :conditions => ["triggers.enable = ?", true]) %>
         </td>
       </tr>
