@@ -38,7 +38,6 @@
 <%- if logged_in? -%>
   <h1>ダッシュボード</h1>
   <%= render(:partial => "devices")  %>
-  <div>[ <%= link_to(add_icon + h(" デバイスを追加する"), :controller => "devices", :action => "new") %> ]</div>
 
   <div>
     <div style="float: left;">

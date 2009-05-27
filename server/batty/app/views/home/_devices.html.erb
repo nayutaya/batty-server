@@ -11,6 +11,13 @@
       <th></th>
     </tr>
   </thead>
+  <tfoot>
+    <tr>
+      <td colspan="8">
+        [ <%= link_to(add_icon + h(" デバイスを追加する"), :controller => "devices", :action => "new") %> ]
+      </td>
+    </tr>
+  </tfoot>
   <tbody>
     <%- @devices.each { |device| -%>
       <%- current_energy = device.current_energy -%>
@@ -19,7 +26,7 @@
         <td><%= device_name_link(device) %></td>
         <td><%= energy_meter(current_energy.try(:observed_level) || 0) %></td>
         <td align="right"><%=h current_energy.try(:observed_level) || "-" %> %</td>
-        <td><%=h current_energy.try(:observed_at).try(:strftime, "%m-%d %H:%M") || "-" %></td>
+        <td><%=h yyyymmdd_hhmm(current_energy.try(:observed_at)) %></td>
         <td>
           <%= icon16("icons/fam/lightning.png", "トリガ") %>
           <%=h device.triggers.enable.count %>

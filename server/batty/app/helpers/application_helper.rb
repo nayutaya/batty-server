@@ -60,6 +60,10 @@ module ApplicationHelper
     return time.try(:strftime, "%Y年%m月%d日") || null
   end
 
+  def yyyymmdd_hhmm(time, null = "-")
+    return time.try(:strftime, "%Y年%m月%d日 %H時%M分") || null
+  end
+
   def user_nickname(user)
     return (user.nickname.blank? ? h("名無しさん") : h(user.nickname))
   end
