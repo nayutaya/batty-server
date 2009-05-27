@@ -19,7 +19,7 @@ module ApplicationHelper
     @side_column_html  += capture(&block)
   end
 
-  def icon16(path, alt)
+  def icon16(path, alt = nil)
     return image_tag(
       path,
       :width  => 16,
@@ -29,21 +29,11 @@ module ApplicationHelper
   end
 
   def enable_icon
-    return image_tag(
-      "icons/fam/tick.png",
-      :width  => 16,
-      :height => 16,
-      :alt    => "有効",
-      :title  => "有効")
+    return icon16("icons/fam/tick.png", "有効")
   end
 
   def disable_icon
-    return image_tag(
-      "icons/fam/stop.png",
-      :width  => 16,
-      :height => 16,
-      :alt    => "無効",
-      :title  => "無効")
+    return icon16("icons/fam/stop.png", "無効")
   end
 
   def enable_or_disable_icon(enable)
@@ -51,43 +41,23 @@ module ApplicationHelper
   end
 
   def add_icon
-    return image_tag(
-      "icons/fam/add.png",
-      :width  => 16,
-      :height => 16,
-      :alt    => "追加",
-      :title  => "追加")
+    return icon16("icons/fam/add.png", "追加")
   end
 
   def edit_icon
-    return image_tag(
-      "icons/fam/cog.png",
-      :width  => 16,
-      :height => 16,
-      :alt    => "編集",
-      :title  => "編集")
+    return icon16("icons/fam/cog.png", "編集")
   end
 
   def delete_icon
-    return image_tag(
-      "icons/fam/bomb.png",
-      :width  => 16,
-      :height => 16,
-      :alt    => "削除",
-      :title  => "削除")
+    return icon16("icons/fam/bomb.png", "削除")
   end
 
   def feed_icon
-    return image_tag(
-      "icons/fam/feed.png",
-      :width  => 16,
-      :height => 16,
-      :alt    => "フィード",
-      :title  => "フィード")
+    return icon16("icons/fam/feed.png", "フィード")
   end
 
-  def yyyymmdd(date, null = "-")
-    return date.try(:strftime, "%Y年%m月%d日") || null
+  def yyyymmdd(time, null = "-")
+    return time.try(:strftime, "%Y年%m月%d日") || null
   end
 
   def user_nickname(user)
