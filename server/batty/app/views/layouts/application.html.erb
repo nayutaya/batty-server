@@ -27,9 +27,15 @@
     </div>
     <div id="body-outer">
       <div id="body-inner">
-        <div style="color: #009900;"><%=h flash[:notice] %></div>
-        <div style="color: #990000;"><%=h flash[:error] %></div>
-        <%= yield %>
+        <div id="side-column-outer"><div id="side-column-inner">
+          <h1>side-bar</h1>
+          <%= @side_bar_html %>
+        </div></div>
+        <div id="content-column-outer"><div id="content-column-inner">
+          <div style="color: #009900;"><%=h flash[:notice] %></div>
+          <div style="color: #990000;"><%=h flash[:error] %></div>
+          <%= yield %>
+        </div></div>
         <div style="clear: both;"></div>
       </div>
     </div>
