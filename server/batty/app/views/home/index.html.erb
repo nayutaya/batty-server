@@ -51,11 +51,6 @@
     {
         background-color: #D0D0D0;
     }
-
-    table.list tfoot td
-    {
-        text-align: right;
-    }
   </style>
 <%- } -%>
 
@@ -84,10 +79,9 @@
 
 <%- if logged_in? -%>
   <h1>ダッシュボード</h1>
-  <%= render(:partial => "devices")  %>
-
+  <div><%= render(:partial => "devices")  %></div>
   <div>
-    <div style="float: left;">
+    <div style="float: left; margin-right: 10px;">
       <h2>エネルギー履歴</h2>
       <%= render(:partial => "energies") %>
     </div>
@@ -95,6 +89,6 @@
       <h2>イベント履歴</h2>
       <%= render(:partial => "events") %>
     </div>
-    <div style="clear: both;"></div>
+    <div style="clear: left;"></div>
   </div>
 <%- end -%>
