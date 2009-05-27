@@ -41,15 +41,11 @@
 
   <div>
     <div style="float: left;">
-      <h1>エネルギー履歴</h1>
+      <h2>エネルギー履歴</h2>
       <%= render(:partial => "energies") %>
-      <div>
-        [ <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token) %>
-        | <%= link_to(h("すべて"), :controller => "energies") %> (<%=h @energies.total_entries %>) ]
-      </div>
     </div>
     <div style="float: left;">
-      <h1>イベント履歴</h1>
+      <h2>イベント履歴</h2>
       <%= render(:partial => "events") %>
       <div>
         [ <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "events", :user_token => @login_user.user_token) %>

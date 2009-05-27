@@ -1,18 +1,83 @@
 
-<table border="1">
-  <tr>
-    <th>日時</th>
-    <th>デバイス</th>
-    <th>残量</th>
-  </tr>
-  <%- @energies.each { |energy| -%>
+<%- additional_head { -%>
+  <style type="text/css">
+    table#energies
+    {
+        border-collapse: collapse;
+    }
+
+    table#energies img
+    {
+        vertical-align: text-top;
+    }
+
+    table#energies thead tr th
+    {
+        padding: 0.4em;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #F0F0F0;
+        color: #CCCCCC;
+        background-color: #333333;
+        font-size: 70%;
+    }
+
+    table#energies tbody tr
+    {
+        border-width: 1px;
+        border-style: solid;
+        border-color: #F0F0F0;
+    }
+
+    table#energies tbody tr td
+    {
+        padding: 0.2em 0.4em;
+        border-width: 0;
+        font-size: 80%;
+    }
+
+    table#energies tbody tr.even td
+    {
+        background-color: #E0E0E0;
+    }
+
+    table#energies tbody tr.odd td
+    {
+        background-color: #D0D0D0;
+    }
+
+    table#energies tfoot td
+    {
+        text-align: right;
+    }
+  </style>
+<%- } -%>
+
+<table id="energies">
+  <thead>
     <tr>
-      <td><%=h energy.observed_at.strftime("%m-%d %H:%M") %></td>
-      <td>
-        <%= device_icon24_link(energy.device) %>
-        <%= device_name_link(energy.device) %>
-      </td>
-      <td align="right"><%=h energy.observed_level %> %</td>
+      <th>日時</th>
+      <th colspan="2">デバイス</th>
+      <th>残量</th>
     </tr>
-  <%- } -%>
+  </thead>
+  <tfoot>
+    <tr>
+      <td colspan="4">
+        <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token) %>
+        | <%= link_to(h("すべて"), :controller => "energies") %>
+        (<%=h @energies.total_entries %>)
+      </td>
+    </tr>
+  </tfoot>
+  <tbody>
+    <%- @energies.each_with_index { |energy, index| -%>
+      <tr class="<%= even_or_odd(index) %>">
+        <td><%=h mmdd_hhmm(energy.observed_at) %></td>
+        <td><%= device_icon24_link(energy.device) %></td>
+        <td><%= device_name_link(energy.device) %></td>
+        <td align="right"><%=h energy.observed_level %> %</td>
+      </tr>
+    <%- } -%>
+  </tbody>
 </table>
