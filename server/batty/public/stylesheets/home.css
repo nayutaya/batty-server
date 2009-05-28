@@ -1,4 +1,64 @@
 
+/* side-column */
+
+#side-column-inner h1
+{
+    margin: 0em 0em 0.4em 0em;
+    color: #666666;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#side-column-inner hr
+{
+    height: 1px;
+    margin: 0.4em 0em;
+    border: none;
+    background-color: #999999;
+}
+
+#openid-sites
+{
+    font-size: 12px;
+}
+
+#openid-sites img
+{
+    vertical-align: text-top;
+}
+
+#side-column-inner form input.openid,
+#side-column-inner form input.email,
+#side-column-inner form input.password
+{
+    width: 160px; /* width:200 - (padding:20 + padding:18 + border:2)*/
+    height: 18px;
+    padding-left: 18px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #666666;
+    background-repeat: no-repeat;
+    background-position: 1px;
+}
+
+#side-column-inner form input.openid
+{
+    background-image: url(/images/icons/openid.png);
+}
+
+#side-column-inner form input.email
+{
+    background-image: url(/images/icons/fam/email.png);
+}
+
+#side-column-inner form input.password
+{
+    background-image: url(/images/icons/fam/key.png);
+}
+
+
+/* table.list */
+
 table.list
 {
     border-collapse: collapse;

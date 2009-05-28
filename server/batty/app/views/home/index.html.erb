@@ -12,22 +12,21 @@
 <%- unless logged_in? -%>
   <%- side_column { -%>
     <div>
-      <div>OpenIDでログイン</div>
+      <h1>ログイン</h1>
+      <div id="openid-sites">
+        <div><%= link_to(icon16("favicons/mixi.png") + h(" mixiアカウントでログイン"), {:controller => "auth/open_id", :action => "login", :openid_url => "mixi.jp"}, :method => :post) %></div>
+        <div><%= link_to(icon16("favicons/yahoo.png") + h(" Yahoo!アカウントでログイン"), {:controller => "auth/open_id", :action => "login", :openid_url => "yahoo.co.jp"}, :method => :post) %></div>
+        <div><%= link_to(icon16("favicons/livedoor.png") + h(" livedoorアカウントでログイン"), {:controller => "auth/open_id", :action => "login", :openid_url => "livedoor.com"}, :method => :post) %></div>
+      </div>
+      <hr />
       <%- form_tag(:controller => "auth/open_id", :action => "login") { -%>
-        <div><%= text_field_tag(:openid_url, "", :style => "width: 99%;") %></div>
+        <div><%= text_field_tag(:openid_url, "", :class => "openid") %></div>
         <div align="right"><%= submit_tag("OpenIDでログイン") %></div>
       <%- } -%>
-      <div>
-        <span><%= link_to(icon16("favicons/mixi.png", "mixi.jpのアカウントでログイン"), {:controller => "auth/open_id", :action => "login", :openid_url => "mixi.jp"}, :method => :post) %></span>
-        <span><%= link_to(icon16("favicons/yahoo.png", "yahoo.jpのアカウントでログイン"), {:controller => "auth/open_id", :action => "login", :openid_url => "yahoo.co.jp"}, :method => :post) %></span>
-        <span><%= link_to(icon16("favicons/livedoor.png", "livedoor.comのアカウントでログイン"), {:controller => "auth/open_id", :action => "login", :openid_url => "livedoor.com"}, :method => :post) %></span>
-      </div>
-    </div>
-
-    <div>
+      <hr />
       <%- form_tag(:controller => "auth/email", :action => "login") { -%>
-        <div><%= text_field(:login_form, :email, :style => "width: 99%;") %></div>
-        <div><%= password_field(:login_form, :password, :style => "width: 99%;") %></div>
+        <div><%= text_field(:login_form, :email, :class => "email") %></div>
+        <div><%= password_field(:login_form, :password, :class => "password") %></div>
         <div align="right"><%= submit_tag("メールアドレスでログイン") %></div>
       <%- } -%>
     </div>
