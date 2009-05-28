@@ -86,4 +86,16 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     assert_equal("1", @module.format_integer_json_value(1))
     assert_equal("null", @module.format_integer_json_value(nil))
   end
+
+  test "format_string_value" do
+    assert_equal("a", @module.format_string_value("a"))
+    assert_equal("-", @module.format_string_value(""))
+    assert_equal("-", @module.format_string_value(nil))
+  end
+
+  test "format_string_json_value" do
+    assert_equal('"a"', @module.format_string_json_value("a"))
+    assert_equal("null", @module.format_string_json_value(""))
+    assert_equal("null", @module.format_string_json_value(nil))
+  end
 end

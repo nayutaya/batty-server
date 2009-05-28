@@ -42,4 +42,14 @@ module NoticeFormatter
     return "null" if value.nil?
     return value.to_s
   end
+
+  def self.format_string_value(value)
+    return "-" if value.blank?
+    return value.to_s
+  end
+
+  def self.format_string_json_value(value)
+    return "null" if value.blank?
+    return "\"#{value}\""
+  end
 end
