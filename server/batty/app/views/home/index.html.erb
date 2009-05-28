@@ -21,13 +21,13 @@
       <hr />
       <%- form_tag(:controller => "auth/open_id", :action => "login") { -%>
         <div><%= text_field_tag(:openid_url, "", :class => "openid") %></div>
-        <div align="right"><%= submit_tag("OpenIDでログイン") %></div>
+        <div style="text-align: right;"><%= submit_tag("OpenIDでログイン") %></div>
       <%- } -%>
       <hr />
       <%- form_tag(:controller => "auth/email", :action => "login") { -%>
         <div><%= text_field(:login_form, :email, :class => "email") %></div>
         <div><%= password_field(:login_form, :password, :class => "password") %></div>
-        <div align="right"><%= submit_tag("メールアドレスでログイン") %></div>
+        <div style="text-align: right;"><%= submit_tag("メールアドレスでログイン") %></div>
       <%- } -%>
     </div>
   <%- } -%>
