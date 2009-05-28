@@ -60,7 +60,7 @@
       <div>OpenIDでログイン</div>
       <%- form_tag(:controller => "auth/open_id", :action => "login") { -%>
         <div><%= text_field_tag(:openid_url, "", :style => "width: 99%;") %></div>
-        <div align="right"><%= submit_tag("ログイン") %></div>
+        <div align="right"><%= submit_tag("OpenIDでログイン") %></div>
       <%- } -%>
       <div>
         <span><%= link_to(icon16("favicons/mixi.png", "mixi.jpのアカウントでログイン"), {:controller => "auth/open_id", :action => "login", :openid_url => "mixi.jp"}, :method => :post) %></span>
@@ -68,7 +68,14 @@
         <span><%= link_to(icon16("favicons/livedoor.png", "livedoor.comのアカウントでログイン"), {:controller => "auth/open_id", :action => "login", :openid_url => "livedoor.com"}, :method => :post) %></span>
       </div>
     </div>
-    <div>TODO: メールログインフォームを追加</div>
+
+    <div>
+      <%- form_tag(:controller => "auth/email", :action => "login") { -%>
+        <div><%= text_field(:login_form, :email, :style => "width: 99%;") %></div>
+        <div><%= password_field(:login_form, :password, :style => "width: 99%;") %></div>
+        <div align="right"><%= submit_tag("メールアドレスでログイン") %></div>
+      <%- } -%>
+    </div>
   <%- } -%>
 <%- end -%>
 
