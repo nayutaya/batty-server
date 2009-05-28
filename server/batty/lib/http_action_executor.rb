@@ -47,30 +47,23 @@ class HttpActionExecutor
     request   = self.create_http_request
     connector = self.create_http_connector
 
-    begin
-      response = connector.start { connector.request(request) }
-      return Result.new(
-        :success => response.kind_of?(Net::HTTPSuccess),
-        :message => "#{response.code} #{response.message}")
-    rescue TimeoutError
-      return Result.new(:success => false, :message => "timeout.")
-    rescue Errno::ECONNREFUSED
-      return Result.new(:success => false, :message => "connection refused.")
-    rescue Errno::ECONNRESET
-      return Result.new(:success => false, :message => "connection reset by peer.")
-    rescue => e
-      return Result.new(:success => false, :message => "#{e.class}: #{e.message}")
-    end
-  end
+    result =
+      begin
+        response = connector.start { connector.request(request) }
+        {
+          :success => response.kind_of?(Net::HTTPSuccess),
+          :message => "#{response.code} #{response.message}",
+        }
+      rescue TimeoutError
+        {:success => false, :message => "timeout."}
+      rescue Errno::ECONNREFUSED
+        {:success => false, :message => "connection refused."}
+      rescue Errno::ECONNRESET
+        {:success => false, :message => "connection reset by peer."}
+      rescue => e
+        {:success => false, :message => "#{e.class}: #{e.message}"}
+      end
 
-  class Result
-    def initialize(options = {})
-      options = options.dup
-      @success = options.delete(:success)
-      @message = options.delete(:message)
-      raise(ArgumentError) unless options.empty?
-    end
-
-    attr_reader :success, :message
+    return result.freeze.each(&:freeze)
   end
 end

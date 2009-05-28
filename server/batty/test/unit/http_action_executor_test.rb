@@ -110,8 +110,8 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     musha.def(:start) { Net::HTTPOK.new("1.1", "200", "OK") }
 
     result = musha.swap { @executor.execute }
-    assert_equal(true, result.success)
-    assert_equal("200 OK", result.message)
+    assert_equal(true, result[:success])
+    assert_equal("200 OK", result[:message])
   end
 
   test "execute, 201 Created" do
@@ -122,8 +122,8 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     musha.def(:start) { Net::HTTPCreated.new("1.1", "201", "Created") }
 
     result = musha.swap { @executor.execute }
-    assert_equal(true, result.success)
-    assert_equal("201 Created", result.message)
+    assert_equal(true, result[:success])
+    assert_equal("201 Created", result[:message])
   end
 
   test "execute, 301 Moved Permanently" do
@@ -134,8 +134,8 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     musha.def(:start) { Net::HTTPMovedPermanently.new("1.1", "301", "Moved Permanently") }
 
     result = musha.swap { @executor.execute }
-    assert_equal(false, result.success)
-    assert_equal("301 Moved Permanently", result.message)
+    assert_equal(false, result[:success])
+    assert_equal("301 Moved Permanently", result[:message])
   end
 
   test "execute, timeout" do
@@ -146,8 +146,8 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     musha.def(:start) { raise(TimeoutError) }
 
     result = musha.swap { @executor.execute }
-    assert_equal(false, result.success)
-    assert_equal("timeout.", result.message)
+    assert_equal(false, result[:success])
+    assert_equal("timeout.", result[:message])
   end
 
   test "execute, refused" do
@@ -158,8 +158,8 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     musha.def(:start) { raise(Errno::ECONNREFUSED) }
 
     result = musha.swap { @executor.execute }
-    assert_equal(false, result.success)
-    assert_equal("connection refused.", result.message)
+    assert_equal(false, result[:success])
+    assert_equal("connection refused.", result[:message])
   end
 
   test "execute, reset" do
@@ -170,8 +170,8 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     musha.def(:start) { raise(Errno::ECONNRESET) }
 
     result = musha.swap { @executor.execute }
-    assert_equal(false, result.success)
-    assert_equal("connection reset by peer.", result.message)
+    assert_equal(false, result[:success])
+    assert_equal("connection reset by peer.", result[:message])
   end
 
   test "execute, socket error" do
@@ -182,8 +182,8 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     musha.def(:start) { raise(SocketError, "message.") }
 
     result = musha.swap { @executor.execute }
-    assert_equal(false, result.success)
-    assert_equal("SocketError: message.", result.message)
+    assert_equal(false, result[:success])
+    assert_equal("SocketError: message.", result[:message])
   end
 
   test "execute, runtime error" do
@@ -194,8 +194,8 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     musha.def(:start) { raise("message.") }
 
     result = musha.swap { @executor.execute }
-    assert_equal(false, result.success)
-    assert_equal("RuntimeError: message.", result.message)
+    assert_equal(false, result[:success])
+    assert_equal("RuntimeError: message.", result[:message])
   end
 
   # MEMO: 実際に外部へのアクセスを行う
@@ -204,8 +204,8 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     @executor.http_method = :head
 
     result = @executor.execute
-    assert_equal(true, result.success)
-    assert_equal("200 OK", result.message)
+    assert_equal(true, result[:success])
+    assert_equal("200 OK", result[:message])
   end
 
   # MEMO: 実際に外部へのアクセスを行う
@@ -214,8 +214,8 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     @executor.http_method = :get
 
     result = @executor.execute
-    assert_equal(true, result.success)
-    assert_equal("200 OK", result.message)
+    assert_equal(true, result[:success])
+    assert_equal("200 OK", result[:message])
   end
 
   # MEMO: 実際に外部へのアクセスを行う
@@ -225,7 +225,7 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     @executor.post_body   = ""
 
     result = @executor.execute
-    assert_equal(false, result.success)
-    assert_equal("405 Method Not Allowed", result.message)
+    assert_equal(false, result[:success])
+    assert_equal("405 Method Not Allowed", result[:message])
   end
 end
