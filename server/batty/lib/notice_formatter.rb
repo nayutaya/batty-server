@@ -57,4 +57,13 @@ module NoticeFormatter
       "user:nickname:json" => self.format_string_json_value(user.try(:nickname)),
     }
   end
+
+  def self.format_device(device)
+    return {
+      "device:token"      => self.format_string_value(device.try(:device_token)),
+      "device:token:json" => self.format_string_json_value(device.try(:device_token)),
+      "device:name"       => self.format_string_value(device.try(:name)),
+      "device:name:json"  => self.format_string_json_value(device.try(:name)),
+    }
+  end
 end

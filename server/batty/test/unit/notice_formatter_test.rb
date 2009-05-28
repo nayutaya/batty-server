@@ -112,16 +112,6 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     assert_equal(expected, @module.format_user(user))
   end
 
-  test "format_user, empty user" do
-    expected = {
-      "user:token"         => "-",
-      "user:token:json"    => "null",
-      "user:nickname"      => "-",
-      "user:nickname:json" => "null",
-    }
-    assert_equal(expected, @module.format_user(User.new))
-  end
-
   test "format_user, nil" do
     expected = {
       "user:token"         => "-",
@@ -129,6 +119,31 @@ class NoticeFormatterTest < ActiveSupport::TestCase
       "user:nickname"      => "-",
       "user:nickname:json" => "null",
     }
+    assert_equal(expected, @module.format_user(User.new))
     assert_equal(expected, @module.format_user(nil))
+  end
+
+  test "format_device" do
+    expected = {
+      "device:token"      => "0" * Device::TokenLength,
+      "device:token:json" => '"' + "0" * Device::TokenLength + '"',
+      "device:name"       => "name",
+      "device:name:json"  => '"name"',
+    }
+    device = Device.new(
+      :device_token => "0" * Device::TokenLength,
+      :name         => "name")
+    assert_equal(expected, @module.format_device(device))
+  end
+
+  test "format_device, nil" do
+    expected = {
+      "device:token"      => "-",
+      "device:token:json" => "null",
+      "device:name"       => "-",
+      "device:name:json"  => "null",
+    }
+    assert_equal(expected, @module.format_device(Device.new))
+    assert_equal(expected, @module.format_device(nil))
   end
 end
