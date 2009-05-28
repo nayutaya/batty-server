@@ -72,4 +72,58 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
       @musha.swap { @executor.execute }
     }
   end
+
+  test "execute_by_head, parameter" do
+    called = false
+    url    = "http://example.jp/head"
+
+    @executor.url         = url
+    @executor.http_method = :head
+
+    @musha.def(:execute_by_head) { |_url|
+      raise unless _url == url
+      called = true
+    }
+    assert_nothing_raised {
+      @musha.swap { @executor.execute }
+    }
+    assert_equal(true, called)
+  end
+
+  test "execute_by_get, parameter" do
+    called = false
+    url    = "http://example.jp/get"
+
+    @executor.url         = url
+    @executor.http_method = :get
+
+    @musha.def(:execute_by_get) { |_url|
+      raise unless _url == url
+      called = true
+    }
+    assert_nothing_raised {
+      @musha.swap { @executor.execute }
+    }
+    assert_equal(true, called)
+  end
+
+  test "execute_by_post, parameter" do
+    called = false
+    url    = "http://example.jp/post"
+    body   = "sending data"
+
+    @executor.url         = url
+    @executor.http_method = :post
+    @executor.post_body   = body
+
+    @musha.def(:execute_by_post) { |_url, _body|
+      raise unless _url  == url
+      raise unless _body == body
+      called = true
+    }
+    assert_nothing_raised {
+      @musha.swap { @executor.execute }
+    }
+    assert_equal(true, called)
+  end
 end

@@ -13,24 +13,24 @@ class HttpActionExecutor
 
   def execute
     case @http_method
-    when :head then execute_by_head
-    when :get  then execute_by_get
-    when :post then execute_by_post
+    when :head then execute_by_head(@url)
+    when :get  then execute_by_get(@url)
+    when :post then execute_by_post(@url, @post_body)
     else raise("invalid http method")
     end
   end
 
   private
 
-  def execute_by_head
-    # nop
+  def execute_by_head(url)
+    # TODO: 実装せよ
   end
 
-  def execute_by_get
-    # nop
+  def execute_by_get(url)
+    # TODO: 実装せよ
   end
 
-  def execute_by_post
-    # nop
+  def execute_by_post(url, body)
+    # TODO: 実装せよ
   end
 end
