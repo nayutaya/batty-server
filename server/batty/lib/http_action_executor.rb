@@ -14,6 +14,53 @@ class HttpActionExecutor
 
   attr_accessor :url, :http_method, :post_body
 
+  # FIXME: User-Agentを追加する
+  def create_http_request
+    klass = 
+      case @http_method
+      when :head then Net::HTTP::Head
+      when :get  then Net::HTTP::Get
+      when :post then Net::HTTP::Post
+      else raise("invalid http method")
+      end
+
+    request = klass.new(URI.parse(@url).request_uri)
+    request.body = @post_body if @http_method == :post
+
+    return request
+  end
+
+=begin
+e = HttpActionExecutor.new
+e.url = "http://batty.nayutaya.jp/head?query"
+e.http_method = :head
+e.post_body   = "body"
+e.execute
+
+e.url = "http://batty.nayutaya.jp/get?query"
+e.http_method = :get
+e.post_body   = "body"
+e.execute
+
+e.url = "http://batty.nayutaya.jp/post?query"
+e.http_method = :post
+e.post_body   = "body"
+e.execute
+=end
+
+  def execute
+    request = self.create_http_request
+    uri     = URI.parse(@url)
+
+    response = nil
+    Net::HTTP.start(uri.host, uri.port) { |http|
+      response = http.request(request)
+    }
+
+    return response
+  end
+
+=begin
   def execute
     case @http_method
     when :head then execute_by_head(@url)
@@ -22,9 +69,11 @@ class HttpActionExecutor
     else raise("invalid http method")
     end
   end
+=end
 
   private
 
+=begin
   def execute_by_head(url)
     uri = URI.parse(url)
     http = Net::HTTP.new(uri.host, uri.port)
@@ -45,4 +94,5 @@ class HttpActionExecutor
   def execute_by_post(url, body)
     # TODO: 実装せよ
   end
+=end
 end

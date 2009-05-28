@@ -49,6 +49,48 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
   # インスタンスメソッド
   #
 
+  test "create_http_request, head" do
+    @executor.url         = "http://example.jp/head?query"
+    @executor.http_method = :head
+    @executor.post_body   = "body"
+
+    request = @executor.create_http_request
+    assert_equal("HEAD",        request.method)
+    assert_equal("/head?query", request.path)
+    assert_equal(nil,           request.body)
+  end
+
+  test "create_http_request, get" do
+    @executor.url         = "http://example.jp/get?query"
+    @executor.http_method = :get
+    @executor.post_body   = "body"
+
+    request = @executor.create_http_request
+    assert_equal("GET",        request.method)
+    assert_equal("/get?query", request.path)
+    assert_equal(nil,          request.body)
+  end
+
+  test "create_http_request, post" do
+    @executor.url         = "http://example.jp/post?query"
+    @executor.http_method = :post
+    @executor.post_body   = "body"
+
+    request = @executor.create_http_request
+    assert_equal("POST",        request.method)
+    assert_equal("/post?query", request.path)
+    assert_equal("body",        request.body)
+  end
+
+  test "create_http_request, invalid" do
+    @executor.http_method = :invalid
+
+    assert_raise(RuntimeError) {
+      @executor.create_http_request
+    }
+  end
+
+=begin
   test "execute" do
     called = nil
     @musha.def(:execute_by_head) { called = :head }
@@ -126,4 +168,5 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     }
     assert_equal(true, called)
   end
+=end
 end
