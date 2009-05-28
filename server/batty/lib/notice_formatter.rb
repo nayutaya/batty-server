@@ -34,23 +34,19 @@ module NoticeFormatter
   end
 
   def self.format_integer_value(value)
-    return "-" if value.nil?
-    return value.to_s
+    return (value.nil? ? "-" : value.to_s)
   end
 
   def self.format_integer_json_value(value)
-    return "null" if value.nil?
-    return value.to_s
+    return (value.nil? ? "null" : value.to_s)
   end
 
   def self.format_string_value(value)
-    return "-" if value.blank?
-    return value.to_s
+    return (value.blank? ? "-" : value.to_s)
   end
 
   def self.format_string_json_value(value)
-    return "null" if value.blank?
-    return "\"#{value}\""
+    return (value.blank? ? "null" : "\"#{value}\"")
   end
 
   def self.format_user(user)
