@@ -138,6 +138,54 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     assert_equal("301 Moved Permanently", result.message)
   end
 
+  test "execute, timeout" do
+    @executor.url         = "http://example.jp/"
+    @executor.http_method = :get
+
+    musha = Kagemusha.new(Net::HTTP)
+    musha.def(:start) { raise(TimeoutError) }
+
+    result = musha.swap { @executor.execute }
+    assert_equal(false, result.success)
+    assert_equal("timeout.", result.message)
+  end
+
+  test "execute, socket error" do
+    @executor.url         = "http://example.jp/"
+    @executor.http_method = :get
+
+    musha = Kagemusha.new(Net::HTTP)
+    musha.def(:start) { raise(SocketError, "message.") }
+
+    result = musha.swap { @executor.execute }
+    assert_equal(false, result.success)
+    assert_equal("message.", result.message)
+  end
+
+  test "execute, refused" do
+    @executor.url         = "http://example.jp/"
+    @executor.http_method = :get
+
+    musha = Kagemusha.new(Net::HTTP)
+    musha.def(:start) { raise(Errno::ECONNREFUSED) }
+
+    result = musha.swap { @executor.execute }
+    assert_equal(false, result.success)
+    assert_equal("connection refused.", result.message)
+  end
+
+  test "execute, reset" do
+    @executor.url         = "http://example.jp/"
+    @executor.http_method = :get
+
+    musha = Kagemusha.new(Net::HTTP)
+    musha.def(:start) { raise(Errno::ECONNRESET) }
+
+    result = musha.swap { @executor.execute }
+    assert_equal(false, result.success)
+    assert_equal("connection reset by peer.", result.message)
+  end
+
   # MEMO: 実際に外部へのアクセスを行う
   test "execute, head www.google.co.jp" do
     @executor.url         = "http://www.google.co.jp/"
