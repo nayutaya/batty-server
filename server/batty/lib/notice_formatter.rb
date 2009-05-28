@@ -1,5 +1,12 @@
 
 module NoticeFormatter
+  def self.add_name(name, hash)
+    return hash.inject({}) { |memo, (key, value)|
+      memo[name + ":" + key] = value
+      memo
+    }
+  end
+
   def self.format_date(date)
     return {
       "date"      => date.try(:strftime, "%Y-%m-%d")     || "-",
@@ -65,5 +72,19 @@ module NoticeFormatter
       "device:name"       => self.format_string_value(device.try(:name)),
       "device:name:json"  => self.format_string_json_value(device.try(:name)),
     }
+  end
+
+  def self.format_event(event)
+    result = {
+      "event:trigger-operator"      => self.format_string_value(event.trigger_operator_symbol),
+      "event:trigger-operator:json" => self.format_string_json_value(event.trigger_operator_symbol),
+      "event:trigger-level"         => self.format_integer_value(event.trigger_level),
+      "event:trigger-level:json"    => self.format_integer_json_value(event.trigger_level),
+      "event:observed-level"        => self.format_integer_value(event.observed_level),
+      "event:observed-level:json"   => self.format_integer_json_value(event.observed_level),
+    }
+    result.merge!(self.add_name("event:created-at", self.format_datetime(event.created_at)))
+    result.merge!(self.add_name("event:observed-at", self.format_datetime(event.observed_at)))
+    return result
   end
 end

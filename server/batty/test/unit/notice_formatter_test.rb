@@ -6,6 +6,13 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     @module = NoticeFormatter
   end
 
+  test "add_name" do
+    expected = {
+      "name:a" => "b",
+      "name:c" => "d",
+    }
+    assert_equal(expected, @module.add_name("name", {"a" => "b", "c" => "d"}))
+  end
   test "format_date" do
     expected = {
       "date"      => "2009-01-02",
@@ -145,5 +152,25 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     }
     assert_equal(expected, @module.format_device(Device.new))
     assert_equal(expected, @module.format_device(nil))
+  end
+
+  test "format_event" do
+    event = Event.new(
+      :created_at       => Time.local(2000, 1, 2, 3, 4, 5),
+      :trigger_operator => Trigger.operator_symbol_to_code(:eq),
+      :trigger_level    => 1,
+      :observed_level   => 2,
+      :observed_at      => Time.local(2001, 2, 3, 4, 5, 6))
+    expected = {
+      "event:trigger-operator"      => "eq",
+      "event:trigger-operator:json" => '"eq"',
+      "event:trigger-level"         => "1",
+      "event:trigger-level:json"    => "1",
+      "event:observed-level"        => "2",
+      "event:observed-level:json"   => "2",
+    }
+    expected.merge!(@module.add_name("event:created-at", @module.format_datetime(event.created_at)))
+    expected.merge!(@module.add_name("event:observed-at", @module.format_datetime(event.observed_at)))
+    assert_equal(expected, @module.format_event(event))
   end
 end
