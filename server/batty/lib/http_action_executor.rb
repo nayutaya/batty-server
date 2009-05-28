@@ -32,69 +32,39 @@ class HttpActionExecutor
     return request
   end
 
-=begin
-e = HttpActionExecutor.new
-e.url = "http://batty.nayutaya.jp/head?query"
-e.http_method = :head
-e.post_body   = "body"
-e.execute
-
-e.url = "http://batty.nayutaya.jp/get?query"
-e.http_method = :get
-e.post_body   = "body"
-e.execute
-
-e.url = "http://batty.nayutaya.jp/post?query"
-e.http_method = :post
-e.post_body   = "body"
-e.execute
-=end
-
   def execute
     request = self.create_http_request
     uri     = URI.parse(@url)
 
-    response = nil
-    Net::HTTP.start(uri.host, uri.port) { |http|
-      response = http.request(request)
-    }
-
-    return response
-  end
-
-=begin
-  def execute
-    case @http_method
-    when :head then execute_by_head(@url)
-    when :get  then execute_by_get(@url)
-    when :post then execute_by_post(@url, @post_body)
-    else raise("invalid http method")
-    end
-  end
-=end
-
-  private
-
-=begin
-  def execute_by_head(url)
-    uri = URI.parse(url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.start
     begin
-      response = http.head(uri.path, "User-Agent" => "ruby")
-      response_code = response.code
-      response_body = response.body
-    ensure
-      http.finish
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.open_timeout = 5
+      http.read_timeout = 5
+      http.start {
+        response = http.request(request)
+        return Result.new(
+          :success => response.kind_of?(Net::HTTPSuccess),
+          :message => "#{response.code} #{response.message}")
+      }
+    rescue TimeoutError
+      return Result.new(:success => false, :message => "timeout.")
+    rescue SocketError => e
+      return Result.new(:success => false, :message => e.message)
+    rescue Errno::ECONNREFUSED
+      return Result.new(:success => false, :message => "connection refused.")
+    rescue Errno::ECONNRESET
+      return Result.new(:success => false, :message => "connection reset by peer.")
     end
   end
 
-  def execute_by_get(url)
-    # TODO: 実装せよ
-  end
+  class Result
+    def initialize(options = {})
+      options = options.dup
+      @success = options.delete(:success)
+      @message = options.delete(:message)
+      raise(ArgumentError) unless options.empty?
+    end
 
-  def execute_by_post(url, body)
-    # TODO: 実装せよ
+    attr_reader :success, :message
   end
-=end
 end

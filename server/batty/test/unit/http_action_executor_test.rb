@@ -93,83 +93,34 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     }
   end
 
-=begin
-  test "execute" do
-    called = nil
-    @musha.def(:execute_by_head) { called = :head }
-    @musha.def(:execute_by_get)  { called = :get  }
-    @musha.def(:execute_by_post) { called = :post }
-
-    @executor.http_method = :head
-    @musha.swap { @executor.execute }
-    assert_equal(:head, called)
-
-    @executor.http_method = :get
-    @musha.swap { @executor.execute }
-    assert_equal(:get, called)
-
-    @executor.http_method = :post
-    @musha.swap { @executor.execute }
-    assert_equal(:post, called)
-
-    @executor.http_method = :invalid
-    assert_raise(RuntimeError) {
-      @musha.swap { @executor.execute }
-    }
-  end
-
-  test "execute_by_head, parameter" do
-    called = false
-    url    = "http://example.jp/head"
-
-    @executor.url         = url
+  # MEMO: 実際に外部へのアクセスを行う
+  test "execute, head www.google.co.jp" do
+    @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :head
 
-    @musha.def(:execute_by_head) { |_url|
-      raise unless _url == url
-      called = true
-    }
-    assert_nothing_raised {
-      @musha.swap { @executor.execute }
-    }
-    assert_equal(true, called)
+    response = @executor.execute
+    assert_equal(true, response.success)
+    assert_equal("200 OK", response.message)
   end
 
-  test "execute_by_get, parameter" do
-    called = false
-    url    = "http://example.jp/get"
-
-    @executor.url         = url
+  # MEMO: 実際に外部へのアクセスを行う
+  test "execute, get www.google.co.jp" do
+    @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :get
 
-    @musha.def(:execute_by_get) { |_url|
-      raise unless _url == url
-      called = true
-    }
-    assert_nothing_raised {
-      @musha.swap { @executor.execute }
-    }
-    assert_equal(true, called)
+    response = @executor.execute
+    assert_equal(true, response.success)
+    assert_equal("200 OK", response.message)
   end
 
-  test "execute_by_post, parameter" do
-    called = false
-    url    = "http://example.jp/post"
-    body   = "sending data"
-
-    @executor.url         = url
+  # MEMO: 実際に外部へのアクセスを行う
+  test "execute, post www.google.co.jp" do
+    @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :post
-    @executor.post_body   = body
+    @executor.post_body   = ""
 
-    @musha.def(:execute_by_post) { |_url, _body|
-      raise unless _url  == url
-      raise unless _body == body
-      called = true
-    }
-    assert_nothing_raised {
-      @musha.swap { @executor.execute }
-    }
-    assert_equal(true, called)
+    response = @executor.execute
+    assert_equal(false, response.success)
+    assert_equal("405 Method Not Allowed", response.message)
   end
-=end
 end
