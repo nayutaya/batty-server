@@ -5,7 +5,6 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
   def setup
     @klass    = HttpActionExecutor
     @executor = @klass.new
-    @musha    = Kagemusha.new(@klass)
   end
 
   #
@@ -92,6 +91,23 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
       @executor.create_http_request
     }
   end
+
+  test "create_http_connector" do
+    @executor.url = "http://example.jp/path?query"
+
+    http = @executor.create_http_connector
+    assert_equal("example.jp",        http.address)
+    assert_equal(80,                  http.port)
+    assert_equal(@klass::OpenTimeout, http.open_timeout)
+    assert_equal(@klass::ReadTimeout, http.read_timeout)
+  end
+
+=begin
+  test "execute, success" do
+    @executor.url         = "http://example.jp/"
+    @executor.http_method = :get
+  end
+=end
 
   # MEMO: 実際に外部へのアクセスを行う
   test "execute, head www.google.co.jp" do

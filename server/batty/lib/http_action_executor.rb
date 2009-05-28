@@ -4,7 +4,9 @@ require "net/http"
 
 # HTTPアクション実行
 class HttpActionExecutor
-  UserAgent = "batty (http://batty.nayutaya.jp)".freeze
+  OpenTimeout = 5
+  ReadTimeout = 5
+  UserAgent   = "batty (http://batty.nayutaya.jp)".freeze
 
   def initialize(options = {})
     options = options.dup
@@ -32,15 +34,21 @@ class HttpActionExecutor
     return request
   end
 
+  def create_http_connector
+    uri  = URI.parse(@url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.open_timeout = OpenTimeout
+    http.read_timeout = ReadTimeout
+
+    return http
+  end
+
   def execute
-    request = self.create_http_request
-    uri     = URI.parse(@url)
+    request   = self.create_http_request
+    connector = self.create_http_connector
 
     begin
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.open_timeout = 5
-      http.read_timeout = 5
-      http.start {
+      connector.start { |http|
         response = http.request(request)
         return Result.new(
           :success => response.kind_of?(Net::HTTPSuccess),
