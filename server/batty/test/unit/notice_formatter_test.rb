@@ -27,4 +27,15 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     }
     assert_equal(expected, @module.format_time(Time.local(2009, 12, 31, 1, 2, 3)))
   end
+
+  test "format_datetime" do
+    datetime = Time.local(2009, 12, 31, 12, 34, 56)
+    expected = {
+      "datetime"    => "2009-12-31 12:34:56",
+      "datetime:ja" => "2009年12月31日 12時34分56秒",
+    }
+    expected.merge!(@module.format_date(datetime))
+    expected.merge!(@module.format_time(datetime))
+    assert_equal(expected, @module.format_datetime(datetime))
+  end
 end

@@ -19,4 +19,14 @@ module NoticeFormatter
       "ss"      => time.strftime("%S"),
     }
   end
+
+  def self.format_datetime(datetime)
+    result = {
+      "datetime"    => datetime.strftime("%Y-%m-%d %H:%M:%S"),
+      "datetime:ja" => datetime.strftime("%Y年%m月%d日 %H時%M分%S秒"),
+    }
+    result.merge!(self.format_date(datetime))
+    result.merge!(self.format_time(datetime))
+    return result
+  end
 end
