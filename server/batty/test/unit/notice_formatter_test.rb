@@ -98,4 +98,37 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     assert_equal("null", @module.format_string_json_value(""))
     assert_equal("null", @module.format_string_json_value(nil))
   end
+
+  test "format_user" do
+    expected = {
+      "user:token"         => "0" * User::TokenLength,
+      "user:token:json"    => '"' + "0" * User::TokenLength + '"',
+      "user:nickname"      => "nickname",
+      "user:nickname:json" => '"nickname"',
+    }
+    user = User.new(
+      :user_token => "0" * User::TokenLength,
+      :nickname   => "nickname")
+    assert_equal(expected, @module.format_user(user))
+  end
+
+  test "format_user, empty user" do
+    expected = {
+      "user:token"         => "-",
+      "user:token:json"    => "null",
+      "user:nickname"      => "-",
+      "user:nickname:json" => "null",
+    }
+    assert_equal(expected, @module.format_user(User.new))
+  end
+
+  test "format_user, nil" do
+    expected = {
+      "user:token"         => "-",
+      "user:token:json"    => "null",
+      "user:nickname"      => "-",
+      "user:nickname:json" => "null",
+    }
+    assert_equal(expected, @module.format_user(nil))
+  end
 end

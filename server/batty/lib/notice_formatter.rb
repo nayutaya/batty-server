@@ -52,4 +52,13 @@ module NoticeFormatter
     return "null" if value.blank?
     return "\"#{value}\""
   end
+
+  def self.format_user(user)
+    return {
+      "user:token"         => self.format_string_value(user.try(:user_token)),
+      "user:token:json"    => self.format_string_json_value(user.try(:user_token)),
+      "user:nickname"      => self.format_string_value(user.try(:nickname)),
+      "user:nickname:json" => self.format_string_json_value(user.try(:nickname)),
+    }
+  end
 end
