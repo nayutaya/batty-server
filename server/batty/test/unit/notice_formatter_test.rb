@@ -173,4 +173,40 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     expected.merge!(@module.add_name("event:observed-at", @module.format_datetime(event.observed_at)))
     assert_equal(expected, @module.format_event(event))
   end
+
+  test "format_event, nil" do
+    expected = {
+      "event:trigger-operator"      => "-",
+      "event:trigger-operator:json" => "null",
+      "event:trigger-level"         => "-",
+      "event:trigger-level:json"    => "null",
+      "event:observed-level"        => "-",
+      "event:observed-level:json"   => "null",
+    }
+    expected.merge!(@module.add_name("event:created-at", @module.format_datetime(nil)))
+    expected.merge!(@module.add_name("event:observed-at", @module.format_datetime(nil)))
+    assert_equal(expected, @module.format_event(Event.new))
+    assert_equal(expected, @module.format_event(nil))
+  end
+
+  test "format" do
+    time  = Time.local(2000, 1, 2, 3, 4, 5)
+    event = events(:yuya_pda_ge90_1)
+    expected = {}
+    expected.merge!(@module.add_name("now", @module.format_datetime(time)))
+    expected.merge!(@module.format_event(event))
+    expected.merge!(@module.format_device(event.device))
+    expected.merge!(@module.format_user(event.device.user))
+    assert_equal(expected, @module.format(event, time))
+  end
+
+  test "format, nil" do
+    time  = Time.local(2000, 1, 2, 3, 4, 5)
+    expected = {}
+    expected.merge!(@module.add_name("now", @module.format_datetime(time)))
+    expected.merge!(@module.format_event(nil))
+    expected.merge!(@module.format_device(nil))
+    expected.merge!(@module.format_user(nil))
+    assert_equal(expected, @module.format(nil, time))
+  end
 end

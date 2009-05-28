@@ -76,15 +76,24 @@ module NoticeFormatter
 
   def self.format_event(event)
     result = {
-      "event:trigger-operator"      => self.format_string_value(event.trigger_operator_symbol),
-      "event:trigger-operator:json" => self.format_string_json_value(event.trigger_operator_symbol),
-      "event:trigger-level"         => self.format_integer_value(event.trigger_level),
-      "event:trigger-level:json"    => self.format_integer_json_value(event.trigger_level),
-      "event:observed-level"        => self.format_integer_value(event.observed_level),
-      "event:observed-level:json"   => self.format_integer_json_value(event.observed_level),
+      "event:trigger-operator"      => self.format_string_value(event.try(:trigger_operator_symbol)),
+      "event:trigger-operator:json" => self.format_string_json_value(event.try(:trigger_operator_symbol)),
+      "event:trigger-level"         => self.format_integer_value(event.try(:trigger_level)),
+      "event:trigger-level:json"    => self.format_integer_json_value(event.try(:trigger_level)),
+      "event:observed-level"        => self.format_integer_value(event.try(:observed_level)),
+      "event:observed-level:json"   => self.format_integer_json_value(event.try(:observed_level)),
     }
-    result.merge!(self.add_name("event:created-at", self.format_datetime(event.created_at)))
-    result.merge!(self.add_name("event:observed-at", self.format_datetime(event.observed_at)))
+    result.merge!(self.add_name("event:created-at", self.format_datetime(event.try(:created_at))))
+    result.merge!(self.add_name("event:observed-at", self.format_datetime(event.try(:observed_at))))
+    return result
+  end
+
+  def self.format(event, time = Time.now)
+    result = {}
+    result.merge!(self.add_name("now", self.format_datetime(time)))
+    result.merge!(self.format_event(event))
+    result.merge!(self.format_device(event.try(:device)))
+    result.merge!(self.format_user(event.try(:device).try(:user)))
     return result
   end
 end
