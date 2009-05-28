@@ -1,0 +1,3 @@
+
+module NoticeFormatter
+end
