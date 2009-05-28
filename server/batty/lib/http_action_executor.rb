@@ -54,12 +54,12 @@ class HttpActionExecutor
         :message => "#{response.code} #{response.message}")
     rescue TimeoutError
       return Result.new(:success => false, :message => "timeout.")
-    rescue SocketError => e
-      return Result.new(:success => false, :message => e.message)
     rescue Errno::ECONNREFUSED
       return Result.new(:success => false, :message => "connection refused.")
     rescue Errno::ECONNRESET
       return Result.new(:success => false, :message => "connection reset by peer.")
+    rescue => e
+      return Result.new(:success => false, :message => "#{e.class}: #{e.message}")
     end
   end
 
