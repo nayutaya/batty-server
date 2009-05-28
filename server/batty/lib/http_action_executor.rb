@@ -4,6 +4,8 @@ require "net/http"
 
 # HTTPアクション実行
 class HttpActionExecutor
+  UserAgent = "batty (http://batty.nayutaya.jp)".freeze
+
   def initialize(options = {})
     options = options.dup
     @url         = options.delete(:url)         || nil
@@ -14,7 +16,6 @@ class HttpActionExecutor
 
   attr_accessor :url, :http_method, :post_body
 
-  # FIXME: User-Agentを追加する
   def create_http_request
     klass = 
       case @http_method
@@ -26,6 +27,7 @@ class HttpActionExecutor
 
     request = klass.new(URI.parse(@url).request_uri)
     request.body = @post_body if @http_method == :post
+    request["User-Agent"] = UserAgent
 
     return request
   end

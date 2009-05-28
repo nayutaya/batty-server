@@ -55,9 +55,10 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     @executor.post_body   = "body"
 
     request = @executor.create_http_request
-    assert_equal("HEAD",        request.method)
-    assert_equal("/head?query", request.path)
-    assert_equal(nil,           request.body)
+    assert_equal("HEAD",            request.method)
+    assert_equal("/head?query",     request.path)
+    assert_equal(nil,               request.body)
+    assert_equal(@klass::UserAgent, request["User-Agent"])
   end
 
   test "create_http_request, get" do
@@ -66,9 +67,10 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     @executor.post_body   = "body"
 
     request = @executor.create_http_request
-    assert_equal("GET",        request.method)
-    assert_equal("/get?query", request.path)
-    assert_equal(nil,          request.body)
+    assert_equal("GET",             request.method)
+    assert_equal("/get?query",      request.path)
+    assert_equal(nil,               request.body)
+    assert_equal(@klass::UserAgent, request["User-Agent"])
   end
 
   test "create_http_request, post" do
@@ -77,9 +79,10 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     @executor.post_body   = "body"
 
     request = @executor.create_http_request
-    assert_equal("POST",        request.method)
-    assert_equal("/post?query", request.path)
-    assert_equal("body",        request.body)
+    assert_equal("POST",            request.method)
+    assert_equal("/post?query",     request.path)
+    assert_equal("body",            request.body)
+    assert_equal(@klass::UserAgent, request["User-Agent"])
   end
 
   test "create_http_request, invalid" do
