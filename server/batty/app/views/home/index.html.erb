@@ -1,58 +1,13 @@
 
+<%- @stylesheets = %w[home] -%>
+
 <%- if logged_in? -%>
   <%- additional_head { -%>
     <meta http-equiv="refresh" content="<%=h 5.minutes %>" />
+    <%= rss_auto_discovery(:title => "バッテリ履歴", :href => url_for(:controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token)) %>
+    <%= rss_auto_discovery(:title => "イベント履歴", :href => url_for(:controller => "user_feeds", :action => "events", :user_token => @login_user.user_token)) %>
   <%- } -%>
 <%- end -%>
-
-<%-
-  if logged_in?
-    @additional_head_html += rss_auto_discovery(:title => "バッテリ履歴", :href => url_for(:controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token))
-    @additional_head_html += rss_auto_discovery(:title => "イベント履歴", :href => url_for(:controller => "user_feeds", :action => "events", :user_token => @login_user.user_token))
-  end
--%>
-
-<%- additional_head { -%>
-  <style type="text/css">
-    table.list
-    {
-        border-collapse: collapse;
-    }
-
-    table.list thead tr th
-    {
-        padding: 0.4em;
-        border-width: 1px;
-        border-style: solid;
-        border-color: #F0F0F0;
-        color: #CCCCCC;
-        background-color: #333333;
-    }
-
-    table.list tbody tr
-    {
-        border-width: 1px;
-        border-style: solid;
-        border-color: #F0F0F0;
-    }
-
-    table.list tbody tr td
-    {
-        padding: 0.2em 0.4em;
-        border-width: 0;
-    }
-
-    table.list tbody tr.even td
-    {
-        background-color: #E0E0E0;
-    }
-
-    table.list tbody tr.odd td
-    {
-        background-color: #D0D0D0;
-    }
-  </style>
-<%- } -%>
 
 <%- unless logged_in? -%>
   <%- side_column { -%>
