@@ -16,4 +16,15 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     }
     assert_equal(expected, @module.format_date(Date.new(2009, 1, 2)))
   end
+
+  test "format_time" do
+    expected = {
+      "time"    => "01:02:03",
+      "time:ja" => "01時02分03秒",
+      "hh"      => "01",
+      "nn"      => "02",
+      "ss"      => "03",
+    }
+    assert_equal(expected, @module.format_time(Time.local(2009, 12, 31, 1, 2, 3)))
+  end
 end
