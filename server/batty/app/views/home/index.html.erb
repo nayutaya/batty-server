@@ -56,22 +56,22 @@
 
 <%- unless logged_in? -%>
   <%- side_column { -%>
-    <div>TODO: OpenIDログインフォームを追加</div>
+    <div>
+      <div>OpenIDでログイン</div>
+      <%- form_tag(:controller => "auth/open_id", :action => "login") { -%>
+        <div><%= text_field_tag(:openid_url, "", :style => "width: 90%;") %></div>
+        <div><%= submit_tag("ログイン") %></div>
+      <%- } -%>
+      <div><%= link_to(h("livedoor.com"), {:controller => "auth/open_id", :action => "login", :openid_url => "livedoor.com"}, :method => :post) %></div>
+      <div><%= link_to(h("mixi.jp"), {:controller => "auth/open_id", :action => "login", :openid_url => "mixi.jp"}, :method => :post) %></div>
+      <div><%= link_to(h("yahoo.co.jp"), {:controller => "auth/open_id", :action => "login", :openid_url => "yahoo.co.jp"}, :method => :post) %></div>
+    </div>
     <div>TODO: メールログインフォームを追加</div>
   <%- } -%>
 <%- end -%>
 
 <%- unless logged_in? -%>
   <div id="login_form">
-    <div id="open_id_login_form">
-      <%- form_tag(:controller => "auth/open_id", :action => "login") { -%>
-        <div>
-          <%= label_tag(:openid_url, "OpenID URL") %>
-          <%= text_field_tag(:openid_url, '', :size => 50) %>
-          <%= submit_tag("ログイン") %>
-        </div>
-      <%- } -%>
-    </div>
     <div><%= link_to(h("メールアドレスによるログイン"), :controller => "auth/email") %></div>
     <div><%= link_to(h("メールアドレスによるサインアップ"), :controller => "signup/email") %></div>
   </div>
