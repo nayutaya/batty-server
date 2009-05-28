@@ -102,21 +102,50 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     assert_equal(@klass::ReadTimeout, http.read_timeout)
   end
 
-=begin
-  test "execute, success" do
+  test "execute, 200 OK" do
     @executor.url         = "http://example.jp/"
     @executor.http_method = :get
+
+    musha = Kagemusha.new(Net::HTTP)
+    musha.def(:start) { Net::HTTPOK.new("1.1", "200", "OK") }
+
+    result = musha.swap { @executor.execute }
+    assert_equal(true, result.success)
+    assert_equal("200 OK", result.message)
   end
-=end
+
+  test "execute, 201 Created" do
+    @executor.url         = "http://example.jp/"
+    @executor.http_method = :get
+
+    musha = Kagemusha.new(Net::HTTP)
+    musha.def(:start) { Net::HTTPCreated.new("1.1", "201", "Created") }
+
+    result = musha.swap { @executor.execute }
+    assert_equal(true, result.success)
+    assert_equal("201 Created", result.message)
+  end
+
+  test "execute, 301 Moved Permanently" do
+    @executor.url         = "http://example.jp/"
+    @executor.http_method = :get
+
+    musha = Kagemusha.new(Net::HTTP)
+    musha.def(:start) { Net::HTTPMovedPermanently.new("1.1", "301", "Moved Permanently") }
+
+    result = musha.swap { @executor.execute }
+    assert_equal(false, result.success)
+    assert_equal("301 Moved Permanently", result.message)
+  end
 
   # MEMO: 実際に外部へのアクセスを行う
   test "execute, head www.google.co.jp" do
     @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :head
 
-    response = @executor.execute
-    assert_equal(true, response.success)
-    assert_equal("200 OK", response.message)
+    result = @executor.execute
+    assert_equal(true, result.success)
+    assert_equal("200 OK", result.message)
   end
 
   # MEMO: 実際に外部へのアクセスを行う
@@ -124,9 +153,9 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :get
 
-    response = @executor.execute
-    assert_equal(true, response.success)
-    assert_equal("200 OK", response.message)
+    result = @executor.execute
+    assert_equal(true, result.success)
+    assert_equal("200 OK", result.message)
   end
 
   # MEMO: 実際に外部へのアクセスを行う
@@ -135,8 +164,8 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     @executor.http_method = :post
     @executor.post_body   = ""
 
-    response = @executor.execute
-    assert_equal(false, response.success)
-    assert_equal("405 Method Not Allowed", response.message)
+    result = @executor.execute
+    assert_equal(false, result.success)
+    assert_equal("405 Method Not Allowed", result.message)
   end
 end

@@ -48,12 +48,10 @@ class HttpActionExecutor
     connector = self.create_http_connector
 
     begin
-      connector.start { |http|
-        response = http.request(request)
-        return Result.new(
-          :success => response.kind_of?(Net::HTTPSuccess),
-          :message => "#{response.code} #{response.message}")
-      }
+      response = connector.start { connector.request(request) }
+      return Result.new(
+        :success => response.kind_of?(Net::HTTPSuccess),
+        :message => "#{response.code} #{response.message}")
     rescue TimeoutError
       return Result.new(:success => false, :message => "timeout.")
     rescue SocketError => e
