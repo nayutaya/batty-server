@@ -1,4 +1,7 @@
 
+require "uri"
+require "net/http"
+
 # HTTPアクション実行
 class HttpActionExecutor
   def initialize(options = {})
@@ -23,7 +26,16 @@ class HttpActionExecutor
   private
 
   def execute_by_head(url)
-    # TODO: 実装せよ
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.start
+    begin
+      response = http.head(uri.path, "User-Agent" => "ruby")
+      response_code = response.code
+      response_body = response.body
+    ensure
+      http.finish
+    end
   end
 
   def execute_by_get(url)
