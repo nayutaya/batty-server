@@ -32,4 +32,14 @@ module NoticeFormatter
     result.merge!(self.format_time(datetime))
     return result
   end
+
+  def self.format_integer_value(value)
+    return "-" if value.nil?
+    return value.to_s
+  end
+
+  def self.format_integer_json_value(value)
+    return "null" if value.nil?
+    return value.to_s
+  end
 end

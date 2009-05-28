@@ -76,4 +76,14 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     expected.merge!(@module.format_time(nil))
     assert_equal(expected, @module.format_datetime(nil))
   end
+
+  test "format_integer_value" do
+    assert_equal("1", @module.format_integer_value(1))
+    assert_equal("-", @module.format_integer_value(nil))
+  end
+
+  test "format_integer_json_value" do
+    assert_equal("1", @module.format_integer_json_value(1))
+    assert_equal("null", @module.format_integer_json_value(nil))
+  end
 end
