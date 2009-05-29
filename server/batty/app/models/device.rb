@@ -63,20 +63,18 @@ class Device < ActiveRecord::Base
     self.transaction {
       current_energies = self.current_two_energies
       current_energy   = current_energies.first
+      level1, level2   = current_energies.map(&:observed_level)
+      fired_triggers   = self.fired_triggers(level1, level2)
 
-      first_level, second_level = current_energies.map(&:observed_level)
-      triggers = self.fired_triggers(first_level, second_level)
+      return fired_triggers.map { |trigger|
+        event = self.events.find_or_initialize_by_trigger_id_and_energy_id(trigger.id, current_energy.id)
+        next unless event.new_record?
 
-      return triggers.map { |trigger|
-        event = {:device_id => self.id, :trigger_id => trigger.id, :energy_id => current_energy.id}
-        event.merge!(trigger.to_event_hash)
-        event.merge!(current_energy.to_event_hash)
-        [current_energy, trigger, event]
-      }.reject { |energy, trigger, event|
-        Event.exists?(event)
-      }.map { |energy, trigger, event|
-        Event.create!(event)
-      }
+        event.attributes = trigger.to_event_hash
+        event.attributes = current_energy.to_event_hash
+        event.save!
+        event
+      }.compact
     }
   end
 
