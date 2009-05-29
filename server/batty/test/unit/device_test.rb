@@ -257,61 +257,61 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal(nil, devices(:shinya_cellular).current_energy)
   end
 
-  test "energies_for_trigger, from 3 energy records" do
+  test "current_two_energies, from 3 energy records" do
     expected = [
       energies(:yuya_pda3),
       energies(:yuya_pda2),
     ]
-    assert_equal(expected, devices(:yuya_pda).energies_for_trigger)
+    assert_equal(expected, devices(:yuya_pda).current_two_energies)
   end
 
-  test "energies_for_trigger, from 1 energy record" do
+  test "current_two_energies, from 1 energy record" do
     expected = [
       energies(:shinya_note1),
     ]
-    assert_equal(expected, devices(:shinya_note).energies_for_trigger)
+    assert_equal(expected, devices(:shinya_note).current_two_energies)
   end
 
-  test "energies_for_trigger, from no energy records" do
+  test "current_two_energies, from no energy records" do
     expected = []
-    assert_equal(expected, devices(:shinya_cellular).energies_for_trigger)
+    assert_equal(expected, devices(:shinya_cellular).current_two_energies)
   end
 
-  test "active_triggers, no energy levels" do
+  test "fired_triggers, no energy levels" do
     assert_equal(
       [],
-      devices(:yuya_pda).active_triggers([]))
+      devices(:yuya_pda).fired_triggers([]))
   end
 
-  test "active_triggers, one energy level" do
+  test "fired_triggers, one energy level" do
     assert_equal(
       [],
-      devices(:yuya_pda).active_triggers([0]))
+      devices(:yuya_pda).fired_triggers([0]))
   end
 
-  test "active_triggers, >=90 and ==100" do
+  test "fired_triggers, >=90 and ==100" do
     expected = [
       triggers(:yuya_pda_ge90),
       triggers(:yuya_pda_eq100),
     ]
     assert_equal(
       expected.sort_by(&:id),
-      devices(:yuya_pda).active_triggers([100, 0]))
+      devices(:yuya_pda).fired_triggers([100, 0]))
   end
 
-  test "active_triggers, >=90" do
+  test "fired_triggers, >=90" do
     expected = [
       triggers(:yuya_pda_ge90),
     ]
     assert_equal(
       expected.sort_by(&:id),
-      devices(:yuya_pda).active_triggers([90, 80]))
+      devices(:yuya_pda).fired_triggers([90, 80]))
   end
 
-  test "active_triggers, without disable trigger" do
+  test "fired_triggers, without disable trigger" do
     assert_equal(
       [],
-      devices(:shinya_cellular).active_triggers([100, 0]))
+      devices(:shinya_cellular).fired_triggers([100, 0]))
   end
 
   test "update_event, yuya_pad" do
