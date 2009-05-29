@@ -19,13 +19,36 @@ class DeviceApiController < ApplicationController
 
     #records = @device.update_energy(@api_form.to_energy_hash.merge(:update_event => true))
 
-    @energy = Energy.new(@api_form.to_energy_hash)
-    @energy.device_id = @device.id
-    @energy.save!
+    Energy.transaction {
+      @energy = Energy.new(@api_form.to_energy_hash)
+      @energy.device_id = @device.id
+      @energy.save!
 
-    # TODO: イベントの生成処理を実装
-    # TODO: メールアクションの実行処理を実装
-    # TODO: HTTPアクションの実行処理を実装
+      # TODO: テスト
+      @events = @device.build_events
+      @events.each(&:save!)
+    }
+
+    # TODO: テスト
+    @email_action_executors = []
+    @http_action_executors  = []
+    @events.each { |event|
+      trigger = event.trigger
+      trigger.email_actions.enable.each { |email_action|
+        @email_action_executors << EmailActionExecutor.new(
+          :subject    => email_action.subject,
+          :recipients => email_action.email,
+          :body       => email_action.body)
+      }
+      trigger.http_actions.enable.each { |http_action|
+        @http_action_executors << HttpActionExecutor.new(
+          :url         => http_action.url,
+          :http_method => http_action.http_method.downcase.to_sym,
+          :post_body   => http_action.body)
+      }
+    }
+    #p @email_action_executors
+    #p @http_action_executors
 
     render(:text => "success")
   end
