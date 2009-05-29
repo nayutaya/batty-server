@@ -11,6 +11,13 @@ class EmailActionExecutor
 
   attr_accessor :subject, :recipients, :body
 
+  def self.from(email_action)
+    return self.new(
+      :subject    => email_action.subject,
+      :recipients => email_action.email,
+      :body       => email_action.body)
+  end
+
   def execute
     EventNotification.deliver_notify(
       :subject    => self.subject,

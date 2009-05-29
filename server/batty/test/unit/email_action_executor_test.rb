@@ -45,6 +45,28 @@ class EmailActionExecutorTest < ActiveSupport::TestCase
   end
 
   #
+  # クラスメソッド
+  #
+
+  test "self.from, empty" do
+    executor = @klass.from(EmailAction.new)
+    assert_equal(nil, executor.subject)
+    assert_equal(nil, executor.recipients)
+    assert_equal(nil, executor.body)
+  end
+
+  test "self.from, full" do
+    email_action = EmailAction.new(
+      :subject => "subject",
+      :email   => "email",
+      :body    => "body")
+    executor = @klass.from(email_action)
+    assert_equal("subject", executor.subject)
+    assert_equal("email",   executor.recipients)
+    assert_equal("body",    executor.body)
+  end
+
+  #
   # インスタンスメソッド
   #
 
