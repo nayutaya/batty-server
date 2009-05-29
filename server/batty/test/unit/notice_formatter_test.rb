@@ -209,4 +209,20 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     expected.merge!(@module.format_user(nil))
     assert_equal(expected, @module.format(nil, time))
   end
+
+  test "replace_keywords, empty" do
+    assert_equal("", @module.replace_keywords("", {}))
+  end
+
+  test "replace_keywords" do
+    assert_equal(
+      "A",
+      @module.replace_keywords("{a}", "a" => "A"))
+    assert_equal(
+      "A,B",
+      @module.replace_keywords("{a},{b}", "a" => "A", "b" => "B"))
+    assert_equal(
+      "A,B,A,B",
+      @module.replace_keywords("{a},{b},{a},{b}", "a" => "A", "b" => "B"))
+  end
 end

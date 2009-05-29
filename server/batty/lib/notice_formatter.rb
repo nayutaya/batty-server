@@ -96,4 +96,11 @@ module NoticeFormatter
     result.merge!(self.format_user(event.try(:device).try(:user)))
     return result
   end
+
+  def self.replace_keywords(str, keywords)
+    return keywords.inject(str.dup) { |memo, (key, value)|
+      memo.gsub!(/\{#{Regexp.escape(key)}\}/, value)
+      memo
+    }
+  end
 end
