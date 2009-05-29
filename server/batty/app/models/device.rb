@@ -68,22 +68,19 @@ class Device < ActiveRecord::Base
       triggers = self.fired_triggers(first_level, second_level)
 
       return triggers.map { |trigger|
-        event = {:device_id => self.id}
-        event.merge!(current_energy.to_event_hash)
+        event = {:device_id => self.id, :trigger_id => trigger.id, :energy_id => current_energy.id}
         event.merge!(trigger.to_event_hash)
+        event.merge!(current_energy.to_event_hash)
         [current_energy, trigger, event]
       }.reject { |energy, trigger, event|
         Event.exists?(event)
       }.map { |energy, trigger, event|
-        {
-          :energy  => energy,
-          :trigger => trigger,
-          :event   => Event.create!(event),
-        }
+        Event.create!(event)
       }
     }
   end
 
+=begin
   # FIXME: リファクタリング
   def update_energy(options = {})
     options = options.dup
@@ -104,4 +101,5 @@ class Device < ActiveRecord::Base
       end
     }
   end
+=end
 end
