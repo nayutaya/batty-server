@@ -10,4 +10,13 @@ class EmailActionExecutor
   end
 
   attr_accessor :subject, :recipients, :body
+
+  def execute
+    EventNotification.deliver_notify(
+      :subject    => self.subject,
+      :recipients => self.recipients,
+      :body       => self.body)
+
+    return nil
+  end
 end

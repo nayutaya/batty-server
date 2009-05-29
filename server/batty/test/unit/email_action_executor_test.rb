@@ -3,7 +3,8 @@ require 'test_helper'
 
 class EmailActionExecutorTest < ActiveSupport::TestCase
   def setup
-    @klass = EmailActionExecutor
+    @klass    = EmailActionExecutor
+    @executor = @klass.new
   end
 
   #
@@ -41,5 +42,29 @@ class EmailActionExecutorTest < ActiveSupport::TestCase
       executor.__send__("#{name}=", set_value)
       assert_equal(get_value, executor.__send__(name), name)
     }
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "execute" do
+    subject    = @executor.subject    = "subject"
+    recipients = @executor.recipients = "recipients"
+    body       = @executor.body       = "body"
+
+    called = false
+    musha = Kagemusha.new(EventNotification)
+    musha.defs(:deliver_notify) { |options|
+      raise unless options[:subject]    == subject
+      raise unless options[:recipients] == recipients
+      raise unless options[:body]       == body
+      called = true
+    }
+
+    result = musha.swap { @executor.execute }
+    assert_equal(nil, result)
+
+    assert_equal(true, called)
   end
 end
