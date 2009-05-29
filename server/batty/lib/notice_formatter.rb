@@ -1,7 +1,14 @@
 
 module NoticeFormatter
-  def self.add_name(name, hash)
-    return hash.inject({}) { |memo, (key, value)|
+  def self.replace_keywords(str, keywords)
+    return keywords.inject(str.dup) { |memo, (key, value)|
+      memo.gsub!(/\{#{Regexp.escape(key)}\}/, value)
+      memo
+    }
+  end
+
+  def self.add_namespace(name, keywords)
+    return keywords.inject({}) { |memo, (key, value)|
       memo[name + ":" + key] = value
       memo
     }
@@ -83,24 +90,17 @@ module NoticeFormatter
       "event:observed-level"        => self.format_integer_value(event.try(:observed_level)),
       "event:observed-level:json"   => self.format_integer_json_value(event.try(:observed_level)),
     }
-    result.merge!(self.add_name("event:created-at", self.format_datetime(event.try(:created_at))))
-    result.merge!(self.add_name("event:observed-at", self.format_datetime(event.try(:observed_at))))
+    result.merge!(self.add_namespace("event:created-at", self.format_datetime(event.try(:created_at))))
+    result.merge!(self.add_namespace("event:observed-at", self.format_datetime(event.try(:observed_at))))
     return result
   end
 
   def self.format(event, time = Time.now)
     result = {}
-    result.merge!(self.add_name("now", self.format_datetime(time)))
+    result.merge!(self.add_namespace("now", self.format_datetime(time)))
     result.merge!(self.format_event(event))
     result.merge!(self.format_device(event.try(:device)))
     result.merge!(self.format_user(event.try(:device).try(:user)))
     return result
-  end
-
-  def self.replace_keywords(str, keywords)
-    return keywords.inject(str.dup) { |memo, (key, value)|
-      memo.gsub!(/\{#{Regexp.escape(key)}\}/, value)
-      memo
-    }
   end
 end

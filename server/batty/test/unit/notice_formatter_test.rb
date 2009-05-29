@@ -6,12 +6,28 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     @module = NoticeFormatter
   end
 
-  test "add_name" do
+  test "replace_keywords, empty" do
+    assert_equal("", @module.replace_keywords("", {}))
+  end
+
+  test "replace_keywords" do
+    assert_equal(
+      "A",
+      @module.replace_keywords("{a}", "a" => "A"))
+    assert_equal(
+      "A,B",
+      @module.replace_keywords("{a},{b}", "a" => "A", "b" => "B"))
+    assert_equal(
+      "A,B,A,B",
+      @module.replace_keywords("{a},{b},{a},{b}", "a" => "A", "b" => "B"))
+  end
+
+  test "add_namespace" do
     expected = {
       "name:a" => "b",
       "name:c" => "d",
     }
-    assert_equal(expected, @module.add_name("name", {"a" => "b", "c" => "d"}))
+    assert_equal(expected, @module.add_namespace("name", {"a" => "b", "c" => "d"}))
   end
 
   test "format_integer_value" do
@@ -170,8 +186,8 @@ class NoticeFormatterTest < ActiveSupport::TestCase
       "event:observed-level"        => "2",
       "event:observed-level:json"   => "2",
     }
-    expected.merge!(@module.add_name("event:created-at", @module.format_datetime(event.created_at)))
-    expected.merge!(@module.add_name("event:observed-at", @module.format_datetime(event.observed_at)))
+    expected.merge!(@module.add_namespace("event:created-at", @module.format_datetime(event.created_at)))
+    expected.merge!(@module.add_namespace("event:observed-at", @module.format_datetime(event.observed_at)))
     assert_equal(expected, @module.format_event(event))
   end
 
@@ -184,8 +200,8 @@ class NoticeFormatterTest < ActiveSupport::TestCase
       "event:observed-level"        => "-",
       "event:observed-level:json"   => "null",
     }
-    expected.merge!(@module.add_name("event:created-at", @module.format_datetime(nil)))
-    expected.merge!(@module.add_name("event:observed-at", @module.format_datetime(nil)))
+    expected.merge!(@module.add_namespace("event:created-at", @module.format_datetime(nil)))
+    expected.merge!(@module.add_namespace("event:observed-at", @module.format_datetime(nil)))
     assert_equal(expected, @module.format_event(Event.new))
     assert_equal(expected, @module.format_event(nil))
   end
@@ -194,7 +210,7 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     time  = Time.local(2000, 1, 2, 3, 4, 5)
     event = events(:yuya_pda_ge90_1)
     expected = {}
-    expected.merge!(@module.add_name("now", @module.format_datetime(time)))
+    expected.merge!(@module.add_namespace("now", @module.format_datetime(time)))
     expected.merge!(@module.format_event(event))
     expected.merge!(@module.format_device(event.device))
     expected.merge!(@module.format_user(event.device.user))
@@ -204,26 +220,10 @@ class NoticeFormatterTest < ActiveSupport::TestCase
   test "format, nil" do
     time  = Time.local(2000, 1, 2, 3, 4, 5)
     expected = {}
-    expected.merge!(@module.add_name("now", @module.format_datetime(time)))
+    expected.merge!(@module.add_namespace("now", @module.format_datetime(time)))
     expected.merge!(@module.format_event(nil))
     expected.merge!(@module.format_device(nil))
     expected.merge!(@module.format_user(nil))
     assert_equal(expected, @module.format(nil, time))
-  end
-
-  test "replace_keywords, empty" do
-    assert_equal("", @module.replace_keywords("", {}))
-  end
-
-  test "replace_keywords" do
-    assert_equal(
-      "A",
-      @module.replace_keywords("{a}", "a" => "A"))
-    assert_equal(
-      "A,B",
-      @module.replace_keywords("{a},{b}", "a" => "A", "b" => "B"))
-    assert_equal(
-      "A,B,A,B",
-      @module.replace_keywords("{a},{b},{a},{b}", "a" => "A", "b" => "B"))
   end
 end
