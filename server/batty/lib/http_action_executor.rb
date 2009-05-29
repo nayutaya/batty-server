@@ -18,6 +18,13 @@ class HttpActionExecutor
 
   attr_accessor :url, :http_method, :post_body
 
+  def self.from(http_action)
+    return self.new(
+      :url         => http_action.url,
+      :http_method => (http_action.http_method.blank? ? nil : http_action.http_method.downcase.to_sym),
+      :post_body   => http_action.body)
+  end
+
   def create_http_request
     klass = 
       case @http_method

@@ -45,6 +45,28 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
   end
 
   #
+  # クラスメソッド
+  #
+
+  test "self.from, empty" do
+    executor = @klass.from(HttpAction.new)
+    assert_equal(nil, executor.url)
+    assert_equal(nil, executor.http_method)
+    assert_equal(nil, executor.post_body)
+  end
+
+  test "self.from, full" do
+    http_action = HttpAction.new(
+      :url         => "url",
+      :http_method => "GET",
+      :body        => "body")
+    executor = @klass.from(http_action)
+    assert_equal("url",  executor.url)
+    assert_equal(:get,   executor.http_method)
+    assert_equal("body", executor.post_body)
+  end
+
+  #
   # インスタンスメソッド
   #
 
