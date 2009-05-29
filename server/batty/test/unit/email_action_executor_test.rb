@@ -10,13 +10,21 @@ class EmailActionExecutorTest < ActiveSupport::TestCase
   # 初期化
   #
 
-=begin
   test "initialize" do
     executor = @klass.new(
-      :subject => "subject")
-    assert_equal("subject", executor.subject)
+      :subject    => "subject",
+      :recipients => "recipients",
+      :body       => "body")
+    assert_equal("subject",    executor.subject)
+    assert_equal("recipients", executor.recipients)
+    assert_equal("body",       executor.body)
   end
-=end
+
+  test "initialize, invalid parameter" do
+    assert_raise(ArgumentError) {
+      @klass.new(:invalid => true)
+    }
+  end
 
   #
   # 属性
