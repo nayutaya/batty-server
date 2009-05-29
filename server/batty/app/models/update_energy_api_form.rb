@@ -1,3 +1,11 @@
+# == Schema Information
+# Schema version: 20090529051529
+#
+# Table name: active_forms
+#
+#  level :integer
+#  time  :integer
+#
 
 # エネルギー更新APIフォーム
 class UpdateEnergyApiForm < ActiveForm

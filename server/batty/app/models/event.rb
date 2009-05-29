@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090522102421
+# Schema version: 20090529051529
 #
 # Table name: events
 #
@@ -10,6 +10,8 @@
 #  trigger_level    :integer       not null
 #  observed_level   :integer       not null
 #  observed_at      :datetime      not null, index_events_on_observed_at
+#  trigger_id       :integer       index_events_on_trigger_id
+#  energy_id        :integer       index_events_on_energy_id
 #
 
 # イベント

@@ -1,3 +1,11 @@
+# == Schema Information
+# Schema version: 20090529051529
+#
+# Table name: active_forms
+#
+#  password              :text
+#  password_confirmation :text
+#
 
 # メールパスワード編集フォーム
 class EmailPasswordEditForm < ActiveForm

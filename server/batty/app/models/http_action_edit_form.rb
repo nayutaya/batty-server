@@ -1,3 +1,13 @@
+# == Schema Information
+# Schema version: 20090529051529
+#
+# Table name: active_forms
+#
+#  enable      :boolean
+#  http_method :text
+#  url         :text
+#  body        :text
+#
 
 # HTTPアクション編集フォーム
 class HttpActionEditForm < ActiveForm

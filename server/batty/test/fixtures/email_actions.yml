@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20090522102421
+# Schema version: 20090529051529
 #
 # Table name: email_actions
 #
