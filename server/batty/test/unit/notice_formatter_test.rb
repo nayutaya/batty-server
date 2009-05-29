@@ -52,7 +52,7 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     assert_equal("null", @module.format_string_json_value(nil))
   end
 
-  test "format_date" do
+  test "format_part_of_date" do
     expected = {
       "date"      => "2009-01-02",
       "date:json" => '"2009-01-02"',
@@ -61,10 +61,10 @@ class NoticeFormatterTest < ActiveSupport::TestCase
       "mm"        => "01",
       "dd"        => "02",
     }
-    assert_equal(expected, @module.format_date(Date.new(2009, 1, 2)))
+    assert_equal(expected, @module.format_part_of_date(Date.new(2009, 1, 2)))
   end
 
-  test "format_date, nil" do
+  test "format_part_of_date, nil" do
     expected = {
       "date"      => "-",
       "date:json" => "null",
@@ -73,10 +73,10 @@ class NoticeFormatterTest < ActiveSupport::TestCase
       "mm"        => "-",
       "dd"        => "-",
     }
-    assert_equal(expected, @module.format_date(nil))
+    assert_equal(expected, @module.format_part_of_date(nil))
   end
 
-  test "format_time" do
+  test "format_part_of_time" do
     expected = {
       "time"      => "01:02:03",
       "time:json" => '"01:02:03"',
@@ -85,10 +85,10 @@ class NoticeFormatterTest < ActiveSupport::TestCase
       "nn"        => "02",
       "ss"        => "03",
     }
-    assert_equal(expected, @module.format_time(Time.local(2009, 12, 31, 1, 2, 3)))
+    assert_equal(expected, @module.format_part_of_time(Time.local(2009, 12, 31, 1, 2, 3)))
   end
 
-  test "format_time, nil" do
+  test "format_part_of_time, nil" do
     expected = {
       "time"      => "-",
       "time:json" => "null",
@@ -97,33 +97,33 @@ class NoticeFormatterTest < ActiveSupport::TestCase
       "nn"        => "-",
       "ss"        => "-",
     }
-    assert_equal(expected, @module.format_time(nil))
+    assert_equal(expected, @module.format_part_of_time(nil))
   end
 
-  test "format_datetime" do
+  test "format_part_of_datetime" do
     datetime = Time.local(2009, 12, 31, 12, 34, 56)
     expected = {
       "datetime"      => "2009-12-31 12:34:56",
       "datetime:json" => '"2009-12-31 12:34:56"',
       "datetime:ja"   => "2009年12月31日 12時34分56秒",
     }
-    expected.merge!(@module.format_date(datetime))
-    expected.merge!(@module.format_time(datetime))
-    assert_equal(expected, @module.format_datetime(datetime))
+    expected.merge!(@module.format_part_of_date(datetime))
+    expected.merge!(@module.format_part_of_time(datetime))
+    assert_equal(expected, @module.format_part_of_datetime(datetime))
   end
 
-  test "format_datetime, nil" do
+  test "format_part_of_datetime, nil" do
     expected = {
       "datetime"      => "-",
       "datetime:json" => "null",
       "datetime:ja"   => "-",
     }
-    expected.merge!(@module.format_date(nil))
-    expected.merge!(@module.format_time(nil))
-    assert_equal(expected, @module.format_datetime(nil))
+    expected.merge!(@module.format_part_of_date(nil))
+    expected.merge!(@module.format_part_of_time(nil))
+    assert_equal(expected, @module.format_part_of_datetime(nil))
   end
 
-  test "format_user" do
+  test "format_part_of_user" do
     expected = {
       "user:token"         => "0" * User::TokenLength,
       "user:token:json"    => '"' + "0" * User::TokenLength + '"',
@@ -133,21 +133,21 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     user = User.new(
       :user_token => "0" * User::TokenLength,
       :nickname   => "nickname")
-    assert_equal(expected, @module.format_user(user))
+    assert_equal(expected, @module.format_part_of_user(user))
   end
 
-  test "format_user, nil" do
+  test "format_part_of_user, nil" do
     expected = {
       "user:token"         => "-",
       "user:token:json"    => "null",
       "user:nickname"      => "-",
       "user:nickname:json" => "null",
     }
-    assert_equal(expected, @module.format_user(User.new))
-    assert_equal(expected, @module.format_user(nil))
+    assert_equal(expected, @module.format_part_of_user(User.new))
+    assert_equal(expected, @module.format_part_of_user(nil))
   end
 
-  test "format_device" do
+  test "format_part_of_device" do
     expected = {
       "device:token"      => "0" * Device::TokenLength,
       "device:token:json" => '"' + "0" * Device::TokenLength + '"',
@@ -157,21 +157,21 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     device = Device.new(
       :device_token => "0" * Device::TokenLength,
       :name         => "name")
-    assert_equal(expected, @module.format_device(device))
+    assert_equal(expected, @module.format_part_of_device(device))
   end
 
-  test "format_device, nil" do
+  test "format_part_of_device, nil" do
     expected = {
       "device:token"      => "-",
       "device:token:json" => "null",
       "device:name"       => "-",
       "device:name:json"  => "null",
     }
-    assert_equal(expected, @module.format_device(Device.new))
-    assert_equal(expected, @module.format_device(nil))
+    assert_equal(expected, @module.format_part_of_device(Device.new))
+    assert_equal(expected, @module.format_part_of_device(nil))
   end
 
-  test "format_event" do
+  test "format_part_of_event" do
     event = Event.new(
       :created_at       => Time.local(2000, 1, 2, 3, 4, 5),
       :trigger_operator => Trigger.operator_symbol_to_code(:eq),
@@ -186,12 +186,12 @@ class NoticeFormatterTest < ActiveSupport::TestCase
       "event:observed-level"        => "2",
       "event:observed-level:json"   => "2",
     }
-    expected.merge!(@module.add_namespace("event:created-at", @module.format_datetime(event.created_at)))
-    expected.merge!(@module.add_namespace("event:observed-at", @module.format_datetime(event.observed_at)))
-    assert_equal(expected, @module.format_event(event))
+    expected.merge!(@module.add_namespace("event:created-at", @module.format_part_of_datetime(event.created_at)))
+    expected.merge!(@module.add_namespace("event:observed-at", @module.format_part_of_datetime(event.observed_at)))
+    assert_equal(expected, @module.format_part_of_event(event))
   end
 
-  test "format_event, nil" do
+  test "format_part_of_event, nil" do
     expected = {
       "event:trigger-operator"      => "-",
       "event:trigger-operator:json" => "null",
@@ -200,30 +200,30 @@ class NoticeFormatterTest < ActiveSupport::TestCase
       "event:observed-level"        => "-",
       "event:observed-level:json"   => "null",
     }
-    expected.merge!(@module.add_namespace("event:created-at", @module.format_datetime(nil)))
-    expected.merge!(@module.add_namespace("event:observed-at", @module.format_datetime(nil)))
-    assert_equal(expected, @module.format_event(Event.new))
-    assert_equal(expected, @module.format_event(nil))
+    expected.merge!(@module.add_namespace("event:created-at", @module.format_part_of_datetime(nil)))
+    expected.merge!(@module.add_namespace("event:observed-at", @module.format_part_of_datetime(nil)))
+    assert_equal(expected, @module.format_part_of_event(Event.new))
+    assert_equal(expected, @module.format_part_of_event(nil))
   end
 
-  test "format" do
+  test "format_event" do
     time  = Time.local(2000, 1, 2, 3, 4, 5)
     event = events(:yuya_pda_ge90_1)
     expected = {}
-    expected.merge!(@module.add_namespace("now", @module.format_datetime(time)))
-    expected.merge!(@module.format_event(event))
-    expected.merge!(@module.format_device(event.device))
-    expected.merge!(@module.format_user(event.device.user))
-    assert_equal(expected, @module.format(event, time))
+    expected.merge!(@module.add_namespace("now", @module.format_part_of_datetime(time)))
+    expected.merge!(@module.format_part_of_event(event))
+    expected.merge!(@module.format_part_of_device(event.device))
+    expected.merge!(@module.format_part_of_user(event.device.user))
+    assert_equal(expected, @module.format_event(event, time))
   end
 
-  test "format, nil" do
+  test "format_event, nil" do
     time  = Time.local(2000, 1, 2, 3, 4, 5)
     expected = {}
-    expected.merge!(@module.add_namespace("now", @module.format_datetime(time)))
-    expected.merge!(@module.format_event(nil))
-    expected.merge!(@module.format_device(nil))
-    expected.merge!(@module.format_user(nil))
-    assert_equal(expected, @module.format(nil, time))
+    expected.merge!(@module.add_namespace("now", @module.format_part_of_datetime(time)))
+    expected.merge!(@module.format_part_of_event(nil))
+    expected.merge!(@module.format_part_of_device(nil))
+    expected.merge!(@module.format_part_of_user(nil))
+    assert_equal(expected, @module.format_event(nil, time))
   end
 end
