@@ -11,8 +11,10 @@ class EventTest < ActiveSupport::TestCase
       :observed_level   => 0,
       :observed_at      => Time.local(2009, 1, 1))
 
-    @yuya_pda_ge90_1      = events(:yuya_pda_ge90_1)
-    @yuya_cellular_lt40_1 = events(:yuya_cellular_lt40_1)
+    @yuya_pda_ge90_1       = events(:yuya_pda_ge90_1)
+    @yuya_cellular_lt40_1  = events(:yuya_cellular_lt40_1)
+    @yuya_cellular_ne50_1  = events(:yuya_cellular_ne50_1)
+    @shinya_cellular_gt0_1 = events(:shinya_cellular_gt0_1)
   end
 
   #
@@ -38,7 +40,7 @@ class EventTest < ActiveSupport::TestCase
       triggers(:yuya_cellular_lt40),
       @yuya_cellular_lt40_1.trigger)
 
-    # FIXME: トリガが削除されているパターンを追加
+    assert_equal(nil, @yuya_cellular_ne50_1.trigger)
   end
 
   test "belongs_to :energy" do
@@ -50,7 +52,7 @@ class EventTest < ActiveSupport::TestCase
       energies(:yuya_cellular2),
       @yuya_cellular_lt40_1.energy)
 
-    # FIXME: エネルギーが削除されているパターンを追加
+    assert_equal(nil, @shinya_cellular_gt0_1.energy)
   end
 
   #

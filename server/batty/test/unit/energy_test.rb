@@ -28,6 +28,7 @@ class EnergyTest < ActiveSupport::TestCase
 
     expected = [
       events(:yuya_cellular_lt40_1),
+      events(:yuya_cellular_ne50_1),
     ]
     assert_equal(
       expected.sort_by(&:id),

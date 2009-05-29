@@ -95,15 +95,18 @@ class UserTest < ActiveSupport::TestCase
       events(:yuya_pda_ge90_1),
       events(:yuya_pda_eq100_1),
       events(:yuya_cellular_lt40_1),
+      events(:yuya_cellular_ne50_1),
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @yuya.events.all(:order => "events.id ASC"))
+      @yuya.events.all.sort_by(&:id))
 
-    expected = []
+    expected = [
+      events(:shinya_cellular_gt0_1),
+    ]
     assert_equal(
       expected.sort_by(&:id),
-      @shinya.events.all(:order => "events.id ASC"))
+      @shinya.events.all.sort_by(&:id))
   end
 
   test "has_many :email_addresses" do
