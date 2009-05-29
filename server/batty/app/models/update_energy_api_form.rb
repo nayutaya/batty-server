@@ -20,7 +20,12 @@ class UpdateEnergyApiForm < ActiveForm
     end
   }
 
-  # TODO: paramsからインスタンスを生成するメソッドを追加
+  def self.from(params)
+    time = params[:time]
+    time = Time.now.strftime("%Y%m%d%H%M%S") if time.blank?
+    return self.new(:level => params[:level], :time => time)
+  end
+
   # TODO: Energyモデルを作成するためのハッシュを生成するメソッドを追加
 
   def parsed_time

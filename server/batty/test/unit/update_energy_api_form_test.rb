@@ -107,6 +107,26 @@ class UpdateEnergyApiFormTest < ActiveSupport::TestCase
   end
 
   #
+  # クラスメソッド
+  #
+
+  test "self.from" do
+    form = @klass.from(:level => "0", :time => "20090101000000")
+    assert_equal(0, form.level)
+    assert_equal(Time.local(2009, 1, 1, 0, 0, 0), form.parsed_time)
+
+    time = Time.local(2010, 1, 1, 0, 0, 0)
+    form = Kagemusha::DateTime.at(time) { @klass.from(:level => "50") }
+    assert_equal(50, form.level)
+    assert_equal(time, form.parsed_time)
+
+    time = Time.local(2010, 1, 1, 0, 0, 0)
+    form = Kagemusha::DateTime.at(time) { @klass.from({}) }
+    assert_equal(nil, form.level)
+    assert_equal(time, form.parsed_time)
+  end
+
+  #
   # インスタンスメソッド
   #
 
