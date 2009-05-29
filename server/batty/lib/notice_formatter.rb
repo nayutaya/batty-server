@@ -7,6 +7,22 @@ module NoticeFormatter
     }
   end
 
+  def self.format_integer_value(value)
+    return (value.nil? ? "-" : value.to_s)
+  end
+
+  def self.format_integer_json_value(value)
+    return (value.nil? ? "null" : value.to_s)
+  end
+
+  def self.format_string_value(value)
+    return (value.blank? ? "-" : value.to_s)
+  end
+
+  def self.format_string_json_value(value)
+    return (value.blank? ? "null" : "\"#{value}\"")
+  end
+
   def self.format_date(date)
     return {
       "date"      => date.try(:strftime, "%Y-%m-%d")     || "-",
@@ -38,22 +54,6 @@ module NoticeFormatter
     result.merge!(self.format_date(datetime))
     result.merge!(self.format_time(datetime))
     return result
-  end
-
-  def self.format_integer_value(value)
-    return (value.nil? ? "-" : value.to_s)
-  end
-
-  def self.format_integer_json_value(value)
-    return (value.nil? ? "null" : value.to_s)
-  end
-
-  def self.format_string_value(value)
-    return (value.blank? ? "-" : value.to_s)
-  end
-
-  def self.format_string_json_value(value)
-    return (value.blank? ? "null" : "\"#{value}\"")
   end
 
   def self.format_user(user)

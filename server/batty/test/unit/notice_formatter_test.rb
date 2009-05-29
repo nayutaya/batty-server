@@ -13,6 +13,29 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     }
     assert_equal(expected, @module.add_name("name", {"a" => "b", "c" => "d"}))
   end
+
+  test "format_integer_value" do
+    assert_equal("1", @module.format_integer_value(1))
+    assert_equal("-", @module.format_integer_value(nil))
+  end
+
+  test "format_integer_json_value" do
+    assert_equal("1", @module.format_integer_json_value(1))
+    assert_equal("null", @module.format_integer_json_value(nil))
+  end
+
+  test "format_string_value" do
+    assert_equal("a", @module.format_string_value("a"))
+    assert_equal("-", @module.format_string_value(""))
+    assert_equal("-", @module.format_string_value(nil))
+  end
+
+  test "format_string_json_value" do
+    assert_equal('"a"', @module.format_string_json_value("a"))
+    assert_equal("null", @module.format_string_json_value(""))
+    assert_equal("null", @module.format_string_json_value(nil))
+  end
+
   test "format_date" do
     expected = {
       "date"      => "2009-01-02",
@@ -82,28 +105,6 @@ class NoticeFormatterTest < ActiveSupport::TestCase
     expected.merge!(@module.format_date(nil))
     expected.merge!(@module.format_time(nil))
     assert_equal(expected, @module.format_datetime(nil))
-  end
-
-  test "format_integer_value" do
-    assert_equal("1", @module.format_integer_value(1))
-    assert_equal("-", @module.format_integer_value(nil))
-  end
-
-  test "format_integer_json_value" do
-    assert_equal("1", @module.format_integer_json_value(1))
-    assert_equal("null", @module.format_integer_json_value(nil))
-  end
-
-  test "format_string_value" do
-    assert_equal("a", @module.format_string_value("a"))
-    assert_equal("-", @module.format_string_value(""))
-    assert_equal("-", @module.format_string_value(nil))
-  end
-
-  test "format_string_json_value" do
-    assert_equal('"a"', @module.format_string_json_value("a"))
-    assert_equal("null", @module.format_string_json_value(""))
-    assert_equal("null", @module.format_string_json_value(nil))
   end
 
   test "format_user" do
