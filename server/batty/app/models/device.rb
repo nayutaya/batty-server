@@ -66,15 +66,13 @@ class Device < ActiveRecord::Base
       level1, level2   = current_energies.map(&:observed_level)
       fired_triggers   = self.fired_triggers(level1, level2)
 
-      return fired_triggers.map { |trigger|
-        event = self.events.find_or_initialize_by_trigger_id_and_energy_id(trigger.id, current_energy.id)
-        next unless event.new_record?
-
-        event.attributes = trigger.to_event_hash
-        event.attributes = current_energy.to_event_hash
-        event.save!
-        event
-      }.compact
+      return fired_triggers.
+        map    { |trigger| [trigger, self.events.find_or_initialize_by_trigger_id_and_energy_id(trigger.id, current_energy.id)] }.
+        select { |trigger, event| event.new_record? }.
+        each   { |trigger, event| event.attributes = trigger.to_event_hash }.
+        each   { |trigger, event| event.attributes = current_energy.to_event_hash }.
+        map    { |trigger, event| event }.
+        each(&:save!)
     }
   end
 
