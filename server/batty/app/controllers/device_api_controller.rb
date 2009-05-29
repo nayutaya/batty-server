@@ -17,7 +17,15 @@ class DeviceApiController < ApplicationController
       return
     end
 
-    records = @device.update_energy(@api_form.to_energy_hash.merge(:update_event => true))
+    #records = @device.update_energy(@api_form.to_energy_hash.merge(:update_event => true))
+
+    @energy = Energy.new(@api_form.to_energy_hash)
+    @energy.device_id = @device.id
+    @energy.save!
+
+    # TODO: イベントの生成処理を実装
+    # TODO: メールアクションの実行処理を実装
+    # TODO: HTTPアクションの実行処理を実装
 
     render(:text => "success")
   end

@@ -14,24 +14,12 @@ class DeviceApiControllerTest < ActionController::TestCase
   end
 
   test "POST update_energy" do
-    device = @yuya_pda
-    level  = 50
-    time   = Time.local(2009, 1, 1)
+    level = 50
+    time  = Time.local(2009, 1, 1)
 
-    called = false
-    musha = Kagemusha.new(Device)
-    musha.def(:update_energy) { |options|
-      raise unless self == device
-      raise unless options[:observed_level] == level
-      raise unless options[:observed_at]    == time
-      raise unless options[:update_event]   == true
-      called = true
-      []
-    }
-
-    musha.swap {
+    assert_difference("Energy.count", +1) {
       Kagemusha::DateTime.at(time) {
-        post :update_energy, :device_token => device.device_token, :level => level.to_s
+        post :update_energy, :device_token => @yuya_pda.device_token, :level => level.to_s
       }
     }
 
@@ -39,24 +27,28 @@ class DeviceApiControllerTest < ActionController::TestCase
     assert_template(nil)
     assert_flash_empty
 
-    assert_equal(device, assigns(:device))
+    assert_equal(@yuya_pda, assigns(:device))
 
-    assert_equal(true, assigns(:api_form).valid?)
+    assert_equal(true,  assigns(:api_form).valid?)
     assert_equal(level, assigns(:api_form).level)
     assert_equal(time,  assigns(:api_form).parsed_time)
 
-    assert_equal(true, called)
+    assert_equal(@yuya_pda, assigns(:energy).device)
+    assert_equal(level,     assigns(:energy).observed_level)
+    assert_equal(time,      assigns(:energy).observed_at)
   end
 
   test "POST update_energy, with time" do
-    post :update_energy, :device_token => @yuya_pda.device_token, :level => "0", :time => "19870605040302"
+    assert_difference("Energy.count", +1) {
+      post :update_energy, :device_token => @yuya_pda.device_token, :level => "0", :time => "19870605040302"
+    }
 
     assert_response(:success)
     assert_template(nil)
     assert_flash_empty
 
-    assert_equal(0, assigns(:api_form).level)
-    assert_equal(Time.local(1987, 6, 5, 4, 3, 2), assigns(:api_form).parsed_time)
+    assert_equal(0, assigns(:energy).observed_level)
+    assert_equal(Time.local(1987, 6, 5, 4, 3, 2), assigns(:energy).observed_at)
   end
 
   test "POST update_energy, invalid form" do
