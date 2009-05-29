@@ -278,15 +278,9 @@ class DeviceTest < ActiveSupport::TestCase
   end
 
   test "fired_triggers, no energy levels" do
-    assert_equal(
-      [],
-      devices(:yuya_pda).fired_triggers([]))
-  end
-
-  test "fired_triggers, one energy level" do
-    assert_equal(
-      [],
-      devices(:yuya_pda).fired_triggers([0]))
+    assert_equal([], devices(:yuya_pda).fired_triggers(nil, nil))
+    assert_equal([], devices(:yuya_pda).fired_triggers(0, nil))
+    assert_equal([], devices(:yuya_pda).fired_triggers(nil, 0))
   end
 
   test "fired_triggers, >=90 and ==100" do
@@ -296,7 +290,7 @@ class DeviceTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      devices(:yuya_pda).fired_triggers([100, 0]))
+      devices(:yuya_pda).fired_triggers(100, 0))
   end
 
   test "fired_triggers, >=90" do
@@ -305,13 +299,13 @@ class DeviceTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      devices(:yuya_pda).fired_triggers([90, 80]))
+      devices(:yuya_pda).fired_triggers(90, 80))
   end
 
   test "fired_triggers, without disable trigger" do
     assert_equal(
       [],
-      devices(:shinya_cellular).fired_triggers([100, 0]))
+      devices(:shinya_cellular).fired_triggers(100, 0))
   end
 
   test "update_event, yuya_pad" do

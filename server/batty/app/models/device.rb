@@ -50,9 +50,9 @@ class Device < ActiveRecord::Base
       :limit => 2)
   end
 
-  def fired_triggers(energy_levels)
-    return [] if energy_levels.size < 2
-    first_level, second_level = energy_levels[0, 2]
+  def fired_triggers(first_level, second_level)
+    return [] if first_level.nil?
+    return [] if second_level.nil?
     return self.triggers.enable.
       all(:order => "triggers.id ASC").
       select { |trigger| trigger.fire?(first_level, second_level) }
@@ -61,15 +61,17 @@ class Device < ActiveRecord::Base
   # FIXME: リファクタリング
   def update_event
     self.transaction {
-      energies = self.current_two_energies
-      energy   = energies.first
-      triggers = self.fired_triggers(energies.map(&:observed_level))
+      current_energies = self.current_two_energies
+      current_energy   = current_energies.first
+
+      first_level, second_level = current_energies.map(&:observed_level)
+      triggers = self.fired_triggers(first_level, second_level)
 
       return triggers.map { |trigger|
         event = {:device_id => self.id}
-        event.merge!(energy.to_event_hash)
+        event.merge!(current_energy.to_event_hash)
         event.merge!(trigger.to_event_hash)
-        [energy, trigger, event]
+        [current_energy, trigger, event]
       }.reject { |energy, trigger, event|
         Event.exists?(event)
       }.map { |energy, trigger, event|
