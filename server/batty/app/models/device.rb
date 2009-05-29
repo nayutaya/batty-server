@@ -71,27 +71,4 @@ class Device < ActiveRecord::Base
       each   { |trigger, event| event.attributes = current_energy.to_event_hash }.
       map    { |trigger, event| event }
   end
-
-=begin
-  # FIXME: リファクタリング
-  def update_energy(options = {})
-    options = options.dup
-    observed_level = options.delete(:observed_level)
-    observed_at    = options.delete(:observed_at)
-    update_event   = (options.delete(:update_event) == true)
-    raise(ArgumentError) unless options.empty?
-
-    self.transaction {
-      self.energies.create!(
-        :observed_level => observed_level,
-        :observed_at    => observed_at)
-
-      if update_event
-        return self.update_event
-      else
-        return nil
-      end
-    }
-  end
-=end
 end
