@@ -18,6 +18,7 @@
 class Trigger < ActiveRecord::Base
   has_many :email_actions, :dependent => :destroy
   has_many :http_actions, :dependent => :destroy
+  has_many :events, :dependent => :nullify
   belongs_to :device
 
   Operators = [

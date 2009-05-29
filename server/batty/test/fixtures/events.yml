@@ -19,6 +19,8 @@ yuya_pda_ge90_1:
   trigger_level: 90
   observed_level: 90
   observed_at: 2009-01-02 00:00:00
+  trigger: yuya_pda_ge90
+  energy_id: null
 
 yuya_pda_eq100_1:
   created_at: 2009-01-01 00:00:00
@@ -27,6 +29,8 @@ yuya_pda_eq100_1:
   trigger_level: 100
   observed_level: 100
   observed_at: 2009-01-03 00:00:00
+  trigger: yuya_pda_eq100
+  energy_id: null
 
 yuya_cellular_lt40_1:
   created_at: 2009-01-01 00:00:00
@@ -35,3 +39,5 @@ yuya_cellular_lt40_1:
   trigger_level: 40
   observed_level: 30
   observed_at: 2009-01-02 00:00:00
+  trigger: yuya_cellular_lt40
+  energy_id: null

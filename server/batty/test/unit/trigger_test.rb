@@ -10,8 +10,9 @@ class TriggerTest < ActiveSupport::TestCase
       :operator  => 0,
       :level     => 0)
 
-    @yuya_pda_ge90   = triggers(:yuya_pda_ge90)
-    @shinya_note_ne0 = triggers(:shinya_note_ne0)
+    @yuya_pda_ge90      = triggers(:yuya_pda_ge90)
+    @yuya_cellular_lt40 = triggers(:yuya_cellular_lt40)
+    @shinya_note_ne0    = triggers(:shinya_note_ne0)
   end
 
   #
@@ -70,6 +71,36 @@ class TriggerTest < ActiveSupport::TestCase
     assert_difference("HttpAction.count", -@shinya_note_ne0.http_actions.size) {
       @shinya_note_ne0.destroy
     }
+  end
+
+  test "has_many :events" do
+    expected = [
+      events(:yuya_pda_ge90_1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @yuya_pda_ge90.events.sort_by(&:id))
+
+    expected = [
+      events(:yuya_cellular_lt40_1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @yuya_cellular_lt40.events.sort_by(&:id))
+  end
+
+  test "has_many :events, :dependent => :nullify" do
+    assert_equal(@yuya_pda_ge90.id, events(:yuya_pda_ge90_1).trigger_id)
+    assert_difference("Event.count", 0) {
+      @yuya_pda_ge90.destroy
+    }
+    assert_equal(nil, events(:yuya_pda_ge90_1).reload.trigger_id)
+
+    assert_equal(@yuya_cellular_lt40.id, events(:yuya_cellular_lt40_1).trigger_id)
+    assert_difference("Event.count", 0) {
+      @yuya_cellular_lt40.destroy
+    }
+    assert_equal(nil, events(:yuya_cellular_lt40_1).reload.trigger_id)
   end
 
   test "belongs_to :device" do

@@ -15,6 +15,7 @@
 # イベント
 class Event < ActiveRecord::Base
   belongs_to :device
+  belongs_to :trigger
 
   validates_presence_of :device_id
   validates_presence_of :trigger_operator
