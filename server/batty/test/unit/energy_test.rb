@@ -7,20 +7,56 @@ class EnergyTest < ActiveSupport::TestCase
     @basic = @klass.new(
       :observed_level => 0,
       :observed_at    => Time.local(2009, 1, 1))
+
+    @yuya_pda1      = energies(:yuya_pda1)
+    @yuya_pda2      = energies(:yuya_pda2)
+    @yuya_cellular2 = energies(:yuya_cellular2)
+    @shinya_note1   = energies(:shinya_note1)
   end
 
   #
   # 関連
   #
 
-  test "belongs to device" do
+  test "has_many :events" do
+    expected = [
+      events(:yuya_pda_ge90_1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @yuya_pda2.events.sort_by(&:id))
+
+    expected = [
+      events(:yuya_cellular_lt40_1),
+      events(:yuya_cellular_ne50_1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @yuya_cellular2.events.sort_by(&:id))
+  end
+
+  test "has_many :events, :dependent => :nullify" do
+    assert_equal(@yuya_pda2.id, events(:yuya_pda_ge90_1).energy_id)
+    assert_difference("Event.count", 0) {
+      @yuya_pda2.destroy
+    }
+    assert_equal(nil, events(:yuya_pda_ge90_1).reload.energy_id)
+
+    assert_equal(@yuya_cellular2.id, events(:yuya_cellular_lt40_1).energy_id)
+    assert_difference("Event.count", 0) {
+      @yuya_cellular2.destroy
+    }
+    assert_equal(nil, events(:yuya_cellular_lt40_1).reload.energy_id)
+  end
+
+  test "belongs_to :device" do
     assert_equal(
       devices(:yuya_pda),
-      energies(:yuya_pda1).device)
+      @yuya_pda1.device)
 
     assert_equal(
       devices(:shinya_note),
-      energies(:shinya_note1).device)
+      @shinya_note1.device)
   end
 
   #
@@ -71,11 +107,11 @@ class EnergyTest < ActiveSupport::TestCase
       @klass.new.to_event_hash)
 
     expected = {
-      :observed_level => energies(:yuya_pda1).observed_level,
-      :observed_at    => energies(:yuya_pda1).observed_at,
+      :observed_level => @yuya_pda1.observed_level,
+      :observed_at    => @yuya_pda1.observed_at,
     }
     assert_equal(
       expected,
-      energies(:yuya_pda1).to_event_hash)
+      @yuya_pda1.to_event_hash)
   end
 end

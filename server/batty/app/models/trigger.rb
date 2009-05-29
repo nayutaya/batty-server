@@ -18,6 +18,7 @@
 class Trigger < ActiveRecord::Base
   has_many :email_actions, :dependent => :destroy
   has_many :http_actions, :dependent => :destroy
+  has_many :events, :dependent => :nullify
   belongs_to :device
 
   Operators = [
@@ -100,7 +101,7 @@ class Trigger < ActiveRecord::Base
     return block.call(observed_level, self.level)
   end
 
-  def triggered?(first_level, second_level)
+  def fire?(first_level, second_level)
     return self.match?(first_level) && !self.match?(second_level)
   end
 

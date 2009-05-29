@@ -116,14 +116,15 @@ class DeviceTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @yuya_pda.events.all(:order => "events.id ASC"))
+      @yuya_pda.events.all.sort_by(&:id))
 
     expected = [
       events(:yuya_cellular_lt40_1),
+      events(:yuya_cellular_ne50_1),
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @yuya_cellular.events.all(:order => "events.id ASC"))
+      @yuya_cellular.events.all.sort_by(&:id))
   end
 
   test "has_many :events, :dependent => :destroy" do
@@ -256,226 +257,127 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal(nil, devices(:shinya_cellular).current_energy)
   end
 
-  test "energies_for_trigger, from 3 energy records" do
+  test "current_two_energies, from 3 energy records" do
     expected = [
       energies(:yuya_pda3),
       energies(:yuya_pda2),
     ]
-    assert_equal(expected, devices(:yuya_pda).energies_for_trigger)
+    assert_equal(expected, devices(:yuya_pda).current_two_energies)
   end
 
-  test "energies_for_trigger, from 1 energy record" do
+  test "current_two_energies, from 1 energy record" do
     expected = [
       energies(:shinya_note1),
     ]
-    assert_equal(expected, devices(:shinya_note).energies_for_trigger)
+    assert_equal(expected, devices(:shinya_note).current_two_energies)
   end
 
-  test "energies_for_trigger, from no energy records" do
+  test "current_two_energies, from no energy records" do
     expected = []
-    assert_equal(expected, devices(:shinya_cellular).energies_for_trigger)
+    assert_equal(expected, devices(:shinya_cellular).current_two_energies)
   end
 
-  test "active_triggers, no energy levels" do
-    assert_equal(
-      [],
-      devices(:yuya_pda).active_triggers([]))
+  test "fired_triggers, no energy levels" do
+    assert_equal([], devices(:yuya_pda).fired_triggers(nil, nil))
+    assert_equal([], devices(:yuya_pda).fired_triggers(0, nil))
+    assert_equal([], devices(:yuya_pda).fired_triggers(nil, 0))
   end
 
-  test "active_triggers, one energy level" do
-    assert_equal(
-      [],
-      devices(:yuya_pda).active_triggers([0]))
-  end
-
-  test "active_triggers, >=90 and ==100" do
+  test "fired_triggers, >=90 and ==100" do
     expected = [
       triggers(:yuya_pda_ge90),
       triggers(:yuya_pda_eq100),
     ]
     assert_equal(
       expected.sort_by(&:id),
-      devices(:yuya_pda).active_triggers([100, 0]))
+      devices(:yuya_pda).fired_triggers(100, 0))
   end
 
-  test "active_triggers, >=90" do
+  test "fired_triggers, >=90" do
     expected = [
       triggers(:yuya_pda_ge90),
     ]
     assert_equal(
       expected.sort_by(&:id),
-      devices(:yuya_pda).active_triggers([90, 80]))
+      devices(:yuya_pda).fired_triggers(90, 80))
   end
 
-  test "active_triggers, without disable trigger" do
+  test "fired_triggers, without disable trigger" do
     assert_equal(
       [],
-      devices(:shinya_cellular).active_triggers([100, 0]))
+      devices(:shinya_cellular).fired_triggers(100, 0))
   end
 
-  test "update_event, yuya_pad" do
+  test "build_events, yuya_pad" do
     device = devices(:yuya_pda)
 
     # 該当するトリガあり、かつイベント生成済み
-    assert_difference("Event.count", 0) {
-      assert_equal([], device.update_event)
-    }
-
-    e1 = device.energies.create!(:observed_level => 80, :observed_at => Time.local(2009, 1, 4))
+    assert_equal([], device.build_events)
 
     # 該当するトリガなし
-    assert_difference("Event.count", 0) {
-      assert_equal([], device.update_event)
-    }
-
-    e2 = device.energies.create!(:observed_level => 90, :observed_at => Time.local(2009, 1, 5))
-    t2 = triggers(:yuya_pda_ge90)
+    e1 = device.energies.create!(:observed_level => 80, :observed_at => Time.local(2009, 1, 4))
+    assert_equal([], device.build_events)
 
     # 該当するトリガあり、かつイベント未生成
-    assert_difference("Event.count", +1) {
-      records = device.update_event
-      assert_equal(1, records.size)
+    t2 = triggers(:yuya_pda_ge90)
+    e2 = device.energies.create!(:observed_level => 90, :observed_at => Time.local(2009, 1, 5))
+    events = device.build_events
+    assert_equal(1, events.size)
 
-      energy0, trigger0, event0 = records[0][:energy], records[0][:trigger], records[0][:event]
-      assert_equal(e2,                energy0)
-      assert_equal(t2,                trigger0)
-      assert_equal(e2.device_id,      event0.device_id)
-      assert_equal(e2.observed_level, event0.observed_level)
-      assert_equal(e2.observed_at,    event0.observed_at)
-      assert_equal(t2.operator,       event0.trigger_operator)
-      assert_equal(t2.level,          event0.trigger_level)
-    }
+    assert_equal(device.id,         events[0].device_id)
+    assert_equal(t2.id,             events[0].trigger_id)
+    assert_equal(t2.operator,       events[0].trigger_operator)
+    assert_equal(t2.level,          events[0].trigger_level)
+    assert_equal(e2.id,             events[0].energy_id)
+    assert_equal(e2.observed_level, events[0].observed_level)
+    assert_equal(e2.observed_at,    events[0].observed_at)
   end
 
-  test "update_event, yuya_pad, multiple" do
+  test "build_events, yuya_pad, multiple" do
     device = devices(:yuya_pda)
 
+    # 該当するトリガあり、かつイベント未生成
+    t2a, t2b = [triggers(:yuya_pda_ge90), triggers(:yuya_pda_eq100)].sort_by(&:id)
     e1 = device.energies.create!(:observed_level =>  80, :observed_at => Time.local(2009, 1, 4))
     e2 = device.energies.create!(:observed_level => 100, :observed_at => Time.local(2009, 1, 5))
-    t2a, t2b = [triggers(:yuya_pda_ge90), triggers(:yuya_pda_eq100)].sort_by(&:id)
+    events = device.build_events
+    assert_equal(2, events.size)
 
-    # 該当するトリガあり、かつイベント未生成
-    assert_difference("Event.count", +2) {
-      records = device.update_event
-      assert_equal(2, records.size)
+    assert_equal(device.id,         events[0].device_id)
+    assert_equal(t2a.id,            events[0].trigger_id)
+    assert_equal(t2a.operator,      events[0].trigger_operator)
+    assert_equal(t2a.level,         events[0].trigger_level)
+    assert_equal(e2.id,             events[0].energy_id)
+    assert_equal(e2.observed_level, events[0].observed_level)
+    assert_equal(e2.observed_at,    events[0].observed_at)
 
-      energy0, trigger0, event0 = records[0][:energy], records[0][:trigger], records[0][:event]
-      assert_equal(e2,                energy0)
-      assert_equal(t2a,               trigger0)
-      assert_equal(e2.device_id,      event0.device_id)
-      assert_equal(e2.observed_level, event0.observed_level)
-      assert_equal(e2.observed_at,    event0.observed_at)
-      assert_equal(t2a.operator,      event0.trigger_operator)
-      assert_equal(t2a.level,         event0.trigger_level)
-
-      energy1, trigger1, event1 = records[1][:energy], records[1][:trigger], records[1][:event]
-      assert_equal(e2,                energy1)
-      assert_equal(t2b,               trigger1)
-      assert_equal(e2.device_id,      event1.device_id)
-      assert_equal(e2.observed_level, event1.observed_level)
-      assert_equal(e2.observed_at,    event1.observed_at)
-      assert_equal(t2b.operator,      event1.trigger_operator)
-      assert_equal(t2b.level,         event1.trigger_level)
-    }
+    assert_equal(device.id,         events[1].device_id)
+    assert_equal(t2b.id,            events[1].trigger_id)
+    assert_equal(t2b.operator,      events[1].trigger_operator)
+    assert_equal(t2b.level,         events[1].trigger_level)
+    assert_equal(e2.id,             events[1].energy_id)
+    assert_equal(e2.observed_level, events[1].observed_level)
+    assert_equal(e2.observed_at,    events[1].observed_at)
   end
 
-  test "update_event, shinya_note" do
+  test "build_events, shinya_note" do
     device = devices(:shinya_note)
 
     # 該当するトリガなし
-    assert_difference("Event.count", 0) {
-      assert_equal([], device.update_event)
-    }
-
-    e1 = device.energies.create!(:observed_level => 10, :observed_at => Time.local(2009, 1, 2))
-    t1 = triggers(:shinya_note_ne0)
+    assert_equal([], device.build_events)
 
     # 該当するトリガあり、かつイベント未生成
-    assert_difference("Event.count", +1) {
-      records = device.update_event
-      assert_equal(1, records.size)
+    t1 = triggers(:shinya_note_ne0)
+    e1 = device.energies.create!(:observed_level => 10, :observed_at => Time.local(2009, 1, 2))
+    events = device.build_events
+    assert_equal(1, events.size)
 
-      energy0, trigger0, event0 = records[0][:energy], records[0][:trigger], records[0][:event]
-      assert_equal(e1,                energy0)
-      assert_equal(t1,                trigger0)
-      assert_equal(e1.device_id,      event0.device_id)
-      assert_equal(e1.observed_level, event0.observed_level)
-      assert_equal(e1.observed_at,    event0.observed_at)
-      assert_equal(t1.operator,       event0.trigger_operator)
-      assert_equal(t1.level,          event0.trigger_level)
-    }
-  end
-
-  test "update_energy" do
-    device = devices(:yuya_pda)
-    level  = 95
-    time   = Time.local(2009, 1, 4)
-
-    assert_difference("Energy.count", +1) {
-      device.update_energy(
-        :observed_level => level,
-        :observed_at    => time)
-    }
-
-    energy = Energy.first(:order => "energies.id DESC")
-    assert_equal(device.id, energy.device_id)
-    assert_equal(level,     energy.observed_level)
-    assert_equal(time,      energy.observed_at)
-  end
-
-  test "update_energy, no update event" do
-    device = devices(:yuya_pda)
-
-    assert_difference("Event.count", 0) {
-      assert_difference("Energy.count", +1) {
-        ret = device.update_energy(
-          :observed_level => 80,
-          :observed_at    => Time.local(2009, 1, 4),
-          :update_event   => false)
-        assert_equal(nil, ret)
-      }
-    }
-
-    assert_difference("Event.count", 0) {
-      assert_difference("Energy.count", +1) {
-        ret = device.update_energy(
-          :observed_level => 90,
-          :observed_at    => Time.local(2009, 1, 5),
-          :update_event   => false)
-        assert_equal(nil, ret)
-      }
-    }
-  end
-
-  test "update_energy, update event" do
-    device = devices(:yuya_pda)
-
-    assert_difference("Event.count", 0) {
-      assert_difference("Energy.count", +1) {
-        ret = device.update_energy(
-          :observed_level => 80,
-          :observed_at    => Time.local(2009, 1, 4),
-          :update_event   => true)
-        assert_equal(0, ret.size)
-      }
-    }
-
-    assert_difference("Event.count", +1) {
-      assert_difference("Energy.count", +1) {
-        ret = device.update_energy(
-          :observed_level => 90,
-          :observed_at    => Time.local(2009, 1, 5),
-          :update_event   => true)
-        assert_equal(1, ret.size)
-        assert_equal(90, ret[0][:energy].observed_level)
-        assert_equal(90, ret[0][:event].observed_level)
-      }
-    }
-  end
-
-  test "update_energy, invalid parameter" do
-    assert_raise(ArgumentError) {
-      devices(:yuya_pda).update_energy(:invalid => true)
-    }
+    assert_equal(device.id,         events[0].device_id)
+    assert_equal(t1.id,             events[0].trigger_id)
+    assert_equal(t1.operator,       events[0].trigger_operator)
+    assert_equal(t1.level,          events[0].trigger_level)
+    assert_equal(e1.id,             events[0].energy_id)
+    assert_equal(e1.observed_level, events[0].observed_level)
+    assert_equal(e1.observed_at,    events[0].observed_at)
   end
 end

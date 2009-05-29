@@ -10,8 +10,10 @@ class TriggerTest < ActiveSupport::TestCase
       :operator  => 0,
       :level     => 0)
 
-    @yuya_pda_ge90   = triggers(:yuya_pda_ge90)
-    @shinya_note_ne0 = triggers(:shinya_note_ne0)
+    @yuya_pda_ge90      = triggers(:yuya_pda_ge90)
+    @yuya_pda_eq100     = triggers(:yuya_pda_eq100)
+    @yuya_cellular_lt40 = triggers(:yuya_cellular_lt40)
+    @shinya_note_ne0    = triggers(:shinya_note_ne0)
   end
 
   #
@@ -72,14 +74,44 @@ class TriggerTest < ActiveSupport::TestCase
     }
   end
 
+  test "has_many :events" do
+    expected = [
+      events(:yuya_pda_ge90_1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @yuya_pda_ge90.events.sort_by(&:id))
+
+    expected = [
+      events(:yuya_cellular_lt40_1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @yuya_cellular_lt40.events.sort_by(&:id))
+  end
+
+  test "has_many :events, :dependent => :nullify" do
+    assert_equal(@yuya_pda_ge90.id, events(:yuya_pda_ge90_1).trigger_id)
+    assert_difference("Event.count", 0) {
+      @yuya_pda_ge90.destroy
+    }
+    assert_equal(nil, events(:yuya_pda_ge90_1).reload.trigger_id)
+
+    assert_equal(@yuya_cellular_lt40.id, events(:yuya_cellular_lt40_1).trigger_id)
+    assert_difference("Event.count", 0) {
+      @yuya_cellular_lt40.destroy
+    }
+    assert_equal(nil, events(:yuya_cellular_lt40_1).reload.trigger_id)
+  end
+
   test "belongs_to :device" do
     assert_equal(
       devices(:yuya_pda),
-      triggers(:yuya_pda_ge90).device)
+      @yuya_pda_ge90.device)
 
     assert_equal(
       devices(:shinya_note),
-      triggers(:shinya_note_ne0).device)
+      @shinya_note_ne0.device)
   end
 
   #
@@ -223,13 +255,13 @@ class TriggerTest < ActiveSupport::TestCase
   #
 
   test "operator_symbol" do
-    assert_equal(:ge, triggers(:yuya_pda_ge90).operator_symbol)
-    assert_equal(:eq, triggers(:yuya_pda_eq100).operator_symbol)
+    assert_equal(:ge, @yuya_pda_ge90.operator_symbol)
+    assert_equal(:eq, @yuya_pda_eq100.operator_symbol)
   end
 
   test "operator_sign" do
-    assert_equal("≧", triggers(:yuya_pda_ge90).operator_sign)
-    assert_equal("＝", triggers(:yuya_pda_eq100).operator_sign)
+    assert_equal("≧", @yuya_pda_ge90.operator_sign)
+    assert_equal("＝", @yuya_pda_eq100.operator_sign)
   end
 
   test "match?, equal" do
@@ -293,24 +325,24 @@ class TriggerTest < ActiveSupport::TestCase
     assert_equal(false, trigger.match?(50))
   end
 
-  test "triggered?, equal" do
+  test "fire?, equal" do
     trigger = @klass.new(
       :operator => @klass.operator_symbol_to_code(:eq),
       :level    => 0)
-    assert_equal(false, trigger.triggered?(0, 0))
-    assert_equal(true,  trigger.triggered?(0, 1))
-    assert_equal(false, trigger.triggered?(1, 0))
-    assert_equal(false, trigger.triggered?(1, 1))
+    assert_equal(false, trigger.fire?(0, 0))
+    assert_equal(true,  trigger.fire?(0, 1))
+    assert_equal(false, trigger.fire?(1, 0))
+    assert_equal(false, trigger.fire?(1, 1))
   end
 
-  test "triggered?, not equal" do
+  test "fire?, not equal" do
     trigger = @klass.new(
       :operator => @klass.operator_symbol_to_code(:ne),
       :level    => 0)
-    assert_equal(false, trigger.triggered?(0, 0))
-    assert_equal(false, trigger.triggered?(0, 1))
-    assert_equal(true,  trigger.triggered?(1, 0))
-    assert_equal(false, trigger.triggered?(1, 1))
+    assert_equal(false, trigger.fire?(0, 0))
+    assert_equal(false, trigger.fire?(0, 1))
+    assert_equal(true,  trigger.fire?(1, 0))
+    assert_equal(false, trigger.fire?(1, 1))
   end
 
   test "to_event_hash" do
@@ -323,11 +355,11 @@ class TriggerTest < ActiveSupport::TestCase
       @klass.new.to_event_hash)
 
     expected = {
-      :trigger_operator => triggers(:yuya_pda_ge90).operator,
-      :trigger_level    => triggers(:yuya_pda_ge90).level,
+      :trigger_operator => @yuya_pda_ge90.operator,
+      :trigger_level    => @yuya_pda_ge90.level,
     }
     assert_equal(
       expected,
-      triggers(:yuya_pda_ge90).to_event_hash)
+      @yuya_pda_ge90.to_event_hash)
   end
 end

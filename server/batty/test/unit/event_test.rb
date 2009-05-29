@@ -10,6 +10,11 @@ class EventTest < ActiveSupport::TestCase
       :trigger_level    => 0,
       :observed_level   => 0,
       :observed_at      => Time.local(2009, 1, 1))
+
+    @yuya_pda_ge90_1       = events(:yuya_pda_ge90_1)
+    @yuya_cellular_lt40_1  = events(:yuya_cellular_lt40_1)
+    @yuya_cellular_ne50_1  = events(:yuya_cellular_ne50_1)
+    @shinya_cellular_gt0_1 = events(:shinya_cellular_gt0_1)
   end
 
   #
@@ -19,11 +24,35 @@ class EventTest < ActiveSupport::TestCase
   test "belongs_to :device" do
     assert_equal(
       devices(:yuya_pda),
-      events(:yuya_pda_ge90_1).device)
+      @yuya_pda_ge90_1.device)
 
     assert_equal(
       devices(:yuya_cellular),
-      events(:yuya_cellular_lt40_1).device)
+      @yuya_cellular_lt40_1.device)
+  end
+
+  test "belongs_to :trigger" do
+    assert_equal(
+      triggers(:yuya_pda_ge90),
+      @yuya_pda_ge90_1.trigger)
+
+    assert_equal(
+      triggers(:yuya_cellular_lt40),
+      @yuya_cellular_lt40_1.trigger)
+
+    assert_equal(nil, @yuya_cellular_ne50_1.trigger)
+  end
+
+  test "belongs_to :energy" do
+    assert_equal(
+      energies(:yuya_pda2),
+      @yuya_pda_ge90_1.energy)
+
+    assert_equal(
+      energies(:yuya_cellular2),
+      @yuya_cellular_lt40_1.energy)
+
+    assert_equal(nil, @shinya_cellular_gt0_1.energy)
   end
 
   #

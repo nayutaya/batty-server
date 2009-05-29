@@ -44,59 +44,31 @@ class Device < ActiveRecord::Base
       :order => "energies.observed_at DESC, energies.id DESC")
   end
 
-  def energies_for_trigger
+  def current_two_energies
     return self.energies.all(
       :order => "energies.observed_at DESC, energies.id DESC",
       :limit => 2)
   end
 
-  def active_triggers(energy_levels)
-    return [] if energy_levels.size < 2
+  def fired_triggers(first_level, second_level)
+    return [] if first_level.nil?
+    return [] if second_level.nil?
     return self.triggers.enable.
       all(:order => "triggers.id ASC").
-      select { |trigger| trigger.triggered?(*energy_levels[0, 2]) }
+      select { |trigger| trigger.fire?(first_level, second_level) }
   end
 
-  def update_event
-    self.transaction {
-      energies = self.energies_for_trigger
-      energy   = energies.first
-      triggers = self.active_triggers(energies.map(&:observed_level))
+  def build_events
+    current_energies = self.current_two_energies
+    current_energy   = current_energies.first
+    level1, level2   = current_energies.map(&:observed_level)
+    fired_triggers   = self.fired_triggers(level1, level2)
 
-      return triggers.map { |trigger|
-        event = {:device_id => self.id}
-        event.merge!(energy.to_event_hash)
-        event.merge!(trigger.to_event_hash)
-        [energy, trigger, event]
-      }.reject { |energy, trigger, event|
-        Event.exists?(event)
-      }.map { |energy, trigger, event|
-        {
-          :energy  => energy,
-          :trigger => trigger,
-          :event   => Event.create!(event),
-        }
-      }
-    }
-  end
-
-  def update_energy(options = {})
-    options = options.dup
-    observed_level = options.delete(:observed_level)
-    observed_at    = options.delete(:observed_at)
-    update_event   = (options.delete(:update_event) == true)
-    raise(ArgumentError) unless options.empty?
-
-    self.transaction {
-      self.energies.create!(
-        :observed_level => observed_level,
-        :observed_at    => observed_at)
-
-      if update_event
-        return self.update_event
-      else
-        return nil
-      end
-    }
+    return fired_triggers.
+      map    { |trigger| [trigger, self.events.find_or_initialize_by_trigger_id_and_energy_id(trigger.id, current_energy.id)] }.
+      select { |trigger, event| event.new_record? }.
+      each   { |trigger, event| event.attributes = trigger.to_event_hash }.
+      each   { |trigger, event| event.attributes = current_energy.to_event_hash }.
+      map    { |trigger, event| event }
   end
 end
