@@ -17,37 +17,15 @@ class DeviceApiController < ApplicationController
       return
     end
 
-    records = @device.update_energy(@api_form.to_energy_hash.merge(:update_event => true))
+    #records = @device.update_energy(@api_form.to_energy_hash.merge(:update_event => true))
 
-    # TODO: テストを記述
-    @email_actions = []
-    records.each { |record|
-      trigger = record[:trigger]
-      @email_actions += trigger.email_actions.enable.map { |email_action| record.dup.merge(:email_action => email_action) }
-      # TODO: HttpAction
-    }
+    @energy = Energy.new(@api_form.to_energy_hash)
+    @energy.device_id = @device.id
+    @energy.save!
 
-    # TODO: テストを記述
-    @notify_mails = @email_actions.map { |info|
-      email_action = info[:email_action]
-      {
-        :subject    => email_action.subject,
-        :recipients => "mr.yu-yan.free@docomo.ne.jp",
-        :body       => email_action.body,
-      }
-    }
-
-    # TODO: テストを記述
-    # TODO: 非同期化
-    begin
-      @notify_mails.each { |notify_mail|
-        EventNotification.deliver_notify(notify_mail)
-      }
-    rescue Exception => e
-      logger.add(
-        logger.class::ERROR,
-        format("%s\n%s: %s\n%s\n%s", "-" * 50, e.class.name, e.message, e.backtrace[0, 5].join("\n"), "-" * 50))
-    end
+    # TODO: イベントの生成処理を実装
+    # TODO: メールアクションの実行処理を実装
+    # TODO: HTTPアクションの実行処理を実装
 
     render(:text => "success")
   end
