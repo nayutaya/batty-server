@@ -33,18 +33,19 @@ class DeviceApiController < ApplicationController
     @email_action_executors = []
     @http_action_executors  = []
     @events.each { |event|
+      keywords = NoticeFormatter.format_event(event)
       trigger = event.trigger
       trigger.email_actions.enable.each { |email_action|
         @email_action_executors << EmailActionExecutor.new(
-          :subject    => email_action.subject,
+          :subject    => NoticeFormatter.replace_keywords(email_action.subject, keywords),
           :recipients => email_action.email,
-          :body       => email_action.body)
+          :body       => NoticeFormatter.replace_keywords(email_action.body, keywords))
       }
       trigger.http_actions.enable.each { |http_action|
         @http_action_executors << HttpActionExecutor.new(
-          :url         => http_action.url,
+          :url         => NoticeFormatter.replace_keywords(http_action.url, keywords),
           :http_method => http_action.http_method.downcase.to_sym,
-          :post_body   => http_action.body)
+          :post_body   => NoticeFormatter.replace_keywords(http_action.body, keywords))
       }
     }
     #p @email_action_executors
