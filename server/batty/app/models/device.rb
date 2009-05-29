@@ -52,9 +52,10 @@ class Device < ActiveRecord::Base
 
   def fired_triggers(energy_levels)
     return [] if energy_levels.size < 2
+    first_level, second_level = energy_levels[0, 2]
     return self.triggers.enable.
       all(:order => "triggers.id ASC").
-      select { |trigger| trigger.triggered?(*energy_levels[0, 2]) }
+      select { |trigger| trigger.fire?(first_level, second_level) }
   end
 
   # FIXME: リファクタリング
