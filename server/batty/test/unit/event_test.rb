@@ -41,6 +41,18 @@ class EventTest < ActiveSupport::TestCase
     # FIXME: トリガが削除されているパターンを追加
   end
 
+  test "belongs_to :energy" do
+    assert_equal(
+      energies(:yuya_pda2),
+      @yuya_pda_ge90_1.energy)
+
+    assert_equal(
+      energies(:yuya_cellular2),
+      @yuya_cellular_lt40_1.energy)
+
+    # FIXME: エネルギーが削除されているパターンを追加
+  end
+
   #
   # 検証
   #

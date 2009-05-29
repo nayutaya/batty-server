@@ -12,6 +12,7 @@
 
 # エネルギー
 class Energy < ActiveRecord::Base
+  has_many :events, :dependent => :nullify
   belongs_to :device
 
   LevelRange = 0..100
