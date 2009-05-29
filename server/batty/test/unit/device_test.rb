@@ -308,93 +308,77 @@ class DeviceTest < ActiveSupport::TestCase
       devices(:shinya_cellular).fired_triggers(100, 0))
   end
 
-  test "update_event, yuya_pad" do
+  test "build_events, yuya_pad" do
     device = devices(:yuya_pda)
 
     # 該当するトリガあり、かつイベント生成済み
-    assert_difference("Event.count", 0) {
-      assert_equal([], device.update_event)
-    }
-
-    e1 = device.energies.create!(:observed_level => 80, :observed_at => Time.local(2009, 1, 4))
+    assert_equal([], device.build_events)
 
     # 該当するトリガなし
-    assert_difference("Event.count", 0) {
-      assert_equal([], device.update_event)
-    }
-
-    t2 = triggers(:yuya_pda_ge90)
-    e2 = device.energies.create!(:observed_level => 90, :observed_at => Time.local(2009, 1, 5))
+    e1 = device.energies.create!(:observed_level => 80, :observed_at => Time.local(2009, 1, 4))
+    assert_equal([], device.build_events)
 
     # 該当するトリガあり、かつイベント未生成
-    assert_difference("Event.count", +1) {
-      events = device.update_event
-      assert_equal(1, events.size)
+    t2 = triggers(:yuya_pda_ge90)
+    e2 = device.energies.create!(:observed_level => 90, :observed_at => Time.local(2009, 1, 5))
+    events = device.build_events
+    assert_equal(1, events.size)
 
-      assert_equal(device.id,         events[0].device_id)
-      assert_equal(t2.id,             events[0].trigger_id)
-      assert_equal(t2.operator,       events[0].trigger_operator)
-      assert_equal(t2.level,          events[0].trigger_level)
-      assert_equal(e2.id,             events[0].energy_id)
-      assert_equal(e2.observed_level, events[0].observed_level)
-      assert_equal(e2.observed_at,    events[0].observed_at)
-    }
+    assert_equal(device.id,         events[0].device_id)
+    assert_equal(t2.id,             events[0].trigger_id)
+    assert_equal(t2.operator,       events[0].trigger_operator)
+    assert_equal(t2.level,          events[0].trigger_level)
+    assert_equal(e2.id,             events[0].energy_id)
+    assert_equal(e2.observed_level, events[0].observed_level)
+    assert_equal(e2.observed_at,    events[0].observed_at)
   end
 
-  test "update_event, yuya_pad, multiple" do
+  test "build_events, yuya_pad, multiple" do
     device = devices(:yuya_pda)
 
+    # 該当するトリガあり、かつイベント未生成
     t2a, t2b = [triggers(:yuya_pda_ge90), triggers(:yuya_pda_eq100)].sort_by(&:id)
     e1 = device.energies.create!(:observed_level =>  80, :observed_at => Time.local(2009, 1, 4))
     e2 = device.energies.create!(:observed_level => 100, :observed_at => Time.local(2009, 1, 5))
+    events = device.build_events
+    assert_equal(2, events.size)
 
-    # 該当するトリガあり、かつイベント未生成
-    assert_difference("Event.count", +2) {
-      events = device.update_event
-      assert_equal(2, events.size)
+    assert_equal(device.id,         events[0].device_id)
+    assert_equal(t2a.id,            events[0].trigger_id)
+    assert_equal(t2a.operator,      events[0].trigger_operator)
+    assert_equal(t2a.level,         events[0].trigger_level)
+    assert_equal(e2.id,             events[0].energy_id)
+    assert_equal(e2.observed_level, events[0].observed_level)
+    assert_equal(e2.observed_at,    events[0].observed_at)
 
-      assert_equal(device.id,         events[0].device_id)
-      assert_equal(t2a.id,            events[0].trigger_id)
-      assert_equal(t2a.operator,      events[0].trigger_operator)
-      assert_equal(t2a.level,         events[0].trigger_level)
-      assert_equal(e2.id,             events[0].energy_id)
-      assert_equal(e2.observed_level, events[0].observed_level)
-      assert_equal(e2.observed_at,    events[0].observed_at)
-
-      assert_equal(device.id,         events[1].device_id)
-      assert_equal(t2b.id,            events[1].trigger_id)
-      assert_equal(t2b.operator,      events[1].trigger_operator)
-      assert_equal(t2b.level,         events[1].trigger_level)
-      assert_equal(e2.id,             events[1].energy_id)
-      assert_equal(e2.observed_level, events[1].observed_level)
-      assert_equal(e2.observed_at,    events[1].observed_at)
-    }
+    assert_equal(device.id,         events[1].device_id)
+    assert_equal(t2b.id,            events[1].trigger_id)
+    assert_equal(t2b.operator,      events[1].trigger_operator)
+    assert_equal(t2b.level,         events[1].trigger_level)
+    assert_equal(e2.id,             events[1].energy_id)
+    assert_equal(e2.observed_level, events[1].observed_level)
+    assert_equal(e2.observed_at,    events[1].observed_at)
   end
 
-  test "update_event, shinya_note" do
+  test "build_events, shinya_note" do
     device = devices(:shinya_note)
 
     # 該当するトリガなし
-    assert_difference("Event.count", 0) {
-      assert_equal([], device.update_event)
-    }
-
-    t1 = triggers(:shinya_note_ne0)
-    e1 = device.energies.create!(:observed_level => 10, :observed_at => Time.local(2009, 1, 2))
+    assert_equal([], device.build_events)
 
     # 該当するトリガあり、かつイベント未生成
-    assert_difference("Event.count", +1) {
-      events = device.update_event
-      assert_equal(1, events.size)
+    t1 = triggers(:shinya_note_ne0)
+    e1 = device.energies.create!(:observed_level => 10, :observed_at => Time.local(2009, 1, 2))
+    events = device.build_events
+    assert_equal(1, events.size)
 
-      assert_equal(device.id,         events[0].device_id)
-      assert_equal(t1.id,             events[0].trigger_id)
-      assert_equal(t1.operator,       events[0].trigger_operator)
-      assert_equal(t1.level,          events[0].trigger_level)
-      assert_equal(e1.id,             events[0].energy_id)
-      assert_equal(e1.observed_level, events[0].observed_level)
-      assert_equal(e1.observed_at,    events[0].observed_at)
-    }
+    assert_equal(device.id,         events[0].device_id)
+    assert_equal(t1.id,             events[0].trigger_id)
+    assert_equal(t1.operator,       events[0].trigger_operator)
+    assert_equal(t1.level,          events[0].trigger_level)
+    assert_equal(e1.id,             events[0].energy_id)
+    assert_equal(e1.observed_level, events[0].observed_level)
+    assert_equal(e1.observed_at,    events[0].observed_at)
   end
 
 =begin

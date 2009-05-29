@@ -58,22 +58,18 @@ class Device < ActiveRecord::Base
       select { |trigger| trigger.fire?(first_level, second_level) }
   end
 
-  # FIXME: リファクタリング
-  def update_event
-    self.transaction {
-      current_energies = self.current_two_energies
-      current_energy   = current_energies.first
-      level1, level2   = current_energies.map(&:observed_level)
-      fired_triggers   = self.fired_triggers(level1, level2)
+  def build_events
+    current_energies = self.current_two_energies
+    current_energy   = current_energies.first
+    level1, level2   = current_energies.map(&:observed_level)
+    fired_triggers   = self.fired_triggers(level1, level2)
 
-      return fired_triggers.
-        map    { |trigger| [trigger, self.events.find_or_initialize_by_trigger_id_and_energy_id(trigger.id, current_energy.id)] }.
-        select { |trigger, event| event.new_record? }.
-        each   { |trigger, event| event.attributes = trigger.to_event_hash }.
-        each   { |trigger, event| event.attributes = current_energy.to_event_hash }.
-        map    { |trigger, event| event }.
-        each(&:save!)
-    }
+    return fired_triggers.
+      map    { |trigger| [trigger, self.events.find_or_initialize_by_trigger_id_and_energy_id(trigger.id, current_energy.id)] }.
+      select { |trigger, event| event.new_record? }.
+      each   { |trigger, event| event.attributes = trigger.to_event_hash }.
+      each   { |trigger, event| event.attributes = current_energy.to_event_hash }.
+      map    { |trigger, event| event }
   end
 
 =begin
