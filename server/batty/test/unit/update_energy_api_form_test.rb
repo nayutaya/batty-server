@@ -143,4 +143,24 @@ class UpdateEnergyApiFormTest < ActiveSupport::TestCase
       assert_equal(expected, @form.parsed_time, value)
     }
   end
+
+  test "to_energy_hash, empty" do
+    expected = {
+      :observed_level => nil,
+      :observed_at    => nil,
+    }
+    assert_equal(expected, @form.to_energy_hash)
+  end
+
+  test "to_energy_hash, full" do
+    @form.attributes = {
+      :level => 1,
+      :time  => 20000102_030405,
+    }
+    expected = {
+      :observed_level => 1,
+      :observed_at    => Time.local(2000, 1, 2, 3, 4, 5),
+    }
+    assert_equal(expected, @form.to_energy_hash)
+  end
 end

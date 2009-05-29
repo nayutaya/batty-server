@@ -26,12 +26,17 @@ class UpdateEnergyApiForm < ActiveForm
     return self.new(:level => params[:level], :time => time)
   end
 
-  # TODO: Energyモデルを作成するためのハッシュを生成するメソッドを追加
-
   def parsed_time
     time = Time.parse(self.time.to_s)
     return (self.time.to_s == time.strftime("%Y%m%d%H%M%S") ? time : nil)
   rescue ArgumentError
     return nil
+  end
+
+  def to_energy_hash
+    return {
+      :observed_level => self.level,
+      :observed_at    => self.parsed_time,
+    }
   end
 end
