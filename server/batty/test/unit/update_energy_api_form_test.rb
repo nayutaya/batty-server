@@ -4,6 +4,7 @@ require 'test_helper'
 class UpdateEnergyApiFormTest < ActiveSupport::TestCase
   def setup
     @klass = UpdateEnergyApiForm
+    @form  = @klass.new
     @basic = @klass.new(
       :level => "100",
       :time  => "20090101000000")
@@ -88,6 +89,38 @@ class UpdateEnergyApiFormTest < ActiveSupport::TestCase
     ].each { |value, expected|
       @basic.time = value
       assert_equal(expected, @basic.valid?, value)
+    }
+  end
+
+  test "validates_each : time" do
+    [
+      [20000102_030405, true ],
+      [20000101_000000, true ],
+      [20001231_235959, true ],
+      [20009999_000000, false],
+      [20000101_999999, false],
+      [20090229_000000, false],
+    ].each { |value, expected|
+      @basic.time = value
+      assert_equal(expected, @basic.valid?, value)
+    }
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "parsed_time" do
+    [
+      [20000102_030405, Time.local(2000,  1,  2,  3,  4,  5)],
+      [20000101_000000, Time.local(2000,  1,  1,  0,  0,  0)],
+      [20001231_235959, Time.local(2000, 12, 31, 23, 59, 59)],
+      [20009999_000000, nil],
+      [20000101_999999, nil],
+      [20090229_000000, nil],
+    ].each { |value, expected|
+      @form.time = value
+      assert_equal(expected, @form.parsed_time, value)
     }
   end
 end

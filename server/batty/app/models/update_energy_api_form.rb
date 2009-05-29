@@ -14,8 +14,19 @@ class UpdateEnergyApiForm < ActiveForm
   validates_numericality_of :time, :only_integer => true, :allow_nil => true
   validates_inclusion_of :level, :in => Energy::LevelRange, :allow_nil => true
   validates_inclusion_of :time, :in => TimeMinimumValue..TimeMaximumValue, :allow_nil => true
-  # TODO: timeの時間としての正しさ
+  validates_each(:time) { |record, attr, value|
+    unless record.parsed_time
+      record.errors.add(attr, :invalid)
+    end
+  }
 
   # TODO: paramsからインスタンスを生成するメソッドを追加
   # TODO: Energyモデルを作成するためのハッシュを生成するメソッドを追加
+
+  def parsed_time
+    time = Time.parse(self.time.to_s)
+    return (self.time.to_s == time.strftime("%Y%m%d%H%M%S") ? time : nil)
+  rescue ArgumentError
+    return nil
+  end
 end
