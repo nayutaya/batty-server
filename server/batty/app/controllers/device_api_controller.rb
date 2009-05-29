@@ -10,30 +10,14 @@ class DeviceApiController < ApplicationController
   # POST /device/token/:device_token/energies/update/:level
   # POST /device/token/:device_token/energies/update/:level/:time
   def update_energy
-    level_str = params[:level]
-    time_str  = params[:time]
-    time_str  = Time.now.strftime("%Y%m%d%H%M%S") if time_str.blank?
+    @api_form = UpdateEnergyApiForm.from(params)
 
-    level_valid   = !level_str.blank?
-    level_valid &&= (/\A\d{1,3}\z/ =~ level_str)
-    level_valid &&= (0..100).include?(level_str.to_i)
-
-    time_valid   = !time_str.blank?
-    time_valid &&= (/\A\d{14}\z/ =~ time_str)
-    time_valid &&= (Time.parse(time_str) rescue false)
-
-    unless level_valid && time_valid
-      render(:text => "", :status => 404)
+    unless @api_form.valid?
+      render(:text => "", :status => 422)
       return
     end
 
-    @level = level_str.to_i
-    @time  = Time.parse(time_str)
-
-    records = @device.update_energy(
-      :observed_level => @level,
-      :observed_at    => @time,
-      :update_event   => true)
+    records = @device.update_energy(@api_form.to_energy_hash.merge(:update_event => true))
 
     # TODO: テストを記述
     @email_actions = []
