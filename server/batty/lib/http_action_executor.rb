@@ -46,7 +46,7 @@ class HttpActionExecutor
         {:success => false, :message => "#{e.class}: #{e.message}"}
       end
 
-    return result.freeze.each(&:freeze)
+    return result.freeze.each { |k, v| v.freeze }
   end
 
   protected
