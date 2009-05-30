@@ -18,8 +18,8 @@ yuya_pda_ge90_1:
   updated_at: 2009-01-01 00:00:00
   trigger: yuya_pda_ge90
   enable: true
-  http_method: "HEAD"
-  url: "http://batty.nayutaya.jp/test/head/{now:date}/{now:time}"
+  http_method: "POST"
+  url: "http://example.jp/post/{now:date}/{now:time}"
   body: "{device: {device:name:json}, level: {event:observed-level:json}}"
 
 yuya_pda_ge90_2:
@@ -28,7 +28,7 @@ yuya_pda_ge90_2:
   trigger: yuya_pda_ge90
   enable: false
   http_method: "GET"
-  url: "http://batty.nayutaya.jp/test/get"
+  url: "http://example.jp/get"
   body: null
 
 shinya_note_ne0_1:
@@ -36,6 +36,6 @@ shinya_note_ne0_1:
   updated_at: 2009-01-01 00:00:00
   trigger: shinya_note_ne0
   enable: true
-  url: "http://batty.nayutaya.jp/test/post"
-  http_method: "POST"
+  url: "http://example.jp/head"
+  http_method: "HEAD"
   body: null
