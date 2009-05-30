@@ -18,6 +18,15 @@ class EmailActionExecutor
       :body       => email_action.body)
   end
 
+  def replace(keywords)
+    subject = NoticeFormatter.replace_keywords(self.subject, keywords) if self.subject
+    body    = NoticeFormatter.replace_keywords(self.body,    keywords) if self.body
+    return self.class.new(
+      :subject    => subject,
+      :recipients => self.recipients,
+      :body       => body)
+  end
+
   def execute
     EventNotification.deliver_notify(
       :subject    => self.subject,

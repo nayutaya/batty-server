@@ -70,6 +70,23 @@ class EmailActionExecutorTest < ActiveSupport::TestCase
   # インスタンスメソッド
   #
 
+  test "replace, empty" do
+    executor = @executor.replace({})
+    assert_equal(nil, executor.subject)
+    assert_equal(nil, executor.recipients)
+    assert_equal(nil, executor.body)
+  end
+
+  test "replace, full" do
+    @executor.subject    = "{a}:subject"
+    @executor.recipients = "{a}:recipients"
+    @executor.body       = "{a}:body"
+    executor = @executor.replace("a" => "A")
+    assert_equal("A:subject",      executor.subject)
+    assert_equal("{a}:recipients", executor.recipients)
+    assert_equal("A:body",         executor.body)
+  end
+
   test "execute" do
     subject    = @executor.subject    = "subject"
     recipients = @executor.recipients = "recipients"
