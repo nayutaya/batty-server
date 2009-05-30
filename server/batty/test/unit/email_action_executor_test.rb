@@ -66,6 +66,21 @@ class EmailActionExecutorTest < ActiveSupport::TestCase
     assert_equal("body",    executor.body)
   end
 
+  test "self.build_executors, no trigger" do
+    assert_equal([], @klass.build_exectors(events(:yuya_cellular_ne50_1)))
+  end
+
+  test "self.build_executors, one email action" do
+    time     = Time.local(2000, 1, 2, 3, 4, 5)
+    event    = events(:yuya_pda_ge90_1)
+    exectors = Kagemusha::DateTime.at(time) { @klass.build_exectors(event) }
+    assert_equal(1, exectors.size)
+
+    keywords = NoticeFormatter.format_event(event, time)
+    exector0 = EmailActionExecutor.from(email_actions(:yuya_pda_ge90_1)).replace(keywords)
+    assert_equal(exector0.to_hash, exectors[0].to_hash)
+  end
+
   #
   # インスタンスメソッド
   #
@@ -105,5 +120,26 @@ class EmailActionExecutorTest < ActiveSupport::TestCase
     assert_equal(nil, result)
 
     assert_equal(true, called)
+  end
+
+  test "to_hash, emtpy" do
+    expected = {
+      :subject    => nil,
+      :recipients => nil,
+      :body       => nil,
+    }
+    assert_equal(expected, @executor.to_hash)
+  end
+
+  test "to_hash, full" do
+    @executor.subject    = "subject"
+    @executor.recipients = "recipients"
+    @executor.body       = "body"
+    expected = {
+      :subject    => "subject",
+      :recipients => "recipients",
+      :body       => "body",
+    }
+    assert_equal(expected, @executor.to_hash)
   end
 end

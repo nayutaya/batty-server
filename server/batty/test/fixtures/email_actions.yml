@@ -19,8 +19,8 @@ yuya_pda_ge90_1:
   trigger: yuya_pda_ge90
   enable: true
   email: "yuyakato@gmail.com"
-  subject: "90%以上になりました"
-  body: "バッテリー残量が90%以上になりました。\n---\nbatty"
+  subject: "{device:name}のエネルギーが変化しました"
+  body: "{device:name}のエネルギーが{event:observed-level}%になりました。\n{event:observed-at:datetime:ja}"
 
 yuya_pda_ge90_2:
   created_at: 2009-01-01 00:00:00
