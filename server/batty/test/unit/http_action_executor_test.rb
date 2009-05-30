@@ -66,6 +66,21 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     assert_equal("body", executor.post_body)
   end
 
+  test "self.build_executors, no trigger" do
+    assert_equal([], @klass.build_exectors(events(:yuya_cellular_ne50_1)))
+  end
+
+  test "self.build_executors, one http action" do
+    time     = Time.local(2000, 1, 2, 3, 4, 5)
+    event    = events(:yuya_pda_ge90_1)
+    exectors = Kagemusha::DateTime.at(time) { @klass.build_exectors(event) }
+    assert_equal(1, exectors.size)
+
+    keywords = NoticeFormatter.format_event(event, time)
+    exector0 = HttpActionExecutor.from(http_actions(:yuya_pda_ge90_1)).replace(keywords)
+    assert_equal(exector0.to_hash, exectors[0].to_hash)
+  end
+
   #
   # インスタンスメソッド
   #
@@ -212,6 +227,27 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     result = @executor.execute
     assert_equal(false, result[:success])
     assert_equal("405 Method Not Allowed", result[:message])
+  end
+
+  test "to_hash, empty" do
+    expected = {
+      :url         => nil,
+      :http_method => nil,
+      :post_body   => nil,
+    }
+    assert_equal(expected, @executor.to_hash)
+  end
+
+  test "to_hash, full" do
+    @executor.url         = "url"
+    @executor.http_method = :method
+    @executor.post_body   = "post_body"
+    expected = {
+      :url         => "url",
+      :http_method => :method,
+      :post_body   => "post_body",
+    }
+    assert_equal(expected, @executor.to_hash)
   end
 
   test "create_http_request, head" do

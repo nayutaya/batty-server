@@ -25,6 +25,16 @@ class HttpActionExecutor
       :post_body   => http_action.body)
   end
 
+  def self.build_exectors(event)
+    trigger = event.trigger
+    return [] unless trigger
+
+    keywords = NoticeFormatter.format_event(event)
+    return trigger.http_actions.enable.map { |http_action|
+      HttpActionExecutor.from(http_action).replace(keywords)
+    }
+  end
+
   def replace(keywords)
     url       = NoticeFormatter.replace_keywords(self.url,       keywords) if self.url
     post_body = NoticeFormatter.replace_keywords(self.post_body, keywords) if self.post_body
@@ -56,6 +66,14 @@ class HttpActionExecutor
       end
 
     return result.freeze.each { |k, v| v.freeze }
+  end
+
+  def to_hash
+    return {
+      :url         => self.url,
+      :http_method => self.http_method,
+      :post_body   => self.post_body,
+    }
   end
 
   protected
