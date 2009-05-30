@@ -25,6 +25,15 @@ class HttpActionExecutor
       :post_body   => http_action.body)
   end
 
+  def replace(keywords)
+    url       = NoticeFormatter.replace_keywords(self.url,       keywords) if self.url
+    post_body = NoticeFormatter.replace_keywords(self.post_body, keywords) if self.post_body
+    return self.class.new(
+      :url         => url,
+      :http_method => self.http_method,
+      :post_body   => post_body)
+  end
+
   def execute
     request   = self.create_http_request
     connector = self.create_http_connector

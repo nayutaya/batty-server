@@ -70,6 +70,23 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
   # インスタンスメソッド
   #
 
+  test "replace, empty" do
+    executor = @executor.replace({})
+    assert_equal(nil, executor.url)
+    assert_equal(nil, executor.http_method)
+    assert_equal(nil, executor.post_body)
+  end
+
+  test "replace, full" do
+    @executor.url         = "{a}:url"
+    @executor.http_method = :get
+    @executor.post_body   = "{a}:body"
+    executor = @executor.replace("a" => "A")
+    assert_equal("A:url",  executor.url)
+    assert_equal(:get,     executor.http_method)
+    assert_equal("A:body", executor.post_body)
+  end
+
   test "execute, 200 OK" do
     @executor.url         = "http://example.jp/"
     @executor.http_method = :get
