@@ -25,31 +25,6 @@ class HttpActionExecutor
       :post_body   => http_action.body)
   end
 
-  def create_http_request
-    klass = 
-      case @http_method
-      when :head then Net::HTTP::Head
-      when :get  then Net::HTTP::Get
-      when :post then Net::HTTP::Post
-      else raise("invalid http method")
-      end
-
-    request = klass.new(URI.parse(@url).request_uri)
-    request.body = @post_body if @http_method == :post
-    request["User-Agent"] = UserAgent
-
-    return request
-  end
-
-  def create_http_connector
-    uri  = URI.parse(@url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.open_timeout = OpenTimeout
-    http.read_timeout = ReadTimeout
-
-    return http
-  end
-
   def execute
     request   = self.create_http_request
     connector = self.create_http_connector
@@ -72,5 +47,32 @@ class HttpActionExecutor
       end
 
     return result.freeze.each(&:freeze)
+  end
+
+  protected
+
+  def create_http_request
+    klass =
+      case @http_method
+      when :head then Net::HTTP::Head
+      when :get  then Net::HTTP::Get
+      when :post then Net::HTTP::Post
+      else raise("invalid http method")
+      end
+
+    request = klass.new(URI.parse(@url).request_uri)
+    request.body = @post_body if @http_method == :post
+    request["User-Agent"] = UserAgent
+
+    return request
+  end
+
+  def create_http_connector
+    uri  = URI.parse(@url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.open_timeout = OpenTimeout
+    http.read_timeout = ReadTimeout
+
+    return http
   end
 end

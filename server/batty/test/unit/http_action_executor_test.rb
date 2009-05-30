@@ -70,60 +70,6 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
   # インスタンスメソッド
   #
 
-  test "create_http_request, head" do
-    @executor.url         = "http://example.jp/head?query"
-    @executor.http_method = :head
-    @executor.post_body   = "body"
-
-    request = @executor.create_http_request
-    assert_equal("HEAD",            request.method)
-    assert_equal("/head?query",     request.path)
-    assert_equal(nil,               request.body)
-    assert_equal(@klass::UserAgent, request["User-Agent"])
-  end
-
-  test "create_http_request, get" do
-    @executor.url         = "http://example.jp/get?query"
-    @executor.http_method = :get
-    @executor.post_body   = "body"
-
-    request = @executor.create_http_request
-    assert_equal("GET",             request.method)
-    assert_equal("/get?query",      request.path)
-    assert_equal(nil,               request.body)
-    assert_equal(@klass::UserAgent, request["User-Agent"])
-  end
-
-  test "create_http_request, post" do
-    @executor.url         = "http://example.jp/post?query"
-    @executor.http_method = :post
-    @executor.post_body   = "body"
-
-    request = @executor.create_http_request
-    assert_equal("POST",            request.method)
-    assert_equal("/post?query",     request.path)
-    assert_equal("body",            request.body)
-    assert_equal(@klass::UserAgent, request["User-Agent"])
-  end
-
-  test "create_http_request, invalid" do
-    @executor.http_method = :invalid
-
-    assert_raise(RuntimeError) {
-      @executor.create_http_request
-    }
-  end
-
-  test "create_http_connector" do
-    @executor.url = "http://example.jp/path?query"
-
-    http = @executor.create_http_connector
-    assert_equal("example.jp",        http.address)
-    assert_equal(80,                  http.port)
-    assert_equal(@klass::OpenTimeout, http.open_timeout)
-    assert_equal(@klass::ReadTimeout, http.read_timeout)
-  end
-
   test "execute, 200 OK" do
     @executor.url         = "http://example.jp/"
     @executor.http_method = :get
@@ -249,5 +195,59 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     result = @executor.execute
     assert_equal(false, result[:success])
     assert_equal("405 Method Not Allowed", result[:message])
+  end
+
+  test "create_http_request, head" do
+    @executor.url         = "http://example.jp/head?query"
+    @executor.http_method = :head
+    @executor.post_body   = "body"
+
+    request = @executor.__send__(:create_http_request)
+    assert_equal("HEAD",            request.method)
+    assert_equal("/head?query",     request.path)
+    assert_equal(nil,               request.body)
+    assert_equal(@klass::UserAgent, request["User-Agent"])
+  end
+
+  test "create_http_request, get" do
+    @executor.url         = "http://example.jp/get?query"
+    @executor.http_method = :get
+    @executor.post_body   = "body"
+
+    request = @executor.__send__(:create_http_request)
+    assert_equal("GET",             request.method)
+    assert_equal("/get?query",      request.path)
+    assert_equal(nil,               request.body)
+    assert_equal(@klass::UserAgent, request["User-Agent"])
+  end
+
+  test "create_http_request, post" do
+    @executor.url         = "http://example.jp/post?query"
+    @executor.http_method = :post
+    @executor.post_body   = "body"
+
+    request = @executor.__send__(:create_http_request)
+    assert_equal("POST",            request.method)
+    assert_equal("/post?query",     request.path)
+    assert_equal("body",            request.body)
+    assert_equal(@klass::UserAgent, request["User-Agent"])
+  end
+
+  test "create_http_request, invalid" do
+    @executor.http_method = :invalid
+
+    assert_raise(RuntimeError) {
+      @executor.__send__(:create_http_request)
+    }
+  end
+
+  test "create_http_connector" do
+    @executor.url = "http://example.jp/path?query"
+
+    http = @executor.__send__(:create_http_connector)
+    assert_equal("example.jp",        http.address)
+    assert_equal(80,                  http.port)
+    assert_equal(@klass::OpenTimeout, http.open_timeout)
+    assert_equal(@klass::ReadTimeout, http.read_timeout)
   end
 end
