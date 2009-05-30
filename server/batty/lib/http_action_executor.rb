@@ -18,29 +18,30 @@ class HttpActionExecutor
 
   attr_accessor :url, :http_method, :post_body
 
-  def create_http_request
-    klass = 
-      case @http_method
-      when :head then Net::HTTP::Head
-      when :get  then Net::HTTP::Get
-      when :post then Net::HTTP::Post
-      else raise("invalid http method")
-      end
-
-    request = klass.new(URI.parse(@url).request_uri)
-    request.body = @post_body if @http_method == :post
-    request["User-Agent"] = UserAgent
-
-    return request
+  def self.from(http_action)
+    return self.new(
+      :url         => http_action.url,
+      :http_method => (http_action.http_method.blank? ? nil : http_action.http_method.downcase.to_sym),
+      :post_body   => http_action.body)
   end
 
-  def create_http_connector
-    uri  = URI.parse(@url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.open_timeout = OpenTimeout
-    http.read_timeout = ReadTimeout
+  def self.build_exectors(event)
+    trigger = event.trigger
+    return [] unless trigger
 
-    return http
+    keywords = NoticeFormatter.format_event(event)
+    return trigger.http_actions.enable.map { |http_action|
+      HttpActionExecutor.from(http_action).replace(keywords)
+    }
+  end
+
+  def replace(keywords)
+    url       = NoticeFormatter.replace_keywords(self.url,       keywords) if self.url
+    post_body = NoticeFormatter.replace_keywords(self.post_body, keywords) if self.post_body
+    return self.class.new(
+      :url         => url,
+      :http_method => self.http_method,
+      :post_body   => post_body)
   end
 
   def execute
@@ -64,6 +65,41 @@ class HttpActionExecutor
         {:success => false, :message => "#{e.class}: #{e.message}"}
       end
 
-    return result.freeze.each(&:freeze)
+    return result.freeze.each { |k, v| v.freeze }
+  end
+
+  def to_hash
+    return {
+      :url         => self.url,
+      :http_method => self.http_method,
+      :post_body   => self.post_body,
+    }
+  end
+
+  protected
+
+  def create_http_request
+    klass =
+      case @http_method
+      when :head then Net::HTTP::Head
+      when :get  then Net::HTTP::Get
+      when :post then Net::HTTP::Post
+      else raise("invalid http method")
+      end
+
+    request = klass.new(URI.parse(@url).request_uri)
+    request.body = @post_body if @http_method == :post
+    request["User-Agent"] = UserAgent
+
+    return request
+  end
+
+  def create_http_connector
+    uri  = URI.parse(@url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.open_timeout = OpenTimeout
+    http.read_timeout = ReadTimeout
+
+    return http
   end
 end
