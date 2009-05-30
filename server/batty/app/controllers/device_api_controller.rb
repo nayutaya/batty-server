@@ -30,20 +30,11 @@ class DeviceApiController < ApplicationController
     }
 
     # TODO: テスト
-    @email_action_executors = []
-    @http_action_executors  = []
-    @events.each { |event|
-      keywords = NoticeFormatter.format_event(event)
-      trigger = event.trigger
-      trigger.email_actions.enable.each { |email_action|
-        @email_action_executors << EmailActionExecutor.from(email_action).replace(keywords)
-      }
-      trigger.http_actions.enable.each { |http_action|
-        @http_action_executors << HttpActionExecutor.from(http_action).replace(keywords)
-      }
-    }
-    #p @email_action_executors
-    #p @http_action_executors
+    # TODO: 非同期化
+    @email_action_executors = @events.map { |event| EmailActionExecutor.build_exectors(event) }.flatten
+    @http_action_executors  = @events.map { |event| HttpActionExecutor.build_exectors(event) }.flatten
+    @email_action_executors.map(&:execute)
+    @http_action_executors.map(&:execute)
 
     render(:text => "success")
   end
