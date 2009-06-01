@@ -4,6 +4,7 @@ require 'test_helper'
 class EmailAddressEditFormTest < ActiveSupport::TestCase
   def setup
     @klass = EmailAddressEditForm
+    @form  = @klass.new
     @basic = @klass.new(
       :email => "email@example.jp")
   end
@@ -70,5 +71,26 @@ class EmailAddressEditFormTest < ActiveSupport::TestCase
       @basic.email = value
       assert_equal(expected, @basic.valid?, value)
     }
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "to_email_address_hash, empty" do
+    expected = {
+      :email => nil,
+    }
+    assert_equal(expected, @form.to_email_address_hash)
+  end
+
+  test "to_email_address_hash, full" do
+    @form.attributes = {
+      :email => "a",
+    }
+    expected = {
+      :email => "a",
+    }
+    assert_equal(expected, @form.to_email_address_hash)
   end
 end
