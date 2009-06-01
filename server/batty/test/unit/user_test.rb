@@ -111,15 +111,16 @@ class UserTest < ActiveSupport::TestCase
 
   test "has_many :email_addresses" do
     expected = [
-      email_addresses(:yuya1),
-      email_addresses(:yuya2),
+      email_addresses(:yuya_gmail),
+      email_addresses(:yuya_example),
+      email_addresses(:yuya_nayutaya),
     ]
     assert_equal(
       expected.sort_by(&:id),
       @yuya.email_addresses.all(:order => "email_addresses.id ASC"))
 
     expected = [
-      email_addresses(:shinya1),
+      email_addresses(:shinya_example),
     ]
     assert_equal(
       expected.sort_by(&:id),

@@ -23,6 +23,12 @@ class SettingsControllerTest < ActionController::TestCase
     assert_template("index")
     assert_flash_empty
     assert_logged_in(@yuya)
+
+    assert_equal(@yuya.email_addresses.size, assigns(:email_addresses).size)
+    assert_equal(true, assigns(:email_addresses).all? { |e| e.user == @yuya })
+    assert_equal(
+      assigns(:email_addresses).sort_by { |e| [e.email, e.id] },
+      assigns(:email_addresses))
   end
 
   test "GET index, abnormal, no login" do

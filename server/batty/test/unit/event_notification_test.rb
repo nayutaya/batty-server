@@ -49,7 +49,7 @@ class EventNotificationTest < ActionMailer::TestCase
   test "notify" do
     options = {
       :subject    => "subject",
-      :recipients => email_addresses(:yuya1).email,
+      :recipients => email_addresses(:yuya_gmail).email,
       :body       => "body",
     }
     assert_nothing_raised {

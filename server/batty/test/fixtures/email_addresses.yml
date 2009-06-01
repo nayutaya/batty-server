@@ -11,23 +11,30 @@
 #  activated_at     :datetime      index_email_addresses_on_activated_at
 #
 
-yuya1:
+yuya_gmail:
   created_at: 2009-01-01 00:00:00
   activation_token: "11111111111111111111"
   user: yuya
   email: "yuyakato@gmail.com"
   activated_at: 2009-01-01 00:00:00
 
-yuya2:
+yuya_example:
   created_at: 2009-01-01 00:00:00
   activation_token: "22222222222222222222"
   user: yuya
   email: "yuya@example.jp"
   activated_at: nil
 
-shinya1:
+yuya_nayutaya:
   created_at: 2009-01-01 00:00:00
   activation_token: "33333333333333333333"
+  user: yuya
+  email: "yuya@nayutaya.co.jp"
+  activated_at: 2009-01-01 00:00:00
+
+shinya_example:
+  created_at: 2009-01-01 00:00:00
+  activation_token: "44444444444444444444"
   user: shinya
   email: "shinya@example.jp"
   activated_at: 2009-01-01 00:00:00
