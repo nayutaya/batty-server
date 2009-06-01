@@ -16,8 +16,13 @@ class EmailsControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "emails"}
 
-    assert_routing("/emails/new",    base.merge(:action => "new"))
-    assert_routing("/emails/create", base.merge(:action => "create"))
+    assert_routing("/emails/new",     base.merge(:action => "new"))
+    assert_routing("/emails/create",  base.merge(:action => "create"))
+    assert_routing("/emails/created", base.merge(:action => "created"))
+
+    assert_routing("/email/token/0123456789/activation", base.merge(:action => "activation", :activation_token => "0123456789"))
+    assert_routing("/email/token/0123456789/activate",   base.merge(:action => "activate",   :activation_token => "0123456789"))
+    assert_routing("/email/token/0123456789/activated",  base.merge(:action => "activated",  :activation_token => "0123456789"))
 
     assert_routing("/email/1234567890/delete",  base.merge(:action => "delete",  :email_address_id => "1234567890"))
     assert_routing("/email/1234567890/destroy", base.merge(:action => "destroy", :email_address_id => "1234567890"))

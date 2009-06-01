@@ -32,6 +32,18 @@ class EmailsController < ApplicationController
     end
   end
 
+  # GET /emails/created
+  # TODO: 実装せよ
+
+  # GET /email/token/:activation_token/activation
+  # TODO: 実装せよ
+
+  # POST /email/token/:activation_token/activate
+  # TODO: 実装せよ
+
+  # GET /email/token/:activation_token/activated
+  # TODO: 実装せよ
+
   # GET /email/:email_address_id/delete
   def delete
     # nop

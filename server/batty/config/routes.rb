@@ -1,7 +1,8 @@
 
 ActionController::Routing::Routes.draw do |map|
-  UserToken   = /[0-9a-f]+/
-  DeviceToken = /[0-9a-f]+/
+  UserToken       = /[0-9a-f]+/
+  DeviceToken     = /[0-9a-f]+/
+  ActivationToken = /[0-9a-f]+/
 
   DeviceId       = /[0-9]+/
   TriggerId      = /[0-9]+/
@@ -32,6 +33,7 @@ ActionController::Routing::Routes.draw do |map|
     open_id_credentials.connect "credential/open_id/:open_id_credential_id/:action", :action => /(delete|destroy)/, :open_id_credential_id => /[0-9]+/
   end
 
+  map.connect "email/token/:activation_token/:action", :controller => "emails", :action => /(activation|activate|activated)/, :activation_token => ActivationToken
   map.connect "email/:email_address_id/:action", :controller => "emails", :action => /(delete|destroy)/, :email_address_id => EmailAddressId
 
   map.connect "device/token/:device_token/:action.rdf", :controller => "device_feeds", :device_token => DeviceToken
