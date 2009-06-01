@@ -10,6 +10,8 @@ class EmailsController < ApplicationController
   before_filter :authentication
   before_filter :authentication_required, :except => [:activation, :activate, :activated]
   before_filter :required_param_email_address_id_for_login_user, :only => [:created, :delete, :destroy]
+  before_filter :required_param_activation_token, :only => [:activation, :activate, :activated]
+  before_filter :only_inactive_email_address, :only => [:activation, :activate]
 
   # GET /emails/new
   def new
@@ -20,7 +22,8 @@ class EmailsController < ApplicationController
   def create
     @edit_form = EditFormClass.new(params[:edit_form])
 
-    @email_address = @login_user.email_addresses.build(@edit_form.to_email_address_hash)
+    @email_address = @login_user.email_addresses.build
+    @email_address.attributes       = @edit_form.to_email_address_hash
     @email_address.activation_token = EmailAddress.create_unique_activation_token
 
     if @edit_form.valid? && @email_address.save
@@ -54,35 +57,11 @@ class EmailsController < ApplicationController
 
   # GET /email/token/:activation_token/activation
   def activation
-    # TODO: フィルタ化
-    @email_address = EmailAddress.find_by_activation_token(params[:activation_token])
-    unless @email_address
-      set_error("アクティベーショントークンが正しくありません。")
-      redirect_to(root_path)
-      return
-    end
-    if @email_address.activated?
-      set_error("既にアクティベーションされています。")
-      redirect_to(root_path)
-      return
-    end
+    # nop
   end
 
   # POST /email/token/:activation_token/activate
   def activate
-    # TODO: フィルタ化
-    @email_address = EmailAddress.find_by_activation_token(params[:activation_token])
-    unless @email_address
-      set_error("アクティベーショントークンが正しくありません。")
-      redirect_to(root_path)
-      return
-    end
-    if @email_address.activated?
-      set_error("既にアクティベーションされています。")
-      redirect_to(root_path)
-      return
-    end
-
     @email_address.activate!
 
     redirect_to(:action => "activated")
@@ -90,13 +69,7 @@ class EmailsController < ApplicationController
 
   # GET /email/token/:activation_token/activated
   def activated
-    # TODO: フィルタ化
-    @email_address = EmailAddress.find_by_activation_token(params[:activation_token])
-    unless @email_address
-      set_error("アクティベーショントークンが正しくありません。")
-      redirect_to(root_path)
-      return
-    end
+    # nop
   end
 
   private
@@ -109,6 +82,27 @@ class EmailsController < ApplicationController
       set_error("メールアドレスIDが正しくありません。")
       redirect_to(root_path)
       return false
+    end
+  end
+
+  def required_param_activation_token(activation_token = params[:activation_token])
+    @email_address = EmailAddress.find_by_activation_token(activation_token)
+    if @email_address
+      return true
+    else
+      set_error("アクティベーショントークンが正しくありません。")
+      redirect_to(root_path)
+      return false
+    end
+  end
+
+  def only_inactive_email_address
+    if @email_address.activated?
+      set_error("既にアクティベーションされています。")
+      redirect_to(root_path)
+      return false
+    else
+      return true
     end
   end
 end
