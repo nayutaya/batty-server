@@ -1,9 +1,14 @@
 
 <%- @stylesheets = %w[home] -%>
 
-<%- if logged_in? -%>
+<%- if logged_in? && production? -%>
   <%- additional_head { -%>
     <meta http-equiv="refresh" content="<%=h 5.minutes %>" />
+  <%- } -%>
+<%- end -%>
+
+<%- if logged_in? -%>
+  <%- additional_head { -%>
     <%= rss_auto_discovery(:title => "バッテリ履歴", :href => url_for(:controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token)) %>
     <%= rss_auto_discovery(:title => "イベント履歴", :href => url_for(:controller => "user_feeds", :action => "events", :user_token => @login_user.user_token)) %>
   <%- } -%>

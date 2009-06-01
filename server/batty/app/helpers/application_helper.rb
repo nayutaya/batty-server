@@ -1,5 +1,9 @@
 
 module ApplicationHelper
+  def production?
+    return (RAILS_ENV == "production")
+  end
+
   def rss_auto_discovery(options = {})
     options = options.dup
     title = options.delete(:title) || raise(ArgumentError)
