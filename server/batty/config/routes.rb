@@ -1,11 +1,14 @@
 
 ActionController::Routing::Routes.draw do |map|
-  UserToken     = /[0-9a-f]+/
-  DeviceToken   = /[0-9a-f]+/
-  DeviceId      = /[0-9]+/
-  TriggerId     = /[0-9]+/
-  EmailActionId = /[0-9]+/
-  HttpActionId  = /[0-9]+/
+  UserToken       = /[0-9a-f]+/
+  DeviceToken     = /[0-9a-f]+/
+  ActivationToken = /[0-9a-f]+/
+
+  DeviceId       = /[0-9]+/
+  TriggerId      = /[0-9]+/
+  EmailActionId  = /[0-9]+/
+  HttpActionId   = /[0-9]+/
+  EmailAddressId = /[0-9]+/
 
   map.root :controller => "home", :action => "index"
 
@@ -29,6 +32,9 @@ ActionController::Routing::Routes.draw do |map|
   map.with_options :controller => "credentials/open_id" do |open_id_credentials|
     open_id_credentials.connect "credential/open_id/:open_id_credential_id/:action", :action => /(delete|destroy)/, :open_id_credential_id => /[0-9]+/
   end
+
+  map.connect "email/:email_address_id/:action",       :controller => "emails", :action => /(created|delete|destroy)/, :email_address_id => EmailAddressId
+  map.connect "email/token/:activation_token/:action", :controller => "emails", :action => /(activation|activate|activated)/, :activation_token => ActivationToken
 
   map.connect "device/token/:device_token/:action.rdf", :controller => "device_feeds", :device_token => DeviceToken
   map.connect "device/token/:device_token/energies/update/:level",       :controller => "device_api", :action => "update_energy", :device_token => DeviceToken, :level => /\d+/

@@ -51,7 +51,7 @@
             アクティベーション待ち
           <%- end -%>
         </td>
-        <td>削除</td>
+        <td><%= link_to(delete_icon, :controller => "emails", :action => "delete", :email_address_id => email_address.id) %></td>
       </tr>
     <%- } -%>
   </tbody>
