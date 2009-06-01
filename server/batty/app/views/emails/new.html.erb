@@ -7,12 +7,19 @@
 <h1>メールアドレスの追加</h1>
 
 <%- form_for(:edit_form, :url => {:action => "create"}) { |f| -%>
- <div>
-  <%= f.label(:email) %>
-  <%= f.text_field(:email, :size => 30) %>
-  <%= error_message_on(:edit_form, :email) %>
- </div>
- <div><%= submit_tag("追加") %></div>
+  <table border="1">
+    <tr>
+      <th><%= f.label(:email) %></th>
+      <td>
+        <%= f.text_field(:email, :size => 30) %>
+        <%= error_message_on(:edit_form, :email) %>
+      </td>
+    </tr>
+  </table>
+  <div><%= submit_tag("追加") %></div>
 <%- } -%>
 
-<%= error_messages_for(:edit_form) %>
+<%- if development? -%>
+  <hr />
+  <%= error_messages_for(:edit_form) %>
+<%- end -%>
