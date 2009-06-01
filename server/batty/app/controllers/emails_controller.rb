@@ -7,8 +7,9 @@ class EmailsController < ApplicationController
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:create])
-  before_filter :authentication
-  before_filter :authentication_required
+  before_filter :authentication, :except => [:destroy]
+  before_filter :authentication_required, :except => [:destroy]
+  before_filter :required_param_email_address_id_for_login_user, :only => [:delete]
 
   # GET /emails/new
   def new
@@ -28,6 +29,27 @@ class EmailsController < ApplicationController
     else
       set_error_now("入力内容を確認してください。")
       render(:action => "new")
+    end
+  end
+
+  # GET /email/:email_address_id/delete
+  def delete
+    # nop
+  end
+
+  # POST /email/:email_address_id/destroy
+  # TODO: 実装せよ
+
+  private
+
+  def required_param_email_address_id_for_login_user(email_address_id = params[:email_address_id])
+    @email_address = @login_user.email_addresses.find_by_id(email_address_id)
+    if @email_address
+      return true
+    else
+      set_error("メールアドレスIDが正しくありません。")
+      redirect_to(root_path)
+      return false
     end
   end
 end

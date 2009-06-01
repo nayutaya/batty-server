@@ -3,7 +3,9 @@ require 'test_helper'
 
 class EmailsControllerTest < ActionController::TestCase
   def setup
-    @yuya = users(:yuya)
+    @yuya           = users(:yuya)
+    @yuya_gmail     = email_addresses(:yuya_gmail)
+    @shinya_example = email_addresses(:shinya_example)
 
     @edit_form = EmailAddressEditForm.new(
       :email => "email@example.jp")
@@ -16,6 +18,9 @@ class EmailsControllerTest < ActionController::TestCase
 
     assert_routing("/emails/new",    base.merge(:action => "new"))
     assert_routing("/emails/create", base.merge(:action => "create"))
+
+    assert_routing("/email/1234567890/delete",  base.merge(:action => "delete",  :email_address_id => "1234567890"))
+    assert_routing("/email/1234567890/destroy", base.merge(:action => "destroy", :email_address_id => "1234567890"))
   end
 
   test "GET new" do
@@ -86,6 +91,43 @@ class EmailsControllerTest < ActionController::TestCase
     session_logout
 
     post :create
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete" do
+    get :delete, :email_address_id => @yuya_gmail.id
+
+    assert_response(:success)
+    assert_template("delete")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_gmail, assigns(:email_address))
+  end
+
+  test "GET delete, abnormal, no login" do
+    session_logout
+
+    get :delete
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete, abnormal, no email address id" do
+    get :delete, :email_address_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET delete, abnormal, other's email address" do
+    get :delete, :email_address_id => @shinya_example.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
