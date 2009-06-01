@@ -1,0 +1,18 @@
+
+<div>
+  <%= link_to(h("トップ"), root_path) %> &gt;
+  <em>メールアドレスの追加</em>
+</div>
+
+<h1>メールアドレスの追加</h1>
+
+<%- form_for(:edit_form, :url => {:action => "create"}) { |f| -%>
+ <div>
+  <%= f.label(:email) %>
+  <%= f.text_field(:email, :size => 30) %>
+  <%= error_message_on(:edit_form, :email) %>
+ </div>
+ <div><%= submit_tag("追加") %></div>
+<%- } -%>
+
+<%= error_messages_for(:edit_form) %>
