@@ -14,7 +14,8 @@ class SettingsController < ApplicationController
 
   # GET /settings
   def index
-    # nop
+    @email_addresses = @login_user.email_addresses.all(
+      :order => "email_addresses.email ASC, email_addresses.id ASC")
   end
 
   # XHR GET /settings/get_nickname

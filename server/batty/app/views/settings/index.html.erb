@@ -23,6 +23,40 @@
   </tr>
 </table>
 
+<h2>通知先メールアドレス</h2>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>登録日</th>
+      <th>メールアドレス</th>
+      <th>状態</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <td colspan="4">メールアドレスを追加する</td>
+    </tr>
+  </tfoot>
+  <tbody>
+    <%- @email_addresses.each { |email_address| -%>
+      <tr>
+        <td><%=h yyyymmdd(email_address.created_at) %></td>
+        <td><%=h email_address.email %></td>
+        <td>
+          <%- if email_address.activated? -%>
+            アクティベーション済み
+          <%- else -%>
+            アクティベーション待ち
+          <%- end -%>
+        </td>
+        <td>削除</td>
+      </tr>
+    <%- } -%>
+  </tbody>
+</table>
+
 <script type="text/javascript">
   //<![CDATA[
   var authenticity_token = "<%= form_authenticity_token %>";
