@@ -27,7 +27,17 @@ class EmailsController < ApplicationController
     @email_address.activation_token = EmailAddress.create_unique_activation_token
 
     if @edit_form.valid? && @email_address.save
-      # TODO: アクティベーションメールを送信
+      # TODO: テスト
+      @activation_url = url_for(
+        :only_path        => false,
+        :controller       => "emails",
+        :action           => "activation",
+        :activation_token => @email_address.activation_token)
+
+      # TODO: テスト
+      EmailActivationMailer.deliver_request(
+        :recipients     => @email_address.email,
+        :activation_url => @activation_url)
 
       set_notice("メールアドレスを追加しました。")
       redirect_to(:action => "created", :email_address_id => @email_address.id)
@@ -63,6 +73,10 @@ class EmailsController < ApplicationController
   # POST /email/token/:activation_token/activate
   def activate
     @email_address.activate!
+
+    # TODO: テスト
+    EmailActivationMailer.deliver_complete(
+      :recipients => @email_address.email)
 
     redirect_to(:action => "activated")
   end
