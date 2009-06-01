@@ -11,6 +11,7 @@
  </div>
 <%- end -%>
 
-<%- if true -%>
- <!-- <%= link_to(h(@credential.activation_token), :action => "activation", :activation_token => @credential.activation_token) %> -->
+<%- if development? -%>
+  <hr />
+  <%= link_to(h("アクティベーション"), :action => "activation", :activation_token => @credential.activation_token) %>
 <%- end -%>
