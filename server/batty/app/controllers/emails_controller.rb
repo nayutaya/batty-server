@@ -8,7 +8,7 @@ class EmailsController < ApplicationController
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:create, :destroy, :activate])
   before_filter :authentication
-  before_filter :authentication_required, :except => [:activation, :activate]
+  before_filter :authentication_required, :except => [:activation, :activate, :activated]
   before_filter :required_param_email_address_id_for_login_user, :only => [:created, :delete, :destroy]
 
   # GET /emails/new
@@ -89,7 +89,15 @@ class EmailsController < ApplicationController
   end
 
   # GET /email/token/:activation_token/activated
-  # TODO: 実装せよ
+  def activated
+    # TODO: フィルタ化
+    @email_address = EmailAddress.find_by_activation_token(params[:activation_token])
+    unless @email_address
+      set_error("アクティベーショントークンが正しくありません。")
+      redirect_to(root_path)
+      return
+    end
+  end
 
   private
 
