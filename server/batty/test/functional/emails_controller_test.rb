@@ -133,4 +133,52 @@ class EmailsControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "POST destroy" do
+    assert_difference("EmailAddress.count", -1) {
+      post :destroy, :email_address_id => @yuya_gmail.id
+    }
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "settings", :action => "index")
+    assert_flash_notice
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_gmail, assigns(:email_address))
+
+    assert_equal(nil, EmailAddress.find_by_id(@yuya_gmail.id))
+  end
+
+  test "GET destroy, abnormal, method not allowed" do
+    get :destroy
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
+  test "POST destroy, abnormal, no login" do
+    session_logout
+
+    post :destroy
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, no email address id" do
+    post :destroy, :email_address_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST destroy, abnormal, other's email address" do
+    post :destroy, :email_address_id => @shinya_example.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
 end

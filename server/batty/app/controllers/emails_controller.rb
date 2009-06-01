@@ -6,10 +6,10 @@ class EmailsController < ApplicationController
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create])
-  before_filter :authentication, :except => [:destroy]
-  before_filter :authentication_required, :except => [:destroy]
-  before_filter :required_param_email_address_id_for_login_user, :only => [:delete]
+    :only   => [:create, :destroy])
+  before_filter :authentication
+  before_filter :authentication_required
+  before_filter :required_param_email_address_id_for_login_user, :only => [:delete, :destroy]
 
   # GET /emails/new
   def new
@@ -38,7 +38,12 @@ class EmailsController < ApplicationController
   end
 
   # POST /email/:email_address_id/destroy
-  # TODO: 実装せよ
+  def destroy
+    @email_address.destroy
+
+    set_notice("メールアドレスを削除しました。")
+    redirect_to(:controller => "settings")
+  end
 
   private
 
