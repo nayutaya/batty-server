@@ -6,9 +6,9 @@ class EmailsController < ApplicationController
   verify(
     :method => :post,
     :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create, :destroy])
+    :only   => [:create, :destroy, :activate])
   before_filter :authentication
-  before_filter :authentication_required, :except => [:activation]
+  before_filter :authentication_required, :except => [:activation, :activate]
   before_filter :required_param_email_address_id_for_login_user, :only => [:created, :delete, :destroy]
 
   # GET /emails/new
@@ -54,15 +54,39 @@ class EmailsController < ApplicationController
 
   # GET /email/token/:activation_token/activation
   def activation
+    # TODO: フィルタ化
     @email_address = EmailAddress.find_by_activation_token(params[:activation_token])
     unless @email_address
       set_error("アクティベーショントークンが正しくありません。")
       redirect_to(root_path)
+      return
+    end
+    if @email_address.activated?
+      set_error("既にアクティベーションされています。")
+      redirect_to(root_path)
+      return
     end
   end
 
   # POST /email/token/:activation_token/activate
-  # TODO: 実装せよ
+  def activate
+    # TODO: フィルタ化
+    @email_address = EmailAddress.find_by_activation_token(params[:activation_token])
+    unless @email_address
+      set_error("アクティベーショントークンが正しくありません。")
+      redirect_to(root_path)
+      return
+    end
+    if @email_address.activated?
+      set_error("既にアクティベーションされています。")
+      redirect_to(root_path)
+      return
+    end
+
+    @email_address.activate!
+
+    redirect_to(:action => "activated")
+  end
 
   # GET /email/token/:activation_token/activated
   # TODO: 実装せよ
