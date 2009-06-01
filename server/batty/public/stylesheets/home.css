@@ -28,8 +28,11 @@
 }
 
 #side-column-inner form input.openid,
+#side-column-inner form input.openid-with-desc,
 #side-column-inner form input.email,
-#side-column-inner form input.password
+#side-column-inner form input.email-with-desc,
+#side-column-inner form input.password,
+#side-column-inner form input.password-with-desc
 {
     width: 160px; /* width:200 - (padding:20 + padding:18 + border:2)*/
     height: 18px;
@@ -46,14 +49,29 @@
     background-image: url(/images/icons/openid.png);
 }
 
+#side-column-inner form input.openid-with-desc
+{
+    background-image: url(/images/icons/openid-with-desc.png);
+}
+
 #side-column-inner form input.email
 {
     background-image: url(/images/icons/fam/email.png);
 }
 
+#side-column-inner form input.email-with-desc
+{
+    background-image: url(/images/icons/fam/email-with-desc.png);
+}
+
 #side-column-inner form input.password
 {
     background-image: url(/images/icons/fam/key.png);
+}
+
+#side-column-inner form input.password-with-desc
+{
+    background-image: url(/images/icons/fam/key-with-desc.png);
 }
 
 

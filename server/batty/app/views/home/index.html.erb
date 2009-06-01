@@ -60,3 +60,19 @@
     <div style="clear: left;"></div>
   </div>
 <%- end -%>
+
+<script type="text/javascript">
+  Event.observe(window, "load", function() {
+    ["openid", "email", "password"].each(function(class_name) {
+      $$("form input." + class_name).each(function(elem) {
+        elem.className = class_name + ($F(elem) == "" ? "-with-desc" : "");
+        Event.observe(elem, "focus", function() {
+          elem.className = class_name;
+        }, false);
+        Event.observe(elem, "blur", function() {
+          elem.className = class_name + ($F(elem) == "" ? "-with-desc" : "");
+        }, false);
+      });
+    });
+  }, false);
+</script>
