@@ -5,6 +5,7 @@ class EmailsControllerTest < ActionController::TestCase
   def setup
     @yuya           = users(:yuya)
     @yuya_gmail     = email_addresses(:yuya_gmail)
+    @yuya_example   = email_addresses(:yuya_example)
     @shinya_example = email_addresses(:shinya_example)
 
     @edit_form = EmailAddressEditForm.new(
@@ -220,6 +221,41 @@ class EmailsControllerTest < ActionController::TestCase
 
   test "POST destroy, abnormal, other's email address" do
     post :destroy, :email_address_id => @shinya_example.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET activation" do
+    assert_equal(false, @yuya_example.activated?)
+
+    get :activation, :activation_token => @yuya_example.activation_token
+
+    assert_response(:success)
+    assert_template("activation")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_example, assigns(:email_address))
+  end
+
+  test "GET activation, no login" do
+    session_logout
+    assert_equal(false, @yuya_example.activated?)
+
+    get :activation, :activation_token => @yuya_example.activation_token
+
+    assert_response(:success)
+    assert_template("activation")
+    assert_flash_empty
+    assert_not_logged_in
+
+    assert_equal(@yuya_example, assigns(:email_address))
+  end
+
+  test "GET activation, abnormal, no activation token" do
+    get :activation, :activation_token => nil
 
     assert_response(:redirect)
     assert_redirected_to(root_path)

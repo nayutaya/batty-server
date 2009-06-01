@@ -1,0 +1,8 @@
+
+<h1>アクティベーション</h1>
+
+<div><%=h @email_address.email %></div>
+
+<%- form_tag(:action => "activate") { -%>
+  <%= submit_tag("登録") %>
+<%- } -%>
