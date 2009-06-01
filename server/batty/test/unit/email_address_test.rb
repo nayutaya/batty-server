@@ -18,11 +18,11 @@ class EmailAddressTest < ActiveSupport::TestCase
   test "belongs_to :user" do
     assert_equal(
       users(:yuya),
-      email_addresses(:yuya1).user)
+      email_addresses(:yuya_gmail).user)
 
     assert_equal(
       users(:shinya),
-      email_addresses(:shinya1).user)
+      email_addresses(:shinya_example).user)
   end
 
   #
@@ -105,8 +105,8 @@ class EmailAddressTest < ActiveSupport::TestCase
   end
 
   test "self.create_unique_activation_token, duplication" do
-    dup_token1 = email_addresses(:yuya1).activation_token
-    dup_token2 = email_addresses(:yuya2).activation_token
+    dup_token1 = email_addresses(:yuya_gmail).activation_token
+    dup_token2 = email_addresses(:yuya_example).activation_token
     uniq_token = "f" * @klass::TokenLength
     tokens = [dup_token1, dup_token2, uniq_token]
 
@@ -132,7 +132,7 @@ class EmailAddressTest < ActiveSupport::TestCase
   end
 
   test "activate!, no activated yet" do
-    address = email_addresses(:yuya2)
+    address = email_addresses(:yuya_example)
     time = Time.local(2010, 1, 1)
 
     assert_equal(false, address.activated?)
@@ -143,7 +143,7 @@ class EmailAddressTest < ActiveSupport::TestCase
   end
 
   test "activate!, already activated" do
-    address = email_addresses(:yuya1)
+    address = email_addresses(:yuya_gmail)
     time = address.activated_at
 
     assert_equal(true,  address.activated?)
