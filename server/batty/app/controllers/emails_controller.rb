@@ -9,7 +9,7 @@ class EmailsController < ApplicationController
     :only   => [:create, :destroy])
   before_filter :authentication
   before_filter :authentication_required
-  before_filter :required_param_email_address_id_for_login_user, :only => [:delete, :destroy]
+  before_filter :required_param_email_address_id_for_login_user, :only => [:created, :delete, :destroy]
 
   # GET /emails/new
   def new
@@ -24,25 +24,20 @@ class EmailsController < ApplicationController
     @email_address.activation_token = EmailAddress.create_unique_activation_token
 
     if @edit_form.valid? && @email_address.save
+      # TODO: アクティベーションメールを送信
+
       set_notice("メールアドレスを追加しました。")
-      redirect_to(:controller => "settings", :action => "index")
+      redirect_to(:action => "created", :email_address_id => @email_address.id)
     else
       set_error_now("入力内容を確認してください。")
       render(:action => "new")
     end
   end
 
-  # GET /emails/created
-  # TODO: 実装せよ
-
-  # GET /email/token/:activation_token/activation
-  # TODO: 実装せよ
-
-  # POST /email/token/:activation_token/activate
-  # TODO: 実装せよ
-
-  # GET /email/token/:activation_token/activated
-  # TODO: 実装せよ
+  # GET /email/:email_address_id/created
+  def created
+    # nop
+  end
 
   # GET /email/:email_address_id/delete
   def delete
@@ -56,6 +51,15 @@ class EmailsController < ApplicationController
     set_notice("メールアドレスを削除しました。")
     redirect_to(:controller => "settings")
   end
+
+  # GET /email/token/:activation_token/activation
+  # TODO: 実装せよ
+
+  # POST /email/token/:activation_token/activate
+  # TODO: 実装せよ
+
+  # GET /email/token/:activation_token/activated
+  # TODO: 実装せよ
 
   private
 
