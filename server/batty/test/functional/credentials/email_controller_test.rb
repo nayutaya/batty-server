@@ -394,4 +394,63 @@ class Credentials::EmailControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "POST activate" do
+    time = Time.local(2009, 1, 1)
+    assert_equal(false, @yuya_nayutaya.activated?)
+
+    Kagemusha::DateTime.at(time) {
+      post :activate, :activation_token => @yuya_nayutaya.activation_token
+    }
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "credentials/email", :action => "activated")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_nayutaya, assigns(:email_credential))
+
+    assigns(:email_credential).reload
+    assert_equal(true, assigns(:email_credential).activated?)
+    assert_equal(time, assigns(:email_credential).activated_at)
+  end
+
+  test "POST activate, no login" do
+    session_logout
+    assert_equal(false, @yuya_nayutaya.activated?)
+
+    post :activate, :activation_token => @yuya_nayutaya.activation_token
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "credentials/email", :action => "activated")
+    assert_flash_empty
+    assert_not_logged_in
+
+    assert_equal(@yuya_nayutaya, assigns(:email_credential))
+  end
+
+  test "GET activate, abnormal, method not allowed" do
+    get :activate
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
+  test "POST activate, abnormal, no activation token" do
+    post :activate, :activation_token => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST activate, abnormal, already activated" do
+    assert_equal(true, @yuya_gmail.activated?)
+
+    post :activate, :activation_token => @yuya_gmail.activation_token
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
 end
