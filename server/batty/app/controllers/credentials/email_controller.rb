@@ -1,7 +1,7 @@
 
 # メールログイン情報コントローラ
 class Credentials::EmailController < ApplicationController
-  # FIXME: 編集フォームクラスを定数化
+  EditFormClass = EmailPasswordEditForm
 
   verify_method_post :only => [:update_password, :destroy]
   before_filter :authentication
@@ -11,12 +11,12 @@ class Credentials::EmailController < ApplicationController
 
   # GET /credential/email/:email_credential_id/edit_password
   def edit_password
-    @edit_form = EmailPasswordEditForm.new
+    @edit_form = EditFormClass.new
   end
 
   # POST /credential/email/:email_credential_id/update_password
   def update_password
-    @edit_form = EmailPasswordEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
     @email_credential.attributes = @edit_form.to_email_credential_hash
 

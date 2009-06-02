@@ -1,7 +1,7 @@
 
 # トリガ
 class TriggersController < ApplicationController
-  # FIXME: 編集フォームクラスを定数化
+  EditFormClass = TriggerEditForm
 
   verify_method_post :only => [:create, :update, :destroy]
   before_filter :authentication
@@ -13,13 +13,13 @@ class TriggersController < ApplicationController
 
   # GET /device/:device_id/triggers/new
   def new
-    @edit_form = TriggerEditForm.new
+    @edit_form = EditFormClass.new
     set_operators_for_select(true)
   end
 
   # POST /device/:device_id/triggers/create
   def create
-    @edit_form = TriggerEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
     # FIXME: Triggerモデルも検証
     if @edit_form.valid?
@@ -39,7 +39,7 @@ class TriggersController < ApplicationController
 
   # GET /device/:device_id/trigger/:trigger_id/edit
   def edit
-    @edit_form = TriggerEditForm.new(
+    @edit_form = EditFormClass.new(
       :enable   => @trigger.enable,
       :operator => @trigger.operator,
       :level    => @trigger.level)
@@ -48,7 +48,7 @@ class TriggersController < ApplicationController
 
   # POST /device/:device_id/trigger/:trigger_id/update
   def update
-    @edit_form = TriggerEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
     # FIXME: Triggerモデルも検証
     if @edit_form.valid?
@@ -80,7 +80,7 @@ class TriggersController < ApplicationController
   private
 
   def set_operators_for_select(include_blank)
-    @operators_for_select = TriggerEditForm.operators_for_select(
+    @operators_for_select = EditFormClass.operators_for_select(
       :include_blank => include_blank)
   end
 end

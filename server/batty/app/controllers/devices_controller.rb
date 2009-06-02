@@ -1,7 +1,7 @@
 
 # デバイス
 class DevicesController < ApplicationController
-  # FIXME: 編集フォームクラスを定数化
+  EditFormClass = DeviceEditForm
 
   verify_method_post :only => [:create, :update, :destroy]
   before_filter :authentication
@@ -11,12 +11,12 @@ class DevicesController < ApplicationController
 
   # GET /devices/new
   def new
-    @edit_form = DeviceEditForm.new
+    @edit_form = EditFormClass.new
   end
 
   # POST /devices/create
   def create
-    @edit_form = DeviceEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
     # FIXME: Deviceモデルの検証も行う
     if @edit_form.valid?
@@ -50,14 +50,14 @@ class DevicesController < ApplicationController
 
   # GET /device/:device_id/edit
   def edit
-    @edit_form = DeviceEditForm.new(
+    @edit_form = EditFormClass.new(
       :name           => @device.name,
       :device_icon_id => @device.device_icon_id)
   end
 
   # POST /device/:device_id/update
   def update
-    @edit_form = DeviceEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
     @device.attributes = @edit_form.to_device_hash
 
