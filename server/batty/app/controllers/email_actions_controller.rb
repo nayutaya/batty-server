@@ -22,13 +22,10 @@ class EmailActionsController < ApplicationController
   def create
     @edit_form = EditFormClass.new(params[:edit_form])
 
-    # FIXME: EmailActionモデルも検証
-    if @edit_form.valid?
-      # FIXME: @trigger.email_actions.buildを使う
-      @action = EmailAction.new(@edit_form.to_email_action_hash)
-      @action.trigger_id = @trigger.id
-      @action.save!
+    @action = @trigger.email_actions.build
+    @action.attributes = @edit_form.to_email_action_hash
 
+    if @edit_form.valid? && @action.save
       set_notice("アクションを追加しました。")
       redirect_to(device_path(:device_id => @device.id))
     else
@@ -50,11 +47,9 @@ class EmailActionsController < ApplicationController
   def update
     @edit_form = EditFormClass.new(params[:edit_form])
 
-    # FIXME: EmailActionモデルも検証
-    if @edit_form.valid?
-      @email_action.attributes = @edit_form.to_email_action_hash
-      @email_action.save!
+    @email_action.attributes = @edit_form.to_email_action_hash
 
+    if @edit_form.valid? && @email_action.save
       set_notice("メール通知を更新しました。")
       redirect_to(device_path(:device_id => @device.id))
     else

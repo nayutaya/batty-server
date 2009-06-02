@@ -51,8 +51,7 @@ class Signup::OpenIdController < ApplicationController
       @user.user_token = User.create_unique_user_token
       @user.save!
 
-      @credential = OpenIdCredential.new
-      @credential.user         = @user
+      @credential = @user.open_id_credentials.build
       @credential.identity_url = @identity_url
       # FIXME: ログイン日時を設定しないように変更
       @credential.loggedin_at  = Time.now

@@ -18,14 +18,11 @@ class DevicesController < ApplicationController
   def create
     @edit_form = EditFormClass.new(params[:edit_form])
 
-    # FIXME: Deviceモデルの検証も行う
-    if @edit_form.valid?
-      # FIXME: @login_user.devices.buildを使う
-      @device = Device.new(@edit_form.to_device_hash)
-      @device.device_token = Device.create_unique_device_token
-      @device.user_id      = @login_user.id
-      @device.save!
+    @device = @login_user.devices.build
+    @device.attributes   = @edit_form.to_device_hash
+    @device.device_token = Device.create_unique_device_token
 
+    if @edit_form.valid? && @device.save
       set_notice("デバイスを追加しました。")
       redirect_to(root_path)
     else

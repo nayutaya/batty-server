@@ -21,13 +21,10 @@ class TriggersController < ApplicationController
   def create
     @edit_form = EditFormClass.new(params[:edit_form])
 
-    # FIXME: Triggerモデルも検証
-    if @edit_form.valid?
-      # FIXME: @device.triggers.buildを使う
-      @trigger = Trigger.new(@edit_form.to_trigger_hash)
-      @trigger.device_id = @device.id
-      @trigger.save!
+    @trigger = @device.triggers.build
+    @trigger.attributes = @edit_form.to_trigger_hash
 
+    if @edit_form.valid? && @trigger.save
       set_notice("トリガを追加しました。")
       redirect_to(device_path(:device_id => @device.id))
     else
@@ -50,11 +47,9 @@ class TriggersController < ApplicationController
   def update
     @edit_form = EditFormClass.new(params[:edit_form])
 
-    # FIXME: Triggerモデルも検証
-    if @edit_form.valid?
-      @trigger.attributes = @edit_form.to_trigger_hash
-      @trigger.save!
+    @trigger.attributes = @edit_form.to_trigger_hash
 
+    if @edit_form.valid? && @trigger.save
       set_notice("トリガを更新しました。")
       redirect_to(device_path(:device_id => @device.id))
     else

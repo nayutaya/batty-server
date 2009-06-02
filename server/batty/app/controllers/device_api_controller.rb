@@ -16,9 +16,7 @@ class DeviceApiController < ApplicationController
     end
 
     Energy.transaction {
-      # FIXME: @device.events.buildを使う
-      @energy = Energy.new(@api_form.to_energy_hash)
-      @energy.device_id = @device.id
+      @energy = @device.energies.build(@api_form.to_energy_hash)
       @energy.save!
 
       # TODO: テスト
