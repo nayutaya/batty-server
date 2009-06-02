@@ -1,9 +1,9 @@
 
 require 'test_helper'
 
-class EmailSignupFormTest < ActiveSupport::TestCase
+class EmailCredentialEditFormTest < ActiveSupport::TestCase
   def setup
-    @klass = EmailSignupForm
+    @klass = EmailCredentialEditForm
     @form  = @klass.new
     @basic = @klass.new(
       :email                 => "email@example.jp",

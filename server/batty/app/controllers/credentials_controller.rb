@@ -1,5 +1,5 @@
 
-# ログイン情報コントローラ
+# 認証情報コントローラ
 class CredentialsController < ApplicationController
   before_filter :authentication
   before_filter :authentication_required

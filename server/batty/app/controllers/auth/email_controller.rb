@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+# メール認証
 class Auth::EmailController < ApplicationController
   filter_parameter_logging :password
   verify_method_post :only => [:login]

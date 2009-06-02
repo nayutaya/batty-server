@@ -15,7 +15,7 @@
 #  loggedin_at      :datetime
 #
 
-# メールログイン情報
+# メール認証情報
 class EmailCredential < ActiveRecord::Base
   belongs_to :user
 

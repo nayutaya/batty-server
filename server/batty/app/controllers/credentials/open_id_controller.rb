@@ -1,5 +1,5 @@
 
-# OpenIDログイン情報コントローラ
+# OpenID認証情報コントローラ
 class Credentials::OpenIdController < ApplicationController
   verify_method_post :only => [:destroy]
   before_filter :authentication
@@ -16,7 +16,7 @@ class Credentials::OpenIdController < ApplicationController
   def destroy
     @open_id_credential.destroy
 
-    set_notice("OpenIDログイン情報を削除しました。")
+    set_notice("OpenID認証情報を削除しました。")
     redirect_to(:controller => "/credentials")
   end
 
@@ -28,7 +28,7 @@ class Credentials::OpenIdController < ApplicationController
     if @open_id_credential
       return true
     else
-      set_error("OpenIDログイン情報IDが正しくありません。")
+      set_error("OpenID認証情報IDが正しくありません。")
       redirect_to(root_path)
       return false
     end
@@ -38,7 +38,7 @@ class Credentials::OpenIdController < ApplicationController
     if @open_id_credential.user_id == @login_user.id
       return true
     else
-      set_error("OpenIDログイン情報IDが正しくありません。")
+      set_error("OpenID認証情報IDが正しくありません。")
       redirect_to(root_path)
       return false
     end
