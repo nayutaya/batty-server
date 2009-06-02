@@ -1,6 +1,8 @@
 
 # メール認証情報コントローラ
 class Credentials::EmailController < ApplicationController
+  EditFormClass = EmailCredentialEditForm
+
   verify_method_post :only => [:update_password, :destroy]
   before_filter :authentication, :except => [:create, :activaton, :activate, :activated]
   before_filter :authentication_required, :except => [:create, :activaton, :activate, :activated]
@@ -9,7 +11,7 @@ class Credentials::EmailController < ApplicationController
 
   # GET /credential/emails/new
   def new
-    # nop
+    @edit_form = EditFormClass.new
   end
 
   # GET /credential/emails/create

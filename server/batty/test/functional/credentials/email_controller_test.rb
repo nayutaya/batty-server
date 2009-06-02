@@ -7,7 +7,7 @@ class Credentials::EmailControllerTest < ActionController::TestCase
     @yuya_gmail   = email_credentials(:yuya_gmail)
     @risa_example = email_credentials(:risa_example)
 
-    @edit_form = EmailPasswordEditForm.new(
+    @password_edit_form = EmailPasswordEditForm.new(
       :password              => "password",
       :password_confirmation => "password")
 
@@ -38,9 +38,9 @@ class Credentials::EmailControllerTest < ActionController::TestCase
     assert_flash_empty
     assert_logged_in(@yuya)
 
-#    assert_equal(
-#      EmailAddressEditForm.new.attributes,
-#      assigns(:edit_form).attributes)
+    assert_equal(
+      EmailCredentialEditForm.new.attributes,
+      assigns(:edit_form).attributes)
   end
 
   test "GET new, abnormal, no login" do
@@ -95,9 +95,9 @@ class Credentials::EmailControllerTest < ActionController::TestCase
   end
 
   test "POST update_password" do
-    assert_equal(true, @edit_form.valid?)
+    assert_equal(true, @password_edit_form.valid?)
 
-    post :update_password, :email_credential_id => @yuya_gmail.id, :edit_form => @edit_form.attributes
+    post :update_password, :email_credential_id => @yuya_gmail.id, :edit_form => @password_edit_form.attributes
 
     assert_response(:redirect)
     assert_redirected_to(:controller => "/credentials", :action => "index")
@@ -107,20 +107,20 @@ class Credentials::EmailControllerTest < ActionController::TestCase
     assert_equal(@yuya_gmail, assigns(:email_credential))
 
     assert_equal(
-      @edit_form.attributes,
+      @password_edit_form.attributes,
       assigns(:edit_form).attributes)
 
     assigns(:email_credential).reload
     assert_equal(
       true,
-      EmailCredential.compare_hashed_password(@edit_form.password, assigns(:email_credential).hashed_password))
+      EmailCredential.compare_hashed_password(@password_edit_form.password, assigns(:email_credential).hashed_password))
   end
 
   test "POST update_password, invalid form" do
-    @edit_form.password = "x"
-    assert_equal(false, @edit_form.valid?)
+    @password_edit_form.password = "x"
+    assert_equal(false, @password_edit_form.valid?)
 
-    post :update_password, :email_credential_id => @yuya_gmail.id, :edit_form => @edit_form.attributes
+    post :update_password, :email_credential_id => @yuya_gmail.id, :edit_form => @password_edit_form.attributes
 
     assert_response(:success)
     assert_template("edit_password")
