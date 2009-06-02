@@ -2,6 +2,8 @@
 
 # メールサインアップ
 class Signup::EmailController < ApplicationController
+  EditFormClass = EmailCredentialEditForm
+
   filter_parameter_logging :password
   verify_method_post :only => [:validate, :create, :activate]
   before_filter :clear_session_user_id, :only => [:index, :validate, :validated, :create, :created, :activation, :activate, :activated]
@@ -9,12 +11,12 @@ class Signup::EmailController < ApplicationController
 
   # GET /signup/email
   def index
-    @signup_form = EmailSignupForm.new
+    @signup_form = EditFormClass.new
   end
 
   # POST /signup/email/validate
   def validate
-    @signup_form = EmailSignupForm.new(params[:signup_form])
+    @signup_form = EditFormClass.new(params[:signup_form])
 
     if @signup_form.valid?
       session[:signup_form] = @signup_form.attributes
@@ -29,7 +31,7 @@ class Signup::EmailController < ApplicationController
 
   # GET /signup/email/validated
   def validated
-    @signup_form = EmailSignupForm.new(session[:signup_form])
+    @signup_form = EditFormClass.new(session[:signup_form])
 
     if @signup_form.valid?
       render
@@ -41,7 +43,7 @@ class Signup::EmailController < ApplicationController
 
   # POST /signup/email/create
   def create
-    @signup_form = EmailSignupForm.new(session[:signup_form])
+    @signup_form = EditFormClass.new(session[:signup_form])
 
     if @signup_form.valid?
       # TODO: エラー処理
@@ -89,7 +91,7 @@ class Signup::EmailController < ApplicationController
 
   # GET /signup/email/created
   def created
-    @signup_form = EmailSignupForm.new(session[:signup_form])
+    @signup_form = EditFormClass.new(session[:signup_form])
     @credential  = EmailCredential.find_by_email(@signup_form.email)
   end
 

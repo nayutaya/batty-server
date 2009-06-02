@@ -14,8 +14,8 @@ class EmailPasswordEditForm < ActiveForm
 
   validates_presence_of :password
   validates_presence_of :password_confirmation
-  validates_length_of :password, :in => EmailSignupForm::PasswordLengthRange, :allow_nil => true
-  validates_format_of :password, :with => EmailSignupForm::PasswordPattern, :allow_nil => true
+  validates_length_of :password, :in => EmailCredentialEditForm::PasswordLengthRange, :allow_nil => true
+  validates_format_of :password, :with => EmailCredentialEditForm::PasswordPattern, :allow_nil => true
   validates_each(:password) { |record, attr, value|
     # MEMO: validates_confirmation_ofはpassword_confirmation属性を上書きしてしまうため、
     #       ここでは使用できない。そのため、validates_confirmation_ofを参考に独自に実装。

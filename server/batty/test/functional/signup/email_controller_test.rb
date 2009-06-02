@@ -7,7 +7,7 @@ class Signup::EmailControllerTest < ActionController::TestCase
     @yuya_gmail    = email_credentials(:yuya_gmail)
     @yuya_nayutaya = email_credentials(:yuya_nayutaya)
 
-    @signup_form = EmailSignupForm.new(
+    @signup_form = EmailCredentialEditForm.new(
       :email                 => "foo@example.com",
       :password              => "password",
       :password_confirmation => "password")
@@ -36,7 +36,7 @@ class Signup::EmailControllerTest < ActionController::TestCase
     assert_flash_empty
 
     assert_equal(
-      EmailSignupForm.new.attributes,
+      EmailCredentialEditForm.new.attributes,
       assigns(:signup_form).attributes)
   end
 

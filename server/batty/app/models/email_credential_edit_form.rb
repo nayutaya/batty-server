@@ -8,8 +8,8 @@
 #  password_confirmation :text
 #
 
-# メールサインアップフォーム
-class EmailSignupForm < ActiveForm
+# メールログイン情報編集フォーム
+class EmailCredentialEditForm < ActiveForm
   column :email,                 :type => :text
   column :password,              :type => :text
   column :password_confirmation, :type => :text
