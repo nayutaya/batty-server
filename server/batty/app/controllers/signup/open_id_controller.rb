@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# OpenIDサインアップ
+# OpenID認証情報サインアップ
 # FIXME: 全体的に実装を整理
 class Signup::OpenIdController < ApplicationController
   # GET /signup/open_id

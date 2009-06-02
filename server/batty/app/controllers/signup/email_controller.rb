@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# メールサインアップ
+# メール認証情報サインアップ
 class Signup::EmailController < ApplicationController
   EditFormClass = EmailCredentialEditForm
 

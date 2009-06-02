@@ -1,5 +1,5 @@
 
-# メールログイン情報コントローラ
+# メール認証情報コントローラ
 class Credentials::EmailController < ApplicationController
   verify_method_post :only => [:update_password, :destroy]
   before_filter :authentication, :except => [:create, :activaton, :activate, :activated]
@@ -46,7 +46,7 @@ class Credentials::EmailController < ApplicationController
   def destroy
     @email_credential.destroy
 
-    set_notice("メールログイン情報を削除しました。")
+    set_notice("メール認証情報を削除しました。")
     redirect_to(:controller => "/credentials")
   end
 
@@ -67,7 +67,7 @@ class Credentials::EmailController < ApplicationController
     if @email_credential
       return true
     else
-      set_error("メールログイン情報IDが正しくありません。")
+      set_error("メール認証情報IDが正しくありません。")
       redirect_to(root_path)
       return false
     end
@@ -77,7 +77,7 @@ class Credentials::EmailController < ApplicationController
     if @email_credential.user_id == @login_user.id
       return true
     else
-      set_error("メールログイン情報IDが正しくありません。")
+      set_error("メール認証情報IDが正しくありません。")
       redirect_to(root_path)
       return false
     end

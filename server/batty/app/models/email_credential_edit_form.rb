@@ -8,7 +8,7 @@
 #  password_confirmation :text
 #
 
-# メールログイン情報編集フォーム
+# メール認証情報編集フォーム
 class EmailCredentialEditForm < ActiveForm
   column :email,                 :type => :text
   column :password,              :type => :text
