@@ -30,6 +30,29 @@ class Credentials::EmailControllerTest < ActionController::TestCase
     assert_routing("/credential/email/token/0123456789/activated",  base.merge(:action => "activated",  :activation_token => "0123456789"))
   end
 
+  test "GET new" do
+    get :new
+
+    assert_response(:success)
+    assert_template("new")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+#    assert_equal(
+#      EmailAddressEditForm.new.attributes,
+#      assigns(:edit_form).attributes)
+  end
+
+  test "GET new, abnormal, no login" do
+    session_logout
+
+    get :new
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
   test "GET edit_password" do
     get :edit_password, :email_credential_id => @yuya_gmail.id
 

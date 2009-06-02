@@ -1,28 +1,28 @@
 
 # メールログイン情報コントローラ
 class Credentials::EmailController < ApplicationController
-  EditFormClass = EmailPasswordEditForm
-
   verify_method_post :only => [:update_password, :destroy]
-  before_filter :authentication
-  before_filter :authentication_required
-  before_filter :required_param_email_credential_id
-  before_filter :specified_email_credential_belongs_to_login_user
+  before_filter :authentication, :except => [:create, :activaton, :activate, :activated]
+  before_filter :authentication_required, :except => [:create, :activaton, :activate, :activated]
+  before_filter :required_param_email_credential_id, :except => [:new, :create, :activaton, :activate, :activated]
+  before_filter :specified_email_credential_belongs_to_login_user, :except => [:new, :create, :activaton, :activate, :activated]
 
   # GET /credential/emails/new
-  # TODO: 実装せよ
+  def new
+    # nop
+  end
 
   # GET /credential/emails/create
   # TODO: 実装せよ
 
   # GET /credential/email/:email_credential_id/edit_password
   def edit_password
-    @edit_form = EditFormClass.new
+    @edit_form = EmailPasswordEditForm.new
   end
 
   # POST /credential/email/:email_credential_id/update_password
   def update_password
-    @edit_form = EditFormClass.new(params[:edit_form])
+    @edit_form = EmailPasswordEditForm.new(params[:edit_form])
 
     @email_credential.attributes = @edit_form.to_email_credential_hash
 
