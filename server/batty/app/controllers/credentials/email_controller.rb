@@ -8,6 +8,8 @@ class Credentials::EmailController < ApplicationController
   before_filter :authentication_required, :except => [:activation, :activate, :activated]
   before_filter :required_param_email_credential_id, :only => [:created, :edit_password, :update_password, :delete, :destroy]
   before_filter :specified_email_credential_belongs_to_login_user, :only => [:created, :edit_password, :update_password, :delete, :destroy]
+  before_filter :required_param_activation_token, :only => [:activation, :activate, :activated]
+  before_filter :only_inactive_email_credential, :only => [:activation, :activate]
 
   # GET /credential/emails/new
   def new
@@ -75,35 +77,11 @@ class Credentials::EmailController < ApplicationController
 
   # GET /credential/email/token/:activation_token/activation
   def activation
-    activation_token = params[:activation_token]
-    @email_credential = EmailCredential.find_by_activation_token(activation_token)
-    unless @email_credential
-      set_error("アクティベーショントークンが正しくありません。")
-      redirect_to(root_path)
-      return
-    end
-    if @email_credential.activated?
-      set_error("既にアクティベーションされています。")
-      redirect_to(root_path)
-      return
-    end
+    # nop
   end
 
   # POST /credential/email/token/:activation_token/activate
   def activate
-    activation_token = params[:activation_token]
-    @email_credential = EmailCredential.find_by_activation_token(activation_token)
-    unless @email_credential
-      set_error("アクティベーショントークンが正しくありません。")
-      redirect_to(root_path)
-      return
-    end
-    if @email_credential.activated?
-      set_error("既にアクティベーションされています。")
-      redirect_to(root_path)
-      return
-    end
-
     @email_credential.activate!
 
     redirect_to(:action => "activated")
@@ -111,13 +89,7 @@ class Credentials::EmailController < ApplicationController
 
   # GET /credential/email/token/:activation_token/activated
   def activated
-    activation_token = params[:activation_token]
-    @email_credential = EmailCredential.find_by_activation_token(activation_token)
-    unless @email_credential
-      set_error("アクティベーショントークンが正しくありません。")
-      redirect_to(root_path)
-      return
-    end
+    # nop
   end
 
   private
@@ -141,6 +113,27 @@ class Credentials::EmailController < ApplicationController
       set_error("メール認証情報IDが正しくありません。")
       redirect_to(root_path)
       return false
+    end
+  end
+
+  def required_param_activation_token(activation_token = params[:activation_token])
+    @email_credential = EmailCredential.find_by_activation_token(activation_token)
+    if @email_credential
+      return true
+    else
+      set_error("アクティベーショントークンが正しくありません。")
+      redirect_to(root_path)
+      return false
+    end
+  end
+
+  def only_inactive_email_credential
+    if @email_credential.activated?
+      set_error("既にアクティベーションされています。")
+      redirect_to(root_path)
+      return false
+    else
+      return true
     end
   end
 end
