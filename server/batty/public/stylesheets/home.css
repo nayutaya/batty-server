@@ -1,4 +1,28 @@
 
+h1
+{
+    background-image: url(/images/h1-back.png);
+    background-repeat: repeat-x;
+    background-position: left center;
+}
+h1 span
+{
+    padding-right: 0.2em;
+    background-color: #F0F0F0;
+}
+
+h2
+{
+    background-image: url(/images/h1-back.png);
+    background-repeat: repeat-x;
+    background-position: left center;
+}
+h2 span
+{
+    padding-right: 0.2em;
+    background-color: #F0F0F0;
+}
+
 /* side-column */
 
 #side-column-inner h1

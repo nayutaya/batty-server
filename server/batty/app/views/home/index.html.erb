@@ -17,7 +17,7 @@
 <%- unless logged_in? -%>
   <%- side_column { -%>
     <div>
-      <h1>ログイン</h1>
+      <h1><span>ログイン</span></h1>
       <div id="openid-sites">
         <div><%= link_to(icon16("favicons/mixi.png") + h(" mixiアカウントでログイン"), {:controller => "auth/open_id", :action => "login", :openid_url => "mixi.jp"}, :method => :post) %></div>
         <div><%= link_to(icon16("favicons/yahoo.png") + h(" Yahoo!アカウントでログイン"), {:controller => "auth/open_id", :action => "login", :openid_url => "yahoo.co.jp"}, :method => :post) %></div>
@@ -46,15 +46,15 @@
 <%- end -%>
 
 <%- if logged_in? -%>
-  <h1>ダッシュボード</h1>
+  <h1><span>ダッシュボード</span></h1>
   <div><%= render(:partial => "devices")  %></div>
   <div>
     <div style="float: left; margin-right: 10px;">
-      <h2>エネルギー履歴</h2>
+      <h2><span>エネルギー履歴</span></h2>
       <%= render(:partial => "energies") %>
     </div>
     <div style="float: left;">
-      <h2>イベント履歴</h2>
+      <h2><span>イベント履歴</span></h2>
       <%= render(:partial => "events") %>
     </div>
     <div style="clear: left;"></div>
