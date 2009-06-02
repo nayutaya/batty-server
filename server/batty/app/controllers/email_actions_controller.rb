@@ -3,10 +3,7 @@
 class EmailActionsController < ApplicationController
   EditFormClass = EmailActionEditForm
 
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create, :update, :destroy])
+  verify_method_post :only => [:create, :update, :destroy]
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_device_id
@@ -25,11 +22,10 @@ class EmailActionsController < ApplicationController
   def create
     @edit_form = EditFormClass.new(params[:edit_form])
 
-    if @edit_form.valid?
-      @action = EmailAction.new(@edit_form.to_email_action_hash)
-      @action.trigger_id = @trigger.id
-      @action.save!
+    @action = @trigger.email_actions.build
+    @action.attributes = @edit_form.to_email_action_hash
 
+    if @edit_form.valid? && @action.save
       set_notice("アクションを追加しました。")
       redirect_to(device_path(:device_id => @device.id))
     else
@@ -51,10 +47,9 @@ class EmailActionsController < ApplicationController
   def update
     @edit_form = EditFormClass.new(params[:edit_form])
 
-    if @edit_form.valid?
-      @email_action.attributes = @edit_form.to_email_action_hash
-      @email_action.save!
+    @email_action.attributes = @edit_form.to_email_action_hash
 
+    if @edit_form.valid? && @email_action.save
       set_notice("メール通知を更新しました。")
       redirect_to(device_path(:device_id => @device.id))
     else
@@ -78,6 +73,7 @@ class EmailActionsController < ApplicationController
 
   private
 
+  # FIXME: login_userに属することも同時に検証
   def required_param_email_action_id(email_action_id = params[:email_action_id])
     @email_action = EmailAction.find_by_id(email_action_id)
     if @email_action

@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
 # OpenID認証
+# FIXME: 全体的に実装を整理
 class Auth::OpenIdController < ApplicationController
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:login])
+  verify_method_post :only => [:login]
 
   # GET /auth/open_id
   def index
@@ -25,6 +23,7 @@ class Auth::OpenIdController < ApplicationController
   private
 
   def successful_login
+    # TODO: ログイン日時を更新
     session[:user_id] = @current_user.id
     flash[:notice] = "ログインしました。"
     redirect_to(root_path)

@@ -1,10 +1,7 @@
 
 # OpenIDログイン情報コントローラ
 class Credentials::OpenIdController < ApplicationController
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:destroy])
+  verify_method_post :only => [:destroy]
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_open_id_credential_id
@@ -25,6 +22,7 @@ class Credentials::OpenIdController < ApplicationController
 
   private
 
+  # FIXME: login_userに属することを同時に確認
   def required_param_open_id_credential_id(open_id_credential_id = params[:open_id_credential_id])
     @open_id_credential = OpenIdCredential.find_by_id(open_id_credential_id)
     if @open_id_credential

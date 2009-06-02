@@ -1,10 +1,9 @@
 
 # メールログイン情報コントローラ
 class Credentials::EmailController < ApplicationController
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:update_password, :destroy])
+  EditFormClass = EmailPasswordEditForm
+
+  verify_method_post :only => [:update_password, :destroy]
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_email_credential_id
@@ -12,12 +11,12 @@ class Credentials::EmailController < ApplicationController
 
   # GET /credential/email/:email_credential_id/edit_password
   def edit_password
-    @edit_form = EmailPasswordEditForm.new
+    @edit_form = EditFormClass.new
   end
 
   # POST /credential/email/:email_credential_id/update_password
   def update_password
-    @edit_form = EmailPasswordEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
     @email_credential.attributes = @edit_form.to_email_credential_hash
 
@@ -47,6 +46,7 @@ class Credentials::EmailController < ApplicationController
 
   private
 
+  # FIXME: login_userに属することを同時に確認
   def required_param_email_credential_id(email_credential_id = params[:email_credential_id])
     @email_credential = EmailCredential.find_by_id(email_credential_id)
     if @email_credential

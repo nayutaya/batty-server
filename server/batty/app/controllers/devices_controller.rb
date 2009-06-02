@@ -1,10 +1,9 @@
 
 # デバイス
 class DevicesController < ApplicationController
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create, :update, :destroy])
+  EditFormClass = DeviceEditForm
+
+  verify_method_post :only => [:create, :update, :destroy]
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_device_id, :only => [:show, :edit, :update, :delete, :destroy]
@@ -12,19 +11,18 @@ class DevicesController < ApplicationController
 
   # GET /devices/new
   def new
-    @edit_form = DeviceEditForm.new
+    @edit_form = EditFormClass.new
   end
 
   # POST /devices/create
   def create
-    @edit_form = DeviceEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
-    if @edit_form.valid?
-      @device = Device.new(@edit_form.to_device_hash)
-      @device.device_token = Device.create_unique_device_token
-      @device.user_id      = @login_user.id
-      @device.save!
+    @device = @login_user.devices.build
+    @device.attributes   = @edit_form.to_device_hash
+    @device.device_token = Device.create_unique_device_token
 
+    if @edit_form.valid? && @device.save
       set_notice("デバイスを追加しました。")
       redirect_to(root_path)
     else
@@ -49,14 +47,14 @@ class DevicesController < ApplicationController
 
   # GET /device/:device_id/edit
   def edit
-    @edit_form = DeviceEditForm.new(
+    @edit_form = EditFormClass.new(
       :name           => @device.name,
       :device_icon_id => @device.device_icon_id)
   end
 
   # POST /device/:device_id/update
   def update
-    @edit_form = DeviceEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
     @device.attributes = @edit_form.to_device_hash
 

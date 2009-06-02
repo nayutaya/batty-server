@@ -2,9 +2,7 @@
 # デバイスAPI
 class DeviceApiController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405})
+  verify_method_post
   before_filter :required_param_device_token
 
   # POST /device/token/:device_token/energies/update/:level
@@ -17,11 +15,8 @@ class DeviceApiController < ApplicationController
       return
     end
 
-    #records = @device.update_energy(@api_form.to_energy_hash.merge(:update_event => true))
-
     Energy.transaction {
-      @energy = Energy.new(@api_form.to_energy_hash)
-      @energy.device_id = @device.id
+      @energy = @device.energies.build(@api_form.to_energy_hash)
       @energy.save!
 
       # TODO: テスト

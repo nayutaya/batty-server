@@ -2,10 +2,7 @@
 
 class Auth::EmailController < ApplicationController
   filter_parameter_logging :password
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:login])
+  verify_method_post :only => [:login]
 
   # GET /auth/email
   def index
@@ -23,6 +20,7 @@ class Auth::EmailController < ApplicationController
     end
 
     if @email_credential
+      # FIXME: ログイン日時の更新処理をメソッド化
       @email_credential.update_attributes!(:loggedin_at => Time.now)
       @login_user = @email_credential.user
       session[:user_id] = @login_user.id

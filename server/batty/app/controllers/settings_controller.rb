@@ -5,10 +5,7 @@ class SettingsController < ApplicationController
     :xhr    => true,
     :render => {:text => "Method Not Allowed", :status => 405},
     :only   => [:get_nickname, :set_nickname])
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:set_nickname])
+  verify_method_post :only => [:set_nickname]
   before_filter :authentication
   before_filter :authentication_required
 

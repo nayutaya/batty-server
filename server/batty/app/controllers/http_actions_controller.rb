@@ -3,10 +3,7 @@
 class HttpActionsController < ApplicationController
   EditFormClass = HttpActionEditForm
 
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create, :update, :destroy])
+  verify_method_post :only => [:create, :update, :destroy]
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_device_id
@@ -26,11 +23,10 @@ class HttpActionsController < ApplicationController
   def create
     @edit_form = EditFormClass.new(params[:edit_form])
 
-    if @edit_form.valid?
-      @action = HttpAction.new(@edit_form.to_http_action_hash)
-      @action.trigger_id = @trigger.id
-      @action.save!
+    @action = @trigger.http_actions.build
+    @action.attributes = @edit_form.to_http_action_hash
 
+    if @edit_form.valid? && @action.save
       set_notice("アクションを追加しました。")
       redirect_to(device_path(:device_id => @device.id))
     else
@@ -54,10 +50,9 @@ class HttpActionsController < ApplicationController
   def update
     @edit_form = EditFormClass.new(params[:edit_form])
 
-    if @edit_form.valid?
-      @http_action.attributes = @edit_form.attributes
-      @http_action.save!
+    @http_action.attributes = @edit_form.attributes
 
+    if @edit_form.valid? && @http_action.save
       set_notice("Web Hookを更新しました。")
       redirect_to(device_path(:device_id => @device.id))
     else
@@ -82,6 +77,7 @@ class HttpActionsController < ApplicationController
 
   private
 
+  # FIXME: triggerに属することを検証
   def required_param_http_action_id(http_action_id = params[:http_action_id])
     @http_action = HttpAction.find_by_id(http_action_id)
     if @http_action

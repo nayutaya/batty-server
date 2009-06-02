@@ -3,10 +3,7 @@
 class EmailsController < ApplicationController
   EditFormClass = EmailAddressEditForm
 
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create, :destroy, :activate])
+  verify_method_post :only => [:create, :destroy, :activate]
   before_filter :authentication
   before_filter :authentication_required, :except => [:activation, :activate, :activated]
   before_filter :required_param_email_address_id_for_login_user, :only => [:created, :delete, :destroy]

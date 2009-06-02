@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # OpenIDサインアップ
+# FIXME: 全体的に実装を整理
 class Signup::OpenIdController < ApplicationController
-
   # GET /signup/open_id
   def index
     session[:identity_url] = nil
@@ -51,13 +51,14 @@ class Signup::OpenIdController < ApplicationController
       @user.user_token = User.create_unique_user_token
       @user.save!
 
-      @credential = OpenIdCredential.new
-      @credential.user         = @user
+      @credential = @user.open_id_credentials.build
       @credential.identity_url = @identity_url
+      # FIXME: ログイン日時を設定しないように変更
       @credential.loggedin_at  = Time.now
       @credential.save!
     }
 
+    # FIXME: ログイン状態にしないように変更
     session[:identity_url] = nil
     session[:user_id]      = @user.id
 

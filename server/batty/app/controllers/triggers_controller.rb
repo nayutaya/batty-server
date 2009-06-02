@@ -1,10 +1,9 @@
 
 # トリガ
 class TriggersController < ApplicationController
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create, :update, :destroy])
+  EditFormClass = TriggerEditForm
+
+  verify_method_post :only => [:create, :update, :destroy]
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_device_id
@@ -14,19 +13,18 @@ class TriggersController < ApplicationController
 
   # GET /device/:device_id/triggers/new
   def new
-    @edit_form = TriggerEditForm.new
+    @edit_form = EditFormClass.new
     set_operators_for_select(true)
   end
 
   # POST /device/:device_id/triggers/create
   def create
-    @edit_form = TriggerEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
-    if @edit_form.valid?
-      @trigger = Trigger.new(@edit_form.to_trigger_hash)
-      @trigger.device_id = @device.id
-      @trigger.save!
+    @trigger = @device.triggers.build
+    @trigger.attributes = @edit_form.to_trigger_hash
 
+    if @edit_form.valid? && @trigger.save
       set_notice("トリガを追加しました。")
       redirect_to(device_path(:device_id => @device.id))
     else
@@ -38,7 +36,7 @@ class TriggersController < ApplicationController
 
   # GET /device/:device_id/trigger/:trigger_id/edit
   def edit
-    @edit_form = TriggerEditForm.new(
+    @edit_form = EditFormClass.new(
       :enable   => @trigger.enable,
       :operator => @trigger.operator,
       :level    => @trigger.level)
@@ -47,12 +45,11 @@ class TriggersController < ApplicationController
 
   # POST /device/:device_id/trigger/:trigger_id/update
   def update
-    @edit_form = TriggerEditForm.new(params[:edit_form])
+    @edit_form = EditFormClass.new(params[:edit_form])
 
-    if @edit_form.valid?
-      @trigger.attributes = @edit_form.to_trigger_hash
-      @trigger.save!
+    @trigger.attributes = @edit_form.to_trigger_hash
 
+    if @edit_form.valid? && @trigger.save
       set_notice("トリガを更新しました。")
       redirect_to(device_path(:device_id => @device.id))
     else
@@ -78,7 +75,7 @@ class TriggersController < ApplicationController
   private
 
   def set_operators_for_select(include_blank)
-    @operators_for_select = TriggerEditForm.operators_for_select(
+    @operators_for_select = EditFormClass.operators_for_select(
       :include_blank => include_blank)
   end
 end

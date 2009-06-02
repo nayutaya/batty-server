@@ -3,10 +3,7 @@
 # メールサインアップ
 class Signup::EmailController < ApplicationController
   filter_parameter_logging :password
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:validate, :create, :activate])
+  verify_method_post :only => [:validate, :create, :activate]
   before_filter :clear_session_user_id, :only => [:index, :validate, :validated, :create, :created, :activation, :activate, :activated]
   before_filter :clear_session_signup_form, :only => [:index, :validate, :activation, :activate, :activated]
 
@@ -54,9 +51,9 @@ class Signup::EmailController < ApplicationController
         @user.nickname   = nil
         @user.save!
 
-        @credential = EmailCredential.new(@signup_form.to_email_credential_hash)
+        @credential = @user.email_credentials.build
+        @credential.attributes       = @signup_form.to_email_credential_hash
         @credential.activation_token = EmailCredential.create_unique_activation_token
-        @credential.user_id          = @user.id
         @credential.save!
       }
 
@@ -71,6 +68,7 @@ class Signup::EmailController < ApplicationController
         :activation_url => @activation_url,
       }
 
+      # FIXME: 非スレッド化
       @email_queue = Queue.new
       Thread.new {
         begin
@@ -96,12 +94,16 @@ class Signup::EmailController < ApplicationController
   end
 
   # GET /signup/email/activation/:activation_token
+  # FIXME: URLの見直し
+  # FIXME: 無効なアクティベーションキー、アクティベーション済みのキーはフィルタで弾く
   def activation
     @credential = EmailCredential.find_by_activation_token(params[:activation_token])
     @activated  = @credential.try(:activated?)
   end
 
   # POST /signup/email/activate
+  # FIXME: URLの見直し
+  # FIXME: 無効なアクティベーションキー、アクティベーション済みのキーはフィルタで弾く
   def activate
     @credential = EmailCredential.find_by_activation_token(params[:activation_token])
 
@@ -128,6 +130,8 @@ class Signup::EmailController < ApplicationController
   end
 
   # GET /signup/email/activated
+  # FIXME: URLの見直し
+  # FIXME: 無効なアクティベーションキー、アクティベーション済みのキーはフィルタで弾く
   def activated
     # nop
   end
