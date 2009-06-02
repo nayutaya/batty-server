@@ -1,6 +1,8 @@
 
 # トリガ
 class TriggersController < ApplicationController
+  # FIXME: 編集フォームクラスを定数化
+
   verify_method_post :only => [:create, :update, :destroy]
   before_filter :authentication
   before_filter :authentication_required
@@ -19,7 +21,9 @@ class TriggersController < ApplicationController
   def create
     @edit_form = TriggerEditForm.new(params[:edit_form])
 
+    # FIXME: Triggerモデルも検証
     if @edit_form.valid?
+      # FIXME: @device.triggers.buildを使う
       @trigger = Trigger.new(@edit_form.to_trigger_hash)
       @trigger.device_id = @device.id
       @trigger.save!
@@ -46,6 +50,7 @@ class TriggersController < ApplicationController
   def update
     @edit_form = TriggerEditForm.new(params[:edit_form])
 
+    # FIXME: Triggerモデルも検証
     if @edit_form.valid?
       @trigger.attributes = @edit_form.to_trigger_hash
       @trigger.save!

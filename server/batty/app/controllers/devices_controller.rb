@@ -1,6 +1,8 @@
 
 # デバイス
 class DevicesController < ApplicationController
+  # FIXME: 編集フォームクラスを定数化
+
   verify_method_post :only => [:create, :update, :destroy]
   before_filter :authentication
   before_filter :authentication_required
@@ -16,7 +18,9 @@ class DevicesController < ApplicationController
   def create
     @edit_form = DeviceEditForm.new(params[:edit_form])
 
+    # FIXME: Deviceモデルの検証も行う
     if @edit_form.valid?
+      # FIXME: @login_user.devices.buildを使う
       @device = Device.new(@edit_form.to_device_hash)
       @device.device_token = Device.create_unique_device_token
       @device.user_id      = @login_user.id

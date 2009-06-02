@@ -15,9 +15,8 @@ class DeviceApiController < ApplicationController
       return
     end
 
-    #records = @device.update_energy(@api_form.to_energy_hash.merge(:update_event => true))
-
     Energy.transaction {
+      # FIXME: @device.events.buildを使う
       @energy = Energy.new(@api_form.to_energy_hash)
       @energy.device_id = @device.id
       @energy.save!

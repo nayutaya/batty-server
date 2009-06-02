@@ -22,7 +22,9 @@ class EmailActionsController < ApplicationController
   def create
     @edit_form = EditFormClass.new(params[:edit_form])
 
+    # FIXME: EmailActionモデルも検証
     if @edit_form.valid?
+      # FIXME: @trigger.email_actions.buildを使う
       @action = EmailAction.new(@edit_form.to_email_action_hash)
       @action.trigger_id = @trigger.id
       @action.save!
@@ -48,6 +50,7 @@ class EmailActionsController < ApplicationController
   def update
     @edit_form = EditFormClass.new(params[:edit_form])
 
+    # FIXME: EmailActionモデルも検証
     if @edit_form.valid?
       @email_action.attributes = @edit_form.to_email_action_hash
       @email_action.save!
@@ -75,6 +78,7 @@ class EmailActionsController < ApplicationController
 
   private
 
+  # FIXME: login_userに属することも同時に検証
   def required_param_email_action_id(email_action_id = params[:email_action_id])
     @email_action = EmailAction.find_by_id(email_action_id)
     if @email_action

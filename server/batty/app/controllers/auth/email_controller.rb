@@ -20,6 +20,7 @@ class Auth::EmailController < ApplicationController
     end
 
     if @email_credential
+      # FIXME: ログイン日時の更新処理をメソッド化
       @email_credential.update_attributes!(:loggedin_at => Time.now)
       @login_user = @email_credential.user
       session[:user_id] = @login_user.id

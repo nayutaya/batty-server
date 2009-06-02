@@ -1,6 +1,8 @@
 
 # メールログイン情報コントローラ
 class Credentials::EmailController < ApplicationController
+  # FIXME: 編集フォームクラスを定数化
+
   verify_method_post :only => [:update_password, :destroy]
   before_filter :authentication
   before_filter :authentication_required
@@ -44,6 +46,7 @@ class Credentials::EmailController < ApplicationController
 
   private
 
+  # FIXME: login_userに属することを同時に確認
   def required_param_email_credential_id(email_credential_id = params[:email_credential_id])
     @email_credential = EmailCredential.find_by_id(email_credential_id)
     if @email_credential

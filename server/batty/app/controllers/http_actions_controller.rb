@@ -23,7 +23,9 @@ class HttpActionsController < ApplicationController
   def create
     @edit_form = EditFormClass.new(params[:edit_form])
 
+    # FIXME: HttpActionモデルも検証
     if @edit_form.valid?
+      # FIXME: @trigger.http_actions.buildを使う
       @action = HttpAction.new(@edit_form.to_http_action_hash)
       @action.trigger_id = @trigger.id
       @action.save!
@@ -51,6 +53,7 @@ class HttpActionsController < ApplicationController
   def update
     @edit_form = EditFormClass.new(params[:edit_form])
 
+    # FIXME: HttpActionモデルも検証
     if @edit_form.valid?
       @http_action.attributes = @edit_form.attributes
       @http_action.save!
@@ -79,6 +82,7 @@ class HttpActionsController < ApplicationController
 
   private
 
+  # FIXME: triggerに属することを検証
   def required_param_http_action_id(http_action_id = params[:http_action_id])
     @http_action = HttpAction.find_by_id(http_action_id)
     if @http_action
