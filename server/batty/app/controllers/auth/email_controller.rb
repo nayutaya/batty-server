@@ -2,10 +2,7 @@
 
 class Auth::EmailController < ApplicationController
   filter_parameter_logging :password
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:login])
+  verify_method_post :only => [:login]
 
   # GET /auth/email
   def index

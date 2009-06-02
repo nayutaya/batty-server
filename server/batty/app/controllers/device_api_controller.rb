@@ -2,9 +2,7 @@
 # デバイスAPI
 class DeviceApiController < ApplicationController
   skip_before_filter :verify_authenticity_token
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405})
+  verify_method_post
   before_filter :required_param_device_token
 
   # POST /device/token/:device_token/energies/update/:level

@@ -2,10 +2,7 @@
 
 # OpenID認証
 class Auth::OpenIdController < ApplicationController
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:login])
+  verify_method_post :only => [:login]
 
   # GET /auth/open_id
   def index

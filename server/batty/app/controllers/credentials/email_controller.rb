@@ -1,10 +1,7 @@
 
 # メールログイン情報コントローラ
 class Credentials::EmailController < ApplicationController
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:update_password, :destroy])
+  verify_method_post :only => [:update_password, :destroy]
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_email_credential_id

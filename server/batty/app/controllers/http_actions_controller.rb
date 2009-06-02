@@ -3,10 +3,7 @@
 class HttpActionsController < ApplicationController
   EditFormClass = HttpActionEditForm
 
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:create, :update, :destroy])
+  verify_method_post :only => [:create, :update, :destroy]
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_device_id

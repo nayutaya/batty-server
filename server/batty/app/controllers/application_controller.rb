@@ -8,6 +8,13 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def self.verify_method_post(options = {})
+    verify({
+      :method => :post,
+      :render => {:text => "Method Not Allowed", :status => 405},
+    }.merge(options))
+  end
+
   def authentication(user_id = session[:user_id])
     @login_user = User.find_by_id(user_id)
     return true

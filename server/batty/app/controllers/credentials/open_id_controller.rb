@@ -1,10 +1,7 @@
 
 # OpenIDログイン情報コントローラ
 class Credentials::OpenIdController < ApplicationController
-  verify(
-    :method => :post,
-    :render => {:text => "Method Not Allowed", :status => 405},
-    :only   => [:destroy])
+  verify_method_post :only => [:destroy]
   before_filter :authentication
   before_filter :authentication_required
   before_filter :required_param_open_id_credential_id
