@@ -453,4 +453,36 @@ class Credentials::EmailControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "GET activated" do
+    get :activated, :activation_token => @yuya_nayutaya.activation_token
+
+    assert_response(:success)
+    assert_template("activated")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_nayutaya, assigns(:email_credential))
+  end
+
+  test "GET activated, no login" do
+    session_logout
+
+    get :activated, :activation_token => @yuya_nayutaya.activation_token
+
+    assert_response(:success)
+    assert_template("activated")
+    assert_flash_empty
+    assert_not_logged_in
+
+    assert_equal(@yuya_nayutaya, assigns(:email_credential))
+  end
+
+  test "GET activated, abnormal, no activation token" do
+    get :activated, :activation_token => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
 end

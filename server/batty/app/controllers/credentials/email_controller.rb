@@ -4,7 +4,7 @@ class Credentials::EmailController < ApplicationController
   EditFormClass = EmailCredentialEditForm
 
   verify_method_post :only => [:create, :update_password, :destroy, :activate]
-  before_filter :authentication, :except => [:activated]
+  before_filter :authentication
   before_filter :authentication_required, :except => [:activation, :activate, :activated]
   before_filter :required_param_email_credential_id, :only => [:created, :edit_password, :update_password, :delete, :destroy]
   before_filter :specified_email_credential_belongs_to_login_user, :only => [:created, :edit_password, :update_password, :delete, :destroy]
@@ -110,7 +110,15 @@ class Credentials::EmailController < ApplicationController
   end
 
   # GET /credential/email/token/:activation_token/activated
-  # TODO: 実装せよ
+  def activated
+    activation_token = params[:activation_token]
+    @email_credential = EmailCredential.find_by_activation_token(activation_token)
+    unless @email_credential
+      set_error("アクティベーショントークンが正しくありません。")
+      redirect_to(root_path)
+      return
+    end
+  end
 
   private
 
