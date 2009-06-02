@@ -4,10 +4,10 @@ class Credentials::EmailController < ApplicationController
   EditFormClass = EmailCredentialEditForm
 
   verify_method_post :only => [:create, :update_password, :destroy]
-  before_filter :authentication, :except => [:created, :activaton, :activate, :activated]
-  before_filter :authentication_required, :except => [:created, :activaton, :activate, :activated]
-  before_filter :required_param_email_credential_id, :except => [:new, :create, :created, :activaton, :activate, :activated]
-  before_filter :specified_email_credential_belongs_to_login_user, :except => [:new, :create, :created, :activaton, :activate, :activated]
+  before_filter :authentication, :except => [:activaton, :activate, :activated]
+  before_filter :authentication_required, :except => [:activaton, :activate, :activated]
+  before_filter :required_param_email_credential_id, :only => [:created, :edit_password, :update_password, :delete, :destroy]
+  before_filter :specified_email_credential_belongs_to_login_user, :only => [:created, :edit_password, :update_password, :delete, :destroy]
 
   # GET /credential/emails/new
   def new
@@ -34,7 +34,9 @@ class Credentials::EmailController < ApplicationController
   end
 
   # GET /credential/email/:email_credential_id/created
-  # TODO: 実装せよ
+  def created
+    # nop
+  end
 
   # GET /credential/email/:email_credential_id/edit_password
   def edit_password

@@ -117,6 +117,43 @@ class Credentials::EmailControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
+  test "GET created" do
+    get :created, :email_credential_id => @yuya_gmail.id
+
+    assert_response(:success)
+    assert_template("created")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_gmail, assigns(:email_credential))
+  end
+
+  test "GET created, abnormal, no login" do
+    session_logout
+
+    get :created
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET created, abnormal, no email credential id" do
+    get :created, :email_credential_id => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET created, abnormal, other's email credential" do
+    get :created, :email_credential_id => @risa_example.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
   test "GET edit_password" do
     get :edit_password, :email_credential_id => @yuya_gmail.id
 
