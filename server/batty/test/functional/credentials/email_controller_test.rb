@@ -3,9 +3,10 @@ require 'test_helper'
 
 class Credentials::EmailControllerTest < ActionController::TestCase
   def setup
-    @yuya         = users(:yuya)
-    @yuya_gmail   = email_credentials(:yuya_gmail)
-    @risa_example = email_credentials(:risa_example)
+    @yuya          = users(:yuya)
+    @yuya_gmail    = email_credentials(:yuya_gmail)
+    @yuya_nayutaya = email_credentials(:yuya_nayutaya)
+    @risa_example  = email_credentials(:risa_example)
 
     @edit_form = EmailCredentialEditForm.new(
       :email                 => "email@example.jp",
@@ -343,6 +344,51 @@ class Credentials::EmailControllerTest < ActionController::TestCase
 
   test "POST destroy, abnormal, other's email credential" do
     post :destroy, :email_credential_id => @risa_example.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET activation" do
+    assert_equal(false, @yuya_nayutaya.activated?)
+
+    get :activation, :activation_token => @yuya_nayutaya.activation_token
+
+    assert_response(:success)
+    assert_template("activation")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_nayutaya, assigns(:email_credential))
+  end
+
+  test "GET activation, no login" do
+    session_logout
+    assert_equal(false, @yuya_nayutaya.activated?)
+
+    get :activation, :activation_token => @yuya_nayutaya.activation_token
+
+    assert_response(:success)
+    assert_template("activation")
+    assert_flash_empty
+    assert_not_logged_in
+
+    assert_equal(@yuya_nayutaya, assigns(:email_credential))
+  end
+
+  test "GET activation, abnormal, no activation token" do
+    get :activation, :activation_token => nil
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET activation, abnormal, already activated" do
+    assert_equal(true, @yuya_gmail.activated?)
+
+    get :activation, :activation_token => @yuya_gmail.activation_token
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
