@@ -32,11 +32,9 @@ body
     position: relative;
     width: 100%;
     min-width: 700px;
-/*
-    background-image: url(../images/background.png);
+    background-image: url(../images/side-column-back.png);
     background-repeat: repeat-y;
     background-position: right;
-*/
 }
 
 #body-inner
@@ -67,7 +65,6 @@ body
     float: right;
     width: 200px;
     min-height: 400px;
-background-color: #E0E0E0;
 }
 
 #side-column-inner
