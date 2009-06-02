@@ -9,6 +9,12 @@ class Credentials::EmailController < ApplicationController
   before_filter :required_param_email_credential_id
   before_filter :specified_email_credential_belongs_to_login_user
 
+  # GET /credential/emails/new
+  # TODO: 実装せよ
+
+  # GET /credential/emails/create
+  # TODO: 実装せよ
+
   # GET /credential/email/:email_credential_id/edit_password
   def edit_password
     @edit_form = EditFormClass.new
@@ -43,6 +49,15 @@ class Credentials::EmailController < ApplicationController
     set_notice("メールログイン情報を削除しました。")
     redirect_to(:controller => "/credentials")
   end
+
+  # GET /credential/email/token/:activation_token/activation
+  # TODO: 実装せよ
+
+  # POST /credential/email/token/:activation_token/activate
+  # TODO: 実装せよ
+
+  # GET /credential/email/token/:activation_token/activated
+  # TODO: 実装せよ
 
   private
 

@@ -17,10 +17,17 @@ class Credentials::EmailControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "credentials/email"}
 
+    assert_routing("/credential/emails/new",    base.merge(:action => "new"))
+    assert_routing("/credential/emails/create", base.merge(:action => "create"))
+
     assert_routing("/credential/email/1234567890/edit_password",   base.merge(:action => "edit_password",   :email_credential_id => "1234567890"))
     assert_routing("/credential/email/1234567890/update_password", base.merge(:action => "update_password", :email_credential_id => "1234567890"))
     assert_routing("/credential/email/1234567890/delete",          base.merge(:action => "delete",          :email_credential_id => "1234567890"))
     assert_routing("/credential/email/1234567890/destroy",         base.merge(:action => "destroy",         :email_credential_id => "1234567890"))
+
+    assert_routing("/credential/email/token/0123456789/activation", base.merge(:action => "activation", :activation_token => "0123456789"))
+    assert_routing("/credential/email/token/0123456789/activate",   base.merge(:action => "activate",   :activation_token => "0123456789"))
+    assert_routing("/credential/email/token/0123456789/activated",  base.merge(:action => "activated",  :activation_token => "0123456789"))
   end
 
   test "GET edit_password" do

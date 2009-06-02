@@ -26,7 +26,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "device/:device_id/trigger/:trigger_id/acts/http/:action",  :controller => "http_actions", :device_id => DeviceId, :trigger_id => TriggerId
 
   map.with_options :controller => "credentials/email" do |email_credentials|
-    email_credentials.connect "credential/email/:email_credential_id/:action", :action => /(edit_password|update_password|delete|destroy)/, :email_credential_id => /[0-9]+/
+    email_credentials.connect "credential/emails/:action",                        :action => /(new|create)/
+    email_credentials.connect "credential/email/:email_credential_id/:action",    :action => /(edit_password|update_password|delete|destroy)/, :email_credential_id => /[0-9]+/
+    email_credentials.connect "credential/email/token/:activation_token/:action", :action => /(activation|activate|activated)/, :activation_token => ActivationToken
   end
 
   map.with_options :controller => "credentials/open_id" do |open_id_credentials|
