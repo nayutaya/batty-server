@@ -7,6 +7,11 @@ class Credentials::EmailControllerTest < ActionController::TestCase
     @yuya_gmail   = email_credentials(:yuya_gmail)
     @risa_example = email_credentials(:risa_example)
 
+    @edit_form = EmailCredentialEditForm.new(
+      :email                 => "email@example.jp",
+      :password              => "password",
+      :password_confirmation => "password")
+
     @password_edit_form = EmailPasswordEditForm.new(
       :password              => "password",
       :password_confirmation => "password")
@@ -20,6 +25,7 @@ class Credentials::EmailControllerTest < ActionController::TestCase
     assert_routing("/credential/emails/new",    base.merge(:action => "new"))
     assert_routing("/credential/emails/create", base.merge(:action => "create"))
 
+    assert_routing("/credential/email/1234567890/created",         base.merge(:action => "created",         :email_credential_id => "1234567890"))
     assert_routing("/credential/email/1234567890/edit_password",   base.merge(:action => "edit_password",   :email_credential_id => "1234567890"))
     assert_routing("/credential/email/1234567890/update_password", base.merge(:action => "update_password", :email_credential_id => "1234567890"))
     assert_routing("/credential/email/1234567890/delete",          base.merge(:action => "delete",          :email_credential_id => "1234567890"))
@@ -47,6 +53,64 @@ class Credentials::EmailControllerTest < ActionController::TestCase
     session_logout
 
     get :new
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "POST create" do
+    assert_equal(true, @edit_form.valid?)
+
+    assert_difference("EmailCredential.count", +1) {
+      post :create, :edit_form => @edit_form.attributes
+    }
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "credentials/email", :action => "created", :email_credential_id => assigns(:email_credential).id)
+    assert_flash_notice
+    assert_logged_in(@yuya)
+
+    assert_equal(
+      @edit_form.attributes,
+      assigns(:edit_form).attributes)
+
+    assigns(:email_credential).reload
+    assert_equal(@yuya.id,         assigns(:email_credential).user_id)
+    assert_equal(@edit_form.email, assigns(:email_credential).email)
+    assert_equal(true, EmailCredential.compare_hashed_password(@edit_form.password, assigns(:email_credential).hashed_password))
+    assert_equal(nil,              assigns(:email_credential).activated_at)
+
+    # TODO: アクティベーションメールを送信
+  end
+
+  test "POST create, invalid form" do
+    @edit_form.email = nil
+    assert_equal(false, @edit_form.valid?)
+
+    assert_difference("EmailCredential.count", 0) {
+      post :create, :edit_form => @edit_form.attributes
+    }
+
+    assert_response(:success)
+    assert_template("new")
+    assert_flash_error
+
+    assert_equal(nil, assigns(:edit_form).password)
+    assert_equal(nil, assigns(:edit_form).password_confirmation)
+  end
+
+  test "GET create, abnormal, method not allowed" do
+    get :create
+
+    assert_response(405)
+    assert_template(nil)
+  end
+
+  test "POST create, abnormal, no login" do
+    session_logout
+
+    post :create
 
     assert_response(:redirect)
     assert_redirected_to(root_path)

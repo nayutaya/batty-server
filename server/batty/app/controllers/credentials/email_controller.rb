@@ -3,11 +3,11 @@
 class Credentials::EmailController < ApplicationController
   EditFormClass = EmailCredentialEditForm
 
-  verify_method_post :only => [:update_password, :destroy]
-  before_filter :authentication, :except => [:create, :activaton, :activate, :activated]
-  before_filter :authentication_required, :except => [:create, :activaton, :activate, :activated]
-  before_filter :required_param_email_credential_id, :except => [:new, :create, :activaton, :activate, :activated]
-  before_filter :specified_email_credential_belongs_to_login_user, :except => [:new, :create, :activaton, :activate, :activated]
+  verify_method_post :only => [:create, :update_password, :destroy]
+  before_filter :authentication, :except => [:created, :activaton, :activate, :activated]
+  before_filter :authentication_required, :except => [:created, :activaton, :activate, :activated]
+  before_filter :required_param_email_credential_id, :except => [:new, :create, :created, :activaton, :activate, :activated]
+  before_filter :specified_email_credential_belongs_to_login_user, :except => [:new, :create, :created, :activaton, :activate, :activated]
 
   # GET /credential/emails/new
   def new
@@ -15,6 +15,25 @@ class Credentials::EmailController < ApplicationController
   end
 
   # GET /credential/emails/create
+  def create
+    @edit_form = EditFormClass.new(params[:edit_form])
+
+    @email_credential = @login_user.email_credentials.build
+    @email_credential.attributes       = @edit_form.to_email_credential_hash
+    @email_credential.activation_token = EmailCredential.create_unique_activation_token
+
+    if @edit_form.valid? && @email_credential.save
+      set_notice("メール認証情報を追加しました。")
+      redirect_to(:action => "created", :email_credential_id => @email_credential.id)
+    else
+      @edit_form.password              = nil
+      @edit_form.password_confirmation = nil
+      set_error_now("入力内容を確認してください。")
+      render(:action => "new")
+    end
+  end
+
+  # GET /credential/email/:email_credential_id/created
   # TODO: 実装せよ
 
   # GET /credential/email/:email_credential_id/edit_password
