@@ -1,5 +1,5 @@
 
-# OpenID認証情報編集フォーム
+# OpenIDログインフォーム
 class OpenIdCredentialEditForm < ActiveForm
   column :openid_url, :type => :text
 
