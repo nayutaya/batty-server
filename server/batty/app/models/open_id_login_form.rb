@@ -1,6 +1,6 @@
 
 # OpenIDログインフォーム
-class OpenIdCredentialEditForm < ActiveForm
+class OpenIdLoginForm < ActiveForm
   column :openid_url, :type => :text
 
   validates_presence_of :openid_url

@@ -1,9 +1,9 @@
 
 require 'test_helper'
 
-class OpenIdCredentialEditFormTest < ActiveSupport::TestCase
+class OpenIdLoginFormTest < ActiveSupport::TestCase
   def setup
-    @klass = OpenIdCredentialEditForm
+    @klass = OpenIdLoginForm
     @basic = @klass.new(
       :openid_url => "example.jp")
   end
