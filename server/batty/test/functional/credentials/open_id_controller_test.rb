@@ -20,6 +20,29 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
     assert_routing("/credential/open_id/1234567890/destroy", base.merge(:action => "destroy", :open_id_credential_id => "1234567890"))
   end
 
+  test "GET new" do
+    get :new
+
+    assert_response(:success)
+    assert_template("new")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(
+      OpenIdLoginForm.new.attributes,
+      assigns(:login_form).attributes)
+  end
+
+  test "GET new, abnormal, no login" do
+    session_logout
+
+    get :new
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
   test "GET delete" do
     get :delete, :open_id_credential_id => @yuya_livedoor.id
 

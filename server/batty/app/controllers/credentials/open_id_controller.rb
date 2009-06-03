@@ -2,13 +2,15 @@
 # OpenID認証情報コントローラ
 class Credentials::OpenIdController < ApplicationController
   verify_method_post :only => [:destroy]
-  before_filter :authentication
-  before_filter :authentication_required
-  before_filter :required_param_open_id_credential_id
-  before_filter :specified_open_id_credential_belongs_to_login_user
+  before_filter :authentication, :except => [:create]
+  before_filter :authentication_required, :except => [:create]
+  before_filter :required_param_open_id_credential_id, :only => [:delete, :destroy]
+  before_filter :specified_open_id_credential_belongs_to_login_user, :only => [:delete, :destroy]
 
   # GET /credentials/open_id/new
-  # TODO: 実装せよ
+  def new
+    @login_form = OpenIdLoginForm.new
+  end
 
   # GET /credentials/open_id/create
   # TODO: 実装せよ
