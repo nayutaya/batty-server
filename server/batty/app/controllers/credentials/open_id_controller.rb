@@ -24,23 +24,22 @@ class Credentials::OpenIdController < ApplicationController
     end
 
     authenticate_with_open_id(@login_form.openid_url) { |result, identity_url|
+      @login_form.openid_url = identity_url
       @status = result.status
 
       if result.successful?
-        if OpenIdCredential.exists?(:identity_url => identity_url)
-          @login_form.openid_url = identity_url
-          set_error_now("既に使用されているOpenIDです。")
-          render(:action => "new")
-        else
-          @open_id_credential = @login_user.open_id_credentials.build
-          @open_id_credential.identity_url = identity_url
+        @open_id_credential = @login_user.open_id_credentials.find_or_initialize_by_identity_url(identity_url)
+
+        if @open_id_credential.new_record?
           @open_id_credential.save!
 
           set_notice("OpenID認証情報を追加しました。")
           redirect_to(:controller => "/credentials", :action => "index")
+        else
+          set_error_now("既に使用されているOpenIDです。")
+          render(:action => "new")
         end
       else
-        @login_form.openid_url = identity_url
         set_error_now(result.message)
         render(:action => "new")
       end
