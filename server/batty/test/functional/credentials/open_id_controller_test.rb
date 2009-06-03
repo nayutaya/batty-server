@@ -43,6 +43,42 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
+  # MEMO: 実際にエンドポイントにアクセスに行く（インターネットへのアクセスが発生）
+  test "POST create(begin)" do
+    musha = Kagemusha.new(ActionController::Base)
+    musha.def(:open_id_redirect_url) { "http://openid/providor" }
+
+    musha.swap {
+      post :create, :openid_url => "livedoor.com"
+    }
+
+    assert_response(:redirect)
+    assert_redirected_to("http://openid/providor")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal("livedoor.com", assigns(:login_form).openid_url)
+  end
+
+  test "POST create(begin), invalid form" do
+    post :create, :openid_url => nil
+
+    assert_response(:success)
+    assert_template("new")
+    assert_flash_error
+  end
+
+  test "POST create(begin), abnormal, no login" do
+    session_logout
+
+    post :create
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
   test "GET delete" do
     get :delete, :open_id_credential_id => @yuya_livedoor.id
 

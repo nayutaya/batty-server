@@ -2,8 +2,8 @@
 # OpenID認証情報コントローラ
 class Credentials::OpenIdController < ApplicationController
   verify_method_post :only => [:destroy]
-  before_filter :authentication, :except => [:create]
-  before_filter :authentication_required, :except => [:create]
+  before_filter :authentication
+  before_filter :authentication_required
   before_filter :required_param_open_id_credential_id, :only => [:delete, :destroy]
   before_filter :specified_open_id_credential_belongs_to_login_user, :only => [:delete, :destroy]
 
@@ -12,8 +12,25 @@ class Credentials::OpenIdController < ApplicationController
     @login_form = OpenIdLoginForm.new
   end
 
-  # GET /credentials/open_id/create
-  # TODO: 実装せよ
+  # POST /credentials/open_id/create
+  # GET  /credentials/open_id/create
+  def create
+    @login_form = OpenIdLoginForm.new(:openid_url => params[:openid_url])
+
+    unless @login_form.valid?
+      set_error_now("入力内容を確認してください。")
+      render(:action => "new")
+      return
+    end
+
+    begin_open_id_authentication(@login_form.openid_url) { |result, identity_url|
+      if result.successful?
+        p [:success, result, identity_url]
+      else
+        p [:failed, result, identity_url]
+      end
+    }
+  end
 
   # GET /credential/open_id/:open_id_credential_id/delete
   def delete
