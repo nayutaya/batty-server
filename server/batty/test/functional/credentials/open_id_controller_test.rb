@@ -110,20 +110,64 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
     assert_equal(identity_url, assigns(:open_id_credential).identity_url)
   end
 
-  test "GET create(complete), result is cancel" do
-    musha = create_openid_musha("http://openid/", OpenID::Consumer::CANCEL)
+  test "GET create(complete), already exists" do
+    identity_url = open_id_credentials(:yuya_livedoor).identity_url
+    musha = create_openid_musha(identity_url, OpenID::Consumer::SUCCESS)
 
-    assert_difference("OpenIdCredential.count", 0) {
-      musha.swap {
-        get :create, :open_id_complete => "1"
-      }
+    musha.swap {
+      get :create, :open_id_complete => "1"
     }
 
     assert_response(:success)
     assert_template("new")
     assert_flash_error
 
+    assert_equal(identity_url, assigns(:login_form).openid_url)
+    assert_equal(:successful, assigns(:status))
+  end
+
+  test "GET create(complete), result is canceled" do
+    identity_url = "http://openid/"
+    musha = create_openid_musha(identity_url, OpenID::Consumer::CANCEL)
+
+    musha.swap {
+      get :create, :open_id_complete => "1"
+    }
+
+    assert_response(:success)
+    assert_template("new")
+    assert_flash_error
+
+    assert_equal(identity_url, assigns(:login_form).openid_url)
     assert_equal(:canceled, assigns(:status))
+  end
+
+  test "GET create(complete), result is failed" do
+    musha = create_openid_musha("http://openid/", OpenID::Consumer::FAILURE)
+
+    musha.swap {
+      get :create, :open_id_complete => "1"
+    }
+
+    assert_response(:success)
+    assert_template("new")
+    assert_flash_error
+
+    assert_equal(:failed, assigns(:status))
+  end
+
+  test "GET create(complete), result is setup needed" do
+    musha = create_openid_musha("http://openid/", OpenID::Consumer::SETUP_NEEDED)
+
+    musha.swap {
+      get :create, :open_id_complete => "1"
+    }
+
+    assert_response(:success)
+    assert_template("new")
+    assert_flash_error
+
+    assert_equal(:setup_needed, assigns(:status))
   end
 
   test "POST create, abnormal, no login" do
@@ -229,8 +273,10 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
     composite << Kagemusha.new(ActionController::Base) { |musha|
       musha.def(:timeout_protection_from_identity_server) {
         obj = Object.new
-        (class << obj; self; end).__send__(:define_method, :display_identifier) { identity_url }
-        (class << obj; self; end).__send__(:define_method, :status) { status }
+        meta = (class << obj; self; end)
+        meta.__send__(:define_method, :display_identifier) { identity_url }
+        meta.__send__(:define_method, :status) { status }
+        meta.__send__(:define_method, :setup_url) { nil }
         obj
       }
     }
