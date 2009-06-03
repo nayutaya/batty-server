@@ -32,6 +32,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.with_options :controller => "credentials/open_id" do |open_id_credentials|
+    open_id_credentials.connect "credentials/open_id/:action",                       :action => /(new|create)/
     open_id_credentials.connect "credential/open_id/:open_id_credential_id/:action", :action => /(delete|destroy)/, :open_id_credential_id => /[0-9]+/
   end
 

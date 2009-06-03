@@ -7,6 +7,12 @@ class Credentials::OpenIdController < ApplicationController
   before_filter :required_param_open_id_credential_id
   before_filter :specified_open_id_credential_belongs_to_login_user
 
+  # GET /credentials/open_id/new
+  # TODO: 実装せよ
+
+  # GET /credentials/open_id/create
+  # TODO: 実装せよ
+
   # GET /credential/open_id/:open_id_credential_id/delete
   def delete
     # nop

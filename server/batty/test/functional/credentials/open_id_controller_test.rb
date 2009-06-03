@@ -13,6 +13,9 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "credentials/open_id"}
 
+    assert_routing("/credentials/open_id/new",    base.merge(:action => "new"))
+    assert_routing("/credentials/open_id/create", base.merge(:action => "create"))
+
     assert_routing("/credential/open_id/1234567890/delete",  base.merge(:action => "delete",  :open_id_credential_id => "1234567890"))
     assert_routing("/credential/open_id/1234567890/destroy", base.merge(:action => "destroy", :open_id_credential_id => "1234567890"))
   end
