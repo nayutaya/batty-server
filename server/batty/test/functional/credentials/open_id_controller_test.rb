@@ -7,6 +7,9 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
     @yuya_livedoor  = open_id_credentials(:yuya_livedoor)
     @shinya_example = open_id_credentials(:shinya_example)
 
+    @login_form = OpenIdLoginForm.new(
+      :openid_url => "livedoor.com")
+
     session_login(@yuya)
   end
 
@@ -49,7 +52,7 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
     musha.def(:open_id_redirect_url) { "http://openid/providor" }
 
     musha.swap {
-      post :create, :openid_url => "livedoor.com"
+      post :create, :login_form => @login_form.attributes
     }
 
     assert_response(:redirect)
@@ -57,24 +60,65 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
     assert_flash_empty
     assert_logged_in(@yuya)
 
-    assert_equal("livedoor.com", assigns(:login_form).openid_url)
+    assert_equal(@login_form.attributes, assigns(:login_form).attributes)
+    assert_equal(nil, assigns(:status))
   end
 
   test "POST create(begin), invalid form" do
-    post :create, :openid_url => nil
+    @login_form.openid_url = nil
+
+    post :create, :login_form => @login_form.attributes
 
     assert_response(:success)
     assert_template("new")
     assert_flash_error
   end
 
-  test "POST create(begin), abnormal, no login" do
+  test "POST create(begin), result is invalid" do
+    musha = Kagemusha.new(ActionController::Base)
+    musha.def(:normalize_identifier) { raise(OpenIdAuthentication::InvalidOpenId) }
+
+    musha.swap {
+      post :create, :login_form => @login_form.attributes
+    }
+
+    assert_response(:success)
+    assert_template("new")
+    assert_flash_error
+
+    assert_equal(:invalid, assigns(:status))
+  end
+
+  test "GET create(complete)" do
+    musha = Kagemusha.new(ActionController::Base)
+    musha.def(:timeout_protection_from_identity_server) {
+      obj = Object.new
+      (class << obj; self; end).__send__(:define_method, :display_identifier) { "ident" }
+      (class << obj; self; end).__send__(:define_method, :status) { OpenID::Consumer::SUCCESS }
+      (class << obj; self; end).__send__(:define_method, :message) { nil }
+      obj
+    }
+
+    musha2 = Kagemusha.new(OpenID::SReg::Response)
+    musha2.defs(:from_success_response) { nil }
+    musha3 = Kagemusha.new(OpenID::AX::FetchResponse)
+    musha3.defs(:from_success_response) { nil }
+
+    (musha3 + musha2 + musha).swap {
+      get :create, :open_id_complete => "1"
+    }
+    p assigns(:status)
+
+    assert_response(:redirect)
+    assert_redirected_to(:controller => "/credentials", :action => "index")
+  end
+
+  test "POST create, abnormal, no login" do
     session_logout
 
     post :create
 
     assert_response(:redirect)
-    assert_redirected_to(root_path)
     assert_redirected_to(root_path)
     assert_flash_error
   end

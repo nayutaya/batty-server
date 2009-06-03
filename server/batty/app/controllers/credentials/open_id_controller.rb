@@ -15,19 +15,23 @@ class Credentials::OpenIdController < ApplicationController
   # POST /credentials/open_id/create
   # GET  /credentials/open_id/create
   def create
-    @login_form = OpenIdLoginForm.new(:openid_url => params[:openid_url])
+    @login_form = OpenIdLoginForm.new(params[:login_form])
 
-    unless @login_form.valid?
+    if params[:open_id_complete].nil? && !@login_form.valid?
       set_error_now("入力内容を確認してください。")
       render(:action => "new")
       return
     end
 
-    begin_open_id_authentication(@login_form.openid_url) { |result, identity_url|
+    authenticate_with_open_id(@login_form.openid_url) { |result, identity_url|
+      @status = result.status
+
       if result.successful?
         p [:success, result, identity_url]
+        redirect_to(:controller => "/credentials", :action => "index")
       else
-        p [:failed, result, identity_url]
+        set_error_now(result.message)
+        render(:action => "new")
       end
     }
   end
