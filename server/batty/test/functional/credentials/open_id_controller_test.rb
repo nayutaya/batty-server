@@ -48,8 +48,8 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
 
   # MEMO: 実際にエンドポイントにアクセスに行く（インターネットへのアクセスが発生）
   test "POST create(begin)" do
-    musha = Kagemusha.new(ActionController::Base)
-    musha.def(:open_id_redirect_url) { "http://openid/providor" }
+    musha = Kagemusha.new(ActionController::Base).
+      def(:open_id_redirect_url) { "http://openid/providor" }
 
     musha.swap {
       post :create, :login_form => @login_form.attributes
@@ -75,8 +75,8 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
   end
 
   test "POST create(begin), result is invalid" do
-    musha = Kagemusha.new(ActionController::Base)
-    musha.def(:normalize_identifier) { raise(OpenIdAuthentication::InvalidOpenId) }
+    musha = Kagemusha.new(ActionController::Base).
+      def(:normalize_identifier) { raise(OpenIdAuthentication::InvalidOpenId) }
 
     musha.swap {
       post :create, :login_form => @login_form.attributes
@@ -87,6 +87,21 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
     assert_flash_error
 
     assert_equal(:invalid, assigns(:status))
+  end
+
+  test "POST create(begin), result is missing" do
+    musha = Kagemusha.new(ActionController::Base).
+      def(:normalize_identifier) { raise(OpenID::OpenIDError) }
+
+    musha.swap {
+      post :create, :login_form => @login_form.attributes
+    }
+
+    assert_response(:success)
+    assert_template("new")
+    assert_flash_error
+
+    assert_equal(:missing, assigns(:status))
   end
 
   test "GET create(complete)" do
@@ -270,8 +285,8 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
   def create_openid_musha(identity_url, status)
     composite = Kagemusha::Composite.new
 
-    composite << Kagemusha.new(ActionController::Base) { |musha|
-      musha.def(:timeout_protection_from_identity_server) {
+    composite << Kagemusha.new(ActionController::Base).
+      def(:timeout_protection_from_identity_server) {
         obj = Object.new
         meta = (class << obj; self; end)
         meta.__send__(:define_method, :display_identifier) { identity_url }
@@ -279,15 +294,12 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
         meta.__send__(:define_method, :setup_url) { nil }
         obj
       }
-    }
 
-    composite << Kagemusha.new(OpenID::SReg::Response) { |musha|
-      musha.defs(:from_success_response) { nil }
-    }
+    composite << Kagemusha.new(OpenID::SReg::Response).
+      defs(:from_success_response) { nil }
 
-    composite << Kagemusha.new(OpenID::AX::FetchResponse) { |musha|
-      musha.defs(:from_success_response) { nil }
-    }
+    composite << Kagemusha.new(OpenID::AX::FetchResponse).
+      defs(:from_success_response) { nil }
 
     return composite
   end
