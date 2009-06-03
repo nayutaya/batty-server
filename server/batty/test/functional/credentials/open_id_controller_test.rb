@@ -90,27 +90,40 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
   end
 
   test "GET create(complete)" do
-    musha = Kagemusha.new(ActionController::Base)
-    musha.def(:timeout_protection_from_identity_server) {
-      obj = Object.new
-      (class << obj; self; end).__send__(:define_method, :display_identifier) { "ident" }
-      (class << obj; self; end).__send__(:define_method, :status) { OpenID::Consumer::SUCCESS }
-      (class << obj; self; end).__send__(:define_method, :message) { nil }
-      obj
-    }
+    identity_url = "http://openid/"
+    musha = create_openid_musha(identity_url, OpenID::Consumer::SUCCESS)
 
-    musha2 = Kagemusha.new(OpenID::SReg::Response)
-    musha2.defs(:from_success_response) { nil }
-    musha3 = Kagemusha.new(OpenID::AX::FetchResponse)
-    musha3.defs(:from_success_response) { nil }
-
-    (musha3 + musha2 + musha).swap {
-      get :create, :open_id_complete => "1"
+    assert_difference("OpenIdCredential.count", +1) {
+      musha.swap {
+        get :create, :open_id_complete => "1"
+      }
     }
-    p assigns(:status)
 
     assert_response(:redirect)
     assert_redirected_to(:controller => "/credentials", :action => "index")
+    assert_flash_notice
+
+    assert_equal(:successful, assigns(:status))
+
+    assigns(:open_id_credential).reload
+    assert_equal(@yuya.id,     assigns(:open_id_credential).user_id)
+    assert_equal(identity_url, assigns(:open_id_credential).identity_url)
+  end
+
+  test "GET create(complete), result is cancel" do
+    musha = create_openid_musha("http://openid/", OpenID::Consumer::CANCEL)
+
+    assert_difference("OpenIdCredential.count", 0) {
+      musha.swap {
+        get :create, :open_id_complete => "1"
+      }
+    }
+
+    assert_response(:success)
+    assert_template("new")
+    assert_flash_error
+
+    assert_equal(:canceled, assigns(:status))
   end
 
   test "POST create, abnormal, no login" do
@@ -206,5 +219,30 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
+  end
+
+  private
+
+  def create_openid_musha(identity_url, status)
+    composite = Kagemusha::Composite.new
+
+    composite << Kagemusha.new(ActionController::Base) { |musha|
+      musha.def(:timeout_protection_from_identity_server) {
+        obj = Object.new
+        (class << obj; self; end).__send__(:define_method, :display_identifier) { identity_url }
+        (class << obj; self; end).__send__(:define_method, :status) { status }
+        obj
+      }
+    }
+
+    composite << Kagemusha.new(OpenID::SReg::Response) { |musha|
+      musha.defs(:from_success_response) { nil }
+    }
+
+    composite << Kagemusha.new(OpenID::AX::FetchResponse) { |musha|
+      musha.defs(:from_success_response) { nil }
+    }
+
+    return composite
   end
 end

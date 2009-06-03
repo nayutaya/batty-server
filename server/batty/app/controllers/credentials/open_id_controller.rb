@@ -27,7 +27,12 @@ class Credentials::OpenIdController < ApplicationController
       @status = result.status
 
       if result.successful?
-        p [:success, result, identity_url]
+        # TODO: 重複登録の検査
+        @open_id_credential = @login_user.open_id_credentials.build
+        @open_id_credential.identity_url = identity_url
+        @open_id_credential.save!
+
+        set_notice("OpenID認証情報を追加しました。")
         redirect_to(:controller => "/credentials", :action => "index")
       else
         set_error_now(result.message)
