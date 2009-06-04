@@ -21,7 +21,7 @@
   <table border="1">
     <tr>
       <td>
-        <h2>バッテリ残量</h2>
+        <h2>エネルギー履歴</h2>
 
         <table border="1">
           <tr>
@@ -36,13 +36,13 @@
             </tr>
           <%- } -%>
         </table>
-        <div>すべて見る &gt;&gt;</div>
         <div>
-          <%= link_to(feed_icon + "RSS", :controller => "device_feeds", :action => "energies", :device_token => @device.device_token) %>
+          <span><%= link_to(feed_icon + "RSS", :controller => "device_feeds", :action => "energies", :device_token => @device.device_token) %></span> |
+          <span><%= link_to(h("すべて見る"), :action => "energies") %> (<%=h @energies.total_entries %>)</span>
         </div>
       </td>
       <td>
-        <h2>イベント</h2>
+        <h2>イベント履歴</h2>
 
         <table border="1">
           <tr>
@@ -60,9 +60,9 @@
             </tr>
           <%- } -%>
         </table>
-        <div>すべて見る &gt;&gt;</div>
         <div>
-          <%= link_to(feed_icon + "RSS", :controller => "device_feeds", :action => "events", :device_token => @device.device_token) %>
+          <span><%= link_to(feed_icon + "RSS", :controller => "device_feeds", :action => "events", :device_token => @device.device_token) %></span> |
+          <span><%= link_to(h("すべて見る"), :action => "events") %> (<%=h @events.total_entries %>)</span>
         </div>
       </td>
     </tr>

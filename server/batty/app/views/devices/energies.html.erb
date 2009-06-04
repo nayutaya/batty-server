@@ -1,0 +1,29 @@
+
+<div>
+  <%= link_to(h("トップ"), root_path) %> &gt;
+  <%= device_name_link(@device) %> &gt;
+  <em>エネルギー履歴</em>
+</div>
+
+<h1>エネルギー履歴</h1>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>日時</th>
+      <th colspan="2">残量</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%- @energies.each { |energy| -%>
+      <tr>
+        <td><%=h energy.observed_at.strftime("%m-%d %H:%M") %></td>
+        <td><%= energy_meter(energy.observed_level) %></td>
+        <td align="right"><%=h energy.observed_level %> %</td>
+      </tr>
+    <%- } -%>
+  </tbody>
+</table>
+
+<%# FIXME: ページングする %>
+<%# FIXME: 2カラム表示にする %>
