@@ -11,7 +11,11 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.with_options :controller => "signup/open_id" do |open_id_signup|
-    open_id_signup. connect "signup/open_id/:action", :action => /(index|authenticate|authenticated|create|created)/
+    open_id_signup.connect "signup/open_id/:action", :action => /(index|authenticate|authenticated|create|created)/
+  end
+
+  map.with_options :controller => "auth/email" do |email|
+    email.connect "auth/email/:action", :action => /(index|login)/
   end
 
   map.with_options :controller => "devices" do |devices|
