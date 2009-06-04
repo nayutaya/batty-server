@@ -32,7 +32,6 @@ class EmailCredentialEditForm < ActiveForm
       record.errors.add(attr, :confirmation)
     end
   }
-  # TODO: emailが一意であることを検証する
 
   def masked_password
     return self.password.to_s.gsub(/./, "*")
