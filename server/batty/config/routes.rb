@@ -18,6 +18,10 @@ ActionController::Routing::Routes.draw do |map|
     email.connect "auth/email/:action", :action => /(index|login)/
   end
 
+  map.with_options :controller => "auth/open_id" do |open_id|
+    open_id.connect "auth/open_id/:action", :action => /(index|login)/
+  end
+
   map.with_options :controller => "devices" do |devices|
     devices.connect "devices/:action",           :action => /(new|create)/
     devices.device  "device/:device_id",         :action => "show", :device_id => IdPattern
