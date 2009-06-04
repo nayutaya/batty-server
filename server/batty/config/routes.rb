@@ -21,7 +21,7 @@ ActionController::Routing::Routes.draw do |map|
   map.with_options :controller => "devices" do |devices|
     devices.connect "devices/:action",           :action => /(new|create)/
     devices.device  "device/:device_id",         :action => "show", :device_id => IdPattern
-    devices.connect "device/:device_id/:action", :action => /(edit|update|delete|destroy)/, :device_id => IdPattern
+    devices.connect "device/:device_id/:action", :action => /(edit|update|delete|destroy|energies|events)/, :device_id => IdPattern
   end
 
   map.with_options :controller => "triggers", :device_id => IdPattern do |triggers|

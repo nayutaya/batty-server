@@ -4,10 +4,10 @@ class DevicesController < ApplicationController
   EditFormClass = DeviceEditForm
 
   verify_method_post :only => [:create, :update, :destroy]
-  before_filter :authentication
-  before_filter :authentication_required
-  before_filter :required_param_device_id, :only => [:show, :edit, :update, :delete, :destroy]
-  before_filter :specified_device_belongs_to_login_user, :only => [:show, :edit, :update, :delete, :destroy]
+  before_filter :authentication, :except => [:events]
+  before_filter :authentication_required, :except => [:events]
+  before_filter :required_param_device_id, :only => [:show, :edit, :update, :delete, :destroy, :energies]
+  before_filter :specified_device_belongs_to_login_user, :only => [:show, :edit, :update, :delete, :destroy, :energies]
 
   # GET /devices/new
   def new
@@ -79,4 +79,15 @@ class DevicesController < ApplicationController
     set_notice("デバイスを削除しました。")
     redirect_to(root_path)
   end
+
+  # GET /device/:device_id/energies
+  def energies
+    @energies = @device.energies.paginate(
+      :order    => "energies.observed_at DESC, energies.id DESC",
+      :page     => params[:page],
+      :per_page => 20)
+  end
+
+  # GET /device/:device_id/events
+  # TODO: 実装せよ
 end
