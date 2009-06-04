@@ -10,7 +10,32 @@
     }, 2000);
     // ]]>
   </script>
+  <style type="text/css">
+    #dialog
+    {
+        margin: 100px auto;
+        padding: 15px;
+        width: 500px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #CCCCCC;
+    }
+    #dialog h1
+    {
+        margin: 0 0 0.4em 0;
+        color: #666666;
+        font-size: 130%;
+        font-weight: bold;
+    }
+    .message
+    {
+        color: #999999;
+        font-size: 90%;
+    }
+  </style>
 <%- } -%>
 
-<div>ログインしました</div>
-<div>ページが切り替わらない場合は <%= link_to(h(@return_path), @return_path) %> をクリックしてください。</div>
+<div id="dialog">
+  <h1>ログインしました</h1>
+  <div class="message">ページが切り替わらない場合は <%= link_to(h(@return_path), @return_path) %> をクリックしてください。</div>
+</div>
