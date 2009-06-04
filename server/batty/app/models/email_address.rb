@@ -25,7 +25,7 @@ class EmailAddress < ActiveRecord::Base
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
   validates_email_format_of :email
   validates_uniqueness_of :activation_token
-  # TODO: user_id + emailが一意であることを検証
+  validates_uniqueness_of :email, :scope => [:user_id]
 
   def self.create_unique_activation_token
     return TokenUtil.create_unique_token(self, :activation_token, TokenLength)
