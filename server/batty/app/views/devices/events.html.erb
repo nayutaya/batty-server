@@ -1,0 +1,32 @@
+
+<div>
+  <%= link_to(h("トップ"), root_path) %> &gt;
+  <%= device_name_link(@device) %> &gt;
+  <em>イベント履歴</em>
+</div>
+
+<h1>イベント履歴</h1>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>日時</th>
+      <th colspan="2">残量</th>
+      <th colspan="2">条件</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%- @events.each { |event| -%>
+      <tr>
+        <td><%=h event.observed_at.strftime("%m-%d %H:%M") %></td>
+        <td><%= energy_meter(event.observed_level) %></td>
+        <td align="right"><%=h event.observed_level %> %</td>
+        <td><%=h event.trigger_operator_sign %></td>
+        <td align="right"><%=h event.trigger_level %> %</td>
+      </tr>
+    <%- } -%>
+  </tbody>
+</table>
+
+<%# FIXME: ページングする %>
+<%# FIXME: 2カラム表示にする %>
