@@ -127,6 +127,16 @@ class EmailCredentialTest < ActiveSupport::TestCase
     }
   end
 
+  test "validates_uniqueness_of :email, on create" do
+    @basic.email = @yuya_gmail.email
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_uniqueness_of :email, on update" do
+    @yuya_gmail.email = @risa_example.email
+    assert_equal(false, @yuya_gmail.valid?)
+  end
+
   #
   # クラスメソッド
   #

@@ -31,7 +31,7 @@ class EmailCredential < ActiveRecord::Base
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
   validates_format_of :hashed_password, :with => HashedPasswordPattern, :allow_nil => true
   validates_email_format_of :email
-  # TODO: emailが一意であることを検証
+  validates_uniqueness_of :email
 
   def self.create_unique_activation_token
     return TokenUtil.create_unique_token(self, :activation_token, TokenLength)
