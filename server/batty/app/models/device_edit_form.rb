@@ -18,8 +18,7 @@ class DeviceEditForm < ActiveForm
   validates_numericality_of :device_icon_id, :only_integer => true, :allow_nil => true
   validates_each :device_icon_id do |record, attr, value|
     unless record.device_icon
-      # FIXME: エラーメッセージを指定せよ
-      record.errors.add(attr)
+      record.errors.add(attr, :invalid)
     end
   end
 
