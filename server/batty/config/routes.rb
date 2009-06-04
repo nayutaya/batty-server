@@ -69,6 +69,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect "user/token/:user_token/:action.rdf", :controller => "user_feeds", :user_token => TokenPattern
 
+  # MEMO: 下記2行のデフォルトルールをコメントアウトしてrake test:functionalsを
+  #       実行することにより、リンクチェックを行うことができる
   map.connect ":controller/:action/:id"
   map.connect ":controller/:action/:id.:format"
 end

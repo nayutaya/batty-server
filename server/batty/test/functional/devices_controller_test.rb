@@ -144,8 +144,8 @@ class DevicesControllerTest < ActionController::TestCase
     assert_flash_error
   end
 
-  test "GET show, abnormal, no device id" do
-    get :show, :device_id => nil
+  test "GET show, abnormal, invalid device id" do
+    get :show, :device_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -177,15 +177,15 @@ class DevicesControllerTest < ActionController::TestCase
   test "GET edit, abnormal, no login" do
     session_logout
 
-    get :edit
+    get :edit, :device_id => @yuya_pda.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET edit, abnormal, no device id" do
-    get :edit, :device_id => nil
+  test "GET edit, abnormal, invalid device id" do
+    get :edit, :device_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -237,7 +237,7 @@ class DevicesControllerTest < ActionController::TestCase
   end
 
   test "GET update, abnormal, method not allowed" do
-    get :update
+    get :update, :device_id => @yuya_pda.id
 
     assert_response(405)
     assert_template(nil)
@@ -246,15 +246,15 @@ class DevicesControllerTest < ActionController::TestCase
   test "POST update, abnormal, no login" do
     session_logout
 
-    post :update
+    post :update, :device_id => @yuya_pda.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "POST update, abnormal, no device id" do
-    post :update, :device_id => nil
+  test "POST update, abnormal, invalid device id" do
+    post :update, :device_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -283,15 +283,15 @@ class DevicesControllerTest < ActionController::TestCase
   test "GET delete, abnormal, no login" do
     session_logout
 
-    get :delete
+    get :delete, :device_id => @yuya_pda.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET delete, abnormal, no device id" do
-    get :delete, :device_id => nil
+  test "GET delete, abnormal, invalid device id" do
+    get :delete, :device_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -322,7 +322,7 @@ class DevicesControllerTest < ActionController::TestCase
   end
 
   test "GET destroy, abnormal, method not allowed" do
-    get :destroy
+    get :destroy, :device_id => @yuya_pda.id
 
     assert_response(405)
     assert_template(nil)
@@ -331,15 +331,15 @@ class DevicesControllerTest < ActionController::TestCase
   test "POST destroy, abnormal, no login" do
     session_logout
 
-    post :destroy
+    post :destroy, :device_id => @yuya_pda.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "POST destroy, abnormal, no device id" do
-    post :destroy, :device_id => nil
+  test "POST destroy, abnormal, invalid device id" do
+    post :destroy, :device_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)

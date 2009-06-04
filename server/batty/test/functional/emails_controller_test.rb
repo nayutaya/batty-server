@@ -119,15 +119,15 @@ class EmailsControllerTest < ActionController::TestCase
   test "GET created, abnormal, no login" do
     session_logout
 
-    get :created
+    get :created, :email_address_id => @yuya_gmail.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET created, abnormal, no email address id" do
-    get :created, :email_address_id => nil
+  test "GET created, abnormal, invalid email address id" do
+    get :created, :email_address_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -156,15 +156,15 @@ class EmailsControllerTest < ActionController::TestCase
   test "GET delete, abnormal, no login" do
     session_logout
 
-    get :delete
+    get :delete, :email_address_id => @yuya_gmail.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET delete, abnormal, no email address id" do
-    get :delete, :email_address_id => nil
+  test "GET delete, abnormal, invalid email address id" do
+    get :delete, :email_address_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -195,7 +195,7 @@ class EmailsControllerTest < ActionController::TestCase
   end
 
   test "GET destroy, abnormal, method not allowed" do
-    get :destroy
+    get :destroy, :email_address_id => @yuya_gmail.id
 
     assert_response(405)
     assert_template(nil)
@@ -204,15 +204,15 @@ class EmailsControllerTest < ActionController::TestCase
   test "POST destroy, abnormal, no login" do
     session_logout
 
-    post :destroy
+    post :destroy, :email_address_id => @yuya_gmail.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "POST destroy, abnormal, no email address id" do
-    post :destroy, :email_address_id => nil
+  test "POST destroy, abnormal, invalid email address id" do
+    post :destroy, :email_address_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -254,8 +254,8 @@ class EmailsControllerTest < ActionController::TestCase
     assert_equal(@yuya_example, assigns(:email_address))
   end
 
-  test "GET activation, abnormal, no activation token" do
-    get :activation, :activation_token => nil
+  test "GET activation, abnormal, invalid activation token" do
+    get :activation, :activation_token => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -307,14 +307,14 @@ class EmailsControllerTest < ActionController::TestCase
   end
 
   test "GET activate, abnormal, method not allowed" do
-    get :activate
+    get :activate, :activation_token => @yuya_example.activation_token
 
     assert_response(405)
     assert_template(nil)
   end
 
-  test "POST activate, abnormal, no activation token" do
-    post :activate, :activation_token => nil
+  test "POST activate, abnormal, invalid activation token" do
+    post :activate, :activation_token => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -355,8 +355,8 @@ class EmailsControllerTest < ActionController::TestCase
     assert_equal(@yuya_example, assigns(:email_address))
   end
 
-  test "GET activated, abnormal, no activation token" do
-    get :activated, :activation_token => nil
+  test "GET activated, abnormal, invalid activation token" do
+    get :activated, :activation_token => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)

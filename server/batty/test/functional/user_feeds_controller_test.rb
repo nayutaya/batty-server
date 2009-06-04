@@ -41,8 +41,8 @@ class UserFeedsControllerTest < ActionController::TestCase
     assert_equal(@shinya, assigns(:user))
   end
 
-  test "GET energies, abnormal, no user token" do
-    get :energies, :user_token => nil
+  test "GET energies, abnormal, invalid user token" do
+    get :energies, :user_token => "0"
 
     assert_response(404)
     assert_template(nil)
@@ -64,8 +64,8 @@ class UserFeedsControllerTest < ActionController::TestCase
     assert_equal(10, events.per_page)
   end
 
-  test "GET events, abnormal, no user token" do
-    get :events, :user_token => nil
+  test "GET events, abnormal, invalid user token" do
+    get :events, :user_token => "0"
 
     assert_response(404)
     assert_template(nil)

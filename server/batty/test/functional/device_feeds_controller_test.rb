@@ -39,8 +39,8 @@ class DeviceFeedsControllerTest < ActionController::TestCase
     assert_equal(@shinya_note, assigns(:device))
   end
 
-  test "GET energies, abnormal, no device token" do
-    get :energies, :device_token => nil
+  test "GET energies, abnormal, invalid device token" do
+    get :energies, :device_token => "0"
 
     assert_response(404)
     assert_template(nil)
@@ -62,8 +62,8 @@ class DeviceFeedsControllerTest < ActionController::TestCase
     assert_equal(10, events.per_page)
   end
 
-  test "GET events, abnormal, no device token" do
-    get :events, :device_token => nil
+  test "GET events, abnormal, invalie device token" do
+    get :events, :device_token => "0"
 
     assert_response(404)
     assert_template(nil)
