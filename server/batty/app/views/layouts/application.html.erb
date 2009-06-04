@@ -26,9 +26,9 @@
         <%- end -%>
       </div>
     </div>
-    <div id="body-outer">
-      <div id="body-inner">
-        <%- if (@enable_side_column != false) -%>
+    <%- if (@enable_side_column != false) -%>
+      <div id="body-outer-with-background">
+        <div id="body-inner">
           <div id="side-column-outer">
             <div id="side-column-inner">
               <%= @side_column_html %>
@@ -42,7 +42,11 @@
             </div>
           </div>
           <div style="clear: both;"></div>
-        <%- else -%>
+        </div>
+      </div>
+    <%- else -%>
+      <div id="body-outer-without-background">
+        <div id="body-inner">
           <div id="content-outer">
             <div id="content-inner">
               <div style="color: #009900;"><%=h flash[:notice] %></div>
@@ -50,9 +54,9 @@
               <%= yield %>
             </div>
           </div>
-        <%- end -%>
+        </div>
       </div>
-    </div>
+    <%- end -%>
     <div id="foot-outer">
       <div id="foot-inner">
         <div>Nayutaya, Inc.</div>

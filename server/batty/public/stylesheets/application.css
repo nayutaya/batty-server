@@ -27,11 +27,16 @@ body
 
 /* body */
 
-#body-outer
+#body-outer-with-background,
+#body-outer-without-background
 {
     position: relative;
     width: 100%;
     min-width: 700px;
+}
+
+#body-outer-with-background
+{
     background-image: url(../images/side-column-back.png);
     background-repeat: repeat-y;
     background-position: right;
