@@ -18,8 +18,11 @@ ActionController::Routing::Routes.draw do |map|
     devices.connect "device/:device_id/:action", :action => /(edit|update|delete|destroy)/, :device_id => DeviceId
   end
 
-  map.connect "device/:device_id/trigger/:trigger_id/:action", :controller => "triggers", :device_id => DeviceId, :trigger_id => TriggerId
-  map.connect "device/:device_id/triggers/:action",            :controller => "triggers", :device_id => DeviceId
+  map.with_options :controller => "triggers", :device_id => DeviceId do |triggers|
+    triggers.connect "device/:device_id/triggers/:action",            :action => /(new|create)/
+    triggers.connect "device/:device_id/trigger/:trigger_id/:action", :action => /(edit|update|delete|destroy)/, :trigger_id => TriggerId
+  end
+
   map.connect "device/:device_id/trigger/:trigger_id/act/email/:email_action_id/:action", :controller => "email_actions", :device_id => DeviceId, :trigger_id => TriggerId, :email_action_id => EmailActionId
   map.connect "device/:device_id/trigger/:trigger_id/acts/email/:action", :controller => "email_actions", :device_id => DeviceId, :trigger_id => TriggerId
   map.connect "device/:device_id/trigger/:trigger_id/act/http/:http_action_id/:action", :controller => "http_actions", :device_id => DeviceId, :trigger_id => TriggerId, :http_action_id => HttpActionId
