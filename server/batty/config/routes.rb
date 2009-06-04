@@ -5,6 +5,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.root :controller => "home", :action => "index"
 
+  map.namespace :signup do |signup|
+    signup.connect "email/:action",                      :controller => "email", :action => /(index|validate|validated|create|created|activate|activated)/
+    signup.connect "email/activation/:activation_token", :controller => "email", :action => "activation", :activation_token => TokenPattern
+  end
+
   map.with_options :controller => "devices" do |devices|
     devices.connect "devices/:action",           :action => /(new|create)/
     devices.device  "device/:device_id",         :action => "show", :device_id => IdPattern
@@ -45,10 +50,6 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "device/token/:device_token/energies/update/:level/:time", :controller => "device_api", :action => "update_energy", :device_token => TokenPattern, :level => /\d+/, :time => /\d+/
 
   map.connect "user/token/:user_token/:action.rdf", :controller => "user_feeds", :user_token => TokenPattern
-
-  map.namespace :signup do |signup|
-    signup.connect "email/activation/:activation_token", :controller => "email", :action => "activation", :activation_token => /[0-9a-f]+/
-  end
 
   map.connect ":controller/:action/:id"
   map.connect ":controller/:action/:id.:format"
