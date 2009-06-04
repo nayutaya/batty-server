@@ -58,6 +58,9 @@ ActionController::Routing::Routes.draw do |map|
     emails.connect "email/token/:activation_token/:action", :action => /(activation|activate|activated)/, :activation_token => TokenPattern
   end
 
+  map.connect "energies/:action", :controller => "energies", :action => /(index)/
+  map.connect "events/:action", :controller => "events", :action => /(index)/
+
   map.connect "device/token/:device_token/:action.rdf", :controller => "device_feeds", :device_token => TokenPattern
 
   map.connect "device/token/:device_token/energies/update/:level",       :controller => "device_api", :action => "update_energy", :device_token => TokenPattern, :level => /\d+/
