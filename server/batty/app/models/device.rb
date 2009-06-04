@@ -24,6 +24,7 @@ class Device < ActiveRecord::Base
   belongs_to :user
   belongs_to :device_icon
 
+  NameMaximumLength = 50
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
 
@@ -31,7 +32,7 @@ class Device < ActiveRecord::Base
   validates_presence_of :user_id
   validates_presence_of :name
   validates_presence_of :device_icon_id
-  validates_length_of :name, :maximum => 50, :allow_nil => true
+  validates_length_of :name, :maximum => NameMaximumLength, :allow_nil => true
   validates_format_of :device_token, :with => TokenPattern, :allow_nil => true
   validates_uniqueness_of :device_token
 
