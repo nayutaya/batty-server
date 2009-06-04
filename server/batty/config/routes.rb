@@ -23,10 +23,15 @@ ActionController::Routing::Routes.draw do |map|
     triggers.connect "device/:device_id/trigger/:trigger_id/:action", :action => /(edit|update|delete|destroy)/, :trigger_id => TriggerId
   end
 
-  map.connect "device/:device_id/trigger/:trigger_id/act/email/:email_action_id/:action", :controller => "email_actions", :device_id => DeviceId, :trigger_id => TriggerId, :email_action_id => EmailActionId
-  map.connect "device/:device_id/trigger/:trigger_id/acts/email/:action", :controller => "email_actions", :device_id => DeviceId, :trigger_id => TriggerId
-  map.connect "device/:device_id/trigger/:trigger_id/act/http/:http_action_id/:action", :controller => "http_actions", :device_id => DeviceId, :trigger_id => TriggerId, :http_action_id => HttpActionId
-  map.connect "device/:device_id/trigger/:trigger_id/acts/http/:action",  :controller => "http_actions", :device_id => DeviceId, :trigger_id => TriggerId
+  map.with_options :controller => "email_actions", :device_id => DeviceId, :trigger_id => TriggerId do |email_acts|
+    email_acts.connect "device/:device_id/trigger/:trigger_id/acts/email/:action",                 :action => /(new|create)/
+    email_acts.connect "device/:device_id/trigger/:trigger_id/act/email/:email_action_id/:action", :action => /(edit|update|delete|destroy)/, :email_action_id => EmailActionId
+  end
+
+  map.with_options :controller => "http_actions", :device_id => DeviceId, :trigger_id => TriggerId do |http_acts|
+    http_acts.connect "device/:device_id/trigger/:trigger_id/acts/http/:action",                :action => /(new|create)/
+    http_acts.connect "device/:device_id/trigger/:trigger_id/act/http/:http_action_id/:action", :action => /(edit|update|delete|destroy)/, :http_action_id => HttpActionId
+  end
 
   map.with_options :controller => "credentials/email" do |email_credentials|
     email_credentials.connect "credential/emails/:action",                        :action => /(new|create)/
