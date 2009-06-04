@@ -66,9 +66,13 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
     }
   end
 
-  test "validates_uniqueness_of :identity_url" do
+  test "validates_uniqueness_of :identity_url, on create" do
     @basic.identity_url = @yuya_livedoor.identity_url
     assert_equal(false, @basic.valid?)
-    assert_equal(true, @basic.errors.invalid?(:identity_url))
+  end
+
+  test "validates_uniqueness_of :identity_url, on update" do
+    @yuya_livedoor.identity_url = @shinya_example.identity_url
+    assert_equal(false, @yuya_livedoor.valid?)
   end
 end
