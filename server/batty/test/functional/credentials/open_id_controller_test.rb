@@ -209,15 +209,15 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
   test "GET delete, abnormal, no login" do
     session_logout
 
-    get :delete
+    get :delete, :open_id_credential_id => @yuya_livedoor.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET delete, abnormal, no openid credential id" do
-    get :delete, :open_id_credential_id => nil
+  test "GET delete, abnormal, invalid openid credential id" do
+    get :delete, :open_id_credential_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -248,7 +248,7 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
   end
 
   test "GET destroy, abnormal, method not allowed" do
-    get :destroy
+    get :destroy, :open_id_credential_id => @yuya_livedoor.id
 
     assert_response(405)
     assert_template(nil)
@@ -257,15 +257,15 @@ class Credentials::OpenIdControllerTest < ActionController::TestCase
   test "POST destroy, abnormal, no login" do
     session_logout
 
-    post :destroy
+    post :destroy, :open_id_credential_id => @yuya_livedoor.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "POST destroy, abnormal, no openid credential id" do
-    post :destroy, :open_id_credential_id => nil
+  test "POST destroy, abnormal, invalid openid credential id" do
+    post :destroy, :open_id_credential_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
