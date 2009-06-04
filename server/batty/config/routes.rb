@@ -42,10 +42,14 @@ ActionController::Routing::Routes.draw do |map|
     open_id_credentials.connect "credential/open_id/:open_id_credential_id/:action", :action => /(delete|destroy)/, :open_id_credential_id => IdPattern
   end
 
-  map.connect "email/:email_address_id/:action",       :controller => "emails", :action => /(created|delete|destroy)/, :email_address_id => IdPattern
-  map.connect "email/token/:activation_token/:action", :controller => "emails", :action => /(activation|activate|activated)/, :activation_token => TokenPattern
+  map.with_options :controller => "emails" do |emails|
+    emails.connect "emails/:action",                        :action => /(new|create)/
+    emails.connect "email/:email_address_id/:action",       :action => /(created|delete|destroy)/, :email_address_id => IdPattern
+    emails.connect "email/token/:activation_token/:action", :action => /(activation|activate|activated)/, :activation_token => TokenPattern
+  end
 
   map.connect "device/token/:device_token/:action.rdf", :controller => "device_feeds", :device_token => TokenPattern
+
   map.connect "device/token/:device_token/energies/update/:level",       :controller => "device_api", :action => "update_energy", :device_token => TokenPattern, :level => /\d+/
   map.connect "device/token/:device_token/energies/update/:level/:time", :controller => "device_api", :action => "update_energy", :device_token => TokenPattern, :level => /\d+/, :time => /\d+/
 
