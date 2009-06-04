@@ -39,6 +39,8 @@ ActionController::Routing::Routes.draw do |map|
     http.connect "device/:device_id/trigger/:trigger_id/act/http/:http_action_id/:action", :action => /(edit|update|delete|destroy)/, :http_action_id => IdPattern
   end
 
+  map.connect "credentials/:action", :controller => "credentials", :action => /(index)/
+
   map.with_options :controller => "credentials/email" do |email|
     email.connect "credentials/email/:action",                        :action => /(new|create)/
     email.connect "credential/email/:email_credential_id/:action",    :action => /(created|edit_password|update_password|delete|destroy)/, :email_credential_id => IdPattern
