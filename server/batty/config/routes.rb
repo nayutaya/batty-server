@@ -22,6 +22,8 @@ ActionController::Routing::Routes.draw do |map|
     open_id.connect "auth/open_id/:action", :action => /(index|login)/
   end
 
+  map.connect "auth/:action", :controller => "auth", :action => /(login_complete|logout|logout_complete)/
+
   map.with_options :controller => "devices" do |devices|
     devices.connect "devices/:action",           :action => /(new|create)/
     devices.device  "device/:device_id",         :action => "show", :device_id => IdPattern
