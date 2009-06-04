@@ -14,15 +14,9 @@ ActionController::Routing::Routes.draw do |map|
     open_id.connect "signup/open_id/:action", :action => /(index|authenticate|authenticated|create|created)/
   end
 
-  map.with_options :controller => "auth/email" do |email|
-    email.connect "auth/email/:action", :action => /(index|login)/
-  end
-
-  map.with_options :controller => "auth/open_id" do |open_id|
-    open_id.connect "auth/open_id/:action", :action => /(index|login)/
-  end
-
   map.connect "auth/:action", :controller => "auth", :action => /(login_complete|logout|logout_complete)/
+  map.connect "auth/email/:action", :controller => "auth/email", :action => /(index|login)/
+  map.connect "auth/open_id/:action", :controller => "auth/open_id", :action => /(index|login)/
 
   map.with_options :controller => "devices" do |devices|
     devices.connect "devices/:action",           :action => /(new|create)/
