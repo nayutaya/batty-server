@@ -411,4 +411,60 @@ class DevicesControllerTest < ActionController::TestCase
     assert_redirected_to(root_path)
     assert_flash_error
   end
+
+  test "GET events" do
+    get :events, :device_id => @yuya_pda.id
+
+    assert_response(:success)
+    assert_template("events")
+    assert_flash_empty
+    assert_logged_in(@yuya)
+
+    assert_equal(@yuya_pda, assigns(:device))
+
+    assert_equal( 1, assigns(:events).current_page)
+    assert_equal(20, assigns(:events).per_page)
+    assert_equal(@yuya_pda.events.size, assigns(:events).total_entries)
+    assert_equal(true, assigns(:events).all? { |e| e.device == @yuya_pda })
+    assert_equal(
+      assigns(:events).sort_by { |e| [e.observed_at, e.id] }.reverse,
+      assigns(:events))
+  end
+
+  test "GET events, page 2" do
+    get :events, :device_id => @yuya_pda.id, :page => 2
+
+    assert_response(:success)
+    assert_template("events")
+    assert_flash_empty
+
+    assert_equal( 2, assigns(:events).current_page)
+    assert_equal(20, assigns(:events).per_page)
+  end
+
+  test "GET events, abnormal, no login" do
+    session_logout
+
+    get :events, :device_id => @yuya_pda.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET events, abnormal, invalid device id" do
+    get :events, :device_id => "0"
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
+
+  test "GET events, abnormal, other's device" do
+    get :events, :device_id => @shinya_note.id
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
+    assert_flash_error
+  end
 end
