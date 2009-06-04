@@ -5,13 +5,13 @@ ActionController::Routing::Routes.draw do |map|
 
   map.root :controller => "home", :action => "index"
 
-  map.with_options :controller => "signup/email" do |email_signup|
-    email_signup.connect "signup/email/:action",                      :action => /(index|validate|validated|create|created|activate|activated)/
-    email_signup.connect "signup/email/activation/:activation_token", :action => "activation", :activation_token => TokenPattern
+  map.with_options :controller => "signup/email" do |email|
+    email.connect "signup/email/:action",                      :action => /(index|validate|validated|create|created|activate|activated)/
+    email.connect "signup/email/activation/:activation_token", :action => "activation", :activation_token => TokenPattern
   end
 
-  map.with_options :controller => "signup/open_id" do |open_id_signup|
-    open_id_signup.connect "signup/open_id/:action", :action => /(index|authenticate|authenticated|create|created)/
+  map.with_options :controller => "signup/open_id" do |open_id|
+    open_id.connect "signup/open_id/:action", :action => /(index|authenticate|authenticated|create|created)/
   end
 
   map.with_options :controller => "auth/email" do |email|
@@ -33,25 +33,25 @@ ActionController::Routing::Routes.draw do |map|
     triggers.connect "device/:device_id/trigger/:trigger_id/:action", :action => /(edit|update|delete|destroy)/, :trigger_id => IdPattern
   end
 
-  map.with_options :controller => "email_actions", :device_id => IdPattern, :trigger_id => IdPattern do |email_acts|
-    email_acts.connect "device/:device_id/trigger/:trigger_id/acts/email/:action",                 :action => /(new|create)/
-    email_acts.connect "device/:device_id/trigger/:trigger_id/act/email/:email_action_id/:action", :action => /(edit|update|delete|destroy)/, :email_action_id => IdPattern
+  map.with_options :controller => "email_actions", :device_id => IdPattern, :trigger_id => IdPattern do |email|
+    email.connect "device/:device_id/trigger/:trigger_id/acts/email/:action",                 :action => /(new|create)/
+    email.connect "device/:device_id/trigger/:trigger_id/act/email/:email_action_id/:action", :action => /(edit|update|delete|destroy)/, :email_action_id => IdPattern
   end
 
-  map.with_options :controller => "http_actions", :device_id => IdPattern, :trigger_id => IdPattern do |http_acts|
-    http_acts.connect "device/:device_id/trigger/:trigger_id/acts/http/:action",                :action => /(new|create)/
-    http_acts.connect "device/:device_id/trigger/:trigger_id/act/http/:http_action_id/:action", :action => /(edit|update|delete|destroy)/, :http_action_id => IdPattern
+  map.with_options :controller => "http_actions", :device_id => IdPattern, :trigger_id => IdPattern do |http|
+    http.connect "device/:device_id/trigger/:trigger_id/acts/http/:action",                :action => /(new|create)/
+    http.connect "device/:device_id/trigger/:trigger_id/act/http/:http_action_id/:action", :action => /(edit|update|delete|destroy)/, :http_action_id => IdPattern
   end
 
-  map.with_options :controller => "credentials/email" do |email_credentials|
-    email_credentials.connect "credentials/email/:action",                        :action => /(new|create)/
-    email_credentials.connect "credential/email/:email_credential_id/:action",    :action => /(created|edit_password|update_password|delete|destroy)/, :email_credential_id => IdPattern
-    email_credentials.connect "credential/email/token/:activation_token/:action", :action => /(activation|activate|activated)/, :activation_token => TokenPattern
+  map.with_options :controller => "credentials/email" do |email|
+    email.connect "credentials/email/:action",                        :action => /(new|create)/
+    email.connect "credential/email/:email_credential_id/:action",    :action => /(created|edit_password|update_password|delete|destroy)/, :email_credential_id => IdPattern
+    email.connect "credential/email/token/:activation_token/:action", :action => /(activation|activate|activated)/, :activation_token => TokenPattern
   end
 
-  map.with_options :controller => "credentials/open_id" do |open_id_credentials|
-    open_id_credentials.connect "credentials/open_id/:action",                       :action => /(new|create)/
-    open_id_credentials.connect "credential/open_id/:open_id_credential_id/:action", :action => /(delete|destroy)/, :open_id_credential_id => IdPattern
+  map.with_options :controller => "credentials/open_id" do |open_id|
+    open_id.connect "credentials/open_id/:action",                       :action => /(new|create)/
+    open_id.connect "credential/open_id/:open_id_credential_id/:action", :action => /(delete|destroy)/, :open_id_credential_id => IdPattern
   end
 
   map.with_options :controller => "emails" do |emails|
