@@ -60,6 +60,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect "energies/:action", :controller => "energies", :action => /(index)/
   map.connect "events/:action", :controller => "events", :action => /(index)/
+  map.connect "settings/:action", :controller => "settings", :action => /(index|get_nickname|set_nickname)/
 
   map.connect "device/token/:device_token/:action.rdf", :controller => "device_feeds", :device_token => TokenPattern
 
