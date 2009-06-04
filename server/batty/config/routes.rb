@@ -5,9 +5,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.root :controller => "home", :action => "index"
 
-  map.namespace :signup do |signup|
-    signup.connect "email/:action",                      :controller => "email", :action => /(index|validate|validated|create|created|activate|activated)/
-    signup.connect "email/activation/:activation_token", :controller => "email", :action => "activation", :activation_token => TokenPattern
+  map.with_options :controller => "signup/email" do |email_signup|
+    email_signup.connect "signup/email/:action",                      :action => /(index|validate|validated|create|created|activate|activated)/
+    email_signup.connect "signup/email/activation/:activation_token", :action => "activation", :activation_token => TokenPattern
   end
 
   map.with_options :controller => "devices" do |devices|
