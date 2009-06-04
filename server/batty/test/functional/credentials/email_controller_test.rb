@@ -23,8 +23,8 @@ class Credentials::EmailControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "credentials/email"}
 
-    assert_routing("/credential/emails/new",    base.merge(:action => "new"))
-    assert_routing("/credential/emails/create", base.merge(:action => "create"))
+    assert_routing("/credentials/email/new",    base.merge(:action => "new"))
+    assert_routing("/credentials/email/create", base.merge(:action => "create"))
 
     assert_routing("/credential/email/1234567890/created",         base.merge(:action => "created",         :email_credential_id => "1234567890"))
     assert_routing("/credential/email/1234567890/edit_password",   base.merge(:action => "edit_password",   :email_credential_id => "1234567890"))
@@ -132,15 +132,15 @@ class Credentials::EmailControllerTest < ActionController::TestCase
   test "GET created, abnormal, no login" do
     session_logout
 
-    get :created
+    get :created, :email_credential_id => @yuya_gmail.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET created, abnormal, no email credential id" do
-    get :created, :email_credential_id => nil
+  test "GET created, abnormal, invalid email credential id" do
+    get :created, :email_credential_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -173,15 +173,15 @@ class Credentials::EmailControllerTest < ActionController::TestCase
   test "GET edit_password, abnormal, no login" do
     session_logout
 
-    get :edit_password
+    get :edit_password, :email_credential_id => @yuya_gmail.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET edit_password, abnormal, no email credential id" do
-    get :edit_password, :email_credential_id => nil
+  test "GET edit_password, abnormal, invalid email credential id" do
+    get :edit_password, :email_credential_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -233,7 +233,7 @@ class Credentials::EmailControllerTest < ActionController::TestCase
   end
 
   test "GET update_password, abnormal, method not allowed" do
-    get :update_password
+    get :update_password, :email_credential_id => @yuya_gmail.id
 
     assert_response(405)
     assert_template(nil)
@@ -242,15 +242,15 @@ class Credentials::EmailControllerTest < ActionController::TestCase
   test "POST update_password, abnormal, no login" do
     session_logout
 
-    post :update_password
+    post :update_password, :email_credential_id => @yuya_gmail.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "POST update_password, abnormal, no email credential id" do
-    post :update_password, :email_credential_id => nil
+  test "POST update_password, abnormal, invalid email credential id" do
+    post :update_password, :email_credential_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -279,15 +279,15 @@ class Credentials::EmailControllerTest < ActionController::TestCase
   test "GET delete, abnormal, no login" do
     session_logout
 
-    get :delete
+    get :delete, :email_credential_id => @yuya_gmail.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET delete, abnormal, no email credential id" do
-    get :delete, :email_credential_id => nil
+  test "GET delete, abnormal, invalid email credential id" do
+    get :delete, :email_credential_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -318,7 +318,7 @@ class Credentials::EmailControllerTest < ActionController::TestCase
   end
 
   test "GET destroy, abnormal, method not allowed" do
-    get :destroy
+    get :destroy, :email_credential_id => @yuya_gmail.id
 
     assert_response(405)
     assert_template(nil)
@@ -327,15 +327,15 @@ class Credentials::EmailControllerTest < ActionController::TestCase
   test "POST destroy, abnormal, no login" do
     session_logout
 
-    post :destroy
+    post :destroy, :email_credential_id => @yuya_gmail.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "POST destroy, abnormal, no email credential id" do
-    post :destroy, :email_credential_id => nil
+  test "POST destroy, abnormal, invalid email credential id" do
+    post :destroy, :email_credential_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -377,8 +377,8 @@ class Credentials::EmailControllerTest < ActionController::TestCase
     assert_equal(@yuya_nayutaya, assigns(:email_credential))
   end
 
-  test "GET activation, abnormal, no activation token" do
-    get :activation, :activation_token => nil
+  test "GET activation, abnormal, invalid activation token" do
+    get :activation, :activation_token => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -430,14 +430,14 @@ class Credentials::EmailControllerTest < ActionController::TestCase
   end
 
   test "GET activate, abnormal, method not allowed" do
-    get :activate
+    get :activate, :activation_token => @yuya_nayutaya.activation_token
 
     assert_response(405)
     assert_template(nil)
   end
 
-  test "POST activate, abnormal, no activation token" do
-    post :activate, :activation_token => nil
+  test "POST activate, abnormal, invalid activation token" do
+    post :activate, :activation_token => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -478,8 +478,8 @@ class Credentials::EmailControllerTest < ActionController::TestCase
     assert_equal(@yuya_nayutaya, assigns(:email_credential))
   end
 
-  test "GET activated, abnormal, no activation token" do
-    get :activated, :activation_token => nil
+  test "GET activated, abnormal, invalid activation token" do
+    get :activated, :activation_token => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)

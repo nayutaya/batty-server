@@ -51,15 +51,15 @@ class TriggersControllerTest < ActionController::TestCase
   test "GET new, abnormal, no login" do
     session_logout
 
-    get :new
+    get :new, :device_id => @yuya_pda.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET new, abnormal, no device id" do
-    get :new, :device_id => nil
+  test "GET new, abnormal, invalid device id" do
+    get :new, :device_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -112,7 +112,7 @@ class TriggersControllerTest < ActionController::TestCase
   end
 
   test "GET create, abnormal, method not allowed" do
-    get :create
+    get :create, :device_id => @yuya_pda.id
 
     assert_response(405)
     assert_template(nil)
@@ -121,15 +121,15 @@ class TriggersControllerTest < ActionController::TestCase
   test "POST create, abnormal, no login" do
     session_logout
 
-    post :create
+    post :create, :device_id => @yuya_pda.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "POST create, abnormal, no device id" do
-    post :create, :device_id => nil
+  test "POST create, abnormal, invalid device id" do
+    post :create, :device_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -167,23 +167,23 @@ class TriggersControllerTest < ActionController::TestCase
   test "GET edit, abnormal, no login" do
     session_logout
 
-    get :edit
+    get :edit, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET edit, abnormal, no device id" do
-    get :edit, :device_id => nil
+  test "GET edit, abnormal, invalid device id" do
+    get :edit, :device_id => "0", :trigger_id => @yuya_pda_ge90.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET edit, abnormal, no trigger id" do
-    get :edit, :device_id => @yuya_pda.id, :trigger_id => nil
+  test "GET edit, abnormal, invalid trigger id" do
+    get :edit, :device_id => @yuya_pda.id, :trigger_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -249,7 +249,7 @@ class TriggersControllerTest < ActionController::TestCase
   end
 
   test "GET update, abnormal, method not allowed" do
-    get :update
+    get :update, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id
 
     assert_response(405)
     assert_template(nil)
@@ -258,23 +258,23 @@ class TriggersControllerTest < ActionController::TestCase
   test "POST update, abnormal, no login" do
     session_logout
 
-    post :update
+    post :update, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "POST update, abnormal, no device id" do
-    post :update, :device_id => nil
+  test "POST update, abnormal, invalid device id" do
+    post :update, :device_id => "0", :trigger_id => @yuya_pda_ge90.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "POST update, abnormal, no trigger id" do
-    post :update, :device_id => @yuya_pda.id, :trigger_id => nil
+  test "POST update, abnormal, invalid trigger id" do
+    post :update, :device_id => @yuya_pda.id, :trigger_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -312,23 +312,23 @@ class TriggersControllerTest < ActionController::TestCase
   test "GET delete, abnormal, no login" do
     session_logout
 
-    get :delete
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET delete, abnormal, no device id" do
-    get :delete, :device_id => nil
+  test "GET delete, abnormal, invalid device id" do
+    get :delete, :device_id => "0", :trigger_id => @yuya_pda_ge90.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "GET delete, abnormal, no trigger id" do
-    get :delete, :device_id => @yuya_pda.id, :trigger_id => nil
+  test "GET delete, abnormal, invalid trigger id" do
+    get :delete, :device_id => @yuya_pda.id, :trigger_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
@@ -368,7 +368,7 @@ class TriggersControllerTest < ActionController::TestCase
   end
 
   test "GET destroy, abnormal, method not allowed" do
-    get :destroy
+    get :destroy, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id
 
     assert_response(405)
     assert_template(nil)
@@ -377,23 +377,23 @@ class TriggersControllerTest < ActionController::TestCase
   test "POST destroy, abnormal, no login" do
     session_logout
 
-    post :destroy
+    post :destroy, :device_id => @yuya_pda.id, :trigger_id => @yuya_pda_ge90.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "POST destroy, abnormal, no device id" do
-    post :destroy, :device_id => nil
+  test "POST destroy, abnormal, invalid device id" do
+    post :destroy, :device_id => "0", :trigger_id => @yuya_pda_ge90.id
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
     assert_flash_error
   end
 
-  test "POST destroy, abnormal, no trigger id" do
-    post :destroy, :device_id => @yuya_pda.id, :trigger_id => nil
+  test "POST destroy, abnormal, invalid trigger id" do
+    post :destroy, :device_id => @yuya_pda.id, :trigger_id => "0"
 
     assert_response(:redirect)
     assert_redirected_to(root_path)

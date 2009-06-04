@@ -3,7 +3,11 @@ require 'test_helper'
 
 class AuthControllerTest < ActionController::TestCase
   test "routes" do
-    # TODO: 実装せよ
+    base = {:controller => "auth"}
+
+    assert_routing("/auth/login_complete",  base.merge(:action => "login_complete"))
+    assert_routing("/auth/logout",          base.merge(:action => "logout"))
+    assert_routing("/auth/logout_complete", base.merge(:action => "logout_complete"))
   end
 
   test "GET login_complete" do

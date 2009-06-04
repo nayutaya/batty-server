@@ -288,8 +288,8 @@ class Signup::EmailControllerTest < ActionController::TestCase
     assert_equal(nil, @request.session[:signup_form])
   end
 
-  test "GET activation, abnormal, no activation token" do
-    get :activation, :activation_token => nil
+  test "GET activation, abnormal, invalid activation token" do
+    get :activation, :activation_token => "0"
 
     assert_response(:success)
     assert_template("activation")
