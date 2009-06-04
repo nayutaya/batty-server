@@ -9,6 +9,9 @@ class EmailAddressTest < ActiveSupport::TestCase
       :activation_token => "0" * 20,
       :user_id          => users(:yuya).id,
       :email            => "email@example.jp")
+
+    @yuya_gmail     = email_addresses(:yuya_gmail)
+    @shinya_example = email_addresses(:shinya_example)
   end
 
   #
@@ -92,6 +95,16 @@ class EmailAddressTest < ActiveSupport::TestCase
       @basic.email = value
       assert_equal(expected, @basic.valid?, value)
     }
+  end
+
+  test "validates_uniqueness_of :activation_token, on create" do
+    @basic.activation_token = @yuya_gmail.activation_token
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_uniqueness_of :activation_token, on udpate" do
+    @yuya_gmail.activation_token = @shinya_example.activation_token
+    assert_equal(false, @yuya_gmail.valid?)
   end
 
   #
