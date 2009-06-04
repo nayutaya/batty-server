@@ -170,14 +170,13 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "validates_uniqueness_of :user_token, on create" do
-    @basic.user_token = users(:yuya).user_token
+    @basic.user_token = @yuya.user_token
     assert_equal(false, @basic.valid?)
   end
 
   test "validates_uniqueness_of :user_token, on update" do
-    user = users(:yuya)
-    user.user_token = users(:shinya).user_token
-    assert_equal(false, user.valid?)
+    @yuya.user_token = @shinya.user_token
+    assert_equal(false, @yuya.valid?)
   end
 
   #
