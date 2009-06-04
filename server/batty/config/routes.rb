@@ -10,6 +10,10 @@ ActionController::Routing::Routes.draw do |map|
     email_signup.connect "signup/email/activation/:activation_token", :action => "activation", :activation_token => TokenPattern
   end
 
+  map.with_options :controller => "signup/open_id" do |open_id_signup|
+    open_id_signup. connect "signup/open_id/:action", :action => /(index|authenticate|authenticated|create|created)/
+  end
+
   map.with_options :controller => "devices" do |devices|
     devices.connect "devices/:action",           :action => /(new|create)/
     devices.device  "device/:device_id",         :action => "show", :device_id => IdPattern
