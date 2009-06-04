@@ -27,7 +27,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.with_options :controller => "credentials/email" do |email_credentials|
-    email_credentials.connect "credential/emails/:action",                        :action => /(new|create)/
+    email_credentials.connect "credentials/email/:action",                        :action => /(new|create)/
     email_credentials.connect "credential/email/:email_credential_id/:action",    :action => /(created|edit_password|update_password|delete|destroy)/, :email_credential_id => IdPattern
     email_credentials.connect "credential/email/token/:activation_token/:action", :action => /(activation|activate|activated)/, :activation_token => TokenPattern
   end

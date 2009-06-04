@@ -11,12 +11,12 @@ class Credentials::EmailController < ApplicationController
   before_filter :required_param_activation_token, :only => [:activation, :activate, :activated]
   before_filter :only_inactive_email_credential, :only => [:activation, :activate]
 
-  # GET /credential/emails/new
+  # GET /credentials/email/new
   def new
     @edit_form = EditFormClass.new
   end
 
-  # GET /credential/emails/create
+  # GET /credentials/email/create
   def create
     @edit_form = EditFormClass.new(params[:edit_form])
 

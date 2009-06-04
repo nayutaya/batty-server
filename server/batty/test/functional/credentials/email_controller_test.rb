@@ -23,8 +23,8 @@ class Credentials::EmailControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "credentials/email"}
 
-    assert_routing("/credential/emails/new",    base.merge(:action => "new"))
-    assert_routing("/credential/emails/create", base.merge(:action => "create"))
+    assert_routing("/credentials/email/new",    base.merge(:action => "new"))
+    assert_routing("/credentials/email/create", base.merge(:action => "create"))
 
     assert_routing("/credential/email/1234567890/created",         base.merge(:action => "created",         :email_credential_id => "1234567890"))
     assert_routing("/credential/email/1234567890/edit_password",   base.merge(:action => "edit_password",   :email_credential_id => "1234567890"))
