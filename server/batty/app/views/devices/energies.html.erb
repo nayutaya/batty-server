@@ -1,4 +1,10 @@
 
+<%-
+  @rss_auto_discoveries = [
+    {:title => "エネルギー履歴", :href => url_for(:controller => "device_feeds", :action => "energies", :device_token => @device.device_token)},
+  ]
+-%>
+
 <div>
   <%= link_to(h("トップ"), root_path) %> &gt;
   <%= device_name_link(@device) %> &gt;
