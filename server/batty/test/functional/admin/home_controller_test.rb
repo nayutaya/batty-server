@@ -1,8 +1,10 @@
+
 require 'test_helper'
 
 class Admin::HomeControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  test "routes" do
+    base = {:controller => "admin/home"}
+
+    assert_routing("/admin", base.merge(:action => "index"))
   end
 end
