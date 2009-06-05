@@ -20,7 +20,7 @@
   <div><%= submit_tag("追加") %></div>
 <%- } -%>
 
-<%- if development? -%>
+<%- unless production? -%>
   <hr />
   <%= error_messages_for(:edit_form) %>
 <%- end -%>

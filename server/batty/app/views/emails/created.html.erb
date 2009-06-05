@@ -4,7 +4,7 @@
 <div>指定されたメールアドレスにメールを送信しました。メールに記載されたURLにアクセスして、登録を完了してください。</div>
 <div><%= link_to(h("ユーザ設定に戻る"), :controller => "settings", :action => "index") %></div>
 
-<%- if development? -%>
+<%- unless production? -%>
   <hr />
   <%= link_to(h("アクティベーション"), :controller => "emails", :action => "activation", :activation_token => @email_address.activation_token) %>
 <%- end -%>
