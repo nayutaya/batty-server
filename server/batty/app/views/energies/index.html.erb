@@ -1,4 +1,10 @@
 
+<%-
+  @rss_auto_discoveries = [
+    {:title => "エネルギー履歴", :href => url_for(:controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token)},
+  ]
+-%>
+
 <div>
   <%= link_to(h("トップ"), root_path) %> &gt;
   <em>エネルギー履歴</em>
