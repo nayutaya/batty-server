@@ -15,10 +15,8 @@ class Admin::HomeControllerTest < ActionController::TestCase
     assert_template("index")
   end
 
-  test "GET index, deny" do
-    musha = Kagemusha.new(ActionController::TestRequest).
-      def(:remote_ip) { "123.123.123.123" }
-
+  test "GET index, abnormal, remote host not allowed" do
+    musha = Kagemusha.new(ActionController::TestRequest).def(:remote_ip) { "123.123.123.123" }
     musha.swap {
       get :index
     }
