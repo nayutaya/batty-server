@@ -1,2 +1,25 @@
 
 <h1>セッション管理</h1>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>作成日時</th>
+      <th>更新日時</th>
+      <th>サイズ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%- @sessions.each { |session| -%>
+      <tr>
+        <td align="right"><%=h session.id %></td>
+        <td><%=h yyyymmdd_hhmm(session.created_at) %></td>
+        <td><%=h yyyymmdd_hhmm(session.updated_at) %></td>
+        <td align="right"><%=h session.data.size %> バイト</td>
+      </tr>
+    <%- } -%>
+  </tbody>
+</table>
+
+<%= will_paginate(@sessions) %>

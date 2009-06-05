@@ -13,6 +13,19 @@ class Admin::SessionsControllerTest < ActionController::TestCase
 
     assert_response(:success)
     assert_template("index")
+
+    assert_equal( 1, assigns(:sessions).current_page)
+    assert_equal(20, assigns(:sessions).per_page)
+  end
+
+  test "GET index, page 2" do
+    get :index, :page => 2
+
+    assert_response(:success)
+    assert_template("index")
+
+    assert_equal( 2, assigns(:sessions).current_page)
+    assert_equal(20, assigns(:sessions).per_page)
   end
 
   test "GET index, abnormal, remote host not allowed" do
