@@ -9,6 +9,9 @@
     <%= javascript_include_tag(@javascripts || []) %>
     <%= stylesheet_link_tag("application") %>
     <%= stylesheet_link_tag(@stylesheets || []) %>
+    <%- (@rss_auto_discoveries || []).each { |options| -%>
+      <%= rss_auto_discovery(options) %>
+    <%- } -%>
     <%= @additional_head_html %>
   </head>
   <body>
