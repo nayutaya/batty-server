@@ -21,6 +21,13 @@ class Energy < ActiveRecord::Base
   validates_presence_of :observed_at
   validates_inclusion_of :observed_level, :in => LevelRange, :allow_nil => true
 
+  def self.cleanup(device, limit)
+    recent = device.energies.all(
+      :order  => "energies.observed_at DESC, energies.id DESC",
+      :limit  => limit)
+    self.destroy_all(["(energies.device_id = ?) AND (energies.id NOT IN (?))", device.id, recent.map(&:id)])
+  end
+
   def to_event_hash
     return {
       :observed_level => self.observed_level,
