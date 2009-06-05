@@ -70,6 +70,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "user/token/:user_token/:action.rdf", :controller => "user_feeds", :user_token => TokenPattern
 
   map.connect "admin", :controller => "admin/home", :action => "index"
+  map.connect "admin/sessions/:action", :controller => "admin/sessions", :action => /(index)/
 
   # MEMO: 下記2行のデフォルトルールをコメントアウトしてrake test:functionalsを
   #       実行することにより、リンクチェックを行うことができる

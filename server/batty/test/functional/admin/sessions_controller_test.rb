@@ -1,8 +1,27 @@
+
 require 'test_helper'
 
 class Admin::SessionsControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  test "routes" do
+    base = {:controller => "admin/sessions"}
+
+    assert_routing("/admin/sessions", base.merge(:action => "index"))
+  end
+
+  test "GET index" do
+    get :index
+
+    assert_response(:success)
+    assert_template("index")
+  end
+
+  test "GET index, abnormal, network not allowed" do
+    musha = Kagemusha.new(ActionController::TestRequest).def(:remote_ip) { "123.123.123.123" }
+    musha.swap {
+      get :index
+    }
+
+    assert_response(:redirect)
+    assert_redirected_to(root_path)
   end
 end
