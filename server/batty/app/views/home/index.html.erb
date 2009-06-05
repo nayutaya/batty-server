@@ -16,8 +16,8 @@
   end
 -%>
 
-<%- unless logged_in? -%>
-  <%- side_column { -%>
+<%- side_column { -%>
+  <%- unless logged_in? -%>
     <div>
       <h1><span>ログイン</span></h1>
       <div id="openid-sites">
@@ -37,8 +37,12 @@
         <div style="text-align: right;"><%= submit_tag("メールアドレスでログイン") %></div>
       <%- } -%>
     </div>
-  <%- } -%>
-<%- end -%>
+  <%- end -%>
+  <%- unless production? -%>
+    <hr />
+    <div><%= link_to(h("管理"), :controller => "admin/home") %></div>
+  <%- end -%>
+<%- } -%>
 
 <%- unless logged_in? -%>
   <div id="login_form">
