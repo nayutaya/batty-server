@@ -5,7 +5,8 @@ class Admin::SessionsControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "admin/sessions"}
 
-    assert_routing("/admin/sessions", base.merge(:action => "index"))
+    assert_routing("/admin/sessions",         base.merge(:action => "index"))
+    assert_routing("/admin/sessions/cleanup", base.merge(:action => "cleanup"))
   end
 
   test "GET index" do
@@ -36,5 +37,27 @@ class Admin::SessionsControllerTest < ActionController::TestCase
 
     assert_response(:redirect)
     assert_redirected_to(root_path)
+  end
+
+  test "POST cleanup" do
+    seconds = nil
+    musha = Kagemusha.new(Session)
+    musha.defs(:cleanup) { |_seconds| seconds = _seconds; nil }
+
+    musha.swap {
+      post :cleanup
+    }
+
+    assert_response(:redirect)
+    assert_redirected_to(:action => "index")
+
+    assert_equal(3.days, seconds)
+  end
+
+  test "GET cleanup, abnormal, method not allowed" do
+    get :cleanup
+
+    assert_response(405)
+    assert_template(nil)
   end
 end
