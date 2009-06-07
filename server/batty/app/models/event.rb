@@ -29,6 +29,22 @@ class Event < ActiveRecord::Base
   validates_inclusion_of :trigger_level, :in => Energy::LevelRange, :allow_nil => true
   validates_inclusion_of :observed_level, :in => Energy::LevelRange, :allow_nil => true
 
+  def self.cleanup(device, limit)
+    raise(ArgumentError) if limit < 1
+
+    oldest = device.events.first(
+      :order  => "events.observed_at DESC, events.id DESC",
+      :offset => (limit - 1))
+
+    if oldest
+      self.destroy_all([
+        "(events.device_id = :device_id) AND (events.observed_at < :time)",
+        {:device_id => device.id, :time => oldest.observed_at}])
+    end
+
+    return nil
+  end
+
   def trigger_operator_symbol
     return Trigger.operator_code_to_symbol(self.trigger_operator)
   end

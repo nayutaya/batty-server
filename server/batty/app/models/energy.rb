@@ -21,6 +21,22 @@ class Energy < ActiveRecord::Base
   validates_presence_of :observed_at
   validates_inclusion_of :observed_level, :in => LevelRange, :allow_nil => true
 
+  def self.cleanup(device, limit)
+    raise(ArgumentError) if limit < 1
+
+    oldest = device.energies.first(
+      :order  => "energies.observed_at DESC, energies.id DESC",
+      :offset => (limit - 1))
+
+    if oldest
+      self.destroy_all([
+        "(energies.device_id = :device_id) AND (energies.observed_at < :time)",
+        {:device_id => device.id, :time => oldest.observed_at}])
+    end
+
+    return nil
+  end
+
   def to_event_hash
     return {
       :observed_level => self.observed_level,

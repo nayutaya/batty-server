@@ -129,6 +129,58 @@ class EventTest < ActiveSupport::TestCase
   end
 
   #
+  # クラスメソッド
+  #
+
+  test "self.cleanup, limit 1" do
+    device = devices(:yuya_pda)
+    assert_difference("Event.count", -1) {
+      @klass.cleanup(device, 1)
+    }
+    expected = [
+      events(:yuya_pda_eq100_1),
+    ]
+    assert_equal(
+      expected,
+      device.events.all(:order => "events.observed_at DESC, events.id DESC"))
+
+  end
+
+  test "self.cleanup, limit 2" do
+    device = devices(:yuya_pda)
+    assert_difference("Event.count", 0) {
+      @klass.cleanup(device, 2)
+    }
+    expected = [
+      events(:yuya_pda_eq100_1),
+      events(:yuya_pda_ge90_1),
+    ]
+    assert_equal(
+      expected,
+      device.events.all(:order => "events.observed_at DESC, events.id DESC"))
+  end
+
+  test "self.cleanup, limit 3" do
+    device = devices(:yuya_pda)
+    assert_difference("Event.count", 0) {
+      @klass.cleanup(device, 3)
+    }
+    expected = [
+      events(:yuya_pda_eq100_1),
+      events(:yuya_pda_ge90_1),
+    ]
+    assert_equal(
+      expected,
+      device.events.all(:order => "events.observed_at DESC, events.id DESC"))
+  end
+
+  test "self.cleanup, invalid parameter" do
+    assert_raise(ArgumentError) {
+      @klass.cleanup(devices(:yuya_pda), 0)
+    }
+  end
+
+  #
   # インスタンスメソッド
   #
 

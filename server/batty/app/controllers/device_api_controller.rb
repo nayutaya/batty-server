@@ -31,6 +31,11 @@ class DeviceApiController < ApplicationController
     @email_action_executors.map(&:execute)
     @http_action_executors.map(&:execute)
 
+    # TODO: テスト
+    # TODO: 非同期化
+    Energy.cleanup(@device, 200)
+    Event.cleanup(@device, 100)
+
     render(:text => "success")
   end
 

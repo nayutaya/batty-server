@@ -94,6 +94,60 @@ class EnergyTest < ActiveSupport::TestCase
   end
 
   #
+  # クラスメソッド
+  #
+
+  test "self.cleanup, limit 2" do
+    device = devices(:yuya_pda)
+    assert_difference("Energy.count", -1) {
+      @klass.cleanup(device, 2)
+    }
+    expected = [
+      energies(:yuya_pda3),
+      energies(:yuya_pda2),
+    ]
+    assert_equal(
+      expected,
+      device.energies.all(:order => "energies.observed_at DESC, energies.id DESC"))
+  end
+
+  test "self.cleanup, limit 3" do
+    device = devices(:yuya_pda)
+    assert_difference("Energy.count", 0) {
+      @klass.cleanup(device, 3)
+    }
+    expected = [
+      energies(:yuya_pda3),
+      energies(:yuya_pda2),
+      energies(:yuya_pda1),
+    ]
+    assert_equal(
+      expected,
+      device.energies.all(:order => "energies.observed_at DESC, energies.id DESC"))
+  end
+
+  test "self.cleanup, limit 4" do
+    device = devices(:yuya_pda)
+    assert_difference("Energy.count", 0) {
+      @klass.cleanup(device, 4)
+    }
+    expected = [
+      energies(:yuya_pda3),
+      energies(:yuya_pda2),
+      energies(:yuya_pda1),
+    ]
+    assert_equal(
+      expected,
+      device.energies.all(:order => "energies.observed_at DESC, energies.id DESC"))
+  end
+
+  test "self.cleanup, invalid parameter" do
+    assert_raise(ArgumentError) {
+      @klass.cleanup(devices(:yuya_pda), 0)
+    }
+  end
+
+  #
   # インスタンスメソッド
   #
 
