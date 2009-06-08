@@ -23,7 +23,7 @@ yuya_example:
   activation_token: "22222222222222222222"
   user: yuya
   email: "yuya@example.jp"
-  activated_at: nil
+  activated_at: null
 
 yuya_nayutaya:
   created_at: 2009-01-01 00:00:00

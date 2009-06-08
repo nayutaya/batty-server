@@ -127,6 +127,16 @@ class EmailAddressTest < ActiveSupport::TestCase
   end
 
   #
+  # 名前付きスコープ
+  #
+
+  test "active" do
+    assert_equal(true,  (@klass.count > @klass.active.count))
+    assert_equal(false, @klass.all.all?(&:activated?))
+    assert_equal(true,  @klass.active.all.all?(&:activated?))
+  end
+
+  #
   # クラスメソッド
   #
 
