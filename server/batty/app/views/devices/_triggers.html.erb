@@ -4,10 +4,10 @@
     <tr>
       <th></th>
       <th>条件</th>
-      <th></th>
-      <th></th>
       <th>メール通知</th>
-      <th>Web Hook</th>
+      <th>WebHook</th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tfoot>
@@ -22,8 +22,6 @@
       <tr>
         <td><%= enable_or_disable_icon(trigger.enable?) %></td>
         <td><%= trigger_condition(trigger) %></td>
-        <td><%= link_to(edit_icon + h(" 編集"), :controller => "triggers", :action => "edit", :trigger_id => trigger.id) %></td>
-        <td><%= link_to(delete_icon + h(" 削除"), :controller => "triggers", :action => "delete", :trigger_id => trigger.id) %></td>
         <td>
           <table>
             <tfoot>
@@ -50,7 +48,7 @@
             <tfoot>
               <tr>
                 <td colspan="5">
-                  <%= link_to(add_icon + h("Web Hookを追加する"), :controller => "http_actions", :action => "new", :trigger_id => trigger.id) %>
+                  <%= link_to(add_icon + h("WebHookを追加する"), :controller => "http_actions", :action => "new", :trigger_id => trigger.id) %>
                 </td>
               </tr>
             </tfoot>
@@ -67,6 +65,8 @@
             </tbody>
           </table>
         </td>
+        <td><%= link_to(edit_icon + h(" 編集"), :controller => "triggers", :action => "edit", :trigger_id => trigger.id) %></td>
+        <td><%= link_to(delete_icon + h(" 削除"), :controller => "triggers", :action => "delete", :trigger_id => trigger.id) %></td>
       </tr>
     <%- } -%>
   </tbody>
