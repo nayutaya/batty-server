@@ -2,17 +2,19 @@
 <table border="1">
   <thead>
     <tr>
-      <th></th>
-      <th>条件</th>
+      <th rowspan="2"></th>
+      <th rowspan="2" colspan="2">条件</th>
+      <th colspan="2">アクション</th>
+      <th rowspan="2" colspan="2"></th>
+    </tr>
+    <tr>
       <th>メール通知</th>
       <th>WebHook</th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
   <tfoot>
     <tr>
-      <td colspan="6" align="right">
+      <td colspan="7" align="right">
         <span><%= link_to(add_icon + h(" トリガを追加する"), :controller => "triggers", :action => "new") %></span>
       </td>
     </tr>
@@ -21,12 +23,13 @@
     <%- @triggers.each { |trigger| -%>
       <tr>
         <td><%= enable_or_disable_icon(trigger.enable?) %></td>
-        <td><%= trigger_condition(trigger) %></td>
+        <td align="center"><%=h trigger.operator_sign %></td>
+        <td align="right"><%=h trigger.level %> %</td>
         <td>
-          <table>
+          <table style="width: 100%;">
             <tfoot>
               <tr>
-                <td colspan="4">
+                <td colspan="4" align="right">
                   <%= link_to(add_icon + h("メール通知を追加する"), :controller => "email_actions", :action => "new", :trigger_id => trigger.id) %>
                 </td>
               </tr>
@@ -44,10 +47,10 @@
           </table>
         </td>
         <td>
-          <table>
+          <table style="width: 100%;">
             <tfoot>
               <tr>
-                <td colspan="5">
+                <td colspan="5" align="right">
                   <%= link_to(add_icon + h("WebHookを追加する"), :controller => "http_actions", :action => "new", :trigger_id => trigger.id) %>
                 </td>
               </tr>

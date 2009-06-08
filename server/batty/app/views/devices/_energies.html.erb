@@ -3,13 +3,13 @@
   <thead>
     <tr>
       <th>日時</th>
-      <th colspan="2">残量</th>
+      <th colspan="2">エネルギー</th>
     </tr>
   </thead>
   <tfoot>
     <tr>
       <td colspan="3" align="right">
-        <span><%= link_to(feed_icon + "RSS", :controller => "device_feeds", :action => "energies", :device_token => @device.device_token) %></span> |
+        <span><%= link_to(feed_icon + h(" RSS"), :controller => "device_feeds", :action => "energies", :device_token => @device.device_token) %></span> |
         <span><%= link_to(h("すべて見る"), :action => "energies") %> (<%=h @energies.total_entries %>)</span>
       </td>
     </tr>
@@ -17,7 +17,7 @@
   <tbody>
     <%- @energies.each { |energy| -%>
       <tr>
-        <td><%=h energy.observed_at.strftime("%m-%d %H:%M") %></td>
+        <td><%=h mmdd_hhmm(energy.observed_at) %></td>
         <td><%= energy_meter(energy.observed_level) %></td>
         <td align="right"><%=h energy.observed_level %> %</td>
       </tr>
