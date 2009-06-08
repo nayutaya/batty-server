@@ -35,7 +35,9 @@
   </thead>
   <tfoot>
     <tr>
-      <td colspan="4"><%= link_to(add_icon + h(" メールアドレスを追加する"), :controller => "emails", :action => "new") %></td>
+      <td colspan="4" align="right">
+        <%= link_to(add_icon + h(" 通知先メールアドレスを追加する"), :controller => "emails", :action => "new") %>
+      </td>
     </tr>
   </tfoot>
   <tbody>
@@ -48,7 +50,7 @@
             <div style="font-size: 85%;">アクティベーション待ち</div>
           <%- end -%>
         </td>
-        <td><%= link_to(delete_icon, :controller => "emails", :action => "delete", :email_address_id => email_address.id) %></td>
+        <td><%= link_to(delete_icon + h(" 削除"), :controller => "emails", :action => "delete", :email_address_id => email_address.id) %></td>
       </tr>
     <%- } -%>
   </tbody>
