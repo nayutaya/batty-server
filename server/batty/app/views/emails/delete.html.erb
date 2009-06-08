@@ -2,13 +2,20 @@
 <div>
   <%= link_to(h("トップ"), root_path) %> &gt;
   <%= link_to(h("ユーザ設定"), :controller => "settings") %> &gt;
-  <em>メールアドレスの削除</em>
+  <em>通知先メールアドレスの削除</em>
 </div>
 
-<h1>メールアドレスの削除</h1>
+<h1>通知先メールアドレスの削除</h1>
 
 <div>削除します。よろしいですか？</div>
 
+<table border="1">
+  <tr>
+    <th>メールアドレス</th>
+    <td><%=h @email_address.email %></td>
+  </tr>
+</table>
+
 <%- form_tag(:action => "destroy") { -%>
-  <%= submit_tag("削除") %>
+  <div><%= submit_tag("削除") %></div>
 <%- } -%>

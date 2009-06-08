@@ -8,33 +8,43 @@
 <h1>デバイスの編集</h1>
 
 <%- form_for(:edit_form, :url => {:action => "update"}) { |f| -%>
- <div>
-  <%= f.label(:name) %>
-  <%= f.text_field(:name, :size => 30) %>
-  <%= error_message_on(:edit_form, :name) %>
- </div>
- <div>
-  <%= f.label(:device_icon_id) %>
-  <%= error_message_on(:edit_form, :device_icon_id) %>
- </div>
- <%# FIXME: コントローラ内で検索する %>
- <%- @device_icons = DeviceIcon.all -%>
- <ul class="device-icons">
-  <%- @device_icons.each { |device_icon| -%>
-   <li>
-    <div class="radio-button">
-     <%= f.radio_button(:device_icon_id, device_icon.id.to_s) %>
-    </div>
-    <div class="icon">
-     <label for="edit_form_device_icon_id_<%=h device_icon.id %>">
-      <%= device_icon48(device_icon) %>
-     </label>
-    </div>
-   </li>
-  <%- } -%>
- </ul>
- <div style="clear: both;"></div>
- <div><%= submit_tag("保存") %></div>
+  <table border="1">
+    <tr>
+      <th><%= f.label(:name) %></th>
+      <td>
+        <%= f.text_field(:name, :size => 30) %>
+        <%= error_message_on(:edit_form, :name) %>
+      </td>
+    </tr>
+    <tr>
+      <th>アイコン</th>
+      <td>
+        <%= error_message_on(:edit_form, :device_icon_id) %>
+        <%# FIXME: コントローラ内で検索する %>
+        <%- @device_icons = DeviceIcon.all -%>
+        <ul class="device-icons">
+        <%- @device_icons.each { |device_icon| -%>
+          <li>
+            <div class="radio-button">
+              <%= f.radio_button(:device_icon_id, device_icon.id.to_s) %>
+            </div>
+            <div class="icon">
+              <label for="edit_form_device_icon_id_<%=h device_icon.id %>">
+                <%= device_icon48(device_icon) %>
+              </label>
+            </div>
+          </li>
+        <%- } -%>
+        </ul>
+        <div style="clear: both;"></div>
+      </td>
+    </tr>
+  </table>
+  <div><%= submit_tag("保存") %></div>
 <%- } -%>
 
-<%= error_messages_for(:edit_form) %>
+<%- unless production? -%>
+  <div class="debug">
+    <%= error_messages_for(:edit_form) %>
+  </div>
+<%- end -%>

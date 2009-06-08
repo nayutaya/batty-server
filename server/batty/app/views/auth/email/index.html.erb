@@ -2,13 +2,27 @@
 <h1>メールアドレスによるログイン</h1>
 
 <%- form_for(:login_form, :url => {:action => "login"}) { |f| -%>
-  <div>
-    <%= f.label(:email) %>
-    <%= f.text_field(:email, :size => 30) %>
-  </div>
-  <div>
-    <%= f.label(:password) %>
-    <%= f.password_field(:password, :size => 30) %>
-  </div>
+  <table border="1">
+    <tr>
+      <th><%= f.label(:email) %></th>
+      <td>
+        <%= f.text_field(:email, :size => 30) %>
+        <%= error_message_on(:login_form, :email) %>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label(:password) %></th>
+      <td>
+        <%= f.password_field(:password, :size => 30) %>
+        <%= error_message_on(:login_form, :password) %>
+      </td>
+    </tr>
+  </table>
   <div><%= submit_tag("ログイン") %></div>
 <%- } -%>
+
+<%- unless production? -%>
+  <div class="debug">
+    <%= error_messages_for(:login_form) %>
+  </div>
+<%- end -%>

@@ -1,0 +1,73 @@
+
+<table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th>条件</th>
+      <th>メール通知</th>
+      <th>WebHook</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <td colspan="6" align="right">
+        <span><%= link_to(add_icon + h(" トリガを追加する"), :controller => "triggers", :action => "new") %></span>
+      </td>
+    </tr>
+  </tfoot>
+  <tbody>
+    <%- @triggers.each { |trigger| -%>
+      <tr>
+        <td><%= enable_or_disable_icon(trigger.enable?) %></td>
+        <td><%= trigger_condition(trigger) %></td>
+        <td>
+          <table>
+            <tfoot>
+              <tr>
+                <td colspan="4">
+                  <%= link_to(add_icon + h("メール通知を追加する"), :controller => "email_actions", :action => "new", :trigger_id => trigger.id) %>
+                </td>
+              </tr>
+            </tfoot>
+            <tbody>
+              <%- trigger.email_actions.sort_by(&:id).each { |email_action| -%>
+                <tr>
+                  <td><%= enable_or_disable_icon(email_action.enable?) %></td>
+                  <td><%=h email_action.email %></td>
+                  <td><%= link_to(edit_icon, :controller => "email_actions", :action => "edit", :trigger_id => trigger.id, :email_action_id => email_action.id) %></td>
+                  <td><%= link_to(delete_icon, :controller => "email_actions", :action => "delete", :trigger_id => trigger.id, :email_action_id => email_action.id) %></td>
+                </tr>
+              <%- } -%>
+            </tbody>
+          </table>
+        </td>
+        <td>
+          <table>
+            <tfoot>
+              <tr>
+                <td colspan="5">
+                  <%= link_to(add_icon + h("WebHookを追加する"), :controller => "http_actions", :action => "new", :trigger_id => trigger.id) %>
+                </td>
+              </tr>
+            </tfoot>
+            <tbody>
+              <%- trigger.http_actions.sort_by(&:id).each { |http_action| -%>
+                <tr>
+                  <td><%= enable_or_disable_icon(http_action.enable?) %></td>
+                  <td><%=h http_action.http_method %></td>
+                  <td><%=h url_host(http_action.url) %></td>
+                  <td><%= link_to(edit_icon, :controller => "http_actions", :action => "edit", :trigger_id => trigger.id, :http_action_id => http_action.id) %></td>
+                  <td><%= link_to(delete_icon, :controller => "http_actions", :action => "delete", :trigger_id => trigger.id, :http_action_id => http_action.id) %></td>
+                </tr>
+              <%- } -%>
+            </tbody>
+          </table>
+        </td>
+        <td><%= link_to(edit_icon + h(" 編集"), :controller => "triggers", :action => "edit", :trigger_id => trigger.id) %></td>
+        <td><%= link_to(delete_icon + h(" 削除"), :controller => "triggers", :action => "delete", :trigger_id => trigger.id) %></td>
+      </tr>
+    <%- } -%>
+  </tbody>
+</table>

@@ -9,6 +9,25 @@
 
 <div>削除します。よろしいですか？</div>
 
+<table border="1">
+  <tr>
+    <th>トリガ</th>
+    <td><%=h trigger_condition(@trigger) %></td>
+  </tr>
+  <tr>
+    <th>メールアドレス</th>
+    <td><%=h @email_action.email %></td>
+  </tr>
+  <tr>
+    <th>メールタイトル</th>
+    <td><%=h @email_action.subject %></td>
+  </tr>
+  <tr>
+    <th>メール本文</th>
+    <td><%= simple_format(@email_action.body) %></td>
+  </tr>
+</table>
+
 <%- form_tag(:action => "destroy") { -%>
-  <%= submit_tag("削除") %>
+  <div><%= submit_tag("削除") %></div>
 <%- } -%>

@@ -39,14 +39,15 @@
     </div>
   <%- end -%>
   <%- unless production? -%>
-    <hr />
-    <div><%= link_to(h("管理"), :controller => "admin/home") %></div>
+    <div class="debug">
+      <div><%= link_to(h("管理"), :controller => "admin/home") %></div>
+    </div>
   <%- end -%>
 <%- } -%>
 
 <%- unless logged_in? -%>
   <div id="login_form">
-    <div><%= link_to(h("メールアドレスによるログイン"), :controller => "auth/email") %></div>
+    <div><%= link_to(h("OpenIDによるサインアップ"), :controller => "signup/open_id") %></div>
     <div><%= link_to(h("メールアドレスによるサインアップ"), :controller => "signup/email") %></div>
   </div>
 <%- end -%>
