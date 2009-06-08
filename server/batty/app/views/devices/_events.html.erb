@@ -1,21 +1,29 @@
 
 <table border="1">
-  <tr>
-    <th>日時</th>
-    <th colspan="2">残量</th>
-    <th colspan="2">条件</th>
-  </tr>
-  <%- @events.each { |event| -%>
+  <thead>
     <tr>
-      <td><%=h event.observed_at.strftime("%m-%d %H:%M") %></td>
-      <td><%= energy_meter(event.observed_level) %></td>
-      <td align="right"><%=h event.observed_level %> %</td>
-      <td><%=h event.trigger_operator_sign %></td>
-      <td align="right"><%=h event.trigger_level %> %</td>
+      <th>日時</th>
+      <th colspan="2">残量</th>
+      <th colspan="2">条件</th>
     </tr>
-  <%- } -%>
+  </thead>
+  <tfoot>
+    <tr>
+      <td colspan="5" align="right">
+        <span><%= link_to(feed_icon + "RSS", :controller => "device_feeds", :action => "events", :device_token => @device.device_token) %></span> |
+        <span><%= link_to(h("すべて見る"), :action => "events") %> (<%=h @events.total_entries %>)</span>
+      </td>
+    </tr>
+  </tfoot>
+  <tbody>
+    <%- @events.each { |event| -%>
+      <tr>
+        <td><%=h event.observed_at.strftime("%m-%d %H:%M") %></td>
+        <td><%= energy_meter(event.observed_level) %></td>
+        <td align="right"><%=h event.observed_level %> %</td>
+        <td><%=h event.trigger_operator_sign %></td>
+        <td align="right"><%=h event.trigger_level %> %</td>
+      </tr>
+    <%- } -%>
+  </tbody>
 </table>
-<div>
-  <span><%= link_to(feed_icon + "RSS", :controller => "device_feeds", :action => "events", :device_token => @device.device_token) %></span> |
-  <span><%= link_to(h("すべて見る"), :action => "events") %> (<%=h @events.total_entries %>)</span>
-</div>
