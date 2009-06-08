@@ -46,6 +46,10 @@ class EmailActionsControllerTest < ActionController::TestCase
     assert_equal(
       EmailActionEditForm.new.attributes,
       assigns(:edit_form).attributes)
+
+    assert_equal(
+      EmailActionEditForm.email_addresses_for_select(@yuya, :include_blank => true),
+      assigns(:email_addresses_for_select))
   end
 
   test "GET new, abnormal, no login" do
@@ -127,6 +131,10 @@ class EmailActionsControllerTest < ActionController::TestCase
     assert_response(:success)
     assert_template("new")
     assert_flash_error
+
+    assert_equal(
+      EmailActionEditForm.email_addresses_for_select(@yuya, :include_blank => true),
+      assigns(:email_addresses_for_select))
   end
 
   test "GET create, abnormal, method not allowed" do
@@ -194,6 +202,10 @@ class EmailActionsControllerTest < ActionController::TestCase
     assert_equal(@yuya_pda_ge90_1.email,   assigns(:edit_form).email)
     assert_equal(@yuya_pda_ge90_1.subject, assigns(:edit_form).subject)
     assert_equal(@yuya_pda_ge90_1.body,    assigns(:edit_form).body)
+
+    assert_equal(
+      EmailActionEditForm.email_addresses_for_select(@yuya, :include_blank => false, :selected => @yuya_pda_ge90_1.email),
+      assigns(:email_addresses_for_select))
   end
 
   test "GET edit, abnormal, no login" do
@@ -288,6 +300,10 @@ class EmailActionsControllerTest < ActionController::TestCase
 
     @yuya_pda_ge90_1.reload
     assert_not_equal(@edit_form.email, @yuya_pda_ge90_1.email)
+
+    assert_equal(
+      EmailActionEditForm.email_addresses_for_select(@yuya, :include_blank => false, :selected => @edit_form.email),
+      assigns(:email_addresses_for_select))
   end
 
   test "GET update, abnormal, method not allowed" do
