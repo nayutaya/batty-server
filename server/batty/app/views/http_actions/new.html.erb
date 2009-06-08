@@ -2,33 +2,54 @@
 <div>
   <%= link_to(h("トップ"), root_path) %> &gt;
   <%= device_name_link(@device) %> &gt;
-  <em>Web Hookの追加</em>
+  <em>WebHookの追加</em>
 </div>
 
-<h1>Web Hookの追加</h1>
+<h1>WebHookの追加</h1>
 
 <%- form_for(:edit_form, :url => {:action => "create"}) { |f| -%>
- <div>
-  <%= f.label(:enable) %>
-  <%= f.check_box(:enable) %>
-  <%= error_message_on(:edit_form, :enable) %>
- </div>
- <div>
-  <%= f.label(:http_method) %>
-  <%= f.select(:http_method, @http_methods_for_select) %>
-  <%= error_message_on(:edit_form, :http_method) %>
- </div>
- <div>
-  <%= f.label(:url) %>
-  <%= f.text_field(:url, :size => 40) %>
-  <%= error_message_on(:edit_form, :url) %>
- </div>
- <div>
-  <%= f.label(:body) %>
-  <%= f.text_area(:body, :cols => 40, :rows => 10) %>
-  <%= error_message_on(:edit_form, :body) %>
- </div>
- <div><%= submit_tag("追加") %></div>
+  <table border="1">
+    <tr>
+      <th>トリガ</th>
+      <td>
+        <%=h trigger_condition(@trigger) %>
+      </td>
+    </tr>
+    <tr>
+      <th>有効/無効</th>
+      <td>
+        <%= f.check_box(:enable) %>
+        <%= f.label(:enable) %>
+        <%= error_message_on(:edit_form, :enable) %>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label(:http_method) %></th>
+      <td>
+        <%= f.select(:http_method, @http_methods_for_select) %>
+        <%= error_message_on(:edit_form, :http_method) %>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label(:url) %></th>
+      <td>
+        <%= f.text_field(:url, :size => 40) %>
+        <%= error_message_on(:edit_form, :url) %>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label(:body) %></th>
+      <td>
+        <%= f.text_area(:body, :cols => 40, :rows => 10) %>
+        <%= error_message_on(:edit_form, :body) %>
+      </td>
+    </tr>
+  </table>
+  <div><%= submit_tag("追加") %></div>
 <%- } -%>
 
-<%= error_messages_for(:edit_form) %>
+<%- unless production? -%>
+  <div class="debug">
+    <%= error_messages_for(:edit_form) %>
+  </div>
+<%- end -%>
