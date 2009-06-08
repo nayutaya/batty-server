@@ -17,29 +17,26 @@
   <%=h @device.name %>
 </h1>
 
+<div>
+  <div style="float: left; margin-right: 10px;">
+    <h2>エネルギー履歴</h2>
+    <div><%= render(:partial => "energies") %></div>
+  </div>
+  <div style="float: left;">
+    <h2>イベント履歴</h2>
+    <div><%= render(:partial => "events") %></div>
+  </div>
+  <div style="clear: left;"></div>
+</div>
+
+<h2>トリガ</h2>
+
+<div><%= render(:partial => "triggers") %></div>
+
+<h2>編集/削除</h2>
+
 <div><%= link_to(edit_icon + h("このデバイスを編集する"), :action => "edit") %></div>
 <div><%= link_to(delete_icon + h("このデバイスを削除する"), :action => "delete") %></div>
-
-<div>
-  <table border="1">
-    <tr>
-      <td>
-        <h2>エネルギー履歴</h2>
-        <%= render(:partial => "energies") %>
-      </td>
-      <td>
-        <h2>イベント履歴</h2>
-        <%= render(:partial => "events") %>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <h2>トリガ</h2>
-        <%= render(:partial => "triggers") %>
-      </td>
-    </tr>
-  </table>
-</div>
 
 <h2>API</h2>
 
