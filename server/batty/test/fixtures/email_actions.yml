@@ -18,7 +18,7 @@ yuya_pda_ge90_1:
   updated_at: 2009-01-01 00:00:00
   trigger: yuya_pda_ge90
   enable: true
-  email: "yuya@example.jp"
+  email: "yuyakato@gmail.com"
   subject: "{device:name}のエネルギーが変化しました"
   body: "{device:name}のエネルギーが{event:observed-level}%になりました。\n{event:observed-at:datetime:ja}"
 
@@ -27,7 +27,7 @@ yuya_pda_ge90_2:
   updated_at: 2009-01-01 00:00:00
   trigger: yuya_pda_ge90
   enable: false
-  email: "yuya@example.jp"
+  email: "yuyakato@gmail.com"
   subject: "subject"
   body: "body"
 
