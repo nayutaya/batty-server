@@ -25,7 +25,7 @@
 
 <h2>通知先メールアドレス</h2>
 
-<table border="1">
+<table class="list">
   <thead>
     <tr>
       <th>登録日</th>
@@ -41,8 +41,8 @@
     </tr>
   </tfoot>
   <tbody>
-    <%- @email_addresses.each { |email_address| -%>
-      <tr>
+    <%- @email_addresses.each_with_index { |email_address, index| -%>
+      <tr class="<%= even_or_odd(index) %>">
         <td><%=h yyyymmdd(email_address.created_at) %></td>
         <td>
           <div><%=h email_address.email %></div>
