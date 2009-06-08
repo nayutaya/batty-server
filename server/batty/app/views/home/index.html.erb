@@ -39,8 +39,9 @@
     </div>
   <%- end -%>
   <%- unless production? -%>
-    <hr />
-    <div><%= link_to(h("管理"), :controller => "admin/home") %></div>
+    <div class="debug">
+      <div><%= link_to(h("管理"), :controller => "admin/home") %></div>
+    </div>
   <%- end -%>
 <%- } -%>
 

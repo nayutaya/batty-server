@@ -103,6 +103,12 @@ a img
     border-width: 0;
 }
 
+div.debug
+{
+    margin-top: 1em;
+    background-color: #FFF0F0;
+}
+
 div.battery-cell
 {
     margin: 0;
