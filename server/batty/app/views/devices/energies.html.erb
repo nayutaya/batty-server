@@ -13,23 +13,29 @@
 
 <h1>エネルギー履歴</h1>
 
-<table border="1">
-  <thead>
-    <tr>
-      <th>日時</th>
-      <th colspan="2">残量</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%- @energies.each { |energy| -%>
-      <tr>
-        <td><%=h energy.observed_at.strftime("%m-%d %H:%M") %></td>
-        <td><%= energy_meter(energy.observed_level) %></td>
-        <td align="right"><%=h energy.observed_level %> %</td>
-      </tr>
-    <%- } -%>
-  </tbody>
-</table>
+<div>
+  <%- @energies.each_slice(10) { |energies| -%>
+    <div style="float: left; margin-right: 10px;">
+      <table border="1">
+        <thead>
+          <tr>
+            <th>日時</th>
+            <th colspan="2">エネルギー</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%- energies.each { |energy| -%>
+            <tr>
+              <td><%=h yyyymmdd_hhmm(energy.observed_at) %></td>
+              <td><%= energy_meter(energy.observed_level) %></td>
+              <td align="right"><%=h energy.observed_level %> %</td>
+            </tr>
+          <%- } -%>
+        </tbody>
+      </table>
+    </div>
+  <%- } -%>
+  <div style="clear: left;"></div>
+</div>
 
-<%# FIXME: ページングする %>
-<%# FIXME: 2カラム表示にする %>
+<div><%= will_paginate(@energies) %></div>

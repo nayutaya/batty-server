@@ -8,22 +8,35 @@
 <h1>トリガの編集</h1>
 
 <%- form_for(:edit_form, :url => {:action => "update"}) { |f| -%>
- <div>
-  <%= f.label(:enable) %>
-  <%= f.check_box(:enable) %>
-  <%= error_message_on(:edit_form, :enable) %>
- </div>
- <div>
-  <%= f.label(:operator) %>
-  <%= f.select(:operator, @operators_for_select) %>
-  <%= error_message_on(:edit_form, :operator) %>
- </div>
- <div>
-  <%= f.label(:level) %>
-  <%= f.text_field(:level, :size => 4) %>
-  <%= error_message_on(:edit_form, :level) %>
- </div>
- <div><%= submit_tag("保存") %></div>
+  <table border="1">
+    <tr>
+      <th>有効/無効</th>
+      <td>
+        <%= f.check_box(:enable) %>
+        <%= f.label(:enable) %>
+        <%= error_message_on(:edit_form, :enable) %>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label(:operator) %></th>
+      <td>
+        <%= f.select(:operator, @operators_for_select) %>
+        <%= error_message_on(:edit_form, :operator) %>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label(:level) %></th>
+      <td>
+        <%= f.text_field(:level, :size => 4) %>
+        <%= error_message_on(:edit_form, :level) %>
+      </td>
+    </tr>
+  </table>
+  <div><%= submit_tag("保存") %></div>
 <%- } -%>
 
-<%= error_messages_for(:edit_form) %>
+<%- unless production? -%>
+  <div class="debug">
+    <%= error_messages_for(:edit_form) %>
+  </div>
+<%- end -%>

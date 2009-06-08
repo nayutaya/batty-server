@@ -9,6 +9,13 @@
 
 <div>削除します。よろしいですか？</div>
 
+<table border="1">
+  <tr>
+    <th>トリガ</th>
+    <td><%=h trigger_condition(@trigger) %></td>
+  </tr>
+</table>
+
 <%- form_tag(:action => "destroy") { -%>
-  <%= submit_tag("削除") %>
+  <div><%= submit_tag("削除") %></div>
 <%- } -%>

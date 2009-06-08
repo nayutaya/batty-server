@@ -4,21 +4,28 @@
 <%= render(:partial => "progress", :locals => {:step => 1}) %>
 
 <%- form_for(:signup_form, :url => {:action => "validate"}) { |f| -%>
- <div>
-  <%= f.label(:email) %>
-  <%= f.text_field(:email, :size => 30) %>
-  <%= error_message_on(:signup_form, :email) %>
- </div>
- <div>
-  <%= f.label(:password) %>
-  <%= f.password_field(:password, :size => 20) %>
-  <%= error_message_on(:signup_form, :password) %>
- </div>
- <div>
-  <%= f.label(:password_confirmation) %>
-  <%= f.password_field(:password_confirmation, :size => 20) %>
- </div>
+  <table border="1">
+    <tr>
+      <th><%= f.label(:email) %></th>
+      <td>
+        <%= f.text_field(:email, :size => 30) %>
+        <%= error_message_on(:signup_form, :email) %>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label(:password) %></th>
+      <td>
+        <div><%= f.password_field(:password, :size => 20) %></div>
+        <div><%= f.password_field(:password_confirmation, :size => 20) %></div>
+        <%= error_message_on(:signup_form, :password) %>
+      </td>
+    </tr>
+  </table>
  <div><%= submit_tag("確認画面へ") %></div>
 <%- } -%>
 
-<%= error_messages_for(:signup_form) %>
+<%- unless production? -%>
+  <div class="debug">
+    <%= error_messages_for(:signup_form) %>
+  </div>
+<%- end -%>
