@@ -32,7 +32,7 @@
     <%- if (@enable_side_column != false) -%>
       <div id="body-outer-with-background">
         <div id="body-inner">
-          <div id="side-column-outer">
+          <div id="side-column-outer" style="float: right;">
             <div id="side-column-inner">
               <%= @side_column_html %>
             </div>
@@ -44,7 +44,7 @@
               <%= yield %>
             </div>
           </div>
-          <div style="clear: both;"></div>
+          <div style="clear: right;"></div>
         </div>
       </div>
     <%- else -%>
