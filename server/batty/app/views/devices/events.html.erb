@@ -17,22 +17,23 @@
   <thead>
     <tr>
       <th>日時</th>
-      <th colspan="2">残量</th>
-      <th colspan="2">条件</th>
+      <th colspan="2">エネルギー</th>
+      <th colspan="2">トリガ</th>
     </tr>
   </thead>
   <tbody>
     <%- @events.each { |event| -%>
       <tr>
-        <td><%=h event.observed_at.strftime("%m-%d %H:%M") %></td>
+        <td><%=h yyyymmdd_hhmm(event.observed_at) %></td>
         <td><%= energy_meter(event.observed_level) %></td>
         <td align="right"><%=h event.observed_level %> %</td>
-        <td><%=h event.trigger_operator_sign %></td>
+        <td align="center"><%=h event.trigger_operator_sign %></td>
         <td align="right"><%=h event.trigger_level %> %</td>
       </tr>
     <%- } -%>
   </tbody>
 </table>
 
-<%# FIXME: ページングする %>
+<div><%= will_paginate(@events) %></div>
+
 <%# FIXME: 2カラム表示にする %>
