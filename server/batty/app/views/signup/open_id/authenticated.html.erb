@@ -1,8 +1,13 @@
 
 <h1>認証完了</h1>
 
-<div><%=h @identity_url %></div>
+<table border="1">
+  <tr>
+    <th>OpenID</th>
+    <td><%=h @identity_url %></td>
+  </tr>
+</table>
 
 <%- form_tag(:action => "create") { -%>
- <%= submit_tag("登録") %>
+  <div><%= submit_tag("登録") %></div>
 <%- } -%>
