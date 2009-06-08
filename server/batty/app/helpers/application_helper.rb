@@ -57,7 +57,7 @@ module ApplicationHelper
   end
 
   def delete_icon
-    return icon16("icons/fam/bomb.png", "削除")
+    return icon16("icons/fam/bin.png", "削除")
   end
 
   def feed_icon
