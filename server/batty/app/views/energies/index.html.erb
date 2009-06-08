@@ -12,22 +12,25 @@
 
 <div>
   <%- @energies.each_slice(10) { |energies| -%>
-    <div style="float: left;">
+    <div style="float: left; margin-right: 10px;">
       <table border="1">
-        <tr>
-          <th>日時</th>
-          <th></th>
-          <th>デバイス</th>
-          <th>残量</th>
-        </tr>
-        <%- energies.each { |energy| -%>
+        <thead>
           <tr>
-            <td><%=h yyyymmdd_hhmm(energy.observed_at) %></td>
-            <td><%= device_icon24_link(energy.device) %></td>
-            <td><%= device_name_link(energy.device) %></td>
-            <td align="right"><%=h energy.observed_level %> %</td>
+            <th>日時</th>
+            <th colspan="2">デバイス</th>
+            <th>残量</th>
           </tr>
-        <%- } -%>
+        </thead>
+        <tbody>
+          <%- energies.each { |energy| -%>
+            <tr>
+              <td><%=h yyyymmdd_hhmm(energy.observed_at) %></td>
+              <td><%= device_icon24_link(energy.device) %></td>
+              <td><%= device_name_link(energy.device) %></td>
+              <td align="right"><%=h energy.observed_level %> %</td>
+            </tr>
+          <%- } -%>
+        </tbody>
       </table>
     </div>
   <%- } -%>
