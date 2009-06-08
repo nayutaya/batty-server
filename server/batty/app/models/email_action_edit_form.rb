@@ -24,6 +24,24 @@ class EmailActionEditForm < ActiveForm
   validates_length_of :body, :maximum => 1000, :allow_nil => true
   validates_email_format_of :email
 
+  def self.email_addresses_for_select(user, options = {})
+    options = options.dup
+    include_blank = (options.delete(:include_blank) == true)
+    selected      = options.delete(:selected) || nil
+    raise(ArgumentError) unless options.empty?
+
+    active_addresses = user.email_addresses.active
+
+    items  = []
+    items += [["(選択してください)", nil]] if include_blank
+    items += [["(#{selected})", selected]] if !selected.blank? && !active_addresses.exists?(:email => selected)
+    items += active_addresses.
+      all(:order => "email_addresses.email ASC, email_addresses.id ASC").
+      map { |e| [e.email, e.email] }
+
+    return items
+  end
+
   def to_email_action_hash
     return {
       :enable  => self.enable,

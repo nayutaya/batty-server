@@ -11,7 +11,7 @@
 #  activated_at     :datetime      index_email_addresses_on_activated_at
 #
 
-# メールアドレス
+# 通知先メールアドレス
 class EmailAddress < ActiveRecord::Base
   belongs_to :user
 
@@ -26,6 +26,8 @@ class EmailAddress < ActiveRecord::Base
   validates_email_format_of :email
   validates_uniqueness_of :activation_token
   validates_uniqueness_of :email, :scope => [:user_id]
+
+  named_scope :active, :conditions => ["(email_addresses.activated_at IS NOT NULL)"]
 
   def self.create_unique_activation_token
     return TokenUtil.create_unique_token(self, :activation_token, TokenLength)

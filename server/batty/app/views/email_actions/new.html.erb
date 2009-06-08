@@ -15,8 +15,9 @@
  </div>
  <div>
   <%= f.label(:email) %>
-  <%= f.text_field(:email, :size => 30) %>
+  <%= f.select(:email, @email_addresses_for_select) %>
   <%= error_message_on(:edit_form, :email) %>
+  <%= error_message_on(:email_action, :email) %>
  </div>
  <div>
   <%= f.label(:subject) %>

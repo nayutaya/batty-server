@@ -16,6 +16,7 @@ class EmailActionsController < ApplicationController
   # GET /device/:device_id/trigger/:trigger_id/acts/email/new
   def new
     @edit_form = EditFormClass.new
+    @email_addresses_for_select = EditFormClass.email_addresses_for_select(@login_user, :include_blank => true)
   end
 
   # POST /device/:device_id/trigger/:trigger_id/acts/email/create
@@ -29,6 +30,7 @@ class EmailActionsController < ApplicationController
       set_notice("アクションを追加しました。")
       redirect_to(device_path(:device_id => @device.id))
     else
+      @email_addresses_for_select = EditFormClass.email_addresses_for_select(@login_user, :include_blank => true)
       set_error_now("入力内容を確認してください。")
       render(:action => "new")
     end
@@ -41,6 +43,7 @@ class EmailActionsController < ApplicationController
       :email   => @email_action.email,
       :subject => @email_action.subject,
       :body    => @email_action.body)
+    @email_addresses_for_select = EditFormClass.email_addresses_for_select(@login_user, :include_blank => false, :selected => @edit_form.email)
   end
 
   # POST /device/:device_id/trigger/:trigger_id/act/email/:email_action_id/update
@@ -53,6 +56,7 @@ class EmailActionsController < ApplicationController
       set_notice("メール通知を更新しました。")
       redirect_to(device_path(:device_id => @device.id))
     else
+      @email_addresses_for_select = EditFormClass.email_addresses_for_select(@login_user, :include_blank => false, :selected => @edit_form.email)
       set_error_now("入力内容を確認してください。")
       render(:action => "edit")
     end

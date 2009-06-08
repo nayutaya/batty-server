@@ -6,7 +6,7 @@ class EmailActionTest < ActiveSupport::TestCase
     @klass = EmailAction
     @basic = @klass.new(
       :trigger_id => triggers(:yuya_pda_ge90).id,
-      :email      => "email@example.jp",
+      :email      => email_addresses(:yuya_gmail).email,
       :subject    => "subject",
       :body       => "body")
   end
@@ -57,6 +57,8 @@ class EmailActionTest < ActiveSupport::TestCase
     assert_equal(false, @basic.valid?)
   end
 
+=begin
+  # MEMO: 通知先メールアドレスに存在することの検証を追加したため、テストできない
   test "validates_length_of :email" do
     # MEMO: 下記の制約を満たしつつ、文字列長の検証のテストを行う
     #       * ローカルパートは64文字以内
@@ -73,6 +75,7 @@ class EmailActionTest < ActiveSupport::TestCase
       assert_equal(expected, @basic.valid?)
     }
   end
+=end
 
   test "validates_length_of :subject" do
     [
@@ -96,6 +99,8 @@ class EmailActionTest < ActiveSupport::TestCase
     }
   end
 
+=begin
+  # MEMO: 通知先メールアドレスに存在することの検証を追加したため、テストできない
   test "validates_email_format_of :email" do
     [
       ["foo@example.com",   true ],
@@ -107,6 +112,17 @@ class EmailActionTest < ActiveSupport::TestCase
         {:in => value, :out => expected},
         {:in => value, :out => @basic.valid?})
     }
+  end
+=end
+
+  test "validates_each :email" do
+    @basic.trigger_id = triggers(:yuya_pda_ge90).id
+    @basic.email      = email_addresses(:yuya_gmail).email
+    assert_equal(true, @basic.valid?)
+
+    @basic.trigger_id = triggers(:yuya_pda_ge90).id
+    @basic.email      = email_addresses(:yuya_example).email
+    assert_equal(false, @basic.valid?)
   end
 
   #
