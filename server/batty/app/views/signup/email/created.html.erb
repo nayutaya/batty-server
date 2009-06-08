@@ -5,13 +5,8 @@
 
 <%=h @signup_form.email %>宛にメールを送信しました。
 
-<%- if false -%>
- <div class="debug">
-  アクティベーショントークン: <%= link_to(h(@credential.activation_token), :action => "activation", :activation_token => @credential.activation_token) %>
- </div>
-<%- end -%>
-
 <%- unless production? -%>
-  <hr />
-  <%= link_to(h("アクティベーション"), :action => "activation", :activation_token => @credential.activation_token) %>
+  <div class="debug">
+    <%= link_to(h("アクティベーション"), :action => "activation", :activation_token => @credential.activation_token) %>
+  </div>
 <%- end -%>

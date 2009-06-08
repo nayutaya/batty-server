@@ -9,7 +9,12 @@
   <div>アクティベート済み</div>
  <%- else -%>
   <div>未アクティベート</div>
-  <div>メールアドレス: <%=h @credential.email %></div>
+  <table border="1">
+    <tr>
+      <th>メールアドレス</th>
+      <td><%=h @credential.email %></td>
+    </tr>
+  </table>
   <%- form_tag(:action => "activate") { -%>
    <%= hidden_field_tag("activation_token", @credential.activation_token) %>
    <%= submit_tag("本登録") %>
