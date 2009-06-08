@@ -47,7 +47,7 @@
 
 <%- unless logged_in? -%>
   <div id="login_form">
-    <div><%= link_to(h("メールアドレスによるログイン"), :controller => "auth/email") %></div>
+    <div><%= link_to(h("OpenIDによるサインアップ"), :controller => "signup/open_id") %></div>
     <div><%= link_to(h("メールアドレスによるサインアップ"), :controller => "signup/email") %></div>
   </div>
 <%- end -%>
