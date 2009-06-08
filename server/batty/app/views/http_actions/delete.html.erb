@@ -2,13 +2,32 @@
 <div>
   <%= link_to(h("トップ"), root_path) %> &gt;
   <%= device_name_link(@device) %> &gt;
-  <em>Web Hookの削除</em>
+  <em>WebHookの削除</em>
 </div>
 
-<h1>Web Hookの削除</h1>
+<h1>WebHookの削除</h1>
 
 <div>削除します。よろしいですか？</div>
 
+<table border="1">
+  <tr>
+    <th>トリガ</th>
+    <td><%=h trigger_condition(@trigger) %></td>
+  </tr>
+  <tr>
+    <th>HTTPメソッド</th>
+    <td><%=h @http_action.http_method %></td>
+  </tr>
+  <tr>
+    <th>URL</th>
+    <td><%=h @http_action.url %></td>
+  </tr>
+  <tr>
+    <th>POSTデータ</th>
+    <td><%= simple_format(@http_action.body) %></td>
+  </tr>
+</table>
+
 <%- form_tag(:action => "destroy") { -%>
-  <%= submit_tag("削除") %>
+  <div><%= submit_tag("削除") %></div>
 <%- } -%>
