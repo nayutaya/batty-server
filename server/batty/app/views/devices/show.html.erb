@@ -29,7 +29,7 @@
   <div style="clear: left;"></div>
 </div>
 
-<h2>トリガ</h2>
+<h2>トリガ &amp; アクション</h2>
 
 <div><%= render(:partial => "triggers") %></div>
 
@@ -42,5 +42,5 @@
 
 <div>このデバイスのトークンは <%=h @device.device_token %> です。</div>
 
-<div><%=h url_for(:only_path => false, :controller => "device_api", :action => "update_energy", :device_token => @device.device_token, :level => "000") %></div>
-<div><%=h url_for(:only_path => false, :controller => "device_api", :action => "update_energy", :device_token => @device.device_token, :level => "000", :time => "00000000000000") %></div>
+<div style="font-family: monospace;"><%=h url_for(:only_path => false, :controller => "device_api", :action => "update_energy", :device_token => @device.device_token, :level => "000") %></div>
+<div style="font-family: monospace;"><%=h url_for(:only_path => false, :controller => "device_api", :action => "update_energy", :device_token => @device.device_token, :level => "000", :time => "00000000000000") %></div>
