@@ -13,7 +13,7 @@ class EmailActionsControllerTest < ActionController::TestCase
 
     @edit_form = EmailActionEditForm.new(
       :enable  => true,
-      :email   => "email@example.jp",
+      :email   => email_addresses(:yuya_gmail).email,
       :subject => "subject",
       :body    => "body")
 
