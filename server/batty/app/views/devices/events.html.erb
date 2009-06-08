@@ -16,7 +16,7 @@
 <div>
   <%- @events.each_slice(10) { |events| -%>
     <div style="float: left; margin-right: 10px;">
-      <table border="1">
+      <table class="list events">
         <thead>
           <tr>
             <th>日時</th>
@@ -25,8 +25,8 @@
           </tr>
         </thead>
         <tbody>
-          <%- events.each { |event| -%>
-            <tr>
+          <%- events.each_with_index { |event, index| -%>
+            <tr class="<%= even_or_odd(index) %>">
               <td><%=h yyyymmdd_hhmm(event.observed_at) %></td>
               <td><%= energy_meter(event.observed_level) %></td>
               <td align="right"><%=h event.observed_level %> %</td>

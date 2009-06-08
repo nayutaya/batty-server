@@ -1,5 +1,5 @@
 
-<table border="1">
+<table class="list energies">
   <thead>
     <tr>
       <th>日時</th>
@@ -8,15 +8,15 @@
   </thead>
   <tfoot>
     <tr>
-      <td colspan="3" align="right">
+      <td colspan="3">
         <span><%= link_to(feed_icon + h(" RSS"), :controller => "device_feeds", :action => "energies", :device_token => @device.device_token) %></span> |
         <span><%= link_to(h("すべて見る"), :action => "energies") %> (<%=h @energies.total_entries %>)</span>
       </td>
     </tr>
   </tfoot>
   <tbody>
-    <%- @energies.each { |energy| -%>
-      <tr>
+    <%- @energies.each_with_index { |energy, index| -%>
+      <tr class="<%= even_or_odd(index) %>">
         <td><%=h mmdd_hhmm(energy.observed_at) %></td>
         <td><%= energy_meter(energy.observed_level) %></td>
         <td align="right"><%=h energy.observed_level %> %</td>
