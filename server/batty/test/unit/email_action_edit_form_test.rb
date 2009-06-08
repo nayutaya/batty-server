@@ -112,6 +112,39 @@ class EmailActionEditFormTest < ActiveSupport::TestCase
   end
 
   #
+  # クラスメソッド
+  #
+
+  test "self.email_addresses_for_select" do
+    items = [
+      [email_addresses(:yuya_nayutaya).email, email_addresses(:yuya_nayutaya).email],
+      [email_addresses(:yuya_gmail).email,    email_addresses(:yuya_gmail).email],
+    ]
+
+    assert_equal(
+      items,
+      @klass.email_addresses_for_select(users(:yuya)))
+    assert_equal(
+      [["(選択してください)", nil]] + items,
+      @klass.email_addresses_for_select(users(:yuya), :include_blank => true))
+    assert_equal(
+      items,
+      @klass.email_addresses_for_select(users(:yuya), :selected => email_addresses(:yuya_gmail).email))
+    assert_equal(
+      [["(email@example.jp)", "email@example.jp"]] + items,
+      @klass.email_addresses_for_select(users(:yuya), :selected => "email@example.jp"))
+    assert_equal(
+      [["(選択してください)", nil], ["(email@example.jp)", "email@example.jp"]] + items,
+      @klass.email_addresses_for_select(users(:yuya), :include_blank => true, :selected => "email@example.jp"))
+  end
+
+  test "self.email_addresses_for_select, invalid parameter" do
+    assert_raise(ArgumentError) {
+      @klass.email_addresses_for_select(users(:yuya), :invalid => true)
+    }
+  end
+
+  #
   # インスタンスメソッド
   #
 
