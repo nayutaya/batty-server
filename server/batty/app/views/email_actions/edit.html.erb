@@ -8,28 +8,51 @@
 <h1>メール通知の編集</h1>
 
 <%- form_for(:edit_form, :url => {:action => "update"}) { |f| -%>
- <div>
-  <%= f.label(:enable) %>
-  <%= f.check_box(:enable) %>
-  <%= error_message_on(:edit_form, :enable) %>
- </div>
- <div>
-  <%= f.label(:email) %>
-  <%= f.select(:email, @email_addresses_for_select) %>
-  <%= error_message_on(:edit_form, :email) %>
-  <%= error_message_on(:email_action, :email) %>
- </div>
- <div>
-  <%= f.label(:subject) %>
-  <%= f.text_field(:subject, :size => 40) %>
-  <%= error_message_on(:edit_form, :subject) %>
- </div>
- <div>
-  <%= f.label(:body) %>
-  <%= f.text_area(:body, :cols => 40, :rows => 10) %>
-  <%= error_message_on(:edit_form, :body) %>
- </div>
+  <table border="1">
+    <tr>
+      <th>トリガ</th>
+      <td>
+        <%=h trigger_condition(@trigger) %>
+      </td>
+    </tr>
+    <tr>
+      <th>有効/無効</th>
+      <td>
+        <%= f.check_box(:enable) %>
+        <%= f.label(:enable) %>
+        <%= error_message_on(:edit_form, :enable) %>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label(:email) %></th>
+      <td>
+        <%= f.select(:email, @email_addresses_for_select) %>
+        <%= error_message_on(:edit_form, :email) %>
+        <%= error_message_on(:email_action, :email) %>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label(:subject) %></th>
+      <td>
+        <%= f.text_field(:subject, :size => 40) %>
+        <%= error_message_on(:edit_form, :subject) %>
+        <%= error_message_on(:email_action, :subject) %>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label(:body) %></th>
+      <td>
+        <%= f.text_area(:body, :cols => 40, :rows => 10) %>
+        <%= error_message_on(:edit_form, :body) %>
+        <%= error_message_on(:email_action, :body) %>
+      </td>
+    </tr>
+  </table>
  <div><%= submit_tag("保存") %></div>
 <%- } -%>
 
-<%= error_messages_for(:edit_form) %>
+<%- unless production? -%>
+  <div class="debug">
+    <%= error_messages_for(:edit_form) %>
+  </div>
+<%- end -%>
