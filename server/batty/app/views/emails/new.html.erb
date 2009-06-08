@@ -1,10 +1,11 @@
 
 <div>
   <%= link_to(h("トップ"), root_path) %> &gt;
-  <em>メールアドレスの追加</em>
+  <%= link_to(h("ユーザ設定"), :controller => "settings") %> &gt;
+  <em>通知先メールアドレスの追加</em>
 </div>
 
-<h1>メールアドレスの追加</h1>
+<h1>通知先メールアドレスの追加</h1>
 
 <%- form_for(:edit_form, :url => {:action => "create"}) { |f| -%>
   <table border="1">
@@ -21,6 +22,7 @@
 <%- } -%>
 
 <%- unless production? -%>
-  <hr />
-  <%= error_messages_for(:edit_form) %>
+  <div class="debug">
+    <%= error_messages_for(:edit_form) %>
+  </div>
 <%- end -%>
