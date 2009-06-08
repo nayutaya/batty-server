@@ -1,5 +1,6 @@
 
 <%-
+  @title = @device.name
   @rss_auto_discoveries = [
     {:title => "エネルギー履歴", :href => url_for(:controller => "device_feeds", :action => "energies", :device_token => @device.device_token)},
     {:title => "イベント履歴", :href => url_for(:controller => "device_feeds", :action => "events", :device_token => @device.device_token)},
@@ -24,99 +25,17 @@
     <tr>
       <td>
         <h2>エネルギー履歴</h2>
-
-        <table border="1">
-          <tr>
-            <th>日時</th>
-            <th colspan="2">残量</th>
-          </tr>
-          <%- @energies.each { |energy| -%>
-            <tr>
-              <td><%=h energy.observed_at.strftime("%m-%d %H:%M") %></td>
-              <td><%= energy_meter(energy.observed_level) %></td>
-              <td align="right"><%=h energy.observed_level %> %</td>
-            </tr>
-          <%- } -%>
-        </table>
-        <div>
-          <span><%= link_to(feed_icon + "RSS", :controller => "device_feeds", :action => "energies", :device_token => @device.device_token) %></span> |
-          <span><%= link_to(h("すべて見る"), :action => "energies") %> (<%=h @energies.total_entries %>)</span>
-        </div>
+        <%= render(:partial => "energies") %>
       </td>
       <td>
         <h2>イベント履歴</h2>
-
-        <table border="1">
-          <tr>
-            <th>日時</th>
-            <th colspan="2">残量</th>
-            <th colspan="2">条件</th>
-          </tr>
-          <%- @events.each { |event| -%>
-            <tr>
-              <td><%=h event.observed_at.strftime("%m-%d %H:%M") %></td>
-              <td><%= energy_meter(event.observed_level) %></td>
-              <td align="right"><%=h event.observed_level %> %</td>
-              <td><%=h event.trigger_operator_sign %></td>
-              <td align="right"><%=h event.trigger_level %> %</td>
-            </tr>
-          <%- } -%>
-        </table>
-        <div>
-          <span><%= link_to(feed_icon + "RSS", :controller => "device_feeds", :action => "events", :device_token => @device.device_token) %></span> |
-          <span><%= link_to(h("すべて見る"), :action => "events") %> (<%=h @events.total_entries %>)</span>
-        </div>
+        <%= render(:partial => "events") %>
       </td>
     </tr>
     <tr>
       <td colspan="2">
         <h2>トリガ</h2>
-        <table border="1">
-          <tr>
-            <th></th>
-            <th>条件</th>
-            <th></th>
-            <th></th>
-            <th>メール通知</th>
-            <th>Web Hook</th>
-          </tr>
-          <%- @triggers.each { |trigger| -%>
-            <tr>
-              <td><%= enable_or_disable_icon(trigger.enable?) %></td>
-              <td><%= trigger_condition(trigger) %></td>
-              <td><%= link_to(edit_icon, :controller => "triggers", :action => "edit", :trigger_id => trigger.id) %></td>
-              <td><%= link_to(delete_icon, :controller => "triggers", :action => "delete", :trigger_id => trigger.id) %></td>
-              <td>
-                <table>
-                  <%- trigger.email_actions.sort_by(&:id).each { |email_action| -%>
-                    <tr>
-                      <td><%= enable_or_disable_icon(email_action.enable?) %></td>
-                      <td><%=h email_action.email %></td>
-                      <td><%= link_to(edit_icon, :controller => "email_actions", :action => "edit", :trigger_id => trigger.id, :email_action_id => email_action.id) %></td>
-                      <td><%= link_to(delete_icon, :controller => "email_actions", :action => "delete", :trigger_id => trigger.id, :email_action_id => email_action.id) %></td>
-                    </tr>
-                  <%- } -%>
-                </table>
-                <div><%= link_to(add_icon + h("メール通知を追加する"), :controller => "email_actions", :action => "new", :trigger_id => trigger.id) %></div>
-              </td>
-              <td>
-                <table>
-                  <%- trigger.http_actions.sort_by(&:id).each { |http_action| -%>
-                    <tr>
-                      <td><%= enable_or_disable_icon(http_action.enable?) %></td>
-                      <td><%=h http_action.http_method %></td>
-                      <td><%=h url_host(http_action.url) %></td>
-                      <td><%= link_to(edit_icon, :controller => "http_actions", :action => "edit", :trigger_id => trigger.id, :http_action_id => http_action.id) %></td>
-                      <td><%= link_to(delete_icon, :controller => "http_actions", :action => "delete", :trigger_id => trigger.id, :http_action_id => http_action.id) %></td>
-                    </tr>
-                  <%- } -%>
-                </table>
-                <div><%= link_to(add_icon + h("Web Hookを追加する"), :controller => "http_actions", :action => "new", :trigger_id => trigger.id) %></div>
-              </td>
-            </tr>
-          <%- } -%>
-        </table>
-        <div><%= link_to(add_icon + h("トリガを追加する"), :controller => "triggers", :action => "new") %></div>
+        <%= render(:partial => "triggers") %>
       </td>
     </tr>
   </table>

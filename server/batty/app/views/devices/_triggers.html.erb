@@ -1,0 +1,47 @@
+
+<table border="1">
+  <tr>
+    <th></th>
+    <th>条件</th>
+    <th></th>
+    <th></th>
+    <th>メール通知</th>
+    <th>Web Hook</th>
+  </tr>
+  <%- @triggers.each { |trigger| -%>
+    <tr>
+      <td><%= enable_or_disable_icon(trigger.enable?) %></td>
+      <td><%= trigger_condition(trigger) %></td>
+      <td><%= link_to(edit_icon, :controller => "triggers", :action => "edit", :trigger_id => trigger.id) %></td>
+      <td><%= link_to(delete_icon, :controller => "triggers", :action => "delete", :trigger_id => trigger.id) %></td>
+      <td>
+        <table>
+          <%- trigger.email_actions.sort_by(&:id).each { |email_action| -%>
+            <tr>
+              <td><%= enable_or_disable_icon(email_action.enable?) %></td>
+              <td><%=h email_action.email %></td>
+              <td><%= link_to(edit_icon, :controller => "email_actions", :action => "edit", :trigger_id => trigger.id, :email_action_id => email_action.id) %></td>
+              <td><%= link_to(delete_icon, :controller => "email_actions", :action => "delete", :trigger_id => trigger.id, :email_action_id => email_action.id) %></td>
+            </tr>
+          <%- } -%>
+        </table>
+        <div><%= link_to(add_icon + h("メール通知を追加する"), :controller => "email_actions", :action => "new", :trigger_id => trigger.id) %></div>
+      </td>
+      <td>
+        <table>
+          <%- trigger.http_actions.sort_by(&:id).each { |http_action| -%>
+            <tr>
+              <td><%= enable_or_disable_icon(http_action.enable?) %></td>
+              <td><%=h http_action.http_method %></td>
+              <td><%=h url_host(http_action.url) %></td>
+              <td><%= link_to(edit_icon, :controller => "http_actions", :action => "edit", :trigger_id => trigger.id, :http_action_id => http_action.id) %></td>
+              <td><%= link_to(delete_icon, :controller => "http_actions", :action => "delete", :trigger_id => trigger.id, :http_action_id => http_action.id) %></td>
+            </tr>
+          <%- } -%>
+        </table>
+        <div><%= link_to(add_icon + h("Web Hookを追加する"), :controller => "http_actions", :action => "new", :trigger_id => trigger.id) %></div>
+      </td>
+    </tr>
+  <%- } -%>
+</table>
+<div><%= link_to(add_icon + h("トリガを追加する"), :controller => "triggers", :action => "new") %></div>
