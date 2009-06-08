@@ -1,33 +1,8 @@
 
-<%- additional_head { -%>
-  <style type="text/css">
-    table#events img
-    {
-        vertical-align: text-top;
-    }
-
-    table#events thead tr th
-    {
-        font-size: 70%;
-    }
-
-    table#events tbody tr td
-    {
-        font-size: 80%;
-    }
-
-    table#events tfoot td
-    {
-        color: #999999;
-        text-align: right;
-    }
-  </style>
-<%- } -%>
-
-<table id="events" class="list">
+<table class="list events">
   <thead>
     <tr>
-      <th>発生日時</th>
+      <th>観測日時</th>
       <th colspan="2">デバイス</th>
       <th>エネ</th>
       <th colspan="2">トリガ</th>
@@ -37,7 +12,7 @@
     <tr>
       <td colspan="6">
         <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "events", :user_token => @login_user.user_token) %>
-        | <%= link_to(h("すべて"), :controller => "events") %>
+        | <%= link_to(h("すべて見る"), :controller => "events") %>
         (<%=h @events.total_entries %>)
       </td>
     </tr>

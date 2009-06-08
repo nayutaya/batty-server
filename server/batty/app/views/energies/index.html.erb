@@ -13,17 +13,17 @@
 <div>
   <%- @energies.each_slice(10) { |energies| -%>
     <div style="float: left; margin-right: 10px;">
-      <table border="1">
+      <table class="list energies">
         <thead>
           <tr>
-            <th>日時</th>
+            <th>観測日時</th>
             <th colspan="2">デバイス</th>
             <th>エネ</th>
           </tr>
         </thead>
         <tbody>
-          <%- energies.each { |energy| -%>
-            <tr>
+          <%- energies.each_with_index { |energy, index| -%>
+            <tr class="<%=h even_or_odd(index) %>">
               <td><%=h yyyymmdd_hhmm(energy.observed_at) %></td>
               <td><%= device_icon24_link(energy.device) %></td>
               <td><%= device_name_link(energy.device) %></td>

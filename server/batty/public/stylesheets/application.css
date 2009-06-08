@@ -1,4 +1,6 @@
 
+/* generic */
+
 *
 {
     margin: 0;
@@ -9,6 +11,16 @@ body
 {
     width: 100%;
     background-color: #F0F0F0;
+}
+
+a
+{
+    text-decoration: none;
+}
+
+a img
+{
+    border-width: 0;
 }
 
 /* head */
@@ -67,7 +79,6 @@ body
 
 #side-column-outer
 {
-    float: right;
     width: 200px;
     min-height: 400px;
 }
@@ -91,23 +102,101 @@ body
 {
 }
 
-/* generic */
-
-a
-{
-    text-decoration: none;
-}
-
-a img
-{
-    border-width: 0;
-}
+/* for debug */
 
 div.debug
 {
     margin-top: 1em;
     background-color: #FFF0F0;
 }
+
+/* table.list */
+
+table.list
+{
+    border-collapse: collapse;
+}
+
+table.list thead tr th
+{
+    padding: 0.4em;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #F0F0F0;
+    color: #CCCCCC;
+    background-color: #333333;
+}
+
+table.list tbody tr
+{
+    border-width: 1px;
+    border-style: solid;
+    border-color: #F0F0F0;
+}
+
+table.list tbody tr td
+{
+    padding: 0.2em 0.4em;
+    border-width: 0;
+}
+
+table.list tbody tr.even td
+{
+    background-color: #E0E0E0;
+}
+
+table.list tbody tr.odd td
+{
+    background-color: #D0D0D0;
+}
+
+/* table.energies */
+
+table.energies img
+{
+    vertical-align: text-top;
+}
+
+table.energies thead tr th
+{
+    font-size: 70%;
+}
+
+table.energies tbody tr td
+{
+    font-size: 80%;
+}
+
+table.energies tfoot td
+{
+    color: #999999;
+    text-align: right;
+}
+
+/* table.events */
+
+table.events img
+{
+    vertical-align: text-top;
+}
+
+table.events thead tr th
+{
+    font-size: 70%;
+}
+
+table.events tbody tr td
+{
+    font-size: 80%;
+}
+
+table.events tfoot td
+{
+    color: #999999;
+    text-align: right;
+}
+
+/* battery */
 
 div.battery-cell
 {
@@ -158,6 +247,8 @@ div.battery-empty
     background-image: url(/images/battery/level-red.png);
 }
 
+/* signup-progress */
+/* FIXME: 別ファイルに分離 */
 
 ol#email-signup-progress
 {
