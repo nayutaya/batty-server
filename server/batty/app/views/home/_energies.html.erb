@@ -11,7 +11,7 @@
     <tr>
       <td colspan="4">
         <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token) %>
-        | <%= link_to(h("すべて"), :controller => "energies") %>
+        | <%= link_to(h("すべて見る"), :controller => "energies") %>
         (<%=h @energies.total_entries %>)
       </td>
     </tr>
