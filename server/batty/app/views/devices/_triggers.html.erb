@@ -1,5 +1,5 @@
 
-<table border="1">
+<table class="list">
   <thead>
     <tr>
       <th rowspan="2"></th>
@@ -20,8 +20,8 @@
     </tr>
   </tfoot>
   <tbody>
-    <%- @triggers.each { |trigger| -%>
-      <tr>
+    <%- @triggers.each_with_index { |trigger, index| -%>
+      <tr class="<%= even_or_odd(index) %>">
         <td><%= enable_or_disable_icon(trigger.enable?) %></td>
         <td align="center"><%=h trigger.operator_sign %></td>
         <td align="right"><%=h trigger.level %> %</td>
