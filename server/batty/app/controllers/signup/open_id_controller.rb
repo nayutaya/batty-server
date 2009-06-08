@@ -20,19 +20,15 @@ class Signup::OpenIdController < ApplicationController
     }
 
     authenticate_with_open_id(@openid_url) { |result, identity_url, sreg|
-      case result.status
-      when :missing  then failed["OpenID サーバが見つかりませんでした。"]
-      when :invalid  then failed["OpenID が不正です。"]
-      when :canceled then failed["OpenID の検証がキャンセルされました。"]
-      when :failed   then failed["OpenID の検証が失敗しました。"]
-      when :successful
+      if result.successful?
         if OpenIdCredential.exists?(:identity_url => identity_url)
           failed["指定されたOpenIDは既に登録されているため、利用できません。"]
         else
           session[:identity_url] = identity_url
           redirect_to(:action => "authenticated")
         end
-      else raise("BUG")
+      else
+        failed[result.message]
       end
     }
   end

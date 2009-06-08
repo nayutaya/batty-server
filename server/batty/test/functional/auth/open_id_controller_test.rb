@@ -27,7 +27,7 @@ class Auth::OpenIdControllerTest < ActionController::TestCase
 
   test "POST login, successful with registered identity_url" do
     musha = Kagemusha.new(Auth::OpenIdController::Result)
-    musha.def(:status) { :successful }
+    musha.def(:successful?) { true }
     musha.swap{
       post :login, :openid_url => @shinya_example.identity_url
     }
@@ -38,7 +38,7 @@ class Auth::OpenIdControllerTest < ActionController::TestCase
 
   test "POST login, successful with unregistered identity_url" do
     musha = Kagemusha.new(Auth::OpenIdController::Result)
-    musha.def(:status) { :successful }
+    musha.def(:successful?) { true }
     musha.swap{
       post :login, :openid_url => 'http://example.jp/yuya'
     }
@@ -55,7 +55,8 @@ class Auth::OpenIdControllerTest < ActionController::TestCase
   ].each do |status, message|
     test "POST login, #{status}" do
       musha = Kagemusha.new(Auth::OpenIdController::Result)
-      musha.def(:status) { status }
+      musha.def(:successful?) { false }
+      musha.def(:message) { message }
       musha.swap {
         post :login, :openid_url => @shinya_example.identity_url
       }
