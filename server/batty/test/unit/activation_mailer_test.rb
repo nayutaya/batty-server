@@ -80,13 +80,13 @@ class ActivationMailerTest < ActionMailer::TestCase
   # インスタンスメソッド
   #
 
-=begin
   test "request_for_notice" do
-    @expected.subject = 'ActivationMailer#request_for_notice'
-    @expected.body    = read_fixture('request_for_notice')
-    @expected.date    = Time.now
-
-    assert_equal @expected.encoded, ActivationMailer.create_request_for_notice(@expected.date).encoded
+    options = {
+      :recipients     => email_addresses(:yuya_nayutaya).email,
+      :activation_url => "http://activation/url/" + email_addresses(:yuya_nayutaya).activation_token,
+    }
+    assert_nothing_raised {
+      @klass.create_request_for_notice(options).encoded
+    }
   end
-=end
 end

@@ -39,14 +39,7 @@ class ActivationMailer < ActionMailer::Base
     }
   end
 
-=begin
-  def request_for_notice(sent_at = Time.now)
-    subject    'ActivationMailer#request_for_notice'
-    recipients ''
-    from       ''
-    sent_on    sent_at
-    
-    body       :greeting => 'Hi,'
+  def request_for_notice(options)
+    build_message(self.class.create_request_for_notice_params(options))
   end
-=end
 end
