@@ -19,7 +19,7 @@ class ActionMailerUtilTest < ActiveSupport::TestCase
     }
 
     called = []
-    musha = Kagemusha.new(@module)
+    musha = Kagemusha.new(@instance.class)
     musha.def(:subject)    { |value| called << [:subject,    value] }
     musha.def(:from)       { |value| called << [:from,       value] }
     musha.def(:recipients) { |value| called << [:recipients, value] }
