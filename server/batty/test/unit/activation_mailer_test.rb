@@ -146,6 +146,25 @@ class ActivationMailerTest < ActionMailer::TestCase
   # インスタンスメソッド
   #
 
+  test "request_for_signup" do
+    options = {
+      :recipients     => email_credentials(:yuya_nayutaya).email,
+      :activation_url => "http://activation/url/" + email_credentials(:yuya_nayutaya).activation_token,
+    }
+    assert_nothing_raised {
+      @klass.create_request_for_signup(options).encoded
+    }
+  end
+
+  test "complete_for_signup" do
+    options = {
+      :recipients => email_credentials(:yuya_nayutaya).email,
+    }
+    assert_nothing_raised {
+      @klass.create_complete_for_signup(options).encoded
+    }
+  end
+
   test "request_for_notice" do
     options = {
       :recipients     => email_addresses(:yuya_nayutaya).email,
