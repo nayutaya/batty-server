@@ -24,22 +24,12 @@ class ActivationMailerTest < ActionMailer::TestCase
     assert_equal(expected, @klass.create_request_for_signup_params(options))
   end
 
-  test "self.create_request_for_signup_params, deficient parameter" do
-    assert_nothing_raised {
-      @klass.create_request_for_signup_params(:recipients => "", :activation_url => "")
-    }
-    assert_raise(ArgumentError) {
-      @klass.create_request_for_signup_params(:activation_url => "")
-    }
-    assert_raise(ArgumentError) {
-      @klass.create_request_for_signup_params(:recipients => "")
-    }
-  end
-
   test "self.create_request_for_signup_params, invalid parameter" do
-    assert_raise(ArgumentError) {
-      @klass.create_request_for_signup_params(:invalid => true)
-    }
+    options = {:recipients => "", :activation_url => ""}
+    assert_nothing_raised       { @klass.create_request_for_signup_params(options) }
+    assert_raise(ArgumentError) { @klass.create_request_for_signup_params(options.merge(:recipients => nil)) }
+    assert_raise(ArgumentError) { @klass.create_request_for_signup_params(options.merge(:activation_url => nil)) }
+    assert_raise(ArgumentError) { @klass.create_request_for_signup_params(options.merge(:invalid => true)) }
   end
 
   test "self.create_complete_for_signup_params" do
@@ -55,19 +45,11 @@ class ActivationMailerTest < ActionMailer::TestCase
     assert_equal(expected, @klass.create_complete_for_signup_params(options))
   end
 
-  test "self.create_complete_for_signup_params, deficient parameter" do
-    assert_nothing_raised {
-      @klass.create_complete_for_signup_params(:recipients => "")
-    }
-    assert_raise(ArgumentError) {
-      @klass.create_complete_for_signup_params({})
-    }
-  end
-
   test "self.create_complete_for_signup_params, invalid parameter" do
-    assert_raise(ArgumentError) {
-      @klass.create_complete_for_signup_params(:invalid => true)
-    }
+    options = {:recipients => ""}
+    assert_nothing_raised       { @klass.create_complete_for_signup_params(options) }
+    assert_raise(ArgumentError) { @klass.create_complete_for_signup_params(options.merge(:recipients => nil)) }
+    assert_raise(ArgumentError) { @klass.create_complete_for_signup_params(options.merge(:invalid => true)) }
   end
 
   test "self.create_request_for_notice_params" do
@@ -84,22 +66,12 @@ class ActivationMailerTest < ActionMailer::TestCase
     assert_equal(expected, @klass.create_request_for_notice_params(options))
   end
 
-  test "self.create_request_for_notice_params, deficient parameter" do
-    assert_nothing_raised {
-      @klass.create_request_for_notice_params(:recipients => "", :activation_url => "")
-    }
-    assert_raise(ArgumentError) {
-      @klass.create_request_for_notice_params(:activation_url => "")
-    }
-    assert_raise(ArgumentError) {
-      @klass.create_request_for_notice_params(:recipients => "")
-    }
-  end
-
   test "self.create_request_for_notice_params, invalid parameter" do
-    assert_raise(ArgumentError) {
-      @klass.create_request_for_notice_params(:invalid => true)
-    }
+    options = {:recipients => "", :activation_url => ""}
+    assert_nothing_raised       { @klass.create_request_for_notice_params(options) }
+    assert_raise(ArgumentError) { @klass.create_request_for_notice_params(options.merge(:recipients => nil)) }
+    assert_raise(ArgumentError) { @klass.create_request_for_notice_params(options.merge(:activation_url => nil)) }
+    assert_raise(ArgumentError) { @klass.create_request_for_notice_params(options.merge(:invalid => true)) }
   end
 
   test "self.create_complete_for_notice_params" do
@@ -115,19 +87,11 @@ class ActivationMailerTest < ActionMailer::TestCase
     assert_equal(expected, @klass.create_complete_for_notice_params(options))
   end
 
-  test "self.create_complete_for_notice_params, deficient parameter" do
-    assert_nothing_raised {
-      @klass.create_complete_for_notice_params(:recipients => "")
-    }
-    assert_raise(ArgumentError) {
-      @klass.create_complete_for_notice_params({})
-    }
-  end
-
   test "self.create_complete_for_notice_params, invalid parameter" do
-    assert_raise(ArgumentError) {
-      @klass.create_complete_for_notice_params(:invalid => true)
-    }
+    options = {:recipients => ""}
+    assert_nothing_raised       { @klass.create_complete_for_notice_params(options) }
+    assert_raise(ArgumentError) { @klass.create_complete_for_notice_params(options.merge(:recipients => nil)) }
+    assert_raise(ArgumentError) { @klass.create_complete_for_notice_params(options.merge(:invalid => true)) }
   end
 
   #
