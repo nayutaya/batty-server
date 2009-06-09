@@ -42,4 +42,8 @@ class ActivationMailer < ActionMailer::Base
   def request_for_notice(options)
     build_message(self.class.create_request_for_notice_params(options))
   end
+
+  def complete_for_notice(options)
+    build_message(self.class.create_complete_for_notice_params(options))
+  end
 end

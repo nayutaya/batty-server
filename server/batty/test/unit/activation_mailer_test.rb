@@ -89,4 +89,13 @@ class ActivationMailerTest < ActionMailer::TestCase
       @klass.create_request_for_notice(options).encoded
     }
   end
+
+  test "complete_for_notice" do
+    options = {
+      :recipients => email_addresses(:yuya_nayutaya).email,
+    }
+    assert_nothing_raised {
+      @klass.create_complete_for_notice(options).encoded
+    }
+  end
 end
