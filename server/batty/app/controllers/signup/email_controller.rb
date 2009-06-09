@@ -65,22 +65,11 @@ class Signup::EmailController < ApplicationController
         :action           => "activation",
         :activation_token => @credential.activation_token)
 
-      request_options = {
+      # TODO: テスト
+      # TODO: 非同期化
+      ActivationMailer.deliver_request_for_signup(
         :recipients     => @credential.email,
-        :activation_url => @activation_url,
-      }
-
-      # FIXME: 非スレッド化
-      @email_queue = Queue.new
-      Thread.new {
-        begin
-          @email_queue << SignupActivationMailer.deliver_request(request_options)
-        rescue Exception => e
-          logger.add(
-            logger.class::ERROR,
-            format("%s\n%s: %s\n%s\n%s", "-" * 50, e.class.name, e.message, e.backtrace[0, 5].join("\n"), "-" * 50))
-        end
-      }
+        :activation_url => @activation_url)
 
       redirect_to(:action => "created")
     else
@@ -125,7 +114,7 @@ class Signup::EmailController < ApplicationController
 
     # TODO: テスト
     # TODO: 非同期化
-    SignupActivationMailer.deliver_complete(
+    ActivationMailer.deliver_complete_for_signup(
       :recipients => @credential.email)
 
     redirect_to(:action => "activated")

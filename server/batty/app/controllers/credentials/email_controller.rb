@@ -25,6 +25,19 @@ class Credentials::EmailController < ApplicationController
     @email_credential.activation_token = EmailCredential.create_unique_activation_token
 
     if @edit_form.valid? && @email_credential.save
+      # TODO: テスト
+      @activation_url = url_for(
+        :only_path        => false,
+        :controller       => "credentials/email",
+        :action           => "activation",
+        :activation_token => @email_credential.activation_token)
+
+      # TODO: テスト
+      # TODO: 非同期化
+      ActivationMailer.deliver_request_for_credential(
+        :recipients     => @email_credential.email,
+        :activation_url => @activation_url)
+
       set_notice("メール認証情報を追加しました。")
       redirect_to(:action => "created", :email_credential_id => @email_credential.id)
     else
@@ -83,6 +96,11 @@ class Credentials::EmailController < ApplicationController
   # POST /credential/email/token/:activation_token/activate
   def activate
     @email_credential.activate!
+
+    # TODO: テスト
+    # TODO: 非同期化
+    ActivationMailer.deliver_complete_for_credential(
+      :recipients => @email_credential.email)
 
     redirect_to(:action => "activated")
   end
