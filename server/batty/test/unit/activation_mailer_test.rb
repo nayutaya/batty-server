@@ -18,7 +18,7 @@ class ActivationMailerTest < ActionMailer::TestCase
     expected = {
       :header => {
         :subject    => "[batty] 通知先メールアドレス登録",
-        :from       => "batty-no-reply@nayutaya.jp",
+        :from       => @klass::FromAddress,
         :recipients => "recipients@example.jp",
       },
       :body => {
@@ -43,6 +43,36 @@ class ActivationMailerTest < ActionMailer::TestCase
   test "self.create_request_for_notice_params, invalid parameter" do
     assert_raise(ArgumentError) {
       @klass.create_request_for_notice_params(:invalid => true)
+    }
+  end
+
+  test "self.create_complete_for_notice_params" do
+    options = {
+      :recipients => "recipients@example.jp",
+    }
+    expected = {
+      :header => {
+        :subject    => "[batty] 通知先メールアドレス登録完了",
+        :from       => @klass::FromAddress,
+        :recipients => "recipients@example.jp",
+      },
+      :body => {},
+    }
+    assert_equal(expected, @klass.create_complete_for_notice_params(options))
+  end
+
+  test "self.create_complete_for_notice_params, deficient parameter" do
+    assert_nothing_raised {
+      @klass.create_complete_for_notice_params(:recipients => "")
+    }
+    assert_raise(ArgumentError) {
+      @klass.create_complete_for_notice_params({})
+    }
+  end
+
+  test "self.create_complete_for_notice_params, invalid parameter" do
+    assert_raise(ArgumentError) {
+      @klass.create_complete_for_notice_params(:invalid => true)
     }
   end
 

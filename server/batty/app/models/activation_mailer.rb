@@ -18,9 +18,24 @@ class ActivationMailer < ActionMailer::Base
         :from       => FromAddress,
         :recipients => recipients,
       },
-      :body   => {
+      :body => {
         :activation_url => activation_url,
       },
+    }
+  end
+
+  def self.create_complete_for_notice_params(options)
+    options = options.dup
+    recipients = options.delete(:recipients) || raise(ArgumentError)
+    raise(ArgumentError) unless options.empty?
+
+    return {
+      :header => {
+        :subject    => SubjectPrefix + "通知先メールアドレス登録完了",
+        :from       => FromAddress,
+        :recipients => recipients,
+      },
+      :body => {},
     }
   end
 
