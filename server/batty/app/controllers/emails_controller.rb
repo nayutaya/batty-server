@@ -1,5 +1,5 @@
 
-# メールアドレス
+# 通知先メールアドレス
 class EmailsController < ApplicationController
   EditFormClass = EmailAddressEditForm
 
@@ -32,7 +32,7 @@ class EmailsController < ApplicationController
         :activation_token => @email_address.activation_token)
 
       # TODO: テスト
-      EmailActivationMailer.deliver_request(
+      ActivationMailer.deliver_request_for_notice(
         :recipients     => @email_address.email,
         :activation_url => @activation_url)
 
@@ -72,7 +72,7 @@ class EmailsController < ApplicationController
     @email_address.activate!
 
     # TODO: テスト
-    EmailActivationMailer.deliver_complete(
+    ActivationMailer.deliver_complete_for_notice(
       :recipients => @email_address.email)
 
     redirect_to(:action => "activated")
