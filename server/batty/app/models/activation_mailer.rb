@@ -24,6 +24,21 @@ class ActivationMailer < ActionMailer::Base
     }
   end
 
+  def self.create_complete_for_signup_params(options)
+    options = options.dup
+    recipients = options.delete(:recipients) || raise(ArgumentError)
+    raise(ArgumentError) unless options.empty?
+
+    return {
+      :header => {
+        :subject    => SubjectPrefix + "ユーザ登録完了",
+        :from       => FromAddress,
+        :recipients => recipients,
+      },
+      :body   => {},
+    }
+  end
+
   def self.create_request_for_notice_params(options)
     options = options.dup
     recipients     = options.delete(:recipients)     || raise(ArgumentError)
