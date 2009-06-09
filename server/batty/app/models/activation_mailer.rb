@@ -13,14 +13,10 @@ class ActivationMailer < ActionMailer::Base
     raise(ArgumentError) unless options.empty?
 
     return {
-      :header => {
-        :subject    => SubjectPrefix + "ユーザ登録",
-        :from       => FromAddress,
-        :recipients => recipients,
-      },
-      :body   => {
-        :activation_url => activation_url,
-      },
+      :subject    => SubjectPrefix + "ユーザ登録",
+      :from       => FromAddress,
+      :recipients => recipients,
+      :body       => {:activation_url => activation_url},
     }
   end
 
@@ -30,12 +26,10 @@ class ActivationMailer < ActionMailer::Base
     raise(ArgumentError) unless options.empty?
 
     return {
-      :header => {
-        :subject    => SubjectPrefix + "ユーザ登録完了",
-        :from       => FromAddress,
-        :recipients => recipients,
-      },
-      :body   => {},
+      :subject    => SubjectPrefix + "ユーザ登録完了",
+      :from       => FromAddress,
+      :recipients => recipients,
+      :body       => {},
     }
   end
 
@@ -46,14 +40,10 @@ class ActivationMailer < ActionMailer::Base
     raise(ArgumentError) unless options.empty?
 
     return {
-      :header => {
-        :subject    => SubjectPrefix + "通知先メールアドレス登録",
-        :from       => FromAddress,
-        :recipients => recipients,
-      },
-      :body => {
-        :activation_url => activation_url,
-      },
+      :subject    => SubjectPrefix + "通知先メールアドレス登録",
+      :from       => FromAddress,
+      :recipients => recipients,
+      :body       => {:activation_url => activation_url},
     }
   end
 
@@ -63,12 +53,10 @@ class ActivationMailer < ActionMailer::Base
     raise(ArgumentError) unless options.empty?
 
     return {
-      :header => {
-        :subject    => SubjectPrefix + "通知先メールアドレス登録完了",
-        :from       => FromAddress,
-        :recipients => recipients,
-      },
-      :body => {},
+      :subject    => SubjectPrefix + "通知先メールアドレス登録完了",
+      :from       => FromAddress,
+      :recipients => recipients,
+      :body       => {},
     }
   end
 

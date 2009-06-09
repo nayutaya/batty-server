@@ -16,14 +16,10 @@ class ActivationMailerTest < ActionMailer::TestCase
       :activation_url => "http://activation/url",
     }
     expected = {
-      :header => {
-        :subject    => "[batty] ユーザ登録",
-        :from       => @klass::FromAddress,
-        :recipients => "recipients@example.jp",
-      },
-      :body => {
-        :activation_url => "http://activation/url",
-      },
+      :subject    => "[batty] ユーザ登録",
+      :from       => @klass::FromAddress,
+      :recipients => "recipients@example.jp",
+      :body       => {:activation_url => "http://activation/url"},
     }
     assert_equal(expected, @klass.create_request_for_signup_params(options))
   end
@@ -51,12 +47,10 @@ class ActivationMailerTest < ActionMailer::TestCase
       :recipients => "recipients@example.jp",
     }
     expected = {
-      :header => {
-        :subject    => "[batty] ユーザ登録完了",
-        :from       => @klass::FromAddress,
-        :recipients => "recipients@example.jp",
-      },
-      :body   => {},
+      :subject    => "[batty] ユーザ登録完了",
+      :from       => @klass::FromAddress,
+      :recipients => "recipients@example.jp",
+      :body       => {},
     }
     assert_equal(expected, @klass.create_complete_for_signup_params(options))
   end
@@ -82,14 +76,10 @@ class ActivationMailerTest < ActionMailer::TestCase
       :activation_url => "http://activation/url",
     }
     expected = {
-      :header => {
-        :subject    => "[batty] 通知先メールアドレス登録",
-        :from       => @klass::FromAddress,
-        :recipients => "recipients@example.jp",
-      },
-      :body => {
-        :activation_url => "http://activation/url",
-      },
+      :subject    => "[batty] 通知先メールアドレス登録",
+      :from       => @klass::FromAddress,
+      :recipients => "recipients@example.jp",
+      :body       => {:activation_url => "http://activation/url"},
     }
     assert_equal(expected, @klass.create_request_for_notice_params(options))
   end
@@ -117,12 +107,10 @@ class ActivationMailerTest < ActionMailer::TestCase
       :recipients => "recipients@example.jp",
     }
     expected = {
-      :header => {
-        :subject    => "[batty] 通知先メールアドレス登録完了",
-        :from       => @klass::FromAddress,
-        :recipients => "recipients@example.jp",
-      },
-      :body => {},
+      :subject    => "[batty] 通知先メールアドレス登録完了",
+      :from       => @klass::FromAddress,
+      :recipients => "recipients@example.jp",
+      :body       => {},
     }
     assert_equal(expected, @klass.create_complete_for_notice_params(options))
   end

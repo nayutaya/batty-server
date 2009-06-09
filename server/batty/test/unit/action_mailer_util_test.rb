@@ -10,12 +10,10 @@ class ActionMailerUtilTest < ActiveSupport::TestCase
   test "build_message" do
     time = Time.local(2010, 1, 1)
     options = {
-      :header => {
-        :subject    => "SUBJECT",
-        :from       => "FROM",
-        :recipients => "RECIPIENTS",
-      },
-      :body => {:KEY => :VALUE},
+      :subject    => "SUBJECT",
+      :from       => "FROM",
+      :recipients => "RECIPIENTS",
+      :body       => {:KEY => :VALUE},
     }
 
     called = []
