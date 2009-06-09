@@ -10,6 +10,42 @@ class ActivationMailerTest < ActionMailer::TestCase
   # クラスメソッド
   #
 
+  test "self.create_request_for_signup_params" do
+    options = {
+      :recipients     => "recipients@example.jp",
+      :activation_url => "http://activation/url",
+    }
+    expected = {
+      :header => {
+        :subject    => "[batty] ユーザ登録",
+        :from       => @klass::FromAddress,
+        :recipients => "recipients@example.jp",
+      },
+      :body => {
+        :activation_url => "http://activation/url",
+      },
+    }
+    assert_equal(expected, @klass.create_request_for_signup_params(options))
+  end
+
+  test "self.create_request_for_signup_params, deficient parameter" do
+    assert_nothing_raised {
+      @klass.create_request_for_signup_params(:recipients => "", :activation_url => "")
+    }
+    assert_raise(ArgumentError) {
+      @klass.create_request_for_signup_params(:activation_url => "")
+    }
+    assert_raise(ArgumentError) {
+      @klass.create_request_for_signup_params(:recipients => "")
+    }
+  end
+
+  test "self.create_request_for_signup_params, invalid parameter" do
+    assert_raise(ArgumentError) {
+      @klass.create_request_for_signup_params(:invalid => true)
+    }
+  end
+
   test "self.create_request_for_notice_params" do
     options = {
       :recipients     => "recipients@example.jp",
