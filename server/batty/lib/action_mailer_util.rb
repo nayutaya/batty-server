@@ -1,13 +1,17 @@
 
+# アクションメーラユーティリティ
 module ActionMailerUtil
   private
 
   def build_message(options)
-    subject(options[:header][:subject])
-    from(options[:header][:from])
-    recipients(options[:header][:recipients])
+    header = options[:header] || {}
+    body   = options[:body]   || {}
+
+    subject(header[:subject])
+    from(header[:from])
+    recipients(header[:recipients])
     sent_on(Time.now)
-    body(options[:body])
+    body(body)
 
     return nil
   end
