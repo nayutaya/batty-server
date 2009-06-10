@@ -21,11 +21,13 @@ class HttpActionEditForm < ActiveForm
   N_("HttpActionEditForm|Url")
   N_("HttpActionEditForm|Body")
 
-  validates_presence_of :http_method
+  validates_presence_of :http_method,
+    :message => "%{fn}を選択してください。"
   validates_presence_of :url
   validates_length_of :url, :maximum => HttpAction::UrlMaximumLength, :allow_nil => true
   validates_length_of :body, :maximum => HttpAction::BodyMaximumLength, :allow_nil => true
-  validates_inclusion_of :http_method, :in => HttpAction::HttpMethods, :allow_nil => true
+  validates_inclusion_of :http_method, :in => HttpAction::HttpMethods, :allow_nil => true,
+    :message => "%{fn}を選択してください。"
   validates_format_of :url, :with => URI.regexp(["http"]), :allow_nil => true
 
   def self.http_methods_for_select(options = {})
