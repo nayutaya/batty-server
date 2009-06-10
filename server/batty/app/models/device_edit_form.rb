@@ -12,6 +12,9 @@ class DeviceEditForm < ActiveForm
   column :name,           :type => :text
   column :device_icon_id, :type => :integer
 
+  N_("DeviceEditForm|Name")
+  N_("DeviceEditForm|Device icon")
+
   validates_presence_of :name
   validates_presence_of :device_icon_id
   validates_length_of :name, :maximum => Device::NameMaximumLength, :allow_nil => true

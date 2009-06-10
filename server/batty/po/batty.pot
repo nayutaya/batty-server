@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: batty 1.0.0\n"
-"POT-Creation-Date: 2009-06-10 11:43+0900\n"
+"POT-Creation-Date: 2009-06-10 11:50+0900\n"
 "PO-Revision-Date: 2009-06-10 11:13+0900\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,6 +94,14 @@ msgstr ""
 
 #: app/models/device.rb:-
 msgid "Device|Device icon"
+msgstr ""
+
+#: app/models/device_edit_form.rb:15
+msgid "DeviceEditForm|Name"
+msgstr ""
+
+#: app/models/device_edit_form.rb:16
+msgid "DeviceEditForm|Device icon"
 msgstr ""
 
 #: app/models/device_icon.rb:-
