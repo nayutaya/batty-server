@@ -33,7 +33,11 @@
             this.exitButton = new System.Windows.Forms.Button();
             this.showCurrentLevelButton = new System.Windows.Forms.Button();
             this.currentLevelLabel = new System.Windows.Forms.Label();
-            this.currentStatusLabel = new System.Windows.Forms.Label();
+            this.currentChargingLabel = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.currentLineLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // exitButton
@@ -56,18 +60,48 @@
             // 
             // currentLevelLabel
             // 
-            this.currentLevelLabel.Location = new System.Drawing.Point(81, 29);
+            this.currentLevelLabel.Location = new System.Drawing.Point(111, 71);
             this.currentLevelLabel.Name = "currentLevelLabel";
-            this.currentLevelLabel.Size = new System.Drawing.Size(44, 20);
+            this.currentLevelLabel.Size = new System.Drawing.Size(95, 20);
             this.currentLevelLabel.Text = "-";
-            this.currentLevelLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // currentStatusLabel
+            // currentChargingLabel
             // 
-            this.currentStatusLabel.Location = new System.Drawing.Point(131, 29);
-            this.currentStatusLabel.Name = "currentStatusLabel";
-            this.currentStatusLabel.Size = new System.Drawing.Size(106, 20);
-            this.currentStatusLabel.Text = "-";
+            this.currentChargingLabel.Location = new System.Drawing.Point(111, 91);
+            this.currentChargingLabel.Name = "currentChargingLabel";
+            this.currentChargingLabel.Size = new System.Drawing.Size(95, 20);
+            this.currentChargingLabel.Text = "-";
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(20, 71);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(85, 20);
+            this.label1.Text = "バッテリ残量 :";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(20, 91);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(85, 20);
+            this.label2.Text = "充電中 :";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(20, 111);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(85, 20);
+            this.label3.Text = "電源接続中 :";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // currentLineLabel
+            // 
+            this.currentLineLabel.Location = new System.Drawing.Point(111, 111);
+            this.currentLineLabel.Name = "currentLineLabel";
+            this.currentLineLabel.Size = new System.Drawing.Size(95, 20);
+            this.currentLineLabel.Text = "-";
             // 
             // Form1
             // 
@@ -75,7 +109,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 268);
-            this.Controls.Add(this.currentStatusLabel);
+            this.Controls.Add(this.currentLineLabel);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.currentChargingLabel);
             this.Controls.Add(this.currentLevelLabel);
             this.Controls.Add(this.showCurrentLevelButton);
             this.Controls.Add(this.exitButton);
@@ -91,7 +129,11 @@
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Button showCurrentLevelButton;
         private System.Windows.Forms.Label currentLevelLabel;
-        private System.Windows.Forms.Label currentStatusLabel;
+        private System.Windows.Forms.Label currentChargingLabel;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label currentLineLabel;
     }
 }
 
