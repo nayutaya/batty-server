@@ -16,6 +16,11 @@ class HttpActionEditForm < ActiveForm
   column :url,         :type => :text
   column :body,        :type => :text
 
+  N_("HttpActionEditForm|Enable")
+  N_("HttpActionEditForm|Http method")
+  N_("HttpActionEditForm|Url")
+  N_("HttpActionEditForm|Body")
+
   validates_presence_of :http_method
   validates_presence_of :url
   validates_length_of :url, :maximum => HttpAction::UrlMaximumLength, :allow_nil => true

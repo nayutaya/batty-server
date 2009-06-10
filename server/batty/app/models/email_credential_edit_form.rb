@@ -14,6 +14,10 @@ class EmailCredentialEditForm < ActiveForm
   column :password,              :type => :text
   column :password_confirmation, :type => :text
 
+  N_("EmailCredentialEditForm|Email")
+  N_("EmailCredentialEditForm|Password")
+  N_("EmailCredentialEditForm|Password confirmation")
+
   PasswordLengthRange = 4..20
   PasswordPattern     = /\A[\x21-\x7E]+\z/
 

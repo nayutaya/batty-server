@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: batty 1.0.0\n"
-"POT-Creation-Date: 2009-06-10 11:50+0900\n"
+"POT-Creation-Date: 2009-06-10 12:05+0900\n"
 "PO-Revision-Date: 2009-06-10 11:13+0900\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -164,6 +164,22 @@ msgstr ""
 msgid "EmailAction|Body"
 msgstr ""
 
+#: app/models/email_action_edit_form.rb:19
+msgid "EmailActionEditForm|Enable"
+msgstr ""
+
+#: app/models/email_action_edit_form.rb:20
+msgid "EmailActionEditForm|Email"
+msgstr ""
+
+#: app/models/email_action_edit_form.rb:21
+msgid "EmailActionEditForm|Subject"
+msgstr ""
+
+#: app/models/email_action_edit_form.rb:22
+msgid "EmailActionEditForm|Body"
+msgstr ""
+
 #: app/models/email_address.rb:-
 msgid "email address"
 msgstr ""
@@ -186,6 +202,10 @@ msgstr ""
 
 #: app/models/email_address.rb:-
 msgid "EmailAddress|Activated at"
+msgstr ""
+
+#: app/models/email_address_edit_form.rb:6
+msgid "EmailAddressEditForm|Email"
 msgstr ""
 
 #: app/models/email_credential.rb:-
@@ -218,6 +238,34 @@ msgstr ""
 
 #: app/models/email_credential.rb:-
 msgid "EmailCredential|Loggedin at"
+msgstr ""
+
+#: app/models/email_credential_edit_form.rb:17
+msgid "EmailCredentialEditForm|Email"
+msgstr ""
+
+#: app/models/email_credential_edit_form.rb:18
+msgid "EmailCredentialEditForm|Password"
+msgstr ""
+
+#: app/models/email_credential_edit_form.rb:19
+msgid "EmailCredentialEditForm|Password confirmation"
+msgstr ""
+
+#: app/models/email_login_form.rb:15
+msgid "EmailLoginForm|Email"
+msgstr ""
+
+#: app/models/email_login_form.rb:16
+msgid "EmailLoginForm|Password"
+msgstr ""
+
+#: app/models/email_password_edit_form.rb:15
+msgid "EmailPasswordEditForm|Password"
+msgstr ""
+
+#: app/models/email_password_edit_form.rb:16
+msgid "EmailPasswordEditForm|Password confirmation"
 msgstr ""
 
 #: app/models/energy.rb:-
@@ -308,6 +356,22 @@ msgstr ""
 msgid "HttpAction|Body"
 msgstr ""
 
+#: app/models/http_action_edit_form.rb:19
+msgid "HttpActionEditForm|Enable"
+msgstr ""
+
+#: app/models/http_action_edit_form.rb:20
+msgid "HttpActionEditForm|Http method"
+msgstr ""
+
+#: app/models/http_action_edit_form.rb:21
+msgid "HttpActionEditForm|Url"
+msgstr ""
+
+#: app/models/http_action_edit_form.rb:22
+msgid "HttpActionEditForm|Body"
+msgstr ""
+
 #: app/models/open_id_credential.rb:-
 msgid "open id credential"
 msgstr ""
@@ -326,6 +390,10 @@ msgstr ""
 
 #: app/models/open_id_credential.rb:-
 msgid "OpenIdCredential|Loggedin at"
+msgstr ""
+
+#: app/models/open_id_login_form.rb:6
+msgid "OpenIdLoginForm|Openid url"
 msgstr ""
 
 #: app/models/session.rb:-
@@ -374,6 +442,26 @@ msgstr ""
 
 #: app/models/trigger.rb:-
 msgid "Trigger|Level"
+msgstr ""
+
+#: app/models/trigger_edit_form.rb:17
+msgid "TriggerEditForm|Enable"
+msgstr ""
+
+#: app/models/trigger_edit_form.rb:18
+msgid "TriggerEditForm|Operator"
+msgstr ""
+
+#: app/models/trigger_edit_form.rb:19
+msgid "TriggerEditForm|Level"
+msgstr ""
+
+#: app/models/update_energy_api_form.rb:15
+msgid "UpdateEnergyApiForm|Level"
+msgstr ""
+
+#: app/models/update_energy_api_form.rb:16
+msgid "UpdateEnergyApiForm|Time"
 msgstr ""
 
 #: app/models/user.rb:-

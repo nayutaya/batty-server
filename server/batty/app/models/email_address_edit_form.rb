@@ -3,6 +3,8 @@
 class EmailAddressEditForm < ActiveForm
   column :email, :type => :text
 
+  N_("EmailAddressEditForm|Email")
+
   validates_presence_of :email
   validates_length_of :email, :maximum => 200, :allow_nil => true
   validates_email_format_of :email

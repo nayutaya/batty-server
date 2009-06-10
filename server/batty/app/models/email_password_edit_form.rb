@@ -12,6 +12,9 @@ class EmailPasswordEditForm < ActiveForm
   column :password,              :type => :text
   column :password_confirmation, :type => :text
 
+  N_("EmailPasswordEditForm|Password")
+  N_("EmailPasswordEditForm|Password confirmation")
+
   validates_presence_of :password
   validates_presence_of :password_confirmation
   validates_length_of :password, :in => EmailCredentialEditForm::PasswordLengthRange, :allow_nil => true

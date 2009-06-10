@@ -14,6 +14,10 @@ class TriggerEditForm < ActiveForm
   column :operator, :type => :integer
   column :level,    :type => :integer
 
+  N_("TriggerEditForm|Enable")
+  N_("TriggerEditForm|Operator")
+  N_("TriggerEditForm|Level")
+
   validates_presence_of :operator
   validates_presence_of :level
   validates_numericality_of :operator, :only_integer => true, :allow_nil => true

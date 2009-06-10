@@ -16,6 +16,11 @@ class EmailActionEditForm < ActiveForm
   column :subject, :type => :text
   column :body,    :type => :text
 
+  N_("EmailActionEditForm|Enable")
+  N_("EmailActionEditForm|Email")
+  N_("EmailActionEditForm|Subject")
+  N_("EmailActionEditForm|Body")
+
   validates_presence_of :email
   validates_presence_of :subject
   validates_presence_of :body
