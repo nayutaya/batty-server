@@ -13,6 +13,8 @@ namespace batty_agent
 {
     public partial class Form1 : Form
     {
+        private bool tick = true;
+
         public Form1()
         {
             InitializeComponent();
@@ -33,21 +35,7 @@ namespace batty_agent
 
         private void sendButton_Click(object sender, EventArgs e)
         {
-            string deviceToken = this.tokenTextBox.Text;
-
-            WebRequest request = this.CreateUpdateRequest(deviceToken, "0");
-
-            try
-            {
-                using ( WebResponse response = request.GetResponse() )
-                {
-                    this.debugLabel.Text = "OK";
-                }
-            }
-            catch ( Exception ex )
-            {
-                this.debugLabel.Text = ex.GetType().Name + ": " + ex.Message;
-            }
+            this.Send();
         }
 
         private string CreateUpdateUrl(string deviceToken, string level)
@@ -65,6 +53,42 @@ namespace batty_agent
             request.Timeout = 5 * 1000;
             
             return request;
+        }
+
+        private void Send()
+        {
+            string deviceToken = this.tokenTextBox.Text;
+
+            WebRequest request = this.CreateUpdateRequest(deviceToken, "0");
+
+            try
+            {
+                using ( WebResponse response = request.GetResponse() )
+                {
+                    this.debugLabel.Text = "OK";
+                }
+            }
+            catch ( Exception ex )
+            {
+                this.debugLabel.Text = ex.GetType().Name + ": " + ex.Message;
+            }
+        }
+
+        private void startButton_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = true;
+        }
+
+        private void stopButton_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = false;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            this.tick = !this.tick;
+
+            this.tickPanel.BackColor = (this.tick ? Color.Red : Color.Green);
         }
     }
 }

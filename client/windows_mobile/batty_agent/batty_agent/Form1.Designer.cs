@@ -42,6 +42,10 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.debugLabel = new System.Windows.Forms.Label();
             this.tokenTextBox = new System.Windows.Forms.TextBox();
+            this.timer1 = new System.Windows.Forms.Timer();
+            this.startButton = new System.Windows.Forms.Button();
+            this.stopButton = new System.Windows.Forms.Button();
+            this.tickPanel = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -146,12 +150,44 @@
             this.tokenTextBox.Text = "0";
             this.tokenTextBox.WordWrap = false;
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // startButton
+            // 
+            this.startButton.Location = new System.Drawing.Point(96, 103);
+            this.startButton.Name = "startButton";
+            this.startButton.Size = new System.Drawing.Size(49, 20);
+            this.startButton.TabIndex = 12;
+            this.startButton.Text = "開始";
+            this.startButton.Click += new System.EventHandler(this.startButton_Click);
+            // 
+            // stopButton
+            // 
+            this.stopButton.Location = new System.Drawing.Point(151, 103);
+            this.stopButton.Name = "stopButton";
+            this.stopButton.Size = new System.Drawing.Size(49, 20);
+            this.stopButton.TabIndex = 13;
+            this.stopButton.Text = "停止";
+            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+            // 
+            // tickPanel
+            // 
+            this.tickPanel.Location = new System.Drawing.Point(197, 138);
+            this.tickPanel.Name = "tickPanel";
+            this.tickPanel.Size = new System.Drawing.Size(27, 23);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.tickPanel);
+            this.Controls.Add(this.stopButton);
+            this.Controls.Add(this.startButton);
             this.Controls.Add(this.tokenTextBox);
             this.Controls.Add(this.debugLabel);
             this.Controls.Add(this.panel1);
@@ -180,6 +216,10 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label debugLabel;
         private System.Windows.Forms.TextBox tokenTextBox;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button startButton;
+        private System.Windows.Forms.Button stopButton;
+        private System.Windows.Forms.Panel tickPanel;
     }
 }
 
