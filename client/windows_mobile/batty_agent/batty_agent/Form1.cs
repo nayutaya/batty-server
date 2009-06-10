@@ -1,5 +1,5 @@
-﻿using System;
-
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,6 +19,13 @@ namespace batty_agent
         private void exitButton_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void showCurrentLevelButton_Click(object sender, EventArgs e)
+        {
+            BatteryStatus bs = new BatteryStatus();
+            this.currentStatusLabel.Text = (bs.Charging.HasValue ? ("充電中: " + (bs.Charging.Value ? "はい" : "いいえ")) : "-");
+            this.currentLevelLabel.Text = (bs.LifePercent.HasValue ? bs.LifePercent.ToString() + " %" : "-");
         }
     }
 }
