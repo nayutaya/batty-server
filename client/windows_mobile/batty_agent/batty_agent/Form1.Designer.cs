@@ -46,6 +46,9 @@
             this.startButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
             this.tickPanel = new System.Windows.Forms.Panel();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -136,9 +139,9 @@
             // debugLabel
             // 
             this.debugLabel.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.debugLabel.Location = new System.Drawing.Point(3, 183);
+            this.debugLabel.Location = new System.Drawing.Point(3, 242);
             this.debugLabel.Name = "debugLabel";
-            this.debugLabel.Size = new System.Drawing.Size(234, 85);
+            this.debugLabel.Size = new System.Drawing.Size(234, 26);
             // 
             // tokenTextBox
             // 
@@ -179,12 +182,34 @@
             this.tickPanel.Name = "tickPanel";
             this.tickPanel.Size = new System.Drawing.Size(27, 23);
             // 
+            // listView1
+            // 
+            this.listView1.Columns.Add(this.columnHeader1);
+            this.listView1.Columns.Add(this.columnHeader2);
+            this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listView1.Location = new System.Drawing.Point(3, 167);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(234, 72);
+            this.listView1.TabIndex = 15;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "time";
+            this.columnHeader1.Width = 70;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "message";
+            this.columnHeader2.Width = 130;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.listView1);
             this.Controls.Add(this.tickPanel);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.startButton);
@@ -220,6 +245,9 @@
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.Panel tickPanel;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
     }
 }
 

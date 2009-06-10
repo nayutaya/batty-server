@@ -33,9 +33,26 @@ namespace batty_agent
             this.currentLineLabel.Text = (bs.PowerLineConnecting.HasValue ? (bs.PowerLineConnecting.Value ? "はい" : "いいえ") : "不明");
         }
 
+        private void AddLog(string message)
+        {
+            DateTime dt = DateTime.Now;
+
+            ListViewItem lvi = new ListViewItem();
+            lvi.Text = dt.ToString("hh:mm:ss");
+            lvi.SubItems.Add(message);
+
+            this.listView1.Items.Insert(0, lvi);
+
+            while ( this.listView1.Items.Count > 10 )
+            {
+                this.listView1.Items.RemoveAt(10);
+            }
+        }
+
         private void sendButton_Click(object sender, EventArgs e)
         {
-            this.Send();
+            this.AddLog("手動送信");
+            //this.Send();
         }
 
         private string CreateUpdateUrl(string deviceToken, string level)
@@ -89,6 +106,8 @@ namespace batty_agent
             this.tick = !this.tick;
 
             this.tickPanel.BackColor = (this.tick ? Color.Red : Color.Green);
+
+            this.AddLog("自動送信");
         }
     }
 }
