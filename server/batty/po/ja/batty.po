@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: batty 1.0.0\n"
-"POT-Creation-Date: 2009-06-10 12:05+0900\n"
+"POT-Creation-Date: 2009-06-10 14:07+0900\n"
 "PO-Revision-Date: 2009-06-10 11:13+0900\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,7 +150,7 @@ msgstr "トリガ"
 
 #: app/models/email_action.rb:-
 msgid "EmailAction|Enable"
-msgstr "有効/無効"
+msgstr "有効"
 
 #: app/models/email_action.rb:-
 msgid "EmailAction|Email"
@@ -166,7 +166,7 @@ msgstr "本文"
 
 #: app/models/email_action_edit_form.rb:19
 msgid "EmailActionEditForm|Enable"
-msgstr "有効/無効"
+msgstr "有効"
 
 #: app/models/email_action_edit_form.rb:20
 msgid "EmailActionEditForm|Email"
@@ -342,7 +342,7 @@ msgstr "トリガ"
 
 #: app/models/http_action.rb:-
 msgid "HttpAction|Enable"
-msgstr "有効/無効"
+msgstr "有効"
 
 #: app/models/http_action.rb:-
 msgid "HttpAction|Http method"
@@ -358,7 +358,7 @@ msgstr "POSTデータ"
 
 #: app/models/http_action_edit_form.rb:19
 msgid "HttpActionEditForm|Enable"
-msgstr "有効/無効"
+msgstr "有効"
 
 #: app/models/http_action_edit_form.rb:20
 msgid "HttpActionEditForm|Http method"
@@ -434,7 +434,7 @@ msgstr "デバイス"
 
 #: app/models/trigger.rb:-
 msgid "Trigger|Enable"
-msgstr "有効/無効"
+msgstr "有効"
 
 #: app/models/trigger.rb:-
 msgid "Trigger|Operator"
@@ -446,7 +446,7 @@ msgstr "レベル"
 
 #: app/models/trigger_edit_form.rb:17
 msgid "TriggerEditForm|Enable"
-msgstr "有効/無効"
+msgstr "有効"
 
 #: app/models/trigger_edit_form.rb:18
 msgid "TriggerEditForm|Operator"
