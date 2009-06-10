@@ -1,0 +1,389 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: batty 1.0.0\n"
+"POT-Creation-Date: 2009-06-10 11:43+0900\n"
+"PO-Revision-Date: 2009-06-10 11:13+0900\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: app/models/device.rb:-
+msgid "open id authentication association"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "openidauthentication::association"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "OpenIdAuthentication::Association|Issued"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "OpenIdAuthentication::Association|Lifetime"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "OpenIdAuthentication::Association|Handle"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "OpenIdAuthentication::Association|Assoc type"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "OpenIdAuthentication::Association|Server url"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "OpenIdAuthentication::Association|Secret"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "open id authentication nonce"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "openidauthentication::nonce"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "OpenIdAuthentication::Nonce|Timestamp"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "OpenIdAuthentication::Nonce|Server url"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "OpenIdAuthentication::Nonce|Salt"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "device"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "Device|Created at"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "Device|Updated at"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "Device|Device token"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "Device|User"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "Device|Name"
+msgstr ""
+
+#: app/models/device.rb:-
+msgid "Device|Device icon"
+msgstr ""
+
+#: app/models/device_icon.rb:-
+msgid "device icon"
+msgstr ""
+
+#: app/models/device_icon.rb:-
+msgid "DeviceIcon|Created at"
+msgstr ""
+
+#: app/models/device_icon.rb:-
+msgid "DeviceIcon|Updated at"
+msgstr ""
+
+#: app/models/device_icon.rb:-
+msgid "DeviceIcon|Display order"
+msgstr ""
+
+#: app/models/device_icon.rb:-
+msgid "DeviceIcon|Name"
+msgstr ""
+
+#: app/models/device_icon.rb:-
+msgid "DeviceIcon|Url24"
+msgstr ""
+
+#: app/models/device_icon.rb:-
+msgid "DeviceIcon|Url48"
+msgstr ""
+
+#: app/models/email_action.rb:-
+msgid "email action"
+msgstr ""
+
+#: app/models/email_action.rb:-
+msgid "EmailAction|Created at"
+msgstr ""
+
+#: app/models/email_action.rb:-
+msgid "EmailAction|Updated at"
+msgstr ""
+
+#: app/models/email_action.rb:-
+msgid "EmailAction|Trigger"
+msgstr ""
+
+#: app/models/email_action.rb:-
+msgid "EmailAction|Enable"
+msgstr ""
+
+#: app/models/email_action.rb:-
+msgid "EmailAction|Email"
+msgstr ""
+
+#: app/models/email_action.rb:-
+msgid "EmailAction|Subject"
+msgstr ""
+
+#: app/models/email_action.rb:-
+msgid "EmailAction|Body"
+msgstr ""
+
+#: app/models/email_address.rb:-
+msgid "email address"
+msgstr ""
+
+#: app/models/email_address.rb:-
+msgid "EmailAddress|Created at"
+msgstr ""
+
+#: app/models/email_address.rb:-
+msgid "EmailAddress|Activation token"
+msgstr ""
+
+#: app/models/email_address.rb:-
+msgid "EmailAddress|User"
+msgstr ""
+
+#: app/models/email_address.rb:-
+msgid "EmailAddress|Email"
+msgstr ""
+
+#: app/models/email_address.rb:-
+msgid "EmailAddress|Activated at"
+msgstr ""
+
+#: app/models/email_credential.rb:-
+msgid "email credential"
+msgstr ""
+
+#: app/models/email_credential.rb:-
+msgid "EmailCredential|Created at"
+msgstr ""
+
+#: app/models/email_credential.rb:-
+msgid "EmailCredential|Activation token"
+msgstr ""
+
+#: app/models/email_credential.rb:-
+msgid "EmailCredential|User"
+msgstr ""
+
+#: app/models/email_credential.rb:-
+msgid "EmailCredential|Email"
+msgstr ""
+
+#: app/models/email_credential.rb:-
+msgid "EmailCredential|Hashed password"
+msgstr ""
+
+#: app/models/email_credential.rb:-
+msgid "EmailCredential|Activated at"
+msgstr ""
+
+#: app/models/email_credential.rb:-
+msgid "EmailCredential|Loggedin at"
+msgstr ""
+
+#: app/models/energy.rb:-
+msgid "energy"
+msgstr ""
+
+#: app/models/energy.rb:-
+msgid "Energy|Created at"
+msgstr ""
+
+#: app/models/energy.rb:-
+msgid "Energy|Device"
+msgstr ""
+
+#: app/models/energy.rb:-
+msgid "Energy|Observed level"
+msgstr ""
+
+#: app/models/energy.rb:-
+msgid "Energy|Observed at"
+msgstr ""
+
+#: app/models/event.rb:-
+msgid "event"
+msgstr ""
+
+#: app/models/event.rb:-
+msgid "Event|Created at"
+msgstr ""
+
+#: app/models/event.rb:-
+msgid "Event|Device"
+msgstr ""
+
+#: app/models/event.rb:-
+msgid "Event|Trigger operator"
+msgstr ""
+
+#: app/models/event.rb:-
+msgid "Event|Trigger level"
+msgstr ""
+
+#: app/models/event.rb:-
+msgid "Event|Observed level"
+msgstr ""
+
+#: app/models/event.rb:-
+msgid "Event|Observed at"
+msgstr ""
+
+#: app/models/event.rb:-
+msgid "Event|Trigger"
+msgstr ""
+
+#: app/models/event.rb:-
+msgid "Event|Energy"
+msgstr ""
+
+#: app/models/http_action.rb:-
+msgid "http action"
+msgstr ""
+
+#: app/models/http_action.rb:-
+msgid "HttpAction|Created at"
+msgstr ""
+
+#: app/models/http_action.rb:-
+msgid "HttpAction|Updated at"
+msgstr ""
+
+#: app/models/http_action.rb:-
+msgid "HttpAction|Trigger"
+msgstr ""
+
+#: app/models/http_action.rb:-
+msgid "HttpAction|Enable"
+msgstr ""
+
+#: app/models/http_action.rb:-
+msgid "HttpAction|Http method"
+msgstr ""
+
+#: app/models/http_action.rb:-
+msgid "HttpAction|Url"
+msgstr ""
+
+#: app/models/http_action.rb:-
+msgid "HttpAction|Body"
+msgstr ""
+
+#: app/models/open_id_credential.rb:-
+msgid "open id credential"
+msgstr ""
+
+#: app/models/open_id_credential.rb:-
+msgid "OpenIdCredential|Created at"
+msgstr ""
+
+#: app/models/open_id_credential.rb:-
+msgid "OpenIdCredential|User"
+msgstr ""
+
+#: app/models/open_id_credential.rb:-
+msgid "OpenIdCredential|Identity url"
+msgstr ""
+
+#: app/models/open_id_credential.rb:-
+msgid "OpenIdCredential|Loggedin at"
+msgstr ""
+
+#: app/models/session.rb:-
+msgid "session"
+msgstr ""
+
+#: app/models/session.rb:-
+msgid "Session|Created at"
+msgstr ""
+
+#: app/models/session.rb:-
+msgid "Session|Updated at"
+msgstr ""
+
+#: app/models/session.rb:-
+msgid "Session|Session"
+msgstr ""
+
+#: app/models/session.rb:-
+msgid "Session|Data"
+msgstr ""
+
+#: app/models/trigger.rb:-
+msgid "trigger"
+msgstr ""
+
+#: app/models/trigger.rb:-
+msgid "Trigger|Created at"
+msgstr ""
+
+#: app/models/trigger.rb:-
+msgid "Trigger|Updated at"
+msgstr ""
+
+#: app/models/trigger.rb:-
+msgid "Trigger|Device"
+msgstr ""
+
+#: app/models/trigger.rb:-
+msgid "Trigger|Enable"
+msgstr ""
+
+#: app/models/trigger.rb:-
+msgid "Trigger|Operator"
+msgstr ""
+
+#: app/models/trigger.rb:-
+msgid "Trigger|Level"
+msgstr ""
+
+#: app/models/user.rb:-
+msgid "user"
+msgstr ""
+
+#: app/models/user.rb:-
+msgid "User|Created at"
+msgstr ""
+
+#: app/models/user.rb:-
+msgid "User|Updated at"
+msgstr ""
+
+#: app/models/user.rb:-
+msgid "User|User token"
+msgstr ""
+
+#: app/models/user.rb:-
+msgid "User|Nickname"
+msgstr ""
