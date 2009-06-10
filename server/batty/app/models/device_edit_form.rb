@@ -16,7 +16,8 @@ class DeviceEditForm < ActiveForm
   N_("DeviceEditForm|Device icon")
 
   validates_presence_of :name
-  validates_presence_of :device_icon_id
+  validates_presence_of :device_icon_id,
+    :message => "%{fn}を選択してください。"
   validates_length_of :name, :maximum => Device::NameMaximumLength, :allow_nil => true
   validates_numericality_of :device_icon_id, :only_integer => true, :allow_nil => true
   validates_each :device_icon_id do |record, attr, value|
