@@ -18,12 +18,17 @@ class TriggerEditForm < ActiveForm
   N_("TriggerEditForm|Operator")
   N_("TriggerEditForm|Level")
 
-  validates_presence_of :operator
+  LevelRange = Energy::LevelRange
+
+  validates_presence_of :operator,
+    :message => "%{fn}を選択してください。"
   validates_presence_of :level
   validates_numericality_of :operator, :only_integer => true, :allow_nil => true
   validates_numericality_of :level, :only_integer => true, :allow_nil => true
-  validates_inclusion_of :operator, :in => Trigger::OperatorCodes, :allow_nil => true
-  validates_inclusion_of :level, :in => Energy::LevelRange, :allow_nil => true
+  validates_inclusion_of :operator, :in => Trigger::OperatorCodes, :allow_nil => true,
+    :message => "%{fn}を選択してください。"
+  validates_inclusion_of :level, :in => LevelRange, :allow_nil => true,
+    :message => "%{fn}は#{LevelRange.begin}～#{LevelRange.end}で入力してください。"
 
   def self.operators_for_select(options = {})
     options = options.dup
