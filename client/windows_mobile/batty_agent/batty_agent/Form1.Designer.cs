@@ -40,7 +40,6 @@
             this.currentLineLabel = new System.Windows.Forms.Label();
             this.sendButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.debugLabel = new System.Windows.Forms.Label();
             this.tokenTextBox = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer();
             this.startButton = new System.Windows.Forms.Button();
@@ -136,13 +135,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(151, 68);
             // 
-            // debugLabel
-            // 
-            this.debugLabel.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.debugLabel.Location = new System.Drawing.Point(3, 242);
-            this.debugLabel.Name = "debugLabel";
-            this.debugLabel.Size = new System.Drawing.Size(234, 26);
-            // 
             // tokenTextBox
             // 
             this.tokenTextBox.Location = new System.Drawing.Point(17, 140);
@@ -150,12 +142,10 @@
             this.tokenTextBox.Name = "tokenTextBox";
             this.tokenTextBox.Size = new System.Drawing.Size(172, 21);
             this.tokenTextBox.TabIndex = 11;
-            this.tokenTextBox.Text = "0";
             this.tokenTextBox.WordWrap = false;
             // 
             // timer1
             // 
-            this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // startButton
@@ -189,7 +179,7 @@
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listView1.Location = new System.Drawing.Point(3, 167);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(234, 72);
+            this.listView1.Size = new System.Drawing.Size(234, 98);
             this.listView1.TabIndex = 15;
             this.listView1.View = System.Windows.Forms.View.Details;
             // 
@@ -214,7 +204,6 @@
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.tokenTextBox);
-            this.Controls.Add(this.debugLabel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.sendButton);
             this.Controls.Add(this.showCurrentLevelButton);
@@ -239,7 +228,6 @@
         private System.Windows.Forms.Label currentLineLabel;
         private System.Windows.Forms.Button sendButton;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label debugLabel;
         private System.Windows.Forms.TextBox tokenTextBox;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button startButton;

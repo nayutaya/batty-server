@@ -18,6 +18,18 @@ namespace batty_agent
         public Form1()
         {
             InitializeComponent();
+
+            System.Reflection.Module m = System.Reflection.Assembly.GetExecutingAssembly().ManifestModule;
+            string dir = System.IO.Path.GetDirectoryName(m.FullyQualifiedName);
+            string file = dir + @"\token.txt";
+
+            if ( File.Exists(file) )
+            {
+                using ( StreamReader st = new StreamReader(file) )
+                {
+                    this.tokenTextBox.Text = st.ReadToEnd();
+                }
+            }
         }
 
         private void exitButton_Click(object sender, EventArgs e)
@@ -52,7 +64,7 @@ namespace batty_agent
         private void sendButton_Click(object sender, EventArgs e)
         {
             this.AddLog("手動送信");
-            //this.Send();
+            this.Send();
         }
 
         private string CreateUpdateUrl(string deviceToken, string level)
@@ -67,38 +79,72 @@ namespace batty_agent
             string url = this.CreateUpdateUrl(deviceToken, level);
             WebRequest request = WebRequest.Create(url);
             request.Method = "POST";
-            request.Timeout = 5 * 1000;
+            request.Timeout = 20 * 1000;
             
             return request;
         }
 
-        private void Send()
+        private bool Send()
         {
-            string deviceToken = this.tokenTextBox.Text;
+            BatteryStatus bs = new BatteryStatus();
 
-            WebRequest request = this.CreateUpdateRequest(deviceToken, "0");
+            if ( !bs.PowerLineConnecting.HasValue )
+            {
+                this.AddLog("電源状態が不明です");
+                return false;
+            }
+            if ( bs.PowerLineConnecting.Value )
+            {
+                this.AddLog("電源接続中です");
+                return false;
+            }
+            if ( !bs.Charging.HasValue )
+            {
+                this.AddLog("充電状態が不明です");
+                return false;
+            }
+            if ( bs.Charging.Value )
+            {
+                this.AddLog("充電中です");
+                return false;
+            }
+            if ( !bs.LifePercent.HasValue )
+            {
+                this.AddLog("バッテリレベルが不明です");
+                return false;
+            }
+
+            string deviceToken = this.tokenTextBox.Text;
+            string level = bs.LifePercent.ToString();
+
+            WebRequest request = this.CreateUpdateRequest(deviceToken, level);
 
             try
             {
                 using ( WebResponse response = request.GetResponse() )
                 {
-                    this.debugLabel.Text = "OK";
+                    this.AddLog("送信しました");
+                    return true;
                 }
             }
             catch ( Exception ex )
             {
-                this.debugLabel.Text = ex.GetType().Name + ": " + ex.Message;
+                this.AddLog(ex.GetType().Name + ": " + ex.Message);
+                return false;
             }
         }
 
         private void startButton_Click(object sender, EventArgs e)
         {
+            timer1.Interval = 10 * 60 * 1000;
             timer1.Enabled = true;
+            this.AddLog("開始しました");
         }
 
         private void stopButton_Click(object sender, EventArgs e)
         {
             timer1.Enabled = false;
+            this.AddLog("停止しました");
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -108,6 +154,7 @@ namespace batty_agent
             this.tickPanel.BackColor = (this.tick ? Color.Red : Color.Green);
 
             this.AddLog("自動送信");
+            this.Send();
         }
     }
 }
