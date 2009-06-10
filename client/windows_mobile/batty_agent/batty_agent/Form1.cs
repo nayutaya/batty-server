@@ -6,6 +6,8 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
+using System.Net;
 
 namespace batty_agent
 {
@@ -27,6 +29,42 @@ namespace batty_agent
             this.currentLevelLabel.Text = (bs.LifePercent.HasValue ? bs.LifePercent.ToString() + " %" : "不明");
             this.currentChargingLabel.Text = (bs.Charging.HasValue ? (bs.Charging.Value ? "はい" : "いいえ") : "不明");
             this.currentLineLabel.Text = (bs.PowerLineConnecting.HasValue ? (bs.PowerLineConnecting.Value ? "はい" : "いいえ") : "不明");
+        }
+
+        private void sendButton_Click(object sender, EventArgs e)
+        {
+            string deviceToken = this.tokenTextBox.Text;
+
+            WebRequest request = this.CreateUpdateRequest(deviceToken, "0");
+
+            try
+            {
+                using ( WebResponse response = request.GetResponse() )
+                {
+                    this.debugLabel.Text = "OK";
+                }
+            }
+            catch ( Exception ex )
+            {
+                this.debugLabel.Text = ex.GetType().Name + ": " + ex.Message;
+            }
+        }
+
+        private string CreateUpdateUrl(string deviceToken, string level)
+        {
+            string host = "batty.nayutaya.jp";
+            string path = "http://" + host + "/device/token/" + deviceToken + "/energies/update";
+            return path + "/" + level;
+        }
+
+        private WebRequest CreateUpdateRequest(string deviceToken, string level)
+        {
+            string url = this.CreateUpdateUrl(deviceToken, level);
+            WebRequest request = WebRequest.Create(url);
+            request.Method = "POST";
+            request.Timeout = 5 * 1000;
+            
+            return request;
         }
     }
 }

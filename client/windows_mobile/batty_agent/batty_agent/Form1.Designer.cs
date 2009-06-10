@@ -38,6 +38,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.currentLineLabel = new System.Windows.Forms.Label();
+            this.sendButton = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.debugLabel = new System.Windows.Forms.Label();
+            this.tokenTextBox = new System.Windows.Forms.TextBox();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // exitButton
@@ -60,21 +65,21 @@
             // 
             // currentLevelLabel
             // 
-            this.currentLevelLabel.Location = new System.Drawing.Point(111, 71);
+            this.currentLevelLabel.Location = new System.Drawing.Point(94, 3);
             this.currentLevelLabel.Name = "currentLevelLabel";
-            this.currentLevelLabel.Size = new System.Drawing.Size(95, 20);
+            this.currentLevelLabel.Size = new System.Drawing.Size(49, 20);
             this.currentLevelLabel.Text = "-";
             // 
             // currentChargingLabel
             // 
-            this.currentChargingLabel.Location = new System.Drawing.Point(111, 91);
+            this.currentChargingLabel.Location = new System.Drawing.Point(94, 23);
             this.currentChargingLabel.Name = "currentChargingLabel";
-            this.currentChargingLabel.Size = new System.Drawing.Size(95, 20);
+            this.currentChargingLabel.Size = new System.Drawing.Size(49, 20);
             this.currentChargingLabel.Text = "-";
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(20, 71);
+            this.label1.Location = new System.Drawing.Point(3, 3);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(85, 20);
             this.label1.Text = "バッテリ残量 :";
@@ -82,7 +87,7 @@
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(20, 91);
+            this.label2.Location = new System.Drawing.Point(3, 23);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(85, 20);
             this.label2.Text = "充電中 :";
@@ -90,7 +95,7 @@
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(20, 111);
+            this.label3.Location = new System.Drawing.Point(3, 43);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(85, 20);
             this.label3.Text = "電源接続中 :";
@@ -98,10 +103,48 @@
             // 
             // currentLineLabel
             // 
-            this.currentLineLabel.Location = new System.Drawing.Point(111, 111);
+            this.currentLineLabel.Location = new System.Drawing.Point(94, 43);
             this.currentLineLabel.Name = "currentLineLabel";
-            this.currentLineLabel.Size = new System.Drawing.Size(95, 20);
+            this.currentLineLabel.Size = new System.Drawing.Size(49, 20);
             this.currentLineLabel.Text = "-";
+            // 
+            // sendButton
+            // 
+            this.sendButton.Location = new System.Drawing.Point(3, 103);
+            this.sendButton.Name = "sendButton";
+            this.sendButton.Size = new System.Drawing.Size(72, 20);
+            this.sendButton.TabIndex = 8;
+            this.sendButton.Text = "送信";
+            this.sendButton.Click += new System.EventHandler(this.sendButton_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.currentLevelLabel);
+            this.panel1.Controls.Add(this.currentChargingLabel);
+            this.panel1.Controls.Add(this.currentLineLabel);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Location = new System.Drawing.Point(81, 29);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(151, 68);
+            // 
+            // debugLabel
+            // 
+            this.debugLabel.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.debugLabel.Location = new System.Drawing.Point(3, 183);
+            this.debugLabel.Name = "debugLabel";
+            this.debugLabel.Size = new System.Drawing.Size(234, 85);
+            // 
+            // tokenTextBox
+            // 
+            this.tokenTextBox.Location = new System.Drawing.Point(17, 140);
+            this.tokenTextBox.MaxLength = 20;
+            this.tokenTextBox.Name = "tokenTextBox";
+            this.tokenTextBox.Size = new System.Drawing.Size(172, 21);
+            this.tokenTextBox.TabIndex = 11;
+            this.tokenTextBox.Text = "0";
+            this.tokenTextBox.WordWrap = false;
             // 
             // Form1
             // 
@@ -109,17 +152,16 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 268);
-            this.Controls.Add(this.currentLineLabel);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.currentChargingLabel);
-            this.Controls.Add(this.currentLevelLabel);
+            this.Controls.Add(this.tokenTextBox);
+            this.Controls.Add(this.debugLabel);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.sendButton);
             this.Controls.Add(this.showCurrentLevelButton);
             this.Controls.Add(this.exitButton);
             this.Menu = this.mainMenu1;
             this.Name = "Form1";
             this.Text = "Batty Agent";
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -134,6 +176,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label currentLineLabel;
+        private System.Windows.Forms.Button sendButton;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label debugLabel;
+        private System.Windows.Forms.TextBox tokenTextBox;
     }
 }
 
