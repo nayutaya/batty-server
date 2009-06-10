@@ -110,27 +110,27 @@ msgstr ""
 
 #: app/models/device_icon.rb:-
 msgid "DeviceIcon|Created at"
-msgstr ""
+msgstr "作成日時"
 
 #: app/models/device_icon.rb:-
 msgid "DeviceIcon|Updated at"
-msgstr ""
+msgstr "更新日時"
 
 #: app/models/device_icon.rb:-
 msgid "DeviceIcon|Display order"
-msgstr ""
+msgstr "表示順"
 
 #: app/models/device_icon.rb:-
 msgid "DeviceIcon|Name"
-msgstr ""
+msgstr "名称"
 
 #: app/models/device_icon.rb:-
 msgid "DeviceIcon|Url24"
-msgstr ""
+msgstr "URL"
 
 #: app/models/device_icon.rb:-
 msgid "DeviceIcon|Url48"
-msgstr ""
+msgstr "URL"
 
 #: app/models/email_action.rb:-
 msgid "email action"
@@ -138,47 +138,47 @@ msgstr ""
 
 #: app/models/email_action.rb:-
 msgid "EmailAction|Created at"
-msgstr ""
+msgstr "作成日時"
 
 #: app/models/email_action.rb:-
 msgid "EmailAction|Updated at"
-msgstr ""
+msgstr "更新日時"
 
 #: app/models/email_action.rb:-
 msgid "EmailAction|Trigger"
-msgstr ""
+msgstr "トリガ"
 
 #: app/models/email_action.rb:-
 msgid "EmailAction|Enable"
-msgstr ""
+msgstr "有効/無効"
 
 #: app/models/email_action.rb:-
 msgid "EmailAction|Email"
-msgstr ""
+msgstr "メールアドレス"
 
 #: app/models/email_action.rb:-
 msgid "EmailAction|Subject"
-msgstr ""
+msgstr "タイトル"
 
 #: app/models/email_action.rb:-
 msgid "EmailAction|Body"
-msgstr ""
+msgstr "本文"
 
 #: app/models/email_action_edit_form.rb:19
 msgid "EmailActionEditForm|Enable"
-msgstr ""
+msgstr "有効/無効"
 
 #: app/models/email_action_edit_form.rb:20
 msgid "EmailActionEditForm|Email"
-msgstr ""
+msgstr "メールアドレス"
 
 #: app/models/email_action_edit_form.rb:21
 msgid "EmailActionEditForm|Subject"
-msgstr ""
+msgstr "タイトル"
 
 #: app/models/email_action_edit_form.rb:22
 msgid "EmailActionEditForm|Body"
-msgstr ""
+msgstr "本文"
 
 #: app/models/email_address.rb:-
 msgid "email address"
@@ -186,27 +186,27 @@ msgstr ""
 
 #: app/models/email_address.rb:-
 msgid "EmailAddress|Created at"
-msgstr ""
+msgstr "作成日時"
 
 #: app/models/email_address.rb:-
 msgid "EmailAddress|Activation token"
-msgstr ""
+msgstr "トークン"
 
 #: app/models/email_address.rb:-
 msgid "EmailAddress|User"
-msgstr ""
+msgstr "ユーザ"
 
 #: app/models/email_address.rb:-
 msgid "EmailAddress|Email"
-msgstr ""
+msgstr "メールアドレス"
 
 #: app/models/email_address.rb:-
 msgid "EmailAddress|Activated at"
-msgstr ""
+msgstr "有効化日時"
 
 #: app/models/email_address_edit_form.rb:6
 msgid "EmailAddressEditForm|Email"
-msgstr ""
+msgstr "メールアドレス"
 
 #: app/models/email_credential.rb:-
 msgid "email credential"
@@ -214,39 +214,39 @@ msgstr ""
 
 #: app/models/email_credential.rb:-
 msgid "EmailCredential|Created at"
-msgstr ""
+msgstr "作成日時"
 
 #: app/models/email_credential.rb:-
 msgid "EmailCredential|Activation token"
-msgstr ""
+msgstr "トークン"
 
 #: app/models/email_credential.rb:-
 msgid "EmailCredential|User"
-msgstr ""
+msgstr "ユーザ"
 
 #: app/models/email_credential.rb:-
 msgid "EmailCredential|Email"
-msgstr ""
+msgstr "メールアドレス"
 
 #: app/models/email_credential.rb:-
 msgid "EmailCredential|Hashed password"
-msgstr ""
+msgstr "パスワードハッシュ"
 
 #: app/models/email_credential.rb:-
 msgid "EmailCredential|Activated at"
-msgstr ""
+msgstr "有効化日時"
 
 #: app/models/email_credential.rb:-
 msgid "EmailCredential|Loggedin at"
-msgstr ""
+msgstr "ログイン日時"
 
 #: app/models/email_credential_edit_form.rb:17
 msgid "EmailCredentialEditForm|Email"
-msgstr ""
+msgstr "メールアドレス"
 
 #: app/models/email_credential_edit_form.rb:18
 msgid "EmailCredentialEditForm|Password"
-msgstr ""
+msgstr "パスワード"
 
 #: app/models/email_credential_edit_form.rb:19
 msgid "EmailCredentialEditForm|Password confirmation"
@@ -254,15 +254,15 @@ msgstr ""
 
 #: app/models/email_login_form.rb:15
 msgid "EmailLoginForm|Email"
-msgstr ""
+msgstr "メールアドレス"
 
 #: app/models/email_login_form.rb:16
 msgid "EmailLoginForm|Password"
-msgstr ""
+msgstr "パスワード"
 
 #: app/models/email_password_edit_form.rb:15
 msgid "EmailPasswordEditForm|Password"
-msgstr ""
+msgstr "パスワード"
 
 #: app/models/email_password_edit_form.rb:16
 msgid "EmailPasswordEditForm|Password confirmation"
@@ -274,19 +274,19 @@ msgstr ""
 
 #: app/models/energy.rb:-
 msgid "Energy|Created at"
-msgstr ""
+msgstr "作成日時"
 
 #: app/models/energy.rb:-
 msgid "Energy|Device"
-msgstr ""
+msgstr "デバイス"
 
 #: app/models/energy.rb:-
 msgid "Energy|Observed level"
-msgstr ""
+msgstr "レベル"
 
 #: app/models/energy.rb:-
 msgid "Energy|Observed at"
-msgstr ""
+msgstr "観測日時"
 
 #: app/models/event.rb:-
 msgid "event"
@@ -294,35 +294,35 @@ msgstr ""
 
 #: app/models/event.rb:-
 msgid "Event|Created at"
-msgstr ""
+msgstr "作成日時"
 
 #: app/models/event.rb:-
 msgid "Event|Device"
-msgstr ""
+msgstr "デバイス"
 
 #: app/models/event.rb:-
 msgid "Event|Trigger operator"
-msgstr ""
+msgstr "トリガ演算子"
 
 #: app/models/event.rb:-
 msgid "Event|Trigger level"
-msgstr ""
+msgstr "トリガレベル"
 
 #: app/models/event.rb:-
 msgid "Event|Observed level"
-msgstr ""
+msgstr "観測レベル"
 
 #: app/models/event.rb:-
 msgid "Event|Observed at"
-msgstr ""
+msgstr "観測日時"
 
 #: app/models/event.rb:-
 msgid "Event|Trigger"
-msgstr ""
+msgstr "トリガ"
 
 #: app/models/event.rb:-
 msgid "Event|Energy"
-msgstr ""
+msgstr "エネルギー"
 
 #: app/models/http_action.rb:-
 msgid "http action"
@@ -330,47 +330,47 @@ msgstr ""
 
 #: app/models/http_action.rb:-
 msgid "HttpAction|Created at"
-msgstr ""
+msgstr "作成日時"
 
 #: app/models/http_action.rb:-
 msgid "HttpAction|Updated at"
-msgstr ""
+msgstr "更新日時"
 
 #: app/models/http_action.rb:-
 msgid "HttpAction|Trigger"
-msgstr ""
+msgstr "トリガ"
 
 #: app/models/http_action.rb:-
 msgid "HttpAction|Enable"
-msgstr ""
+msgstr "有効/無効"
 
 #: app/models/http_action.rb:-
 msgid "HttpAction|Http method"
-msgstr ""
+msgstr "HTTPメソッド"
 
 #: app/models/http_action.rb:-
 msgid "HttpAction|Url"
-msgstr ""
+msgstr "URL"
 
 #: app/models/http_action.rb:-
 msgid "HttpAction|Body"
-msgstr ""
+msgstr "POSTデータ"
 
 #: app/models/http_action_edit_form.rb:19
 msgid "HttpActionEditForm|Enable"
-msgstr ""
+msgstr "有効/無効"
 
 #: app/models/http_action_edit_form.rb:20
 msgid "HttpActionEditForm|Http method"
-msgstr ""
+msgstr "HTTPメソッド"
 
 #: app/models/http_action_edit_form.rb:21
 msgid "HttpActionEditForm|Url"
-msgstr ""
+msgstr "URL"
 
 #: app/models/http_action_edit_form.rb:22
 msgid "HttpActionEditForm|Body"
-msgstr ""
+msgstr "POSTデータ"
 
 #: app/models/open_id_credential.rb:-
 msgid "open id credential"
@@ -378,23 +378,23 @@ msgstr ""
 
 #: app/models/open_id_credential.rb:-
 msgid "OpenIdCredential|Created at"
-msgstr ""
+msgstr "作成日時"
 
 #: app/models/open_id_credential.rb:-
 msgid "OpenIdCredential|User"
-msgstr ""
+msgstr "ユーザ"
 
 #: app/models/open_id_credential.rb:-
 msgid "OpenIdCredential|Identity url"
-msgstr ""
+msgstr "URL"
 
 #: app/models/open_id_credential.rb:-
 msgid "OpenIdCredential|Loggedin at"
-msgstr ""
+msgstr "ログイン日時"
 
 #: app/models/open_id_login_form.rb:6
 msgid "OpenIdLoginForm|Openid url"
-msgstr ""
+msgstr "OpenID"
 
 #: app/models/session.rb:-
 msgid "session"
@@ -402,19 +402,19 @@ msgstr ""
 
 #: app/models/session.rb:-
 msgid "Session|Created at"
-msgstr ""
+msgstr "作成日時"
 
 #: app/models/session.rb:-
 msgid "Session|Updated at"
-msgstr ""
+msgstr "更新日時"
 
 #: app/models/session.rb:-
 msgid "Session|Session"
-msgstr ""
+msgstr "セッションID"
 
 #: app/models/session.rb:-
 msgid "Session|Data"
-msgstr ""
+msgstr "データ"
 
 #: app/models/trigger.rb:-
 msgid "trigger"
@@ -422,47 +422,47 @@ msgstr ""
 
 #: app/models/trigger.rb:-
 msgid "Trigger|Created at"
-msgstr ""
+msgstr "作成日時"
 
 #: app/models/trigger.rb:-
 msgid "Trigger|Updated at"
-msgstr ""
+msgstr "更新日時"
 
 #: app/models/trigger.rb:-
 msgid "Trigger|Device"
-msgstr ""
+msgstr "デバイス"
 
 #: app/models/trigger.rb:-
 msgid "Trigger|Enable"
-msgstr ""
+msgstr "有効/無効"
 
 #: app/models/trigger.rb:-
 msgid "Trigger|Operator"
-msgstr ""
+msgstr "演算子"
 
 #: app/models/trigger.rb:-
 msgid "Trigger|Level"
-msgstr ""
+msgstr "レベル"
 
 #: app/models/trigger_edit_form.rb:17
 msgid "TriggerEditForm|Enable"
-msgstr ""
+msgstr "有効/無効"
 
 #: app/models/trigger_edit_form.rb:18
 msgid "TriggerEditForm|Operator"
-msgstr ""
+msgstr "演算子"
 
 #: app/models/trigger_edit_form.rb:19
 msgid "TriggerEditForm|Level"
-msgstr ""
+msgstr "レベル"
 
 #: app/models/update_energy_api_form.rb:15
 msgid "UpdateEnergyApiForm|Level"
-msgstr ""
+msgstr "レベル"
 
 #: app/models/update_energy_api_form.rb:16
 msgid "UpdateEnergyApiForm|Time"
-msgstr ""
+msgstr "日時"
 
 #: app/models/user.rb:-
 msgid "user"
@@ -470,16 +470,16 @@ msgstr ""
 
 #: app/models/user.rb:-
 msgid "User|Created at"
-msgstr ""
+msgstr "作成日時"
 
 #: app/models/user.rb:-
 msgid "User|Updated at"
-msgstr ""
+msgstr "更新日時"
 
 #: app/models/user.rb:-
 msgid "User|User token"
-msgstr ""
+msgstr "トークン"
 
 #: app/models/user.rb:-
 msgid "User|Nickname"
-msgstr ""
+msgstr "ニックネーム"
