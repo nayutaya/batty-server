@@ -14,6 +14,7 @@ namespace batty_agent
     public partial class Form1 : Form
     {
         private bool tick = true;
+        private uint min = 0;
 
         public Form1()
         {
@@ -136,7 +137,7 @@ namespace batty_agent
 
         private void startButton_Click(object sender, EventArgs e)
         {
-            timer1.Interval = 10 * 60 * 1000;
+            timer1.Interval = 60 * 1000;
             timer1.Enabled = true;
             this.AddLog("開始しました");
         }
@@ -150,11 +151,16 @@ namespace batty_agent
         private void timer1_Tick(object sender, EventArgs e)
         {
             this.tick = !this.tick;
-
             this.tickPanel.BackColor = (this.tick ? Color.Red : Color.Green);
 
-            this.AddLog("自動送信");
-            this.Send();
+            this.min += 1;
+
+            if ( this.min >= 5 )
+            {
+                this.min = 0;
+                this.AddLog("自動送信");
+                this.Send();
+            }
         }
     }
 }
