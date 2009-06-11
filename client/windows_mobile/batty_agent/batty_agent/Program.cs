@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace batty_agent
+namespace nayutaya.batty.agent
 {
     static class Program
     {
@@ -13,7 +13,7 @@ namespace batty_agent
         [MTAThread]
         static void Main()
         {
-            Application.Run(new Form1());
+            Application.Run(new MainForm());
         }
     }
 }

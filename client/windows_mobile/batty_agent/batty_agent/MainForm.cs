@@ -8,18 +8,29 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Net;
+using Microsoft.WindowsMobile.Status;
 
-namespace batty_agent
+namespace nayutaya.batty.agent
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private bool tick = true;
-        private uint min = 0;
+        private SystemState timeState = new SystemState(SystemProperty.Time);
+        private SystemState batteryModeState = new SystemState(SystemProperty.PowerBatteryState);
+        private SystemState batteryStrengthState = new SystemState(SystemProperty.PowerBatteryStrength);
+        private const uint IntervalMinute = 10;
+        private DateTime lastUpdate = DateTime.Now;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
 
+            this.LoadSetting();
+            this.SetupSystemStates();
+        }
+
+        private void LoadSetting()
+        {
             System.Reflection.Module m = System.Reflection.Assembly.GetExecutingAssembly().ManifestModule;
             string dir = System.IO.Path.GetDirectoryName(m.FullyQualifiedName);
             string file = dir + @"\token.txt";
@@ -31,6 +42,41 @@ namespace batty_agent
                     this.tokenTextBox.Text = st.ReadToEnd();
                 }
             }
+        }
+
+        private void SetupSystemStates()
+        {
+            this.timeState.Changed += new ChangeEventHandler(timeState_Changed);
+            this.batteryModeState.Changed += new ChangeEventHandler(batteryModeState_Changed);
+            this.batteryStrengthState.Changed += new ChangeEventHandler(batteryStrengthState_Changed);
+        }
+
+        private void timeState_Changed(object sender, ChangeEventArgs args)
+        {
+            this.AddLog("timeState_Changed");
+
+            this.tick = !this.tick;
+            this.tickPanel.BackColor = (this.tick ? Color.Red : Color.Green);
+
+            DateTime now = DateTime.Now;
+            DateTime nextUpdate = this.lastUpdate.AddMinutes(IntervalMinute).AddSeconds(-30);
+            if ( now >= nextUpdate )
+            {
+                this.lastUpdate = now;
+
+                this.AddLog("自動送信");
+                this.Send();
+            }
+        }
+
+        void batteryModeState_Changed(object sender, ChangeEventArgs args)
+        {
+            this.AddLog("batteryModeState_Changed");
+        }
+
+        void batteryStrengthState_Changed(object sender, ChangeEventArgs args)
+        {
+            this.AddLog("batteryStrengthState_Changed");
         }
 
         private void exitButton_Click(object sender, EventArgs e)
@@ -56,9 +102,9 @@ namespace batty_agent
 
             this.listView1.Items.Insert(0, lvi);
 
-            while ( this.listView1.Items.Count > 10 )
+            while ( this.listView1.Items.Count > 20 )
             {
-                this.listView1.Items.RemoveAt(10);
+                this.listView1.Items.RemoveAt(20);
             }
         }
 
@@ -94,21 +140,25 @@ namespace batty_agent
                 this.AddLog("電源状態が不明です");
                 return false;
             }
+            /*
             if ( bs.PowerLineConnecting.Value )
             {
                 this.AddLog("電源接続中です");
                 return false;
             }
+             */
             if ( !bs.Charging.HasValue )
             {
                 this.AddLog("充電状態が不明です");
                 return false;
             }
+            /*
             if ( bs.Charging.Value )
             {
                 this.AddLog("充電中です");
                 return false;
             }
+             */
             if ( !bs.LifePercent.HasValue )
             {
                 this.AddLog("バッテリレベルが不明です");
@@ -132,34 +182,6 @@ namespace batty_agent
             {
                 this.AddLog(ex.GetType().Name + ": " + ex.Message);
                 return false;
-            }
-        }
-
-        private void startButton_Click(object sender, EventArgs e)
-        {
-            timer1.Interval = 60 * 1000;
-            timer1.Enabled = true;
-            this.AddLog("開始しました");
-        }
-
-        private void stopButton_Click(object sender, EventArgs e)
-        {
-            timer1.Enabled = false;
-            this.AddLog("停止しました");
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            this.tick = !this.tick;
-            this.tickPanel.BackColor = (this.tick ? Color.Red : Color.Green);
-
-            this.min += 1;
-
-            if ( this.min >= 5 )
-            {
-                this.min = 0;
-                this.AddLog("自動送信");
-                this.Send();
             }
         }
     }
