@@ -1,4 +1,4 @@
-﻿namespace batty_agent
+﻿namespace nayutaya.batty.agent
 {
     partial class MainForm
     {

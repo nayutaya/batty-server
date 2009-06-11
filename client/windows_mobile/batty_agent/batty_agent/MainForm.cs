@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Net;
 
-namespace batty_agent
+namespace nayutaya.batty.agent
 {
     public partial class MainForm : Form
     {

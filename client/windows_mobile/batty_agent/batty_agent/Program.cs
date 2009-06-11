@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace batty_agent
+namespace nayutaya.batty.agent
 {
     static class Program
     {

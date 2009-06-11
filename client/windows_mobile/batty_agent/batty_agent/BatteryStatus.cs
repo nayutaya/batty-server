@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace batty_agent
+namespace nayutaya.batty.agent
 {
     class BatteryStatus
     {
