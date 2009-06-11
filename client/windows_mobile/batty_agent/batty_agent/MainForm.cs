@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Net;
+using Microsoft.WindowsMobile.Status;
 
 namespace nayutaya.batty.agent
 {
@@ -15,11 +16,20 @@ namespace nayutaya.batty.agent
     {
         private bool tick = true;
         private uint min = 0;
+        private SystemState timeState = new SystemState(SystemProperty.Time);
+        private SystemState batteryModeState = new SystemState(SystemProperty.PowerBatteryState);
+        private SystemState batteryStrengthState = new SystemState(SystemProperty.PowerBatteryStrength);
 
         public MainForm()
         {
             InitializeComponent();
 
+            this.LoadSetting();
+            this.SetupSystemStates();
+        }
+
+        private void LoadSetting()
+        {
             System.Reflection.Module m = System.Reflection.Assembly.GetExecutingAssembly().ManifestModule;
             string dir = System.IO.Path.GetDirectoryName(m.FullyQualifiedName);
             string file = dir + @"\token.txt";
@@ -31,6 +41,28 @@ namespace nayutaya.batty.agent
                     this.tokenTextBox.Text = st.ReadToEnd();
                 }
             }
+        }
+
+        private void SetupSystemStates()
+        {
+            this.timeState.Changed += new ChangeEventHandler(timeState_Changed);
+            this.batteryModeState.Changed += new ChangeEventHandler(batteryModeState_Changed);
+            this.batteryStrengthState.Changed += new ChangeEventHandler(batteryStrengthState_Changed);
+        }
+
+        private void timeState_Changed(object sender, ChangeEventArgs args)
+        {
+            this.AddLog("timeState_Changed");
+        }
+
+        void batteryModeState_Changed(object sender, ChangeEventArgs args)
+        {
+            this.AddLog("batteryModeState_Changed");
+        }
+
+        void batteryStrengthState_Changed(object sender, ChangeEventArgs args)
+        {
+            this.AddLog("batteryStrengthState_Changed");
         }
 
         private void exitButton_Click(object sender, EventArgs e)
