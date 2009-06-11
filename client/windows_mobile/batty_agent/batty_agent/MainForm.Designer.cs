@@ -41,9 +41,6 @@
             this.sendButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tokenTextBox = new System.Windows.Forms.TextBox();
-            this.timer1 = new System.Windows.Forms.Timer();
-            this.startButton = new System.Windows.Forms.Button();
-            this.stopButton = new System.Windows.Forms.Button();
             this.tickPanel = new System.Windows.Forms.Panel();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
@@ -137,49 +134,27 @@
             // 
             // tokenTextBox
             // 
-            this.tokenTextBox.Location = new System.Drawing.Point(17, 140);
+            this.tokenTextBox.Location = new System.Drawing.Point(81, 103);
             this.tokenTextBox.MaxLength = 20;
             this.tokenTextBox.Name = "tokenTextBox";
-            this.tokenTextBox.Size = new System.Drawing.Size(172, 21);
+            this.tokenTextBox.Size = new System.Drawing.Size(111, 21);
             this.tokenTextBox.TabIndex = 11;
             this.tokenTextBox.WordWrap = false;
             // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // startButton
-            // 
-            this.startButton.Location = new System.Drawing.Point(96, 103);
-            this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(49, 20);
-            this.startButton.TabIndex = 12;
-            this.startButton.Text = "開始";
-            this.startButton.Click += new System.EventHandler(this.startButton_Click);
-            // 
-            // stopButton
-            // 
-            this.stopButton.Location = new System.Drawing.Point(151, 103);
-            this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(49, 20);
-            this.stopButton.TabIndex = 13;
-            this.stopButton.Text = "停止";
-            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
-            // 
             // tickPanel
             // 
-            this.tickPanel.Location = new System.Drawing.Point(197, 138);
+            this.tickPanel.Location = new System.Drawing.Point(205, 103);
             this.tickPanel.Name = "tickPanel";
-            this.tickPanel.Size = new System.Drawing.Size(27, 23);
+            this.tickPanel.Size = new System.Drawing.Size(27, 20);
             // 
             // listView1
             // 
             this.listView1.Columns.Add(this.columnHeader1);
             this.listView1.Columns.Add(this.columnHeader2);
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listView1.Location = new System.Drawing.Point(3, 167);
+            this.listView1.Location = new System.Drawing.Point(3, 130);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(234, 98);
+            this.listView1.Size = new System.Drawing.Size(234, 135);
             this.listView1.TabIndex = 15;
             this.listView1.View = System.Windows.Forms.View.Details;
             // 
@@ -193,7 +168,7 @@
             this.columnHeader2.Text = "message";
             this.columnHeader2.Width = 130;
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -201,15 +176,13 @@
             this.ClientSize = new System.Drawing.Size(240, 268);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.tickPanel);
-            this.Controls.Add(this.stopButton);
-            this.Controls.Add(this.startButton);
             this.Controls.Add(this.tokenTextBox);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.sendButton);
             this.Controls.Add(this.showCurrentLevelButton);
             this.Controls.Add(this.exitButton);
             this.Menu = this.mainMenu1;
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Batty Agent";
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -229,9 +202,6 @@
         private System.Windows.Forms.Button sendButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox tokenTextBox;
-        private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Button startButton;
-        private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.Panel tickPanel;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
