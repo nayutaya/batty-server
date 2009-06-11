@@ -1,3 +1,4 @@
 *.suo
+*.csproj.user
 batty_agent/bin
 batty_agent/obj
