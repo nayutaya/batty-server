@@ -11,12 +11,12 @@ using System.Net;
 
 namespace batty_agent
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private bool tick = true;
         private uint min = 0;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
 
