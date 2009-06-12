@@ -11,8 +11,9 @@
   <tfoot>
     <tr>
       <td colspan="6">
-        <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "events", :user_token => @login_user.user_token) %>
-        | <%= link_to(h("すべて見る"), :controller => "events") %>
+        <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "events", :user_token => @login_user.user_token) %> |
+        <%= link_to(csv_icon + h(" CSV"), :controller => "user_feeds", :action => "events_csv", :user_token => @login_user.user_token) %> |
+        <%= link_to(h("すべて見る"), :controller => "events") %>
         (<%=h @events.total_entries %>)
       </td>
     </tr>

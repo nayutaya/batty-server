@@ -12,7 +12,8 @@ class UserFeedsControllerTest < ActionController::TestCase
 
     assert_routing("/user/token/0123456789abcdef/energies.rdf", base.merge(:action => "energies",     :user_token => "0123456789abcdef"))
     assert_routing("/user/token/0123456789abcdef/energies.csv", base.merge(:action => "energies_csv", :user_token => "0123456789abcdef"))
-    assert_routing("/user/token/0123456789abcdef/events.rdf",   base.merge(:action => "events", :user_token => "0123456789abcdef"))
+    assert_routing("/user/token/0123456789abcdef/events.rdf",   base.merge(:action => "events",     :user_token => "0123456789abcdef"))
+    assert_routing("/user/token/0123456789abcdef/events.csv",   base.merge(:action => "events_csv", :user_token => "0123456789abcdef"))
   end
 
   test "GET energies" do
@@ -89,6 +90,30 @@ class UserFeedsControllerTest < ActionController::TestCase
 
   test "GET events, abnormal, invalid user token" do
     get :events, :user_token => "0"
+
+    assert_response(404)
+    assert_template(nil)
+  end
+
+  test "GET events_csv" do
+    get :events_csv, :user_token => @yuya.user_token
+
+    assert_response(:success)
+    assert_template(nil)
+    assert_equal("text/csv", @response.content_type)
+
+    assert_equal(@yuya, assigns(:user))
+
+    events = assigns(:events)
+    assert_equal(@yuya.events.size, events.size)
+    assert_equal(true, events.all? { |e| e.device.user == @yuya })
+    assert_equal(
+      events.sort_by { |e| [e.observed_at.to_i, e.id] }.reverse,
+      events)
+  end
+
+  test "GET events_csv, abnormal, invalid user token" do
+    get :events_csv, :user_token => "0"
 
     assert_response(404)
     assert_template(nil)

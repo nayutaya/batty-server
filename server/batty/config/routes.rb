@@ -73,6 +73,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "device/token/:device_token/energies/update/:level/:time", :controller => "device_api", :action => "update_energy", :device_token => TokenPattern, :level => /\d+/, :time => /\d+/
 
   map.connect "user/token/:user_token/energies.csv", :controller => "user_feeds", :action => "energies_csv", :user_token => TokenPattern
+  map.connect "user/token/:user_token/events.csv", :controller => "user_feeds", :action => "events_csv", :user_token => TokenPattern
   map.connect "user/token/:user_token/:action.rdf", :controller => "user_feeds", :user_token => TokenPattern
 
   map.connect "admin", :controller => "admin/home", :action => "index"
