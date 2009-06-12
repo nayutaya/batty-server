@@ -63,9 +63,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "settings/:action", :controller => "settings", :action => /(index|get_nickname|set_nickname)/
 
   map.with_options :controller => "device_feeds", :device_token => TokenPattern do |feeds|
-    feeds.connect "device/token/:device_token/energies.rdf", :action => "energies"
+    feeds.connect "device/token/:device_token/energies.rdf", :action => "energies_rdf"
     feeds.connect "device/token/:device_token/energies.csv", :action => "energies_csv"
-    feeds.connect "device/token/:device_token/events.rdf",   :action => "events"
+    feeds.connect "device/token/:device_token/events.rdf",   :action => "events_rdf"
     feeds.connect "device/token/:device_token/events.csv",   :action => "events_csv"
   end
 

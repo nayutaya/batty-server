@@ -6,7 +6,7 @@ class DeviceFeedsController < ApplicationController
   before_filter :required_param_device_token
 
   # GET /device/token/:device_token/energies.rdf
-  def energies
+  def energies_rdf
     @energies = @device.energies.paginate(
       :order    => "energies.observed_at DESC, energies.id DESC",
       :page     => 1,
@@ -48,7 +48,7 @@ class DeviceFeedsController < ApplicationController
   end
 
   # GET /device/token/:device_token/events.rdf
-  def events
+  def events_rdf
     @events = @device.events.paginate(
       :order    => "events.observed_at DESC, events.id DESC",
       :page     => 1,
