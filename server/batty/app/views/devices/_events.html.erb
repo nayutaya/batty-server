@@ -11,6 +11,7 @@
     <tr>
       <td colspan="5">
         <span><%= link_to(feed_icon + h(" RSS"), :controller => "device_feeds", :action => "events", :device_token => @device.device_token) %></span> |
+        <span><%= link_to(h("CSV"), :controller => "device_feeds", :action => "events_csv", :device_token => @device.device_token) %></span> |
         <span><%= link_to(h("すべて見る"), :action => "events") %> (<%=h @events.total_entries %>)</span>
       </td>
     </tr>
