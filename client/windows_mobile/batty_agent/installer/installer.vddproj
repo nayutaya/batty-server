@@ -1,0 +1,121 @@
+"DeployProject"
+{
+"VSVersion" = "3:701"
+"ProjectType" = "8:{AB322303-2255-48EF-A496-5904EB18DA55}"
+"IsWebType" = "8:FALSE"
+"ProjectName" = "8:installer"
+"LanguageId" = "3:1041"
+"CodePage" = "3:932"
+"SccProjectName" = "8:"
+"SccLocalPath" = "8:"
+"SccAuxPath" = "8:"
+"SccProvider" = "8:"
+    "Hierarchy"
+    {
+    }
+    "Configurations"
+    {
+        "Debug"
+        {
+        "DisplayName" = "8:Debug"
+        "IsDebugOnly" = "11:TRUE"
+        "IsReleaseOnly" = "11:FALSE"
+        "OutputFilename" = "8:Debug\\installer.cab"
+        "PackageFileSize" = "3:-2147483648"
+        "CabType" = "3:1"
+        "SignOutput" = "11:FALSE"
+        "CertificateHash" = "8:"
+        "TimeStampServer" = "8:"
+        }
+        "Release"
+        {
+        "DisplayName" = "8:Release"
+        "IsDebugOnly" = "11:FALSE"
+        "IsReleaseOnly" = "11:TRUE"
+        "OutputFilename" = "8:Release\\installer.cab"
+        "PackageFileSize" = "3:-2147483648"
+        "CabType" = "3:1"
+        "SignOutput" = "11:FALSE"
+        "CertificateHash" = "8:"
+        "TimeStampServer" = "8:"
+        }
+    }
+    "Deployable"
+    {
+        "File"
+        {
+        }
+        "Folder"
+        {
+            "{F6DFDB62-1DD1-498B-89B7-27BAC542EE5A}:_6990A247B66C44D794F83B6BDF297A68"
+            {
+            "Name" = "8:#1911"
+            "Condition" = "8:"
+            "Property" = "8:%CE1%"
+                "Folders"
+                {
+                }
+            }
+            "{D5B00AC1-E6C3-4CC5-90FF-8E0F53D9E5E0}:_75D31A0F3C254E16B72BAFDA8363532E"
+            {
+            "DefaultLocation" = "8:%InstallDir%"
+            "Name" = "8:#1920"
+            "Condition" = "8:"
+            "Property" = "8:%InstallDir%"
+                "Folders"
+                {
+                }
+            }
+        }
+        "Product"
+        {
+        "Name" = "8:Microsoft Visual Studio"
+        "ProductName" = "8:installer"
+        "Manufacturer" = "8:Šù’è‚Ì‰ïŽÐ–¼"
+        "OSVersionMin" = "8:4.0"
+        "OSVersionMax" = "8:6.99"
+        "NoUninstall" = "11:FALSE"
+        "Compress" = "11:FALSE"
+        "CESetupDLL" = "8:"
+        }
+        "ProjectOutput"
+        {
+        }
+        "Registry"
+        {
+            "HKLM"
+            {
+                "Keys"
+                {
+                }
+            }
+            "HKCU"
+            {
+                "Keys"
+                {
+                }
+            }
+            "HKCR"
+            {
+                "Keys"
+                {
+                }
+            }
+            "HKU"
+            {
+                "Keys"
+                {
+                }
+            }
+            "HKPU"
+            {
+                "Keys"
+                {
+                }
+            }
+        }
+        "Shortcut"
+        {
+        }
+    }
+}
