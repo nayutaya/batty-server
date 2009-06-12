@@ -29,6 +29,24 @@ class DeviceFeedsController < ApplicationController
     send_rss(rss)
   end
 
+  # GET /device/token/:device_token/energies.csv
+  def energies_csv
+    @energies = @device.energies.all(
+      :order    => "energies.observed_at DESC, energies.id DESC")
+
+    csv = ""
+    @energies.each { |energy|
+      line = ""
+      line << energy.observed_at.strftime("%Y/%m/%d %H:%M:%S")
+      line << ","
+      line << energy.observed_level.to_s
+      line << "\r\n"
+      csv << line
+    }
+
+    send_data(csv, :type => "text/csv", :disposition => "attachment")
+  end
+
   # GET /device/token/:device_token/events.rdf
   def events
     @events = @device.events.paginate(
