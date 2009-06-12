@@ -29,6 +29,26 @@ class UserFeedsController < ApplicationController
     send_rss(rss)
   end
 
+  # GET /user/token/:user_token/energies.csv
+  def energies_csv
+    @energies = @user.energies.all(
+      :order => "energies.observed_at DESC, energies.id DESC")
+
+    csv = ""
+    @energies.each { |energy|
+      line = ""
+      line << energy.observed_at.strftime("%Y/%m/%d %H:%M:%S")
+      line << ","
+      line << format('"%s"', energy.device.name)
+      line << ","
+      line << energy.observed_level.to_s
+      line << "\r\n"
+      csv << line
+    }
+
+    send_csv(csv)
+  end
+
   # GET /user/token/:user_token/events.rdf
   def events
     @events = @user.events.paginate(
@@ -51,6 +71,30 @@ class UserFeedsController < ApplicationController
     }
 
     send_rss(rss)
+  end
+
+  # GET /user/token/:user_token/events.csv
+  def events_csv
+    @events = @user.events.all(
+      :order => "events.observed_at DESC, events.id DESC")
+
+    csv = ""
+    @events.each { |event|
+      line = ""
+      line << event.observed_at.strftime("%Y/%m/%d %H:%M:%S")
+      line << ","
+      line << format('"%s"', event.device.name)
+      line << ","
+      line << event.observed_level.to_s
+      line << ","
+      line << event.trigger_operator_symbol.to_s
+      line << ","
+      line << event.trigger_level.to_s
+      line << "\r\n"
+      csv << line
+    }
+
+    send_csv(csv)
   end
 
   private
