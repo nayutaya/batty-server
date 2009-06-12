@@ -10,10 +10,10 @@
   <tfoot>
     <tr>
       <td colspan="4">
-        <%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token) %> |
-        <%= link_to(csv_icon + h(" CSV"), :controller => "user_feeds", :action => "energies_csv", :user_token => @login_user.user_token) %> |
-        <%= link_to(h("すべて見る"), :controller => "energies") %>
-        (<%=h @energies.total_entries %>)
+        <span><%= link_to(feed_icon + h(" RSS"), :controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token) %></span> |
+        <span><%= link_to(csv_icon + h(" CSV"), :controller => "user_feeds", :action => "energies_csv", :user_token => @login_user.user_token) %></span> |
+        <span><%= link_to(h("すべて見る"), :controller => "energies") %></span>
+        <span>(<%=h @energies.total_entries %>)</span>
       </td>
     </tr>
   </tfoot>
