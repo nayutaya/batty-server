@@ -15,12 +15,12 @@ class DeviceFeedsController < ApplicationController
     rss = RSS::Maker.make("2.0") { |maker|
       maker.channel.title       = "batty::デバイス::#{@device.name}::エネルギー"
       maker.channel.description = "#{@device.name}のエネルギー履歴"
-      maker.channel.link        = root_url # FIXME: URLを変更
+      maker.channel.link        = url_for(:controller => "devices", :action => "energies", :device_id => @device.id)
       # FIXME: デバイスアイコンを出力
 
       @energies.each { |energy|
         item = maker.items.new_item
-        item.link  = "http://batty.nayutaya.jp/device/#{@device.device_token}/" # FIXME: デバイスページのURLに変更
+        item.link  = url_for(:controller => "devices", :action => "energies", :device_id => @device.id, :anchor => energy.observed_at.strftime("%Y%m%d%H%M%S"))
         item.title = "#{energy.observed_level}%"
         item.date  = energy.observed_at
       }
@@ -57,12 +57,12 @@ class DeviceFeedsController < ApplicationController
     rss = RSS::Maker.make("2.0") { |maker|
       maker.channel.title       = "batty::デバイス::#{@device.name}::イベント"
       maker.channel.description = "#{@device.name}のイベント履歴"
-      maker.channel.link        = root_url # FIXME: URLを変更
+      maker.channel.link        = url_for(:controller => "devices", :action => "events", :device_id => @device.id)
       # FIXME: デバイスアイコンを出力
 
       @events.each { |event|
         item = maker.items.new_item
-        item.link  = "http://batty.nayutaya.jp/device/#{@device.device_token}/" # FIXME: デバイスページのURLに変更
+        item.link  = url_for(:controller => "devices", :action => "events", :device_id => @device.id, :anchor => event.observed_at.strftime("%Y%m%d%H%M%S"))
         item.title = "#{event.observed_level}% #{event.trigger_operator_sign} #{event.trigger_level}%"
         item.date  = event.observed_at
       }
