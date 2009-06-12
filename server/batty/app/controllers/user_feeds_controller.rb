@@ -5,8 +5,8 @@ require "rss"
 class UserFeedsController < ApplicationController
   before_filter :required_param_user_token
 
-  # GET /user/token/:user_token/energies.rdf
-  def energies_rdf
+  # GET /user/token/:user_token/energies.rss
+  def energies_rss
     @energies = @user.energies.paginate(
       :order    => "energies.observed_at DESC, energies.id DESC",
       :page     => 1,
@@ -49,8 +49,8 @@ class UserFeedsController < ApplicationController
     send_csv(csv)
   end
 
-  # GET /user/token/:user_token/events.rdf
-  def events_rdf
+  # GET /user/token/:user_token/events.rss
+  def events_rss
     @events = @user.events.paginate(
       :order    => "events.observed_at DESC, events.id DESC",
       :page     => 1,

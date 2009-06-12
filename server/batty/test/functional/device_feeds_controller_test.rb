@@ -10,14 +10,14 @@ class DeviceFeedsControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "device_feeds"}
 
-    assert_routing("/device/token/0123456789abcdef/energies.rdf", base.merge(:action => "energies_rdf", :device_token => "0123456789abcdef"))
+    assert_routing("/device/token/0123456789abcdef/energies.rss", base.merge(:action => "energies_rss", :device_token => "0123456789abcdef"))
     assert_routing("/device/token/0123456789abcdef/energies.csv", base.merge(:action => "energies_csv", :device_token => "0123456789abcdef"))
-    assert_routing("/device/token/0123456789abcdef/events.rdf",   base.merge(:action => "events_rdf", :device_token => "0123456789abcdef"))
+    assert_routing("/device/token/0123456789abcdef/events.rss",   base.merge(:action => "events_rss", :device_token => "0123456789abcdef"))
     assert_routing("/device/token/0123456789abcdef/events.csv",   base.merge(:action => "events_csv", :device_token => "0123456789abcdef"))
   end
 
-  test "GET energies_rdf" do
-    get :energies_rdf, :device_token => @yuya_pda.device_token
+  test "GET energies_rss" do
+    get :energies_rss, :device_token => @yuya_pda.device_token
 
     assert_response(:success)
     assert_template(nil)
@@ -32,8 +32,8 @@ class DeviceFeedsControllerTest < ActionController::TestCase
     assert_equal(10, energies.per_page)
   end
 
-  test "GET energies_rdf, other device" do
-    get :energies_rdf, :device_token => @shinya_note.device_token
+  test "GET energies_rss, other device" do
+    get :energies_rss, :device_token => @shinya_note.device_token
 
     assert_response(:success)
     assert_template(nil)
@@ -41,8 +41,8 @@ class DeviceFeedsControllerTest < ActionController::TestCase
     assert_equal(@shinya_note, assigns(:device))
   end
 
-  test "GET energies_rdf, abnormal, invalid device token" do
-    get :energies_rdf, :device_token => "0"
+  test "GET energies_rss, abnormal, invalid device token" do
+    get :energies_rss, :device_token => "0"
 
     assert_response(404)
     assert_template(nil)
@@ -72,8 +72,8 @@ class DeviceFeedsControllerTest < ActionController::TestCase
     assert_template(nil)
   end
 
-  test "GET events_rdf" do
-    get :events_rdf, :device_token => @yuya_pda.device_token
+  test "GET events_rss" do
+    get :events_rss, :device_token => @yuya_pda.device_token
 
     assert_response(:success)
     assert_template(nil)
@@ -88,8 +88,8 @@ class DeviceFeedsControllerTest < ActionController::TestCase
     assert_equal(10, events.per_page)
   end
 
-  test "GET events_rdf, abnormal, invalie device token" do
-    get :events_rdf, :device_token => "0"
+  test "GET events_rss, abnormal, invalie device token" do
+    get :events_rss, :device_token => "0"
 
     assert_response(404)
     assert_template(nil)

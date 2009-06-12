@@ -5,8 +5,8 @@ require "rss"
 class DeviceFeedsController < ApplicationController
   before_filter :required_param_device_token
 
-  # GET /device/token/:device_token/energies.rdf
-  def energies_rdf
+  # GET /device/token/:device_token/energies.rss
+  def energies_rss
     @energies = @device.energies.paginate(
       :order    => "energies.observed_at DESC, energies.id DESC",
       :page     => 1,
@@ -47,8 +47,8 @@ class DeviceFeedsController < ApplicationController
     send_csv(csv)
   end
 
-  # GET /device/token/:device_token/events.rdf
-  def events_rdf
+  # GET /device/token/:device_token/events.rss
+  def events_rss
     @events = @device.events.paginate(
       :order    => "events.observed_at DESC, events.id DESC",
       :page     => 1,

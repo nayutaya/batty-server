@@ -63,9 +63,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "settings/:action", :controller => "settings", :action => /(index|get_nickname|set_nickname)/
 
   map.with_options :controller => "device_feeds", :device_token => TokenPattern do |feeds|
-    feeds.connect "device/token/:device_token/energies.rdf", :action => "energies_rdf"
+    feeds.connect "device/token/:device_token/energies.rss", :action => "energies_rss"
     feeds.connect "device/token/:device_token/energies.csv", :action => "energies_csv"
-    feeds.connect "device/token/:device_token/events.rdf",   :action => "events_rdf"
+    feeds.connect "device/token/:device_token/events.rss",   :action => "events_rss"
     feeds.connect "device/token/:device_token/events.csv",   :action => "events_csv"
   end
 
@@ -73,9 +73,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "device/token/:device_token/energies/update/:level/:time", :controller => "device_api", :action => "update_energy", :device_token => TokenPattern, :level => /\d+/, :time => /\d+/
 
   map.with_options :controller => "user_feeds", :user_token => TokenPattern do |feeds|
-    feeds.connect "user/token/:user_token/energies.rdf", :action => "energies_rdf"
+    feeds.connect "user/token/:user_token/energies.rss", :action => "energies_rss"
     feeds.connect "user/token/:user_token/energies.csv", :action => "energies_csv"
-    feeds.connect "user/token/:user_token/events.rdf",   :action => "events_rdf"
+    feeds.connect "user/token/:user_token/events.rss",   :action => "events_rss"
     feeds.connect "user/token/:user_token/events.csv",   :action => "events_csv"
   end
 
