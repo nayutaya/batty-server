@@ -14,7 +14,6 @@ namespace nayutaya.batty.agent
 {
     public partial class MainForm : Form
     {
-        private bool tick = true;
         private SystemState timeState = new SystemState(SystemProperty.Time);
         private SystemState batteryModeState = new SystemState(SystemProperty.PowerBatteryState);
         private SystemState batteryStrengthState = new SystemState(SystemProperty.PowerBatteryStrength);
@@ -53,30 +52,28 @@ namespace nayutaya.batty.agent
 
         private void timeState_Changed(object sender, ChangeEventArgs args)
         {
-            this.AddLog("timeState_Changed");
-
-            this.tick = !this.tick;
-            this.tickPanel.BackColor = (this.tick ? Color.Red : Color.Green);
-
             DateTime now = DateTime.Now;
             DateTime nextUpdate = this.lastUpdate.AddMinutes(IntervalMinute).AddSeconds(-30);
             if ( now >= nextUpdate )
             {
+                this.AddLog(String.Format("{0}分経過しました", IntervalMinute));
                 this.lastUpdate = now;
-
-                this.AddLog("自動送信");
                 this.Send();
             }
         }
 
         void batteryModeState_Changed(object sender, ChangeEventArgs args)
         {
-            this.AddLog("batteryModeState_Changed");
+            this.AddLog("電源/充電状態が変化しました");
+            this.lastUpdate = DateTime.Now;
+            this.Send();
         }
 
         void batteryStrengthState_Changed(object sender, ChangeEventArgs args)
         {
-            this.AddLog("batteryStrengthState_Changed");
+            this.AddLog("バッテリレベルが変化しました");
+            this.lastUpdate = DateTime.Now;
+            this.Send();
         }
 
         private void exitButton_Click(object sender, EventArgs e)

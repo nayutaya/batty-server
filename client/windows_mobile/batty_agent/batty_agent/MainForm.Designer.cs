@@ -41,7 +41,6 @@
             this.sendButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tokenTextBox = new System.Windows.Forms.TextBox();
-            this.tickPanel = new System.Windows.Forms.Panel();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
@@ -141,12 +140,6 @@
             this.tokenTextBox.TabIndex = 11;
             this.tokenTextBox.WordWrap = false;
             // 
-            // tickPanel
-            // 
-            this.tickPanel.Location = new System.Drawing.Point(205, 103);
-            this.tickPanel.Name = "tickPanel";
-            this.tickPanel.Size = new System.Drawing.Size(27, 20);
-            // 
             // listView1
             // 
             this.listView1.Columns.Add(this.columnHeader1);
@@ -175,7 +168,6 @@
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 268);
             this.Controls.Add(this.listView1);
-            this.Controls.Add(this.tickPanel);
             this.Controls.Add(this.tokenTextBox);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.sendButton);
@@ -202,7 +194,6 @@
         private System.Windows.Forms.Button sendButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox tokenTextBox;
-        private System.Windows.Forms.Panel tickPanel;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
