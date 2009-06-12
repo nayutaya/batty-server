@@ -7,6 +7,7 @@ class EnergiesController < ApplicationController
   # GET /energies
   def index
     @energies = @login_user.energies.paginate(
+      :include  => [:device],
       :order    => "energies.observed_at DESC, energies.id DESC",
       :page     => params[:page],
       :per_page => 20)

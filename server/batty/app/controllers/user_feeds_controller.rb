@@ -8,6 +8,7 @@ class UserFeedsController < ApplicationController
   # GET /user/token/:user_token/energies.rss
   def energies_rss
     @energies = @user.energies.paginate(
+      :include  => [:device],
       :order    => "energies.observed_at DESC, energies.id DESC",
       :page     => 1,
       :per_page => 10)
@@ -32,7 +33,8 @@ class UserFeedsController < ApplicationController
   # GET /user/token/:user_token/energies.csv
   def energies_csv
     @energies = @user.energies.all(
-      :order => "energies.observed_at DESC, energies.id DESC")
+      :include => [:device],
+      :order   => "energies.observed_at DESC, energies.id DESC")
 
     csv = ""
     @energies.each { |energy|
@@ -52,6 +54,7 @@ class UserFeedsController < ApplicationController
   # GET /user/token/:user_token/events.rss
   def events_rss
     @events = @user.events.paginate(
+      :include  => [:device],
       :order    => "events.observed_at DESC, events.id DESC",
       :page     => 1,
       :per_page => 10)
@@ -76,7 +79,8 @@ class UserFeedsController < ApplicationController
   # GET /user/token/:user_token/events.csv
   def events_csv
     @events = @user.events.all(
-      :order => "events.observed_at DESC, events.id DESC")
+      :include => [:device],
+      :order   => "events.observed_at DESC, events.id DESC")
 
     csv = ""
     @events.each { |event|
