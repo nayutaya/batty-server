@@ -14,8 +14,8 @@ class EventNotificationTest < ActionMailer::TestCase
     }
     expected = {
       :header => {
-        :subject    => "subject",
-        :from       => "batty-no-reply@nayutaya.jp",
+        :subject    => "[batty] subject",
+        :from       => @klass::FromAddress,
         :recipients => "recipients@example.com",
       },
       :body   => {

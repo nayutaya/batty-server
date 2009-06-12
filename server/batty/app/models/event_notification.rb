@@ -1,6 +1,9 @@
 
 # イベント通知メール
 class EventNotification < ActionMailer::Base
+  SubjectPrefix = "[batty] "
+  FromAddress   = "batty-no-reply@nayutaya.jp"
+
   def self.create_notify_params(options)
     options = options.dup
     subject    = options.delete(:subject)    || raise(ArgumentError)
@@ -10,8 +13,8 @@ class EventNotification < ActionMailer::Base
 
     return {
       :header => {
-        :subject    => subject,
-        :from       => "batty-no-reply@nayutaya.jp",
+        :subject    => SubjectPrefix + subject,
+        :from       => FromAddress,
         :recipients => recipients,
       },
       :body   => {
