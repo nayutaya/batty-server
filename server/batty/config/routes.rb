@@ -72,9 +72,12 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "device/token/:device_token/energies/update/:level",       :controller => "device_api", :action => "update_energy", :device_token => TokenPattern, :level => /\d+/
   map.connect "device/token/:device_token/energies/update/:level/:time", :controller => "device_api", :action => "update_energy", :device_token => TokenPattern, :level => /\d+/, :time => /\d+/
 
-  map.connect "user/token/:user_token/energies.csv", :controller => "user_feeds", :action => "energies_csv", :user_token => TokenPattern
-  map.connect "user/token/:user_token/events.csv", :controller => "user_feeds", :action => "events_csv", :user_token => TokenPattern
-  map.connect "user/token/:user_token/:action.rdf", :controller => "user_feeds", :user_token => TokenPattern
+  map.with_options :controller => "user_feeds", :user_token => TokenPattern do |feeds|
+    feeds.connect "user/token/:user_token/energies.rdf", :action => "energies"
+    feeds.connect "user/token/:user_token/energies.csv", :action => "energies_csv"
+    feeds.connect "user/token/:user_token/events.rdf",   :action => "events"
+    feeds.connect "user/token/:user_token/events.csv",   :action => "events_csv"
+  end
 
   map.connect "admin", :controller => "admin/home", :action => "index"
   map.connect "admin/sessions/:action", :controller => "admin/sessions", :action => /(index|cleanup)/
