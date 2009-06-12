@@ -10,14 +10,14 @@ class UserFeedsControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "user_feeds"}
 
-    assert_routing("/user/token/0123456789abcdef/energies.rdf", base.merge(:action => "energies",     :user_token => "0123456789abcdef"))
+    assert_routing("/user/token/0123456789abcdef/energies.rdf", base.merge(:action => "energies_rdf", :user_token => "0123456789abcdef"))
     assert_routing("/user/token/0123456789abcdef/energies.csv", base.merge(:action => "energies_csv", :user_token => "0123456789abcdef"))
-    assert_routing("/user/token/0123456789abcdef/events.rdf",   base.merge(:action => "events",     :user_token => "0123456789abcdef"))
+    assert_routing("/user/token/0123456789abcdef/events.rdf",   base.merge(:action => "events_rdf", :user_token => "0123456789abcdef"))
     assert_routing("/user/token/0123456789abcdef/events.csv",   base.merge(:action => "events_csv", :user_token => "0123456789abcdef"))
   end
 
-  test "GET energies" do
-    get :energies, :user_token => @yuya.user_token
+  test "GET energies_rdf" do
+    get :energies_rdf, :user_token => @yuya.user_token
 
     assert_response(:success)
     assert_template(nil)
@@ -32,8 +32,8 @@ class UserFeedsControllerTest < ActionController::TestCase
     assert_equal(10, energies.per_page)
   end
 
-  test "GET energies, other user" do
-    get :energies, :user_token => @shinya.user_token
+  test "GET energies_rdf, other user" do
+    get :energies_rdf, :user_token => @shinya.user_token
 
     assert_response(:success)
     assert_template(nil)
@@ -41,8 +41,8 @@ class UserFeedsControllerTest < ActionController::TestCase
     assert_equal(@shinya, assigns(:user))
   end
 
-  test "GET energies, abnormal, invalid user token" do
-    get :energies, :user_token => "0"
+  test "GET energies_rdf, abnormal, invalid user token" do
+    get :energies_rdf, :user_token => "0"
 
     assert_response(404)
     assert_template(nil)
@@ -72,8 +72,8 @@ class UserFeedsControllerTest < ActionController::TestCase
     assert_template(nil)
   end
 
-  test "GET events" do
-    get :events, :user_token => @yuya.user_token
+  test "GET events_rdf" do
+    get :events_rdf, :user_token => @yuya.user_token
 
     assert_response(:success)
     assert_template(nil)
@@ -88,8 +88,8 @@ class UserFeedsControllerTest < ActionController::TestCase
     assert_equal(10, events.per_page)
   end
 
-  test "GET events, abnormal, invalid user token" do
-    get :events, :user_token => "0"
+  test "GET events_rdf, abnormal, invalid user token" do
+    get :events_rdf, :user_token => "0"
 
     assert_response(404)
     assert_template(nil)

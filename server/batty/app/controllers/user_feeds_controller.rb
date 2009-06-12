@@ -6,7 +6,7 @@ class UserFeedsController < ApplicationController
   before_filter :required_param_user_token
 
   # GET /user/token/:user_token/energies.rdf
-  def energies
+  def energies_rdf
     @energies = @user.energies.paginate(
       :order    => "energies.observed_at DESC, energies.id DESC",
       :page     => 1,
@@ -50,7 +50,7 @@ class UserFeedsController < ApplicationController
   end
 
   # GET /user/token/:user_token/events.rdf
-  def events
+  def events_rdf
     @events = @user.events.paginate(
       :order    => "events.observed_at DESC, events.id DESC",
       :page     => 1,

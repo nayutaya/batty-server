@@ -73,9 +73,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect "device/token/:device_token/energies/update/:level/:time", :controller => "device_api", :action => "update_energy", :device_token => TokenPattern, :level => /\d+/, :time => /\d+/
 
   map.with_options :controller => "user_feeds", :user_token => TokenPattern do |feeds|
-    feeds.connect "user/token/:user_token/energies.rdf", :action => "energies"
+    feeds.connect "user/token/:user_token/energies.rdf", :action => "energies_rdf"
     feeds.connect "user/token/:user_token/energies.csv", :action => "energies_csv"
-    feeds.connect "user/token/:user_token/events.rdf",   :action => "events"
+    feeds.connect "user/token/:user_token/events.rdf",   :action => "events_rdf"
     feeds.connect "user/token/:user_token/events.csv",   :action => "events_csv"
   end
 
