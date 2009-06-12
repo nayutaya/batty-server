@@ -10,8 +10,8 @@
 <%-
   if logged_in?
     @rss_auto_discoveries = [
-      {:title => "エネルギー履歴", :href => url_for(:controller => "user_feeds", :action => "energies", :user_token => @login_user.user_token)},
-      {:title => "イベント履歴", :href => url_for(:controller => "user_feeds", :action => "events", :user_token => @login_user.user_token)},
+      {:title => "エネルギー履歴", :href => url_for(:controller => "user_feeds", :action => "energies_rdf", :user_token => @login_user.user_token)},
+      {:title => "イベント履歴", :href => url_for(:controller => "user_feeds", :action => "events_rdf", :user_token => @login_user.user_token)},
     ]
   end
 -%>
