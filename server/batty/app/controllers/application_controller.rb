@@ -107,6 +107,6 @@ class ApplicationController < ActionController::Base
   end
 
   def send_csv(csv)
-    send_data(csv.to_s, :type => "text/csv", :disposition => "attachment")
+    send_data(NKF.nkf("-W8 -s -m0", csv.to_s), :type => "text/csv", :disposition => "attachment")
   end
 end

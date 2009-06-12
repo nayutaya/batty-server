@@ -10,7 +10,8 @@ class UserFeedsControllerTest < ActionController::TestCase
   test "routes" do
     base = {:controller => "user_feeds"}
 
-    assert_routing("/user/token/0123456789abcdef/energies.rdf", base.merge(:action => "energies", :user_token => "0123456789abcdef"))
+    assert_routing("/user/token/0123456789abcdef/energies.rdf", base.merge(:action => "energies",     :user_token => "0123456789abcdef"))
+    assert_routing("/user/token/0123456789abcdef/energies.csv", base.merge(:action => "energies_csv", :user_token => "0123456789abcdef"))
     assert_routing("/user/token/0123456789abcdef/events.rdf",   base.merge(:action => "events", :user_token => "0123456789abcdef"))
   end
 
@@ -41,6 +42,30 @@ class UserFeedsControllerTest < ActionController::TestCase
 
   test "GET energies, abnormal, invalid user token" do
     get :energies, :user_token => "0"
+
+    assert_response(404)
+    assert_template(nil)
+  end
+
+  test "GET energies_csv" do
+    get :energies_csv, :user_token => @yuya.user_token
+
+    assert_response(:success)
+    assert_template(nil)
+    assert_equal("text/csv", @response.content_type)
+
+    assert_equal(@yuya, assigns(:user))
+
+    energies = assigns(:energies)
+    assert_equal(@yuya.energies.size, energies.size)
+    assert_equal(true, energies.all? { |e| e.device.user == @yuya })
+    assert_equal(
+      energies.sort_by { |e| [e.observed_at.to_i, e.id] }.reverse,
+      energies)
+  end
+
+  test "GET energies_csv, abnormal, invalid user token" do
+    get :energies_csv, :user_token => "0"
 
     assert_response(404)
     assert_template(nil)
