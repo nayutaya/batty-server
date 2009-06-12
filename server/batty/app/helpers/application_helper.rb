@@ -64,6 +64,10 @@ module ApplicationHelper
     return icon16("icons/fam/feed.png", "フィード")
   end
 
+  def csv_icon
+    return icon16("icons/fam/table_save.png", "CSV")
+  end
+
   def yyyymmdd(time, null = "-")
     return time.try(:strftime, "%Y年%m月%d日") || null
   end
