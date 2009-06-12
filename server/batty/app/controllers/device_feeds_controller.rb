@@ -44,7 +44,7 @@ class DeviceFeedsController < ApplicationController
       csv << line
     }
 
-    send_data(csv, :type => "text/csv", :disposition => "attachment")
+    send_csv(csv)
   end
 
   # GET /device/token/:device_token/events.rdf
@@ -90,7 +90,7 @@ class DeviceFeedsController < ApplicationController
       csv << line
     }
 
-    send_data(csv, :type => "text/csv", :disposition => "attachment")
+    send_csv(csv)
   end
 
   private

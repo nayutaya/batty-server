@@ -105,4 +105,8 @@ class ApplicationController < ActionController::Base
   def send_rss(rss)
     send_data(rss.to_s, :type => "application/rss+xml", :disposition => "inline")
   end
+
+  def send_csv(csv)
+    send_data(csv.to_s, :type => "text/csv", :disposition => "attachment")
+  end
 end
