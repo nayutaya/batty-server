@@ -7,6 +7,7 @@ class EventsController < ApplicationController
   # GET /events
   def index
     @events = @login_user.events.paginate(
+      :include  => [:device],
       :order    => "events.observed_at DESC, events.id DESC",
       :page     => params[:page],
       :per_page => 20)
