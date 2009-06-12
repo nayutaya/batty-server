@@ -2,8 +2,8 @@
 <%-
   @title = @device.name
   @rss_auto_discoveries = [
-    {:title => "エネルギー履歴", :href => url_for(:controller => "device_feeds", :action => "energies", :device_token => @device.device_token)},
-    {:title => "イベント履歴", :href => url_for(:controller => "device_feeds", :action => "events", :device_token => @device.device_token)},
+    {:title => "エネルギー履歴", :href => url_for(:controller => "device_feeds", :action => "energies_rdf", :device_token => @device.device_token)},
+    {:title => "イベント履歴", :href => url_for(:controller => "device_feeds", :action => "events_rdf", :device_token => @device.device_token)},
   ]
 -%>
 
