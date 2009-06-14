@@ -19,6 +19,9 @@ namespace nayutaya.batty.agent
             InitializeComponent();
 
             this.UpdateGeneralTab();
+            this.UpdateRecordTab();
+            this.UpdateRecordTimingTab();
+            this.UpdateSendTimingTab();
         }
 
         private void UpdateGeneralTab()
@@ -28,9 +31,40 @@ namespace nayutaya.batty.agent
             this.validTokenLabel.Visible = isValidToken;
         }
 
+        private void UpdateRecordTab()
+        {
+            // nop
+        }
+
+        private void UpdateRecordTimingTab()
+        {
+            this.recordOnIntervalComboBox.Enabled = this.recordOnIntervalCheckBox.Checked;
+        }
+
+        private void UpdateSendTimingTab()
+        {
+            this.sendOnIntervalComboBox.Enabled = this.sendOnIntervalCheckBox.Checked;
+            this.sendOnCountComboBox.Enabled = this.sendOnCountCheckBox.Checked;
+        }
+
         private void tokenTextBox_TextChanged(object sender, EventArgs e)
         {
             this.UpdateGeneralTab();
+        }
+
+        private void recordOnIntervalCheckBox_CheckStateChanged(object sender, EventArgs e)
+        {
+            this.UpdateRecordTimingTab();
+        }
+
+        private void sendOnIntervalCheckBox_CheckStateChanged(object sender, EventArgs e)
+        {
+            this.UpdateSendTimingTab();
+        }
+
+        private void sendOnCountCheckBox_CheckStateChanged(object sender, EventArgs e)
+        {
+            this.UpdateSendTimingTab();
         }
     }
 }
