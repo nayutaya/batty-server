@@ -59,6 +59,8 @@
             this.recordTabPage = new System.Windows.Forms.TabPage();
             this.noRecordOnChargeCheckBox = new System.Windows.Forms.CheckBox();
             this.noRecordOnAcConnectCheckBox = new System.Windows.Forms.CheckBox();
+            this.invalidTokenLabel = new System.Windows.Forms.Label();
+            this.validTokenLabel = new System.Windows.Forms.Label();
             this.settingTab.SuspendLayout();
             this.recordTimingTabPage.SuspendLayout();
             this.sendTimingTabPage.SuspendLayout();
@@ -300,6 +302,8 @@
             // 
             // generalTabPage
             // 
+            this.generalTabPage.Controls.Add(this.validTokenLabel);
+            this.generalTabPage.Controls.Add(this.invalidTokenLabel);
             this.generalTabPage.Controls.Add(this.tokenTextBox);
             this.generalTabPage.Controls.Add(this.label6);
             this.generalTabPage.Location = new System.Drawing.Point(0, 0);
@@ -346,6 +350,22 @@
             this.noRecordOnAcConnectCheckBox.Size = new System.Drawing.Size(226, 20);
             this.noRecordOnAcConnectCheckBox.TabIndex = 1;
             this.noRecordOnAcConnectCheckBox.Text = "電源接続中は記録しない";
+            // 
+            // invalidTokenLabel
+            // 
+            this.invalidTokenLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.invalidTokenLabel.Location = new System.Drawing.Point(7, 51);
+            this.invalidTokenLabel.Name = "invalidTokenLabel";
+            this.invalidTokenLabel.Size = new System.Drawing.Size(226, 33);
+            this.invalidTokenLabel.Text = "デバイストークンが正しい形式ではありません。";
+            // 
+            // validTokenLabel
+            // 
+            this.validTokenLabel.ForeColor = System.Drawing.Color.Green;
+            this.validTokenLabel.Location = new System.Drawing.Point(7, 84);
+            this.validTokenLabel.Name = "validTokenLabel";
+            this.validTokenLabel.Size = new System.Drawing.Size(226, 33);
+            this.validTokenLabel.Text = "デバイストークンは正しい形式です。";
             // 
             // SettingForm
             // 
@@ -402,5 +422,7 @@
         private System.Windows.Forms.TabPage recordTabPage;
         private System.Windows.Forms.CheckBox noRecordOnAcConnectCheckBox;
         private System.Windows.Forms.CheckBox noRecordOnChargeCheckBox;
+        private System.Windows.Forms.Label validTokenLabel;
+        private System.Windows.Forms.Label invalidTokenLabel;
     }
 }
