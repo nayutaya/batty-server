@@ -5,6 +5,7 @@
 <div><%= link_to(h("ユーザ設定に戻る"), :controller => "settings", :action => "index") %></div>
 
 <%- unless production? -%>
-  <hr />
-  <%= link_to(h("アクティベーション"), :controller => "emails", :action => "activation", :activation_token => @email_address.activation_token) %>
+  <div class="debug">
+    <%= link_to(h("アクティベーション"), :controller => "emails", :action => "activation", :activation_token => @email_address.activation_token) %>
+  </div>
 <%- end -%>
