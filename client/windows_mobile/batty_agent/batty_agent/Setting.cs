@@ -26,5 +26,77 @@ namespace nayutaya.batty.agent
             get { return deviceToken; }
             set { deviceToken = value; }
         }
+
+        public bool EnableRecordOnBatteryCharging
+        {
+            get { return enableRecordOnBatteryCharging; }
+            set { enableRecordOnBatteryCharging = value; }
+        }
+
+        public bool SendOnChangeChargeState
+        {
+            get { return sendOnChangeChargeState; }
+            set { sendOnChangeChargeState = value; }
+        }
+
+        public bool SendOnChangeBatteryState
+        {
+            get { return sendOnChangeBatteryState; }
+            set { sendOnChangeBatteryState = value; }
+        }
+
+        public uint SendOnCountRecords
+        {
+            get { return sendOnCountRecords; }
+            set { sendOnCountRecords = value; }
+        }
+
+        public bool SendOnCount
+        {
+            get { return sendOnCount; }
+            set { sendOnCount = value; }
+        }
+
+        public uint SendOnIntervalMinute
+        {
+            get { return sendOnIntervalMinute; }
+            set { sendOnIntervalMinute = value; }
+        }
+
+        public bool SendOnInterval
+        {
+            get { return sendOnInterval; }
+            set { sendOnInterval = value; }
+        }
+
+        public bool RecordOnChangeChargeState
+        {
+            get { return recordOnChangeChargeState; }
+            set { recordOnChangeChargeState = value; }
+        }
+
+        public bool RecordOnChangeLevelState
+        {
+            get { return recordOnChangeLevelState; }
+            set { recordOnChangeLevelState = value; }
+        }
+
+        public uint RecordOnIntervalMinute
+        {
+            get { return recordOnIntervalMinute; }
+            set { recordOnIntervalMinute = value; }
+        }
+
+        public bool RecordOnInterval
+        {
+            get { return recordOnInterval; }
+            set { recordOnInterval = value; }
+        }
+
+        public bool EnableRecordOnPowerConnecting
+        {
+            get { return enableRecordOnPowerConnecting; }
+            set { enableRecordOnPowerConnecting = value; }
+        }
     }
 }
