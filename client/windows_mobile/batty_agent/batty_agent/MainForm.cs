@@ -181,5 +181,11 @@ namespace nayutaya.batty.agent
                 return false;
             }
         }
+
+        private void settingButton_Click(object sender, EventArgs e)
+        {
+            SettingForm form = new SettingForm();
+            form.Show();
+        }
     }
 }
