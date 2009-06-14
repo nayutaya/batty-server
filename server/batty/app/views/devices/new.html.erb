@@ -33,7 +33,7 @@ END_OF_HTML
 -%>
 <h1>デバイスの追加</h1>
 
-<%- form_for(@edit_form, :url => {:action => "create"}) { |f| -%>
+<%- form_for(:edit_form, @edit_form, :url => {:action => "create"}) { |f| -%>
   <table border="1">
     <tr>
       <th><%= f.label(:name) %></th>
