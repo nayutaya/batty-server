@@ -1,5 +1,5 @@
-﻿using System;
-
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,5 +15,14 @@ namespace nayutaya.batty.agent
         {
             InitializeComponent();
         }
+
+        private void tokenTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+
+    class GeneralTabMediator
+    {
     }
 }
