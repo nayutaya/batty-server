@@ -61,6 +61,7 @@
             this.sendOnIntervalCheckBox = new System.Windows.Forms.CheckBox();
             this.panel5 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
+            this.panel6 = new System.Windows.Forms.Panel();
             this.settingTab.SuspendLayout();
             this.generalTabPage.SuspendLayout();
             this.recordTabPage.SuspendLayout();
@@ -71,6 +72,7 @@
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel5.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // settingTab
@@ -88,10 +90,7 @@
             // 
             // generalTabPage
             // 
-            this.generalTabPage.Controls.Add(this.validTokenLabel);
-            this.generalTabPage.Controls.Add(this.invalidTokenLabel);
-            this.generalTabPage.Controls.Add(this.tokenTextBox);
-            this.generalTabPage.Controls.Add(this.label6);
+            this.generalTabPage.Controls.Add(this.panel6);
             this.generalTabPage.Location = new System.Drawing.Point(0, 0);
             this.generalTabPage.Name = "generalTabPage";
             this.generalTabPage.Size = new System.Drawing.Size(240, 245);
@@ -99,33 +98,41 @@
             // 
             // validTokenLabel
             // 
+            this.validTokenLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.validTokenLabel.ForeColor = System.Drawing.Color.Green;
-            this.validTokenLabel.Location = new System.Drawing.Point(7, 84);
+            this.validTokenLabel.Location = new System.Drawing.Point(3, 43);
             this.validTokenLabel.Name = "validTokenLabel";
-            this.validTokenLabel.Size = new System.Drawing.Size(226, 33);
+            this.validTokenLabel.Size = new System.Drawing.Size(220, 33);
             this.validTokenLabel.Text = "デバイストークンは正しい形式です。";
             // 
             // invalidTokenLabel
             // 
+            this.invalidTokenLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.invalidTokenLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.invalidTokenLabel.Location = new System.Drawing.Point(7, 51);
+            this.invalidTokenLabel.Location = new System.Drawing.Point(3, 43);
             this.invalidTokenLabel.Name = "invalidTokenLabel";
-            this.invalidTokenLabel.Size = new System.Drawing.Size(226, 33);
+            this.invalidTokenLabel.Size = new System.Drawing.Size(220, 33);
             this.invalidTokenLabel.Text = "デバイストークンが正しい形式ではありません。";
             // 
             // tokenTextBox
             // 
-            this.tokenTextBox.Location = new System.Drawing.Point(7, 27);
+            this.tokenTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tokenTextBox.Location = new System.Drawing.Point(3, 19);
             this.tokenTextBox.Name = "tokenTextBox";
-            this.tokenTextBox.Size = new System.Drawing.Size(226, 21);
+            this.tokenTextBox.Size = new System.Drawing.Size(220, 21);
             this.tokenTextBox.TabIndex = 1;
             this.tokenTextBox.TextChanged += new System.EventHandler(this.tokenTextBox_TextChanged);
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(7, 4);
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.Location = new System.Drawing.Point(3, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(158, 20);
+            this.label6.Size = new System.Drawing.Size(220, 16);
             this.label6.Text = "デバイストークン";
             // 
             // recordTabPage
@@ -379,6 +386,18 @@
             this.label3.Size = new System.Drawing.Size(232, 33);
             this.label3.Text = "下記のタイミングで、自動的にバッテリ残量をサーバに送信します。";
             // 
+            // panel6
+            // 
+            this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel6.Controls.Add(this.label6);
+            this.panel6.Controls.Add(this.validTokenLabel);
+            this.panel6.Controls.Add(this.tokenTextBox);
+            this.panel6.Controls.Add(this.invalidTokenLabel);
+            this.panel6.Location = new System.Drawing.Point(7, 7);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(226, 85);
+            // 
             // SettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -400,6 +419,7 @@
             this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -437,5 +457,6 @@
         private System.Windows.Forms.CheckBox recordOnChargeCheckBox;
         private System.Windows.Forms.Label validTokenLabel;
         private System.Windows.Forms.Label invalidTokenLabel;
+        private System.Windows.Forms.Panel panel6;
     }
 }
