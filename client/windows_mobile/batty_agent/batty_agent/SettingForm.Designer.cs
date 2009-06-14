@@ -119,6 +119,7 @@
             this.tokenTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.tokenTextBox.Location = new System.Drawing.Point(3, 19);
+            this.tokenTextBox.MaxLength = 20;
             this.tokenTextBox.Name = "tokenTextBox";
             this.tokenTextBox.Size = new System.Drawing.Size(220, 21);
             this.tokenTextBox.TabIndex = 1;
@@ -220,7 +221,7 @@
             this.recordOnIntervalCheckBox.Name = "recordOnIntervalCheckBox";
             this.recordOnIntervalCheckBox.Size = new System.Drawing.Size(220, 20);
             this.recordOnIntervalCheckBox.TabIndex = 1;
-            this.recordOnIntervalCheckBox.Text = "次の間隔で記録";
+            this.recordOnIntervalCheckBox.Text = "指定した間隔で記録";
             this.recordOnIntervalCheckBox.CheckStateChanged += new System.EventHandler(this.recordOnIntervalCheckBox_CheckStateChanged);
             // 
             // label1
@@ -289,7 +290,7 @@
             this.sendOnCountCheckBox.Name = "sendOnCountCheckBox";
             this.sendOnCountCheckBox.Size = new System.Drawing.Size(220, 20);
             this.sendOnCountCheckBox.TabIndex = 0;
-            this.sendOnCountCheckBox.Text = "次の数溜まったら送信";
+            this.sendOnCountCheckBox.Text = "指定した件数が溜まったら送信";
             this.sendOnCountCheckBox.CheckStateChanged += new System.EventHandler(this.sendOnCountCheckBox_CheckStateChanged);
             // 
             // label4
@@ -323,7 +324,7 @@
             this.sendOnIntervalCheckBox.Name = "sendOnIntervalCheckBox";
             this.sendOnIntervalCheckBox.Size = new System.Drawing.Size(220, 20);
             this.sendOnIntervalCheckBox.TabIndex = 0;
-            this.sendOnIntervalCheckBox.Text = "次の間隔で送信";
+            this.sendOnIntervalCheckBox.Text = "指定した間隔で送信";
             this.sendOnIntervalCheckBox.CheckStateChanged += new System.EventHandler(this.sendOnIntervalCheckBox_CheckStateChanged);
             // 
             // label3
