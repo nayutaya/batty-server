@@ -23,10 +23,13 @@ namespace nayutaya.batty.agent
             this.setting.EnableRecordOnBatteryCharging = false;
             this.setting.EnableRecordOnPowerConnecting = true;
             this.setting.RecordOnInterval = false;
+            this.setting.RecordOnIntervalMinute = 10;
             this.setting.RecordOnChangeLevelState = true;
             this.setting.RecordOnChangeChargeState = false;
             this.setting.SendOnInterval = true;
+            this.setting.SendOnIntervalMinute = 15;
             this.setting.SendOnCount = false;
+            this.setting.SendOnCountRecords = 30;
             this.setting.SendOnChangeBatteryState = true;
             this.setting.SendOnChangeChargeState = false;
 
@@ -48,12 +51,15 @@ namespace nayutaya.batty.agent
 
             // [記録タイミング]タブ
             this.recordOnIntervalCheckBox.Checked = setting.RecordOnInterval;
+            this.recordOnIntervalComboBox.Text = setting.RecordOnIntervalMinute.ToString();
             this.recordOnLevelChangeCheckBox.Checked = setting.RecordOnChangeLevelState;
             this.recordOnChargeChangeCheckBox.Checked = setting.RecordOnChangeChargeState;
 
             // [送信タイミング]タブ
             this.sendOnIntervalCheckBox.Checked = setting.SendOnInterval;
+            this.sendOnIntervalComboBox.Text = setting.SendOnIntervalMinute.ToString();
             this.sendOnCountCheckBox.Checked = setting.SendOnCount;
+            this.sendOnCountComboBox.Text = setting.SendOnCountRecords.ToString();
             this.sendOnLevelChangeCheckBox.Checked = setting.SendOnChangeBatteryState;
             this.sendOnChargeChangeCheckBox.Checked = setting.SendOnChangeChargeState;
         }
