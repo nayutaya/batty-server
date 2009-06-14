@@ -19,6 +19,7 @@ namespace nayutaya.batty.agent
         private SystemState batteryStrengthState = new SystemState(SystemProperty.PowerBatteryStrength);
         private const uint IntervalMinute = 10;
         private DateTime lastUpdate = DateTime.Now;
+        private Setting setting = new Setting();
 
         public MainForm()
         {
@@ -41,6 +42,21 @@ namespace nayutaya.batty.agent
                     this.tokenTextBox.Text = st.ReadToEnd();
                 }
             }
+
+            // MEMO: 削除予定
+            this.setting.DeviceToken = "hoge";
+            this.setting.EnableRecordOnBatteryCharging = false;
+            this.setting.EnableRecordOnPowerConnecting = true;
+            this.setting.RecordOnInterval = false;
+            this.setting.RecordOnIntervalMinute = 10;
+            this.setting.RecordOnChangeLevelState = true;
+            this.setting.RecordOnChangeChargeState = false;
+            this.setting.SendOnInterval = true;
+            this.setting.SendOnIntervalMinute = 15;
+            this.setting.SendOnCount = false;
+            this.setting.SendOnCountRecords = 30;
+            this.setting.SendOnChangeBatteryState = true;
+            this.setting.SendOnChangeChargeState = false;
         }
 
         private void SetupSystemStates()
@@ -180,6 +196,14 @@ namespace nayutaya.batty.agent
                 this.AddLog(ex.GetType().Name + ": " + ex.Message);
                 return false;
             }
+        }
+
+        private void settingButton_Click(object sender, EventArgs e)
+        {
+            SettingForm form = new SettingForm();
+            form.LoadFrom(this.setting);
+            form.ShowDialog();
+            form.SaveTo(this.setting);
         }
     }
 }

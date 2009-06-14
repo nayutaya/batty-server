@@ -44,6 +44,7 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.settingButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -161,12 +162,22 @@
             this.columnHeader2.Text = "message";
             this.columnHeader2.Width = 130;
             // 
+            // settingButton
+            // 
+            this.settingButton.Location = new System.Drawing.Point(3, 55);
+            this.settingButton.Name = "settingButton";
+            this.settingButton.Size = new System.Drawing.Size(72, 20);
+            this.settingButton.TabIndex = 17;
+            this.settingButton.Text = "設定";
+            this.settingButton.Click += new System.EventHandler(this.settingButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.settingButton);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.tokenTextBox);
             this.Controls.Add(this.panel1);
@@ -197,6 +208,7 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.Button settingButton;
     }
 }
 
