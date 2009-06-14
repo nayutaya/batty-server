@@ -122,7 +122,7 @@
             this.tokenTextBox.MaxLength = 20;
             this.tokenTextBox.Name = "tokenTextBox";
             this.tokenTextBox.Size = new System.Drawing.Size(220, 21);
-            this.tokenTextBox.TabIndex = 1;
+            this.tokenTextBox.TabIndex = 0;
             this.tokenTextBox.TextChanged += new System.EventHandler(this.tokenTextBox_TextChanged);
             // 
             // label6
@@ -177,7 +177,7 @@
             this.recordOnChargeChangeCheckBox.Location = new System.Drawing.Point(3, 115);
             this.recordOnChargeChangeCheckBox.Name = "recordOnChargeChangeCheckBox";
             this.recordOnChargeChangeCheckBox.Size = new System.Drawing.Size(220, 20);
-            this.recordOnChargeChangeCheckBox.TabIndex = 4;
+            this.recordOnChargeChangeCheckBox.TabIndex = 3;
             this.recordOnChargeChangeCheckBox.Text = "充電状態変化時に記録";
             // 
             // recordOnLevelChangeCheckBox
@@ -187,7 +187,7 @@
             this.recordOnLevelChangeCheckBox.Location = new System.Drawing.Point(3, 89);
             this.recordOnLevelChangeCheckBox.Name = "recordOnLevelChangeCheckBox";
             this.recordOnLevelChangeCheckBox.Size = new System.Drawing.Size(220, 20);
-            this.recordOnLevelChangeCheckBox.TabIndex = 5;
+            this.recordOnLevelChangeCheckBox.TabIndex = 2;
             this.recordOnLevelChangeCheckBox.Text = "バッテリレベル変化時に記録";
             // 
             // label2
@@ -211,7 +211,7 @@
             this.recordOnIntervalComboBox.Location = new System.Drawing.Point(33, 61);
             this.recordOnIntervalComboBox.Name = "recordOnIntervalComboBox";
             this.recordOnIntervalComboBox.Size = new System.Drawing.Size(50, 22);
-            this.recordOnIntervalComboBox.TabIndex = 2;
+            this.recordOnIntervalComboBox.TabIndex = 1;
             // 
             // recordOnIntervalCheckBox
             // 
@@ -220,7 +220,7 @@
             this.recordOnIntervalCheckBox.Location = new System.Drawing.Point(3, 35);
             this.recordOnIntervalCheckBox.Name = "recordOnIntervalCheckBox";
             this.recordOnIntervalCheckBox.Size = new System.Drawing.Size(220, 20);
-            this.recordOnIntervalCheckBox.TabIndex = 1;
+            this.recordOnIntervalCheckBox.TabIndex = 0;
             this.recordOnIntervalCheckBox.Text = "指定した間隔で記録";
             this.recordOnIntervalCheckBox.CheckStateChanged += new System.EventHandler(this.recordOnIntervalCheckBox_CheckStateChanged);
             // 
@@ -248,7 +248,7 @@
             this.sendOnChargeChangeCheckBox.Location = new System.Drawing.Point(3, 169);
             this.sendOnChargeChangeCheckBox.Name = "sendOnChargeChangeCheckBox";
             this.sendOnChargeChangeCheckBox.Size = new System.Drawing.Size(220, 20);
-            this.sendOnChargeChangeCheckBox.TabIndex = 4;
+            this.sendOnChargeChangeCheckBox.TabIndex = 5;
             this.sendOnChargeChangeCheckBox.Text = "充電状態変化時に送信";
             // 
             // sendOnLevelChangeCheckBox
@@ -258,7 +258,7 @@
             this.sendOnLevelChangeCheckBox.Location = new System.Drawing.Point(3, 143);
             this.sendOnLevelChangeCheckBox.Name = "sendOnLevelChangeCheckBox";
             this.sendOnLevelChangeCheckBox.Size = new System.Drawing.Size(220, 20);
-            this.sendOnLevelChangeCheckBox.TabIndex = 3;
+            this.sendOnLevelChangeCheckBox.TabIndex = 4;
             this.sendOnLevelChangeCheckBox.Text = "バッテリレベル変化時に送信";
             // 
             // label5
@@ -280,7 +280,7 @@
             this.sendOnCountComboBox.Location = new System.Drawing.Point(33, 115);
             this.sendOnCountComboBox.Name = "sendOnCountComboBox";
             this.sendOnCountComboBox.Size = new System.Drawing.Size(50, 22);
-            this.sendOnCountComboBox.TabIndex = 1;
+            this.sendOnCountComboBox.TabIndex = 3;
             // 
             // sendOnCountCheckBox
             // 
@@ -289,7 +289,7 @@
             this.sendOnCountCheckBox.Location = new System.Drawing.Point(3, 89);
             this.sendOnCountCheckBox.Name = "sendOnCountCheckBox";
             this.sendOnCountCheckBox.Size = new System.Drawing.Size(220, 20);
-            this.sendOnCountCheckBox.TabIndex = 0;
+            this.sendOnCountCheckBox.TabIndex = 2;
             this.sendOnCountCheckBox.Text = "指定した件数が溜まったら送信";
             this.sendOnCountCheckBox.CheckStateChanged += new System.EventHandler(this.sendOnCountCheckBox_CheckStateChanged);
             // 
