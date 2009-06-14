@@ -389,6 +389,7 @@
             this.Menu = this.mainMenu1;
             this.Name = "SettingForm";
             this.Text = "設定";
+            this.Load += new System.EventHandler(this.SettingForm_Load);
             this.settingTab.ResumeLayout(false);
             this.generalTabPage.ResumeLayout(false);
             this.recordTabPage.ResumeLayout(false);

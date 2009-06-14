@@ -5,7 +5,7 @@ using System.Text;
 
 namespace nayutaya.batty.agent
 {
-    class Setting
+    public class Setting
     {
         private String deviceToken;
         private bool enableRecordOnBatteryCharging;

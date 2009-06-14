@@ -13,34 +13,13 @@ namespace nayutaya.batty.agent
     public partial class SettingForm : Form
     {
         private readonly Regex tokenPattern = new Regex(@"\A[0-9a-f]{20}\z");
-        private Setting setting = new Setting();
 
         public SettingForm()
         {
             InitializeComponent();
-
-            this.setting.DeviceToken = "hoge";
-            this.setting.EnableRecordOnBatteryCharging = false;
-            this.setting.EnableRecordOnPowerConnecting = true;
-            this.setting.RecordOnInterval = false;
-            this.setting.RecordOnIntervalMinute = 10;
-            this.setting.RecordOnChangeLevelState = true;
-            this.setting.RecordOnChangeChargeState = false;
-            this.setting.SendOnInterval = true;
-            this.setting.SendOnIntervalMinute = 15;
-            this.setting.SendOnCount = false;
-            this.setting.SendOnCountRecords = 30;
-            this.setting.SendOnChangeBatteryState = true;
-            this.setting.SendOnChangeChargeState = false;
-
-            this.LoadFrom(setting);
-            this.UpdateGeneralTab();
-            this.UpdateRecordTab();
-            this.UpdateRecordTimingTab();
-            this.UpdateSendTimingTab();
         }
 
-        private void LoadFrom(Setting setting)
+        public void LoadFrom(Setting setting)
         {
             // [基本]タブ
             this.tokenTextBox.Text = setting.DeviceToken;
@@ -64,6 +43,30 @@ namespace nayutaya.batty.agent
             this.sendOnChargeChangeCheckBox.Checked = setting.SendOnChangeChargeState;
         }
 
+        public void SaveTo(Setting setting)
+        {
+            // [基本]タブ
+            setting.DeviceToken = this.tokenTextBox.Text;
+
+            // [記録]タブ
+            setting.EnableRecordOnBatteryCharging = this.recordOnChargeCheckBox.Checked;
+            setting.EnableRecordOnPowerConnecting = this.recordOnAcConnectCheckBox.Checked;
+
+            // [記録タイミング]タブ
+            setting.RecordOnInterval = this.recordOnIntervalCheckBox.Checked;
+            setting.RecordOnIntervalMinute = uint.Parse(this.recordOnIntervalComboBox.Text);
+            setting.RecordOnChangeLevelState = this.recordOnLevelChangeCheckBox.Checked;
+            setting.RecordOnChangeChargeState = this.recordOnChargeChangeCheckBox.Checked;
+
+            // [送信タイミング]タブ
+            setting.SendOnInterval = this.sendOnIntervalCheckBox.Checked;
+            setting.SendOnIntervalMinute = uint.Parse(this.sendOnIntervalComboBox.Text);
+            setting.SendOnCount = this.sendOnCountCheckBox.Checked;
+            setting.SendOnCountRecords = uint.Parse(this.sendOnCountComboBox.Text);
+            setting.SendOnChangeBatteryState = this.sendOnLevelChangeCheckBox.Checked;
+            setting.SendOnChangeChargeState = this.sendOnChargeChangeCheckBox.Checked;
+        }
+
         private void UpdateGeneralTab()
         {
             bool isValidToken = tokenPattern.IsMatch(this.tokenTextBox.Text);
@@ -85,6 +88,14 @@ namespace nayutaya.batty.agent
         {
             this.sendOnIntervalComboBox.Enabled = this.sendOnIntervalCheckBox.Checked;
             this.sendOnCountComboBox.Enabled = this.sendOnCountCheckBox.Checked;
+        }
+
+        private void SettingForm_Load(object sender, EventArgs e)
+        {
+            this.UpdateGeneralTab();
+            this.UpdateRecordTab();
+            this.UpdateRecordTimingTab();
+            this.UpdateSendTimingTab();
         }
 
         private void tokenTextBox_TextChanged(object sender, EventArgs e)
