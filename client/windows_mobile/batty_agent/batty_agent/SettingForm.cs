@@ -12,16 +12,50 @@ namespace nayutaya.batty.agent
 {
     public partial class SettingForm : Form
     {
-        private Regex tokenPattern = new Regex(@"\A[0-9a-f]{20}\z");
+        private readonly Regex tokenPattern = new Regex(@"\A[0-9a-f]{20}\z");
+        private Setting setting = new Setting();
 
         public SettingForm()
         {
             InitializeComponent();
 
+            this.setting.DeviceToken = "hoge";
+            this.setting.EnableRecordOnBatteryCharging = false;
+            this.setting.EnableRecordOnPowerConnecting = true;
+            this.setting.RecordOnInterval = false;
+            this.setting.RecordOnChangeLevelState = true;
+            this.setting.RecordOnChangeChargeState = false;
+            this.setting.SendOnInterval = true;
+            this.setting.SendOnCount = false;
+            this.setting.SendOnChangeBatteryState = true;
+            this.setting.SendOnChangeChargeState = false;
+
+            this.LoadFrom(setting);
             this.UpdateGeneralTab();
             this.UpdateRecordTab();
             this.UpdateRecordTimingTab();
             this.UpdateSendTimingTab();
+        }
+
+        private void LoadFrom(Setting setting)
+        {
+            // [基本]タブ
+            this.tokenTextBox.Text = setting.DeviceToken;
+
+            // [記録]タブ
+            this.recordOnChargeCheckBox.Checked = setting.EnableRecordOnBatteryCharging;
+            this.recordOnAcConnectCheckBox.Checked = setting.EnableRecordOnPowerConnecting;
+
+            // [記録タイミング]タブ
+            this.recordOnIntervalCheckBox.Checked = setting.RecordOnInterval;
+            this.recordOnLevelChangeCheckBox.Checked = setting.RecordOnChangeLevelState;
+            this.recordOnChargeChangeCheckBox.Checked = setting.RecordOnChangeChargeState;
+
+            // [送信タイミング]タブ
+            this.sendOnIntervalCheckBox.Checked = setting.SendOnInterval;
+            this.sendOnCountCheckBox.Checked = setting.SendOnCount;
+            this.sendOnLevelChangeCheckBox.Checked = setting.SendOnChangeBatteryState;
+            this.sendOnChargeChangeCheckBox.Checked = setting.SendOnChangeChargeState;
         }
 
         private void UpdateGeneralTab()

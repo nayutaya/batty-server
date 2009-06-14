@@ -37,8 +37,8 @@
             this.tokenTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.recordTabPage = new System.Windows.Forms.TabPage();
-            this.noRecordOnAcConnectCheckBox = new System.Windows.Forms.CheckBox();
-            this.noRecordOnChargeCheckBox = new System.Windows.Forms.CheckBox();
+            this.recordOnAcConnectCheckBox = new System.Windows.Forms.CheckBox();
+            this.recordOnChargeCheckBox = new System.Windows.Forms.CheckBox();
             this.recordTimingTabPage = new System.Windows.Forms.TabPage();
             this.recordOnChargeChangeCheckBox = new System.Windows.Forms.CheckBox();
             this.recordOnLevelChangeCheckBox = new System.Windows.Forms.CheckBox();
@@ -130,28 +130,28 @@
             // 
             // recordTabPage
             // 
-            this.recordTabPage.Controls.Add(this.noRecordOnAcConnectCheckBox);
-            this.recordTabPage.Controls.Add(this.noRecordOnChargeCheckBox);
+            this.recordTabPage.Controls.Add(this.recordOnAcConnectCheckBox);
+            this.recordTabPage.Controls.Add(this.recordOnChargeCheckBox);
             this.recordTabPage.Location = new System.Drawing.Point(0, 0);
             this.recordTabPage.Name = "recordTabPage";
             this.recordTabPage.Size = new System.Drawing.Size(240, 245);
             this.recordTabPage.Text = "記録";
             // 
-            // noRecordOnAcConnectCheckBox
+            // recordOnAcConnectCheckBox
             // 
-            this.noRecordOnAcConnectCheckBox.Location = new System.Drawing.Point(7, 33);
-            this.noRecordOnAcConnectCheckBox.Name = "noRecordOnAcConnectCheckBox";
-            this.noRecordOnAcConnectCheckBox.Size = new System.Drawing.Size(226, 20);
-            this.noRecordOnAcConnectCheckBox.TabIndex = 1;
-            this.noRecordOnAcConnectCheckBox.Text = "電源接続中は記録しない";
+            this.recordOnAcConnectCheckBox.Location = new System.Drawing.Point(7, 33);
+            this.recordOnAcConnectCheckBox.Name = "recordOnAcConnectCheckBox";
+            this.recordOnAcConnectCheckBox.Size = new System.Drawing.Size(226, 20);
+            this.recordOnAcConnectCheckBox.TabIndex = 1;
+            this.recordOnAcConnectCheckBox.Text = "電源接続中も記録する";
             // 
-            // noRecordOnChargeCheckBox
+            // recordOnChargeCheckBox
             // 
-            this.noRecordOnChargeCheckBox.Location = new System.Drawing.Point(7, 7);
-            this.noRecordOnChargeCheckBox.Name = "noRecordOnChargeCheckBox";
-            this.noRecordOnChargeCheckBox.Size = new System.Drawing.Size(226, 20);
-            this.noRecordOnChargeCheckBox.TabIndex = 0;
-            this.noRecordOnChargeCheckBox.Text = "充電中は記録しない";
+            this.recordOnChargeCheckBox.Location = new System.Drawing.Point(7, 7);
+            this.recordOnChargeCheckBox.Name = "recordOnChargeCheckBox";
+            this.recordOnChargeCheckBox.Size = new System.Drawing.Size(226, 20);
+            this.recordOnChargeCheckBox.TabIndex = 0;
+            this.recordOnChargeCheckBox.Text = "充電中も記録する";
             // 
             // recordTimingTabPage
             // 
@@ -253,7 +253,7 @@
             this.sendTimingTabPage.Controls.Add(this.panel5);
             this.sendTimingTabPage.Location = new System.Drawing.Point(0, 0);
             this.sendTimingTabPage.Name = "sendTimingTabPage";
-            this.sendTimingTabPage.Size = new System.Drawing.Size(240, 245);
+            this.sendTimingTabPage.Size = new System.Drawing.Size(232, 242);
             this.sendTimingTabPage.Text = "送信タイミング";
             // 
             // sendOnChargeChangeCheckBox
@@ -261,7 +261,7 @@
             this.sendOnChargeChangeCheckBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.sendOnChargeChangeCheckBox.Location = new System.Drawing.Point(0, 141);
             this.sendOnChargeChangeCheckBox.Name = "sendOnChargeChangeCheckBox";
-            this.sendOnChargeChangeCheckBox.Size = new System.Drawing.Size(240, 20);
+            this.sendOnChargeChangeCheckBox.Size = new System.Drawing.Size(232, 20);
             this.sendOnChargeChangeCheckBox.TabIndex = 4;
             this.sendOnChargeChangeCheckBox.Text = "充電状態変化時に送信";
             // 
@@ -270,7 +270,7 @@
             this.sendOnLevelChangeCheckBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.sendOnLevelChangeCheckBox.Location = new System.Drawing.Point(0, 121);
             this.sendOnLevelChangeCheckBox.Name = "sendOnLevelChangeCheckBox";
-            this.sendOnLevelChangeCheckBox.Size = new System.Drawing.Size(240, 20);
+            this.sendOnLevelChangeCheckBox.Size = new System.Drawing.Size(232, 20);
             this.sendOnLevelChangeCheckBox.TabIndex = 3;
             this.sendOnLevelChangeCheckBox.Text = "バッテリレベル変化時に送信";
             // 
@@ -282,12 +282,12 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 81);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(240, 40);
+            this.panel2.Size = new System.Drawing.Size(232, 40);
             // 
             // label5
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.Location = new System.Drawing.Point(217, 23);
+            this.label5.Location = new System.Drawing.Point(209, 23);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(20, 16);
             this.label5.Text = "件";
@@ -302,7 +302,7 @@
             this.sendOnCountComboBox.Items.Add("15");
             this.sendOnCountComboBox.Items.Add("20");
             this.sendOnCountComboBox.Items.Add("30");
-            this.sendOnCountComboBox.Location = new System.Drawing.Point(161, 17);
+            this.sendOnCountComboBox.Location = new System.Drawing.Point(153, 17);
             this.sendOnCountComboBox.Name = "sendOnCountComboBox";
             this.sendOnCountComboBox.Size = new System.Drawing.Size(50, 22);
             this.sendOnCountComboBox.TabIndex = 1;
@@ -312,7 +312,7 @@
             this.sendOnCountCheckBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.sendOnCountCheckBox.Location = new System.Drawing.Point(0, 0);
             this.sendOnCountCheckBox.Name = "sendOnCountCheckBox";
-            this.sendOnCountCheckBox.Size = new System.Drawing.Size(240, 20);
+            this.sendOnCountCheckBox.Size = new System.Drawing.Size(232, 20);
             this.sendOnCountCheckBox.TabIndex = 0;
             this.sendOnCountCheckBox.Text = "次の数溜まったら送信";
             this.sendOnCountCheckBox.CheckStateChanged += new System.EventHandler(this.sendOnCountCheckBox_CheckStateChanged);
@@ -325,12 +325,12 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 41);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(240, 40);
+            this.panel1.Size = new System.Drawing.Size(232, 40);
             // 
             // label4
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.Location = new System.Drawing.Point(217, 23);
+            this.label4.Location = new System.Drawing.Point(209, 23);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(20, 16);
             this.label4.Text = "分";
@@ -338,7 +338,7 @@
             // sendOnIntervalComboBox
             // 
             this.sendOnIntervalComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.sendOnIntervalComboBox.Location = new System.Drawing.Point(161, 17);
+            this.sendOnIntervalComboBox.Location = new System.Drawing.Point(153, 17);
             this.sendOnIntervalComboBox.Name = "sendOnIntervalComboBox";
             this.sendOnIntervalComboBox.Size = new System.Drawing.Size(50, 22);
             this.sendOnIntervalComboBox.TabIndex = 1;
@@ -348,7 +348,7 @@
             this.sendOnIntervalCheckBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.sendOnIntervalCheckBox.Location = new System.Drawing.Point(0, 0);
             this.sendOnIntervalCheckBox.Name = "sendOnIntervalCheckBox";
-            this.sendOnIntervalCheckBox.Size = new System.Drawing.Size(240, 20);
+            this.sendOnIntervalCheckBox.Size = new System.Drawing.Size(232, 20);
             this.sendOnIntervalCheckBox.TabIndex = 0;
             this.sendOnIntervalCheckBox.Text = "次の間隔で送信";
             this.sendOnIntervalCheckBox.CheckStateChanged += new System.EventHandler(this.sendOnIntervalCheckBox_CheckStateChanged);
@@ -359,7 +359,7 @@
             this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel5.Location = new System.Drawing.Point(0, 0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(240, 41);
+            this.panel5.Size = new System.Drawing.Size(232, 41);
             // 
             // label3
             // 
@@ -367,7 +367,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.Location = new System.Drawing.Point(4, 4);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(232, 33);
+            this.label3.Size = new System.Drawing.Size(224, 33);
             this.label3.Text = "下記のタイミングで、自動的にバッテリ残量をサーバに送信します。";
             // 
             // SettingForm
@@ -423,8 +423,8 @@
         private System.Windows.Forms.TextBox tokenTextBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TabPage recordTabPage;
-        private System.Windows.Forms.CheckBox noRecordOnAcConnectCheckBox;
-        private System.Windows.Forms.CheckBox noRecordOnChargeCheckBox;
+        private System.Windows.Forms.CheckBox recordOnAcConnectCheckBox;
+        private System.Windows.Forms.CheckBox recordOnChargeCheckBox;
         private System.Windows.Forms.Label validTokenLabel;
         private System.Windows.Forms.Label invalidTokenLabel;
     }
