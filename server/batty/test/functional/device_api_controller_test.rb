@@ -29,7 +29,7 @@ class DeviceApiControllerTest < ActionController::TestCase
 
     assert_equal(@yuya_pda, assigns(:device))
 
-    assert_equal(true,  assigns(:api_form).valid?)
+    assert_equal(true,  Kagemusha::DateTime.at(time) { assigns(:api_form).valid? })
     assert_equal(level, assigns(:api_form).level)
     assert_equal(time,  assigns(:api_form).parsed_time)
 
@@ -39,8 +39,12 @@ class DeviceApiControllerTest < ActionController::TestCase
   end
 
   test "POST update_energy, with time" do
+    time = Time.local(1987, 6, 5)
+
     assert_difference("Energy.count", +1) {
-      post :update_energy, :device_token => @yuya_pda.device_token, :level => "0", :time => "19870605040302"
+      Kagemusha::DateTime.at(time) {
+        post :update_energy, :device_token => @yuya_pda.device_token, :level => "0", :time => "19870605040302"
+      }
     }
 
     assert_response(:success)
