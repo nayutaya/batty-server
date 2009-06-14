@@ -24,7 +24,7 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_equal(@yuya.events.size, assigns(:events).total_entries)
     assert_equal( 1, assigns(:events).current_page)
-    assert_equal(20, assigns(:events).per_page)
+    assert_equal(40, assigns(:events).per_page)
     assert_equal(true, assigns(:events).all? { |e| e.device.user == @yuya })
     assert_equal(
       assigns(:events).sort_by { |e| [e.observed_at, e.id] }.reverse,
@@ -39,7 +39,7 @@ class EventsControllerTest < ActionController::TestCase
     assert_flash_empty
 
     assert_equal( 2, assigns(:events).current_page)
-    assert_equal(20, assigns(:events).per_page)
+    assert_equal(40, assigns(:events).per_page)
   end
 
   test "GET index, abnormal, no login" do

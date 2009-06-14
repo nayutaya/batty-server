@@ -10,6 +10,6 @@ class EventsController < ApplicationController
       :include  => [:device],
       :order    => "events.observed_at DESC, events.id DESC",
       :page     => params[:page],
-      :per_page => 20)
+      :per_page => 40)
   end
 end

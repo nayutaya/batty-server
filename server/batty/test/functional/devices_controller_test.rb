@@ -367,7 +367,7 @@ class DevicesControllerTest < ActionController::TestCase
     assert_equal(@yuya_pda, assigns(:device))
 
     assert_equal( 1, assigns(:energies).current_page)
-    assert_equal(20, assigns(:energies).per_page)
+    assert_equal(40, assigns(:energies).per_page)
     assert_equal(@yuya_pda.energies.size, assigns(:energies).total_entries)
     assert_equal(true, assigns(:energies).all? { |e| e.device == @yuya_pda })
     assert_equal(
@@ -383,7 +383,7 @@ class DevicesControllerTest < ActionController::TestCase
     assert_flash_empty
 
     assert_equal( 2, assigns(:energies).current_page)
-    assert_equal(20, assigns(:energies).per_page)
+    assert_equal(40, assigns(:energies).per_page)
   end
 
   test "GET energies, abnormal, no login" do
@@ -423,7 +423,7 @@ class DevicesControllerTest < ActionController::TestCase
     assert_equal(@yuya_pda, assigns(:device))
 
     assert_equal( 1, assigns(:events).current_page)
-    assert_equal(20, assigns(:events).per_page)
+    assert_equal(40, assigns(:events).per_page)
     assert_equal(@yuya_pda.events.size, assigns(:events).total_entries)
     assert_equal(true, assigns(:events).all? { |e| e.device == @yuya_pda })
     assert_equal(
@@ -439,7 +439,7 @@ class DevicesControllerTest < ActionController::TestCase
     assert_flash_empty
 
     assert_equal( 2, assigns(:events).current_page)
-    assert_equal(20, assigns(:events).per_page)
+    assert_equal(40, assigns(:events).per_page)
   end
 
   test "GET events, abnormal, no login" do

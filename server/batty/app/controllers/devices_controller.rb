@@ -85,7 +85,7 @@ class DevicesController < ApplicationController
     @energies = @device.energies.paginate(
       :order    => "energies.observed_at DESC, energies.id DESC",
       :page     => params[:page],
-      :per_page => 20)
+      :per_page => 40)
   end
 
   # GET /device/:device_id/events
@@ -93,6 +93,6 @@ class DevicesController < ApplicationController
     @events = @device.events.paginate(
       :order    => "events.observed_at DESC, events.id DESC",
       :page     => params[:page],
-      :per_page => 20)
+      :per_page => 40)
   end
 end

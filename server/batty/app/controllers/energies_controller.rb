@@ -10,6 +10,6 @@ class EnergiesController < ApplicationController
       :include  => [:device],
       :order    => "energies.observed_at DESC, energies.id DESC",
       :page     => params[:page],
-      :per_page => 20)
+      :per_page => 40)
   end
 end
