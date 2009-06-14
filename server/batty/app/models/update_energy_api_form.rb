@@ -26,7 +26,12 @@ class UpdateEnergyApiForm < ActiveForm
   validates_inclusion_of :level, :in => Energy::LevelRange, :allow_nil => true
   validates_inclusion_of :time, :in => TimeMinimumValue..TimeMaximumValue, :allow_nil => true
   validates_each(:time) { |record, attr, value|
-    unless record.parsed_time
+    time = record.parsed_time
+    if time
+      if (time < 7.days.ago) || (time > 24.hours.from_now)
+        record.errors.add(attr, :invalid)
+      end
+    else
       record.errors.add(attr, :invalid)
     end
   }

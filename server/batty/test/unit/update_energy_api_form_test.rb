@@ -8,6 +8,8 @@ class UpdateEnergyApiFormTest < ActiveSupport::TestCase
     @basic = @klass.new(
       :level => "100",
       :time  => "20090101000000")
+
+    @now = Time.local(2009, 1, 1)
   end
 
   #
@@ -39,60 +41,79 @@ class UpdateEnergyApiFormTest < ActiveSupport::TestCase
   #
 
   test "basic is valid" do
-    assert_equal(true, @basic.valid?)
+    Kagemusha::DateTime.at(@now) {
+      assert_equal(true, @basic.valid?)
+    }
   end
 
   test "validates_presence_of :level" do
-    @basic.level = nil
-    assert_equal(false, @basic.valid?)
+    Kagemusha::DateTime.at(@now) {
+      @basic.level = nil
+      assert_equal(false, @basic.valid?)
+    }
   end
 
   test "validates_presence_of :time" do
-    @basic.time = nil
-    assert_equal(false, @basic.valid?)
+    Kagemusha::DateTime.at(@now) {
+      @basic.time = nil
+      assert_equal(false, @basic.valid?)
+    }
   end
 
   test "validates_numericality_of :level" do
-    @basic.level = "x"
-    assert_equal(false, @basic.valid?)
+    Kagemusha::DateTime.at(@now) {
+      @basic.level = "x"
+      assert_equal(false, @basic.valid?)
 
-    @basic.level = "0.1"
-    assert_equal(false, @basic.valid?)
+      @basic.level = "0.1"
+      assert_equal(false, @basic.valid?)
+    }
   end
 
   test "validates_numericality_of :time" do
-    @basic.time = "x"
-    assert_equal(false, @basic.valid?)
+    Kagemusha::DateTime.at(@now) {
+      @basic.time = "x"
+      assert_equal(false, @basic.valid?)
 
-    @basic.time = "0.1"
-    assert_equal(false, @basic.valid?)
+      @basic.time = "0.1"
+      assert_equal(false, @basic.valid?)
+    }
   end
 
   test "validates_inclusion_of :level" do
-    [
-      [ -1, false],
-      [  0, true ],
-      [100, true ],
-      [101, false],
-    ].each { |value, expected|
-      @basic.level = value
-      assert_equal(expected, @basic.valid?, value)
+    Kagemusha::DateTime.at(@now) {
+      [
+        [ -1, false],
+        [  0, true ],
+        [100, true ],
+        [101, false],
+      ].each { |value, expected|
+        @basic.level = value
+        assert_equal(expected, @basic.valid?, value)
+      }
     }
   end
 
+=begin
+  # MEMO: 日時範囲の検証を追加したため、テストできない
   test "validates_inclusion_of :time" do
-    [
-      [@klass::TimeMinimumValue - 1, false],
-      [@klass::TimeMinimumValue,     true ],
-      [@klass::TimeMaximumValue,     true ],
-      [@klass::TimeMaximumValue + 1, false],
-    ].each { |value, expected|
-      @basic.time = value
-      assert_equal(expected, @basic.valid?, value)
+    Kagemusha::DateTime.at(@now) {
+      [
+        [@klass::TimeMinimumValue - 1, false],
+        [@klass::TimeMinimumValue,     true ],
+        [@klass::TimeMaximumValue,     true ],
+        [@klass::TimeMaximumValue + 1, false],
+      ].each { |value, expected|
+        @basic.time = value
+        assert_equal(expected, @basic.valid?, value)
+      }
     }
   end
+=end
 
-  test "validates_each : time" do
+=begin
+  # MEMO: 日時範囲の検証を追加したため、テストできない
+  test "validates_each :time" do
     [
       [20000102_030405, true ],
       [20000101_000000, true ],
@@ -104,6 +125,27 @@ class UpdateEnergyApiFormTest < ActiveSupport::TestCase
       @basic.time = value
       assert_equal(expected, @basic.valid?, value)
     }
+  end
+=end
+
+  test "validates_each :time, past" do
+    time = Time.local(2010, 1, 15, 12, 30, 30)
+
+    @basic.time = 20100108123030
+    assert_equal(true, Kagemusha::DateTime.at(time) { @basic.valid? })
+
+    @basic.time = 20100108123029
+    assert_equal(false, Kagemusha::DateTime.at(time) { @basic.valid? })
+  end
+
+  test "validates_each :time, future" do
+    time = Time.local(2010, 1, 15, 12, 30, 30)
+
+    @basic.time = 20100116123030
+    assert_equal(true, Kagemusha::DateTime.at(time) { @basic.valid? })
+
+    @basic.time = 20100116123031
+    assert_equal(false, Kagemusha::DateTime.at(time) { @basic.valid? })
   end
 
   #
