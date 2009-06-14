@@ -62,6 +62,9 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.settingTab.SuspendLayout();
             this.generalTabPage.SuspendLayout();
             this.recordTabPage.SuspendLayout();
@@ -73,6 +76,7 @@
             this.panel1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
+            this.panel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // settingTab
@@ -137,8 +141,7 @@
             // 
             // recordTabPage
             // 
-            this.recordTabPage.Controls.Add(this.recordOnAcConnectCheckBox);
-            this.recordTabPage.Controls.Add(this.recordOnChargeCheckBox);
+            this.recordTabPage.Controls.Add(this.panel7);
             this.recordTabPage.Location = new System.Drawing.Point(0, 0);
             this.recordTabPage.Name = "recordTabPage";
             this.recordTabPage.Size = new System.Drawing.Size(240, 245);
@@ -146,17 +149,21 @@
             // 
             // recordOnAcConnectCheckBox
             // 
-            this.recordOnAcConnectCheckBox.Location = new System.Drawing.Point(7, 33);
+            this.recordOnAcConnectCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.recordOnAcConnectCheckBox.Location = new System.Drawing.Point(3, 74);
             this.recordOnAcConnectCheckBox.Name = "recordOnAcConnectCheckBox";
-            this.recordOnAcConnectCheckBox.Size = new System.Drawing.Size(226, 20);
+            this.recordOnAcConnectCheckBox.Size = new System.Drawing.Size(220, 20);
             this.recordOnAcConnectCheckBox.TabIndex = 1;
             this.recordOnAcConnectCheckBox.Text = "電源接続中も記録する";
             // 
             // recordOnChargeCheckBox
             // 
-            this.recordOnChargeCheckBox.Location = new System.Drawing.Point(7, 7);
+            this.recordOnChargeCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.recordOnChargeCheckBox.Location = new System.Drawing.Point(3, 0);
             this.recordOnChargeCheckBox.Name = "recordOnChargeCheckBox";
-            this.recordOnChargeCheckBox.Size = new System.Drawing.Size(226, 20);
+            this.recordOnChargeCheckBox.Size = new System.Drawing.Size(220, 20);
             this.recordOnChargeCheckBox.TabIndex = 0;
             this.recordOnChargeCheckBox.Text = "充電中も記録する";
             // 
@@ -398,6 +405,36 @@
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(226, 85);
             // 
+            // panel7
+            // 
+            this.panel7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel7.Controls.Add(this.label8);
+            this.panel7.Controls.Add(this.label7);
+            this.panel7.Controls.Add(this.recordOnChargeCheckBox);
+            this.panel7.Controls.Add(this.recordOnAcConnectCheckBox);
+            this.panel7.Location = new System.Drawing.Point(7, 7);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(226, 156);
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.Location = new System.Drawing.Point(33, 23);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(190, 48);
+            this.label7.Text = "充電中にバッテリ残量が正しく取得できない場合は、チェックを外してください。";
+            // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label8.Location = new System.Drawing.Point(33, 97);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(190, 48);
+            this.label8.Text = "電源接続中にバッテリ残量が正しく取得できない場合は、チェックを外してください。";
+            // 
             // SettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -420,6 +457,7 @@
             this.panel1.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
+            this.panel7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -458,5 +496,8 @@
         private System.Windows.Forms.Label validTokenLabel;
         private System.Windows.Forms.Label invalidTokenLabel;
         private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
     }
 }
