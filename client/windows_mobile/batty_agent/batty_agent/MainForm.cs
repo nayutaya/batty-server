@@ -43,6 +43,17 @@ namespace nayutaya.batty.agent
                 }
             }
 
+            OpenNETCF.AppSettings.SettingsFile sf = new OpenNETCF.AppSettings.SettingsFile(dir + @"\setting.xml");
+            if ( !sf.Groups.Contains("General") )
+            {
+                sf.Groups.Add("General");
+            }
+            OpenNETCF.AppSettings.SettingGroup g = sf.Groups["General"];
+            g.Settings.Add("int", 1);
+            g.Settings.Add("str", "a");
+            sf.Save();
+
+
             // MEMO: 削除予定
             this.setting.DeviceToken = "hoge";
             this.setting.EnableRecordOnBatteryCharging = false;
