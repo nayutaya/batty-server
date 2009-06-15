@@ -17,7 +17,6 @@ namespace nayutaya.batty.agent
         private SystemState timeState = new SystemState(SystemProperty.Time);
         private SystemState batteryModeState = new SystemState(SystemProperty.PowerBatteryState);
         private SystemState batteryStrengthState = new SystemState(SystemProperty.PowerBatteryStrength);
-        private const uint IntervalMinute = 10;
         private DateTime lastUpdate = DateTime.Now;
         private Setting setting = new Setting();
 
@@ -31,32 +30,8 @@ namespace nayutaya.batty.agent
 
         private void LoadSetting()
         {
-            System.Reflection.Module m = System.Reflection.Assembly.GetExecutingAssembly().ManifestModule;
-            string dir = System.IO.Path.GetDirectoryName(m.FullyQualifiedName);
-            string file = dir + @"\token.txt";
-
-            if ( File.Exists(file) )
-            {
-                using ( StreamReader st = new StreamReader(file) )
-                {
-                    this.tokenTextBox.Text = st.ReadToEnd();
-                }
-            }
-
-            // MEMO: 削除予定
-            this.setting.DeviceToken = "hoge";
-            this.setting.EnableRecordOnBatteryCharging = false;
-            this.setting.EnableRecordOnPowerConnecting = true;
-            this.setting.RecordOnInterval = false;
-            this.setting.RecordOnIntervalMinute = 10;
-            this.setting.RecordOnChangeLevelState = true;
-            this.setting.RecordOnChangeChargeState = false;
-            this.setting.SendOnInterval = true;
-            this.setting.SendOnIntervalMinute = 15;
-            this.setting.SendOnCount = false;
-            this.setting.SendOnCountRecords = 30;
-            this.setting.SendOnChangeBatteryState = true;
-            this.setting.SendOnChangeChargeState = false;
+            SettingManager settingManager = new SettingManager();
+            settingManager.Load(this.setting);
         }
 
         private void SetupSystemStates()
@@ -69,10 +44,10 @@ namespace nayutaya.batty.agent
         private void timeState_Changed(object sender, ChangeEventArgs args)
         {
             DateTime now = DateTime.Now;
-            DateTime nextUpdate = this.lastUpdate.AddMinutes(IntervalMinute).AddSeconds(-30);
+            DateTime nextUpdate = this.lastUpdate.AddMinutes(this.setting.RecordOnIntervalMinute).AddSeconds(-30);
             if ( now >= nextUpdate )
             {
-                this.AddLog(String.Format("{0}分経過しました", IntervalMinute));
+                this.AddLog(String.Format("{0}分経過しました", this.setting.RecordOnIntervalMinute));
                 this.lastUpdate = now;
                 this.Send();
             }
@@ -99,10 +74,10 @@ namespace nayutaya.batty.agent
 
         private void showCurrentLevelButton_Click(object sender, EventArgs e)
         {
-            BatteryStatus bs = new BatteryStatus();
-            this.currentLevelLabel.Text = (bs.LifePercent.HasValue ? bs.LifePercent.ToString() + " %" : "不明");
-            this.currentChargingLabel.Text = (bs.Charging.HasValue ? (bs.Charging.Value ? "はい" : "いいえ") : "不明");
-            this.currentLineLabel.Text = (bs.PowerLineConnecting.HasValue ? (bs.PowerLineConnecting.Value ? "はい" : "いいえ") : "不明");
+            BatteryStatus battery = new BatteryStatus();
+            this.AddLog("バッテリ残量: " + (battery.LifePercent.HasValue ? battery.LifePercent.ToString() + " %" : "不明"));
+            this.AddLog("充電中: " + (battery.Charging.HasValue ? (battery.Charging.Value ? "はい" : "いいえ") : "不明"));
+            this.AddLog("電源接続中: " + (battery.PowerLineConnecting.HasValue ? (battery.PowerLineConnecting.Value ? "はい" : "いいえ") : "不明"));
         }
 
         private void AddLog(string message)
@@ -178,7 +153,7 @@ namespace nayutaya.batty.agent
                 return false;
             }
 
-            string deviceToken = this.tokenTextBox.Text;
+            string deviceToken = this.setting.DeviceToken;
             string level = bs.LifePercent.ToString();
 
             WebRequest request = this.CreateUpdateRequest(deviceToken, level);
@@ -204,6 +179,9 @@ namespace nayutaya.batty.agent
             form.LoadFrom(this.setting);
             form.ShowDialog();
             form.SaveTo(this.setting);
+
+            SettingManager settingManager = new SettingManager();
+            settingManager.Save(this.setting);
         }
     }
 }
