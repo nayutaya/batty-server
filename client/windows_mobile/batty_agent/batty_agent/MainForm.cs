@@ -17,7 +17,6 @@ namespace nayutaya.batty.agent
         private SystemState timeState = new SystemState(SystemProperty.Time);
         private SystemState batteryModeState = new SystemState(SystemProperty.PowerBatteryState);
         private SystemState batteryStrengthState = new SystemState(SystemProperty.PowerBatteryStrength);
-        private const uint IntervalMinute = 10;
         private DateTime lastUpdate = DateTime.Now;
         private Setting setting = new Setting();
 
@@ -48,10 +47,10 @@ namespace nayutaya.batty.agent
         private void timeState_Changed(object sender, ChangeEventArgs args)
         {
             DateTime now = DateTime.Now;
-            DateTime nextUpdate = this.lastUpdate.AddMinutes(IntervalMinute).AddSeconds(-30);
+            DateTime nextUpdate = this.lastUpdate.AddMinutes(this.setting.RecordOnIntervalMinute).AddSeconds(-30);
             if ( now >= nextUpdate )
             {
-                this.AddLog(String.Format("{0}分経過しました", IntervalMinute));
+                this.AddLog(String.Format("{0}分経過しました", this.setting.RecordOnIntervalMinute));
                 this.lastUpdate = now;
                 this.Send();
             }
