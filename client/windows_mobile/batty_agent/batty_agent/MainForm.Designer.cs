@@ -33,7 +33,6 @@
             this.exitButton = new System.Windows.Forms.Button();
             this.showCurrentLevelButton = new System.Windows.Forms.Button();
             this.sendButton = new System.Windows.Forms.Button();
-            this.tokenTextBox = new System.Windows.Forms.TextBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
@@ -66,15 +65,6 @@
             this.sendButton.TabIndex = 8;
             this.sendButton.Text = "送信";
             this.sendButton.Click += new System.EventHandler(this.sendButton_Click);
-            // 
-            // tokenTextBox
-            // 
-            this.tokenTextBox.Location = new System.Drawing.Point(81, 29);
-            this.tokenTextBox.MaxLength = 20;
-            this.tokenTextBox.Name = "tokenTextBox";
-            this.tokenTextBox.Size = new System.Drawing.Size(150, 21);
-            this.tokenTextBox.TabIndex = 11;
-            this.tokenTextBox.WordWrap = false;
             // 
             // listView1
             // 
@@ -117,7 +107,6 @@
             this.ClientSize = new System.Drawing.Size(240, 268);
             this.Controls.Add(this.settingButton);
             this.Controls.Add(this.listView1);
-            this.Controls.Add(this.tokenTextBox);
             this.Controls.Add(this.sendButton);
             this.Controls.Add(this.showCurrentLevelButton);
             this.Controls.Add(this.exitButton);
@@ -133,7 +122,6 @@
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Button showCurrentLevelButton;
         private System.Windows.Forms.Button sendButton;
-        private System.Windows.Forms.TextBox tokenTextBox;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;

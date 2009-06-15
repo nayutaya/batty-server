@@ -32,9 +32,6 @@ namespace nayutaya.batty.agent
         {
             SettingManager settingManager = new SettingManager();
             settingManager.Load(this.setting);
-
-            // MEMO: 削除予定
-            this.tokenTextBox.Text = this.setting.DeviceToken;
         }
 
         private void SetupSystemStates()
@@ -156,7 +153,7 @@ namespace nayutaya.batty.agent
                 return false;
             }
 
-            string deviceToken = this.tokenTextBox.Text;
+            string deviceToken = this.setting.DeviceToken;
             string level = bs.LifePercent.ToString();
 
             WebRequest request = this.CreateUpdateRequest(deviceToken, level);
