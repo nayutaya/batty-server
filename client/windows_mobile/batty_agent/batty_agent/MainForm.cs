@@ -43,6 +43,9 @@ namespace nayutaya.batty.agent
                 }
             }
 
+            SettingManager man = new SettingManager();
+            man.Load(this.setting);
+
             // MEMO: 削除予定
             this.setting.DeviceToken = "hoge";
             this.setting.EnableRecordOnBatteryCharging = false;
@@ -58,8 +61,7 @@ namespace nayutaya.batty.agent
             this.setting.SendOnChangeBatteryState = true;
             this.setting.SendOnChangeChargeState = false;
 
-            SettingManager man = new SettingManager();
-            man.Save(this.setting);
+            //man.Save(this.setting);
         }
 
         private void SetupSystemStates()

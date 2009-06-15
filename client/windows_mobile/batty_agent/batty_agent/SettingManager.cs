@@ -16,11 +16,29 @@ namespace nayutaya.batty.agent
 
         public void Load(Setting setting)
         {
+            OpenNETCF.AppSettings.SettingsFile settingFile = this.GetSettingsFile();
+
+            setting.DeviceToken = (string)this.LoadValue(settingFile, "General", "DeviceToken", "");
+
+            setting.EnableRecordOnBatteryCharging = (bool)this.LoadValue(settingFile, "Record", "EnableRecordOnBatteryCharging", true);
+            setting.EnableRecordOnPowerConnecting = (bool)this.LoadValue(settingFile, "Record", "EnableRecordOnPowerConnecting", true);
+
+            setting.RecordOnInterval = (bool)this.LoadValue(settingFile, "RecordTiming", "RecordOnInterval", true);
+            setting.RecordOnIntervalMinute = (uint)this.LoadValue(settingFile, "RecordTiming", "RecordOnIntervalMinute", 10U);
+            setting.RecordOnChangeLevelState = (bool)this.LoadValue(settingFile, "RecordTiming", "RecordOnChangeLevelState", false);
+            setting.RecordOnChangeChargeState = (bool)this.LoadValue(settingFile, "RecordTiming", "RecordOnChangeChargeState", false);
+
+            setting.SendOnInterval = (bool)this.LoadValue(settingFile, "SendTiming", "SendOnInterval", false);
+            setting.SendOnIntervalMinute = (uint)this.LoadValue(settingFile, "SendTiming", "SendOnIntervalMinute", 10U);
+            setting.SendOnCount = (bool)this.LoadValue(settingFile, "SendTiming", "SendOnCount", true);
+            setting.SendOnCountRecords = (uint)this.LoadValue(settingFile, "SendTiming", "SendOnCountRecords", 1U);
+            setting.SendOnChangeBatteryState = (bool)this.LoadValue(settingFile, "SendTiming", "SendOnChangeBatteryState", false);
+            setting.SendOnChangeChargeState = (bool)this.LoadValue(settingFile, "SendTiming", "SendOnChangeChargeState", false);
         }
 
         public void Save(Setting setting)
         {
-            OpenNETCF.AppSettings.SettingsFile settingFile = this.CreateSettingsFile();
+            OpenNETCF.AppSettings.SettingsFile settingFile = this.GetSettingsFile();
             
             this.SaveValue(settingFile, "General", "DeviceToken", setting.DeviceToken);
 
@@ -34,7 +52,6 @@ namespace nayutaya.batty.agent
 
             this.SaveValue(settingFile, "SendTiming", "SendOnInterval", setting.SendOnInterval);
             this.SaveValue(settingFile, "SendTiming", "SendOnIntervalMinute", setting.SendOnIntervalMinute);
-
             this.SaveValue(settingFile, "SendTiming", "SendOnCount", setting.SendOnCount);
             this.SaveValue(settingFile, "SendTiming", "SendOnCountRecords", setting.SendOnCountRecords);
             this.SaveValue(settingFile, "SendTiming", "SendOnChangeBatteryState", setting.SendOnChangeBatteryState);
@@ -53,7 +70,7 @@ namespace nayutaya.batty.agent
             return System.IO.Path.GetDirectoryName(this.GetExecutingAssemblyFilePath());
         }
 
-        private OpenNETCF.AppSettings.SettingsFile CreateSettingsFile()
+        private OpenNETCF.AppSettings.SettingsFile GetSettingsFile()
         {
             return new OpenNETCF.AppSettings.SettingsFile(this.filepath);
         }
@@ -71,6 +88,19 @@ namespace nayutaya.batty.agent
         {
             OpenNETCF.AppSettings.Setting setting = this.GetGroup(settingFile, groupName).Settings[key];
             setting.Value = value;
+        }
+
+        private object LoadValue(OpenNETCF.AppSettings.SettingsFile settingFile, string groupName, string key, object defaultValue)
+        {
+            OpenNETCF.AppSettings.Setting setting = this.GetGroup(settingFile, groupName).Settings[key];
+            if ( setting.Value != null )
+            {
+                return setting.Value;
+            }
+            else
+            {
+                return defaultValue;
+            }
         }
     }
 }
