@@ -35,7 +35,8 @@
   <tfoot>
     <tr>
       <td colspan="8">
-        <%= link_to(add_icon + h(" デバイスを追加する"), :controller => "devices", :action => "new") %>
+        <%- can_add_device = (@devices.size < Device::MaximumDevicesPerUser) -%>
+        <%= link_to_if(can_add_device, add_icon + h(" デバイスを追加する"), :controller => "devices", :action => "new") %>
       </td>
     </tr>
   </tfoot>
