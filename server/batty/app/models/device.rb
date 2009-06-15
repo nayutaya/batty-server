@@ -27,6 +27,7 @@ class Device < ActiveRecord::Base
   NameMaximumLength = 50
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
+  MaximumDevicesPerUser = 10
 
   validates_presence_of :device_token
   validates_presence_of :user_id
@@ -35,6 +36,11 @@ class Device < ActiveRecord::Base
   validates_length_of :name, :maximum => NameMaximumLength, :allow_nil => true
   validates_format_of :device_token, :with => TokenPattern, :allow_nil => true
   validates_uniqueness_of :device_token
+  validates_each(:user_id, :on => :create) { |record, attr, value|
+    if record.user && record.user.devices(true).size >= MaximumDevicesPerUser
+      record.errors.add(attr, "%{fn}の最大デバイス数を超えています。")
+    end
+  }
 
   def self.create_unique_device_token
     return TokenUtil.create_unique_token(self, :device_token, TokenLength)

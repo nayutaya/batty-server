@@ -214,6 +214,25 @@ class DeviceTest < ActiveSupport::TestCase
     }
   end
 
+  test "validates_each :user_id" do
+    create_device = proc {
+      Device.create!(
+        :user_id        => @basic.user_id,
+        :name           => "name",
+        :device_token   => Device.create_unique_device_token,
+        :device_icon_id => device_icons(:note).id)
+    }
+
+    assert_nothing_raised {
+      (10 - users(:yuya).devices.size).times {
+        create_device[]
+      }
+    }
+    assert_raise(ActiveRecord::RecordInvalid) {
+      create_device[] # 11
+    }
+  end
+
   #
   # クラスメソッド
   #
