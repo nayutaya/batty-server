@@ -31,37 +31,11 @@ namespace nayutaya.batty.agent
 
         private void LoadSetting()
         {
-            System.Reflection.Module m = System.Reflection.Assembly.GetExecutingAssembly().ManifestModule;
-            string dir = System.IO.Path.GetDirectoryName(m.FullyQualifiedName);
-            string file = dir + @"\token.txt";
-
-            if ( File.Exists(file) )
-            {
-                using ( StreamReader st = new StreamReader(file) )
-                {
-                    this.tokenTextBox.Text = st.ReadToEnd();
-                }
-            }
-
-            SettingManager man = new SettingManager();
-            man.Load(this.setting);
+            SettingManager settingManager = new SettingManager();
+            settingManager.Load(this.setting);
 
             // MEMO: 削除予定
-            this.setting.DeviceToken = "hoge";
-            this.setting.EnableRecordOnBatteryCharging = false;
-            this.setting.EnableRecordOnPowerConnecting = true;
-            this.setting.RecordOnInterval = false;
-            this.setting.RecordOnIntervalMinute = 10;
-            this.setting.RecordOnChangeLevelState = true;
-            this.setting.RecordOnChangeChargeState = false;
-            this.setting.SendOnInterval = true;
-            this.setting.SendOnIntervalMinute = 15;
-            this.setting.SendOnCount = false;
-            this.setting.SendOnCountRecords = 30;
-            this.setting.SendOnChangeBatteryState = true;
-            this.setting.SendOnChangeChargeState = false;
-
-            //man.Save(this.setting);
+            this.tokenTextBox.Text = this.setting.DeviceToken;
         }
 
         private void SetupSystemStates()
@@ -209,6 +183,9 @@ namespace nayutaya.batty.agent
             form.LoadFrom(this.setting);
             form.ShowDialog();
             form.SaveTo(this.setting);
+
+            SettingManager settingManager = new SettingManager();
+            settingManager.Save(this.setting);
         }
     }
 }
