@@ -78,10 +78,10 @@ namespace nayutaya.batty.agent
 
         private void showCurrentLevelButton_Click(object sender, EventArgs e)
         {
-            BatteryStatus bs = new BatteryStatus();
-            this.currentLevelLabel.Text = (bs.LifePercent.HasValue ? bs.LifePercent.ToString() + " %" : "不明");
-            this.currentChargingLabel.Text = (bs.Charging.HasValue ? (bs.Charging.Value ? "はい" : "いいえ") : "不明");
-            this.currentLineLabel.Text = (bs.PowerLineConnecting.HasValue ? (bs.PowerLineConnecting.Value ? "はい" : "いいえ") : "不明");
+            BatteryStatus battery = new BatteryStatus();
+            this.AddLog("バッテリ残量: " + (battery.LifePercent.HasValue ? battery.LifePercent.ToString() + " %" : "不明"));
+            this.AddLog("充電中: " + (battery.Charging.HasValue ? (battery.Charging.Value ? "はい" : "いいえ") : "不明"));
+            this.AddLog("電源接続中: " + (battery.PowerLineConnecting.HasValue ? (battery.PowerLineConnecting.Value ? "はい" : "いいえ") : "不明"));
         }
 
         private void AddLog(string message)
