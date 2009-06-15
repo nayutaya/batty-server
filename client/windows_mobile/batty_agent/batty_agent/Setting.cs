@@ -17,7 +17,7 @@ namespace nayutaya.batty.agent
         private bool sendOnInterval;
         private uint sendOnIntervalMinute;
         private bool sendOnCount;
-        private uint sendOnCountRecords;
+        private uint sendOnCountRecord;
         private bool sendOnChangeBatteryState;
         private bool sendOnChangeChargeState;
 
@@ -45,10 +45,10 @@ namespace nayutaya.batty.agent
             set { sendOnChangeBatteryState = value; }
         }
 
-        public uint SendOnCountRecords
+        public uint SendOnCountRecord
         {
-            get { return sendOnCountRecords; }
-            set { sendOnCountRecords = value; }
+            get { return sendOnCountRecord; }
+            set { sendOnCountRecord = value; }
         }
 
         public bool SendOnCount

@@ -31,7 +31,7 @@ namespace nayutaya.batty.agent
             setting.SendOnInterval = (bool)this.LoadValue(settingFile, "SendTiming", "SendOnInterval", false);
             setting.SendOnIntervalMinute = (uint)this.LoadValue(settingFile, "SendTiming", "SendOnIntervalMinute", 10U);
             setting.SendOnCount = (bool)this.LoadValue(settingFile, "SendTiming", "SendOnCount", true);
-            setting.SendOnCountRecords = (uint)this.LoadValue(settingFile, "SendTiming", "SendOnCountRecords", 1U);
+            setting.SendOnCountRecord = (uint)this.LoadValue(settingFile, "SendTiming", "SendOnCountRecord", 1U);
             setting.SendOnChangeBatteryState = (bool)this.LoadValue(settingFile, "SendTiming", "SendOnChangeBatteryState", false);
             setting.SendOnChangeChargeState = (bool)this.LoadValue(settingFile, "SendTiming", "SendOnChangeChargeState", false);
         }
@@ -53,7 +53,7 @@ namespace nayutaya.batty.agent
             this.SaveValue(settingFile, "SendTiming", "SendOnInterval", setting.SendOnInterval);
             this.SaveValue(settingFile, "SendTiming", "SendOnIntervalMinute", setting.SendOnIntervalMinute);
             this.SaveValue(settingFile, "SendTiming", "SendOnCount", setting.SendOnCount);
-            this.SaveValue(settingFile, "SendTiming", "SendOnCountRecords", setting.SendOnCountRecords);
+            this.SaveValue(settingFile, "SendTiming", "SendOnCountRecord", setting.SendOnCountRecord);
             this.SaveValue(settingFile, "SendTiming", "SendOnChangeBatteryState", setting.SendOnChangeBatteryState);
             this.SaveValue(settingFile, "SendTiming", "SendOnChangeChargeState", setting.SendOnChangeChargeState);
 
