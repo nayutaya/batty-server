@@ -43,17 +43,6 @@ namespace nayutaya.batty.agent
                 }
             }
 
-            OpenNETCF.AppSettings.SettingsFile sf = new OpenNETCF.AppSettings.SettingsFile(dir + @"\setting.xml");
-            if ( !sf.Groups.Contains("General") )
-            {
-                sf.Groups.Add("General");
-            }
-            OpenNETCF.AppSettings.SettingGroup g = sf.Groups["General"];
-            g.Settings.Add("int", 1);
-            g.Settings.Add("str", "a");
-            sf.Save();
-
-
             // MEMO: 削除予定
             this.setting.DeviceToken = "hoge";
             this.setting.EnableRecordOnBatteryCharging = false;
@@ -68,6 +57,9 @@ namespace nayutaya.batty.agent
             this.setting.SendOnCountRecords = 30;
             this.setting.SendOnChangeBatteryState = true;
             this.setting.SendOnChangeChargeState = false;
+
+            SettingManager man = new SettingManager();
+            man.Save(this.setting);
         }
 
         private void SetupSystemStates()
