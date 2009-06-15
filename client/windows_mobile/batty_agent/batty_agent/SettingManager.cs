@@ -93,14 +93,7 @@ namespace nayutaya.batty.agent
         private object LoadValue(OpenNETCF.AppSettings.SettingsFile settingFile, string groupName, string key, object defaultValue)
         {
             OpenNETCF.AppSettings.Setting setting = this.GetGroup(settingFile, groupName).Settings[key];
-            if ( setting.Value != null )
-            {
-                return setting.Value;
-            }
-            else
-            {
-                return defaultValue;
-            }
+            return (setting.Value != null ? setting.Value : defaultValue);
         }
     }
 }
