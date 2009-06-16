@@ -216,7 +216,7 @@ class DeviceTest < ActiveSupport::TestCase
 
   test "validates_each :user_id" do
     user = users(:yuya)
-    create_device = proc {
+    create_record = proc {
       user.devices.create!(
         :name           => "name",
         :device_token   => Device.create_unique_device_token,
@@ -225,12 +225,12 @@ class DeviceTest < ActiveSupport::TestCase
 
     assert_nothing_raised {
       (10 - user.devices.size).times {
-        device = create_device[]
-        device.save!
+        record = create_record[]
+        record.save!
       }
     }
     assert_raise(ActiveRecord::RecordInvalid) {
-      create_device[]
+      create_record[]
     }
   end
 

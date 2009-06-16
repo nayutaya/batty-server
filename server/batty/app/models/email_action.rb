@@ -15,7 +15,7 @@
 
 # メールアクション
 class EmailAction < ActiveRecord::Base
-  MaximumEmailActionsPerTrigger = 5
+  MaximumRecordsPerTrigger = 5
 
   belongs_to :trigger
 
@@ -28,7 +28,7 @@ class EmailAction < ActiveRecord::Base
   validates_length_of :body, :maximum => 1000, :allow_nil => true
   validates_email_format_of :email
   validates_each(:trigger_id, :on => :create) { |record, attr, value|
-    if record.trigger && record.trigger.email_actions(true).size >= MaximumEmailActionsPerTrigger
+    if record.trigger && record.trigger.email_actions(true).size >= MaximumRecordsPerTrigger
       record.errors.add(attr, "%{fn}の最大メール通知数を超えています。")
     end
   }

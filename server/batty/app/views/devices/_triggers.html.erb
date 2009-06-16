@@ -15,7 +15,7 @@
   <tfoot>
     <tr>
       <td colspan="7" align="right">
-        <%- can_add_trigger = (@triggers.size < Trigger::MaximumTriggersPerDevice) -%>
+        <%- can_add_trigger = (@triggers.size < Trigger::MaximumRecordsPerDevice) -%>
         <span><%= link_to_if(can_add_trigger, add_icon + h(" トリガを追加する"), :controller => "triggers", :action => "new") %></span>
       </td>
     </tr>
@@ -31,7 +31,7 @@
             <tfoot>
               <tr>
                 <td colspan="4" align="right">
-                  <%- can_add_email_action = (trigger.email_actions.size < EmailAction::MaximumEmailActionsPerTrigger) -%>
+                  <%- can_add_email_action = (trigger.email_actions.size < EmailAction::MaximumRecordsPerTrigger) -%>
                   <%= link_to_if(can_add_email_action, add_icon + h("メール通知を追加する"), :controller => "email_actions", :action => "new", :trigger_id => trigger.id) %>
                 </td>
               </tr>

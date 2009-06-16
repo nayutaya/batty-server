@@ -41,7 +41,7 @@ class Trigger < ActiveRecord::Base
   }.freeze.each(&:freeze)
 
   OperatorCodes = Operators.map(&:first).freeze
-  MaximumTriggersPerDevice = 20
+  MaximumRecordsPerDevice = 20
 
   validates_presence_of :device_id
   validates_presence_of :operator
@@ -49,7 +49,7 @@ class Trigger < ActiveRecord::Base
   validates_inclusion_of :operator, :in => OperatorCodes, :allow_nil => true
   validates_inclusion_of :level, :in => Energy::LevelRange, :allow_nil => true
   validates_each(:device_id, :on => :create) { |record, attr, value|
-    if record.device && record.device.triggers(true).size >= MaximumTriggersPerDevice
+    if record.device && record.device.triggers(true).size >= MaximumRecordsPerDevice
       record.errors.add(attr, "%{fn}の最大トリガ数を超えています。")
     end
   }
