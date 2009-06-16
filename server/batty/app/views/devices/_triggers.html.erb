@@ -31,7 +31,8 @@
             <tfoot>
               <tr>
                 <td colspan="4" align="right">
-                  <%= link_to(add_icon + h("メール通知を追加する"), :controller => "email_actions", :action => "new", :trigger_id => trigger.id) %>
+                  <%- can_add_email_action = (trigger.email_actions.size < EmailAction::MaximumEmailActionsPerTrigger) -%>
+                  <%= link_to_if(can_add_email_action, add_icon + h("メール通知を追加する"), :controller => "email_actions", :action => "new", :trigger_id => trigger.id) %>
                 </td>
               </tr>
             </tfoot>
