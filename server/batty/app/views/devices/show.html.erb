@@ -1,16 +1,13 @@
 
+<%- @title = @device.name -%>
+<%- @topic_path << ["トップ", root_path] -%>
+<%- @topic_path << [@title] -%>
 <%-
-  @title = @device.name
   @rss_auto_discoveries = [
     {:title => "エネルギー履歴", :href => url_for(:controller => "device_feeds", :action => "energies_rss", :device_token => @device.device_token)},
     {:title => "イベント履歴", :href => url_for(:controller => "device_feeds", :action => "events_rss", :device_token => @device.device_token)},
   ]
 -%>
-
-<div>
-  <%= link_to(h("トップ"), root_path) %> &gt;
-  <em><%=h @device.name %></em>
-</div>
 
 <h1>
   <%= device_icon48(@device.device_icon, :name => @device.name) %>

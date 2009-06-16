@@ -1,4 +1,7 @@
 
+<%- @title = "デバイスの追加" -%>
+<%- @topic_path << ["トップ", root_path] -%>
+<%- @topic_path << [@title] -%>
 <%-
 @additional_head_html = <<END_OF_HTML
   <style type="text/css">
@@ -31,7 +34,8 @@
   </style>
 END_OF_HTML
 -%>
-<h1>デバイスの追加</h1>
+
+<h1><%=h @title %></h1>
 
 <%- form_for(:edit_form, @edit_form, :url => {:action => "create"}) { |f| -%>
   <table border="1">
