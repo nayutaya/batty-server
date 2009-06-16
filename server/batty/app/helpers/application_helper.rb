@@ -60,6 +60,10 @@ module ApplicationHelper
     return icon16("icons/fam/bin.png", "削除")
   end
 
+  def help_icon(alt = "ヘルプ")
+    return icon16("icons/fam/help.png", alt)
+  end
+
   def feed_icon
     return icon16("icons/fam/feed.png", "フィード")
   end
