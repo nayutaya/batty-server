@@ -1,11 +1,10 @@
 
-<div>
-  <%= link_to(h("トップ"), root_path) %> &gt;
-  <%= link_to(h("ユーザ設定"), :controller => "settings") %> &gt;
-  <em>通知先メールアドレスの追加</em>
-</div>
+<%- @title = "通知先メールアドレスの追加" -%>
+<%- @topic_path << ["トップ", root_path] -%>
+<%- @topic_path << ["ユーザ設定", url_for(:controller => "settings")] -%>
+<%- @topic_path << [@title] -%>
 
-<h1>通知先メールアドレスの追加</h1>
+<h1><%=h @title %></h1>
 
 <%- form_for(:edit_form, @edit_form, :url => {:action => "create"}) { |f| -%>
   <table border="1">
