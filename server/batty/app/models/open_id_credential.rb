@@ -14,10 +14,17 @@
 
 # OpenID認証情報
 class OpenIdCredential < ActiveRecord::Base
+  MaximumRecordsPerUser = 10
+
   belongs_to :user
 
   validates_presence_of :identity_url
   validates_length_of :identity_url, :maximum => 200, :allow_nil => true
   validates_format_of :identity_url, :with => URI.regexp(%w[http https]), :allow_nil => true
   validates_uniqueness_of :identity_url
+  validates_each(:user_id, :on => :create) { |record, attr, value|
+    if record.user && record.user.open_id_credentials(true).size >= MaximumRecordsPerUser
+      record.errors.add(attr, "%{fn}の最大OpenID認証数を超えています。")
+    end
+  }
 end

@@ -75,4 +75,22 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
     @yuya_livedoor.identity_url = @shinya_example.identity_url
     assert_equal(false, @yuya_livedoor.valid?)
   end
+
+  test "validates_each :user_id" do
+    user = users(:yuya)
+    create_record = proc {
+      user.open_id_credentials.create!(
+        :identity_url => "http://example.jp/identity_url#{rand(1000)}")
+    }
+
+    assert_nothing_raised {
+      (10 - user.open_id_credentials.size).times {
+        record = create_record[]
+        record.save!
+      }
+    }
+    assert_raise(ActiveRecord::RecordInvalid) {
+      create_record[]
+    }
+  end
 end
