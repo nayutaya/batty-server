@@ -43,7 +43,7 @@ class HttpActionsControllerTest < ActionController::TestCase
     assert_equal(@yuya_pda_ge90, assigns(:trigger))
 
     assert_equal(
-      HttpActionEditForm.new.attributes,
+      HttpActionEditForm.new(:enable => true).attributes,
       assigns(:edit_form).attributes)
 
     assert_equal(

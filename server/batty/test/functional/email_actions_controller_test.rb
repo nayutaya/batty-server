@@ -44,7 +44,7 @@ class EmailActionsControllerTest < ActionController::TestCase
     assert_equal(@yuya_pda_ge90, assigns(:trigger))
 
     assert_equal(
-      EmailActionEditForm.new.attributes,
+      EmailActionEditForm.new(:enable => true).attributes,
       assigns(:edit_form).attributes)
 
     assert_equal(

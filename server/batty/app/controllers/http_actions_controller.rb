@@ -15,7 +15,7 @@ class HttpActionsController < ApplicationController
 
   # GET /device/:device_id/trigger/:trigger_id/acts/http/new
   def new
-    @edit_form = EditFormClass.new
+    @edit_form = EditFormClass.new(:enable => true)
     set_http_methods_for_select(true)
   end
 

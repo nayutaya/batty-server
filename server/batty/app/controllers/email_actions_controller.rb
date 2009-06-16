@@ -15,7 +15,7 @@ class EmailActionsController < ApplicationController
 
   # GET /device/:device_id/trigger/:trigger_id/acts/email/new
   def new
-    @edit_form = EditFormClass.new
+    @edit_form = EditFormClass.new(:enable => true)
     @email_addresses_for_select = EditFormClass.email_addresses_for_select(@login_user, :include_blank => true)
   end
 

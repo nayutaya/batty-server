@@ -40,7 +40,7 @@ class TriggersControllerTest < ActionController::TestCase
     assert_equal(@yuya_pda, assigns(:device))
 
     assert_equal(
-      TriggerEditForm.new.attributes,
+      TriggerEditForm.new(:enable => true).attributes,
       assigns(:edit_form).attributes)
 
     assert_equal(

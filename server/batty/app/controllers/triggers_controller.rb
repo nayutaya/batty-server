@@ -13,7 +13,7 @@ class TriggersController < ApplicationController
 
   # GET /device/:device_id/triggers/new
   def new
-    @edit_form = EditFormClass.new
+    @edit_form = EditFormClass.new(:enable => true)
     set_operators_for_select(true)
   end
 
