@@ -10,21 +10,30 @@
   <li>WebHookのPOSTデータ</li>
 </ul>
 
+<h2>キーワードの一覧</h2>
+
 <%-
+  time = Time.local(2010, 1, 2, 3, 4, 5)
+
   user = User.new(
-    :nickname => "ニックネーム")
+    :user_token => "0" * User::TokenLength,
+    :nickname   => "ニックネーム")
 
   device = Device.new(
-    :name => "デバイス")
+    :user         => user,
+    :device_token => "0" * Device::TokenLength,
+    :name         => "デバイス名")
 
-  event = Event.new
+  event = Event.new(
+    :device           => device,
+    :created_at       => time,
+    :trigger_operator => Trigger.operator_symbol_to_code(:eq),
+    :trigger_level    => 100,
+    :observed_level   => 100,
+    :observed_at      => time)
 
-  event.device = device
-  event.device.user = user
-  keywords = NoticeFormatter.format_event(event)
+  keywords = NoticeFormatter.format_event(event, time)
 -%>
-
-<h2>キーワードの一覧</h2>
 
 <table border="1">
   <tr>
