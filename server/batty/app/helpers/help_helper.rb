@@ -13,6 +13,7 @@ module HelpHelper
     options = options.dup
     show_icon  = (options.delete(:icon)  != false)
     show_title = (options.delete(:title) != false)
+    new_window = (options.delete(:new_window) == true)
     raise(ArgumentError) unless options.empty?
 
     title = help_title(key)
@@ -25,6 +26,6 @@ module HelpHelper
       else ""
       end
 
-    return link_to(anchor, :controller => "help", :action => key)
+    return link_to(anchor, {:controller => "help", :action => key}, :target => (new_window ? "_blank" : nil))
   end
 end

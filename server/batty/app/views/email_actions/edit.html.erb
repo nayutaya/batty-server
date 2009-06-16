@@ -5,6 +5,11 @@
   <em>メール通知の編集</em>
 </div>
 
+<%- side_column { -%>
+  <div><%= help_link(:what_is_keyword, :new_window => true) %></div>
+  <div><%= help_link(:keywords, :new_window => true) %></div>
+<%- } -%>
+
 <h1>メール通知の編集</h1>
 
 <%- form_for(:edit_form, @edit_form, :url => {:action => "update"}) { |f| -%>
@@ -50,8 +55,6 @@
   </table>
  <div><%= submit_tag("保存") %></div>
 <%- } -%>
-
-<div>ヘルプ: <%= link_to(h("キーワード"), :controller => "help", :action => "keywords") %></div>
 
 <%- unless production? -%>
   <div class="debug">
