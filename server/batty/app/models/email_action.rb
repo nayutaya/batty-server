@@ -15,6 +15,8 @@
 
 # メールアクション
 class EmailAction < ActiveRecord::Base
+  MaximumEmailActionsPerTrigger = 5
+
   belongs_to :trigger
 
   validates_presence_of :trigger_id
@@ -25,6 +27,11 @@ class EmailAction < ActiveRecord::Base
   validates_length_of :subject, :maximum => 200, :allow_nil => true
   validates_length_of :body, :maximum => 1000, :allow_nil => true
   validates_email_format_of :email
+  validates_each(:trigger_id, :on => :create) { |record, attr, value|
+    if record.trigger && record.trigger.email_actions(true).size >= MaximumEmailActionsPerTrigger
+      record.errors.add(attr, "%{fn}の最大メール通知数を超えています。")
+    end
+  }
   validates_each(:email) { |record, attr, value|
     user = record.trigger.try(:device).try(:user)
     if user && !user.email_addresses.active.exists?(:email => record.email)

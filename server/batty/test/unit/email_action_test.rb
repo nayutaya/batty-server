@@ -115,6 +115,27 @@ class EmailActionTest < ActiveSupport::TestCase
   end
 =end
 
+  test "validates_each :trigger_id" do
+    trigger = triggers(:yuya_pda_ge90)
+    create_record = proc {
+      trigger.email_actions.create!(
+        :enable  => true,
+        :email   => email_addresses(:yuya_gmail).email,
+        :subject => "subject",
+        :body    => "body")
+    }
+
+    assert_nothing_raised {
+      (5 - trigger.email_actions.size).times {
+        record = create_record[]
+        record.save!
+      }
+    }
+    assert_raise(ActiveRecord::RecordInvalid) {
+      create_record[]
+    }
+  end
+
   test "validates_each :email" do
     @basic.trigger_id = triggers(:yuya_pda_ge90).id
     @basic.email      = email_addresses(:yuya_gmail).email
