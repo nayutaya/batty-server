@@ -40,13 +40,13 @@
     # 現在日時
     "now:datetime"      => "現在日時",
     "now:datetime:ja"   => "現在日時の日本語表記",
-    "now:datetime:json" => "現在日時のJSON表記<br />（データが無い場合はnull）",
+    "now:datetime:json" => "現在日時のJSON表記",
     "now:date"          => "現在日時の日付部分",
     "now:date:ja"       => "現在日時の日付部分の日本語表記",
-    "now:date:json"     => "現在日時の日付部分のJSON表記<br />（データが無い場合はnull）",
+    "now:date:json"     => "現在日時の日付部分のJSON表記",
     "now:time"          => "現在日時の時刻部分",
     "now:time:ja"       => "現在日時の時刻部分の日本語表記",
-    "now:time:json"     => "現在日時の時刻部分のJSON表記<br />（データが無い場合はnull）",
+    "now:time:json"     => "現在日時の時刻部分のJSON表記",
     "now:yyyy"          => "現在日時の年（4桁）",
     "now:mm"            => "現在日時の月（2桁）",
     "now:dd"            => "現在日時の日（2桁）",
@@ -55,17 +55,51 @@
     "now:ss"            => "現在日時の秒（2桁）",
     # ユーザ
     "user:token"         => "ユーザトークン",
-    "user:token:json"    => "ユーザトークンのJSON表記<br />（データが無い場合はnull）",
+    "user:token:json"    => "ユーザトークンのJSON表記",
     "user:nickname"      => "ユーザのニックネーム",
-    "user:nickname:json" => "ユーザのニックネームのJSON表記<br />（データが無い場合はnull）",
+    "user:nickname:json" => "ユーザのニックネームのJSON表記",
     # デバイス
     "device:token"      => "デバイストークン",
-    "device:token:json" => "デバイストークンのJSON表記<br />（データが無い場合はnull）",
+    "device:token:json" => "デバイストークンのJSON表記",
     "device:name"       => "デバイス名",
-    "device:name:json"  => "デバイス名のJSON表記<br />（データが無い場合はnull）",
-=begin
-    "" => "",
-=end
+    "device:name:json"  => "デバイス名のJSON表記",
+    # イベント
+    "event:created-at:datetime"       => "イベント生成日時",
+    "event:created-at:datetime:ja"    => "イベント生成日時の日本語表記",
+    "event:created-at:datetime:json"  => "イベント生成日時のJSON表記",
+    "event:created-at:date"           => "イベント生成日時の日付部分",
+    "event:created-at:date:ja"        => "イベント生成日時の日付部分の日本語表記",
+    "event:created-at:date:json"      => "イベント生成日時の日付部分のJSON表記",
+    "event:created-at:time"           => "イベント生成日時の時刻部分",
+    "event:created-at:time:ja"        => "イベント生成日時の時刻部分の日本語表記",
+    "event:created-at:time:json"      => "イベント生成日時の時刻部分のJSON表記",
+    "event:created-at:yyyy"           => "イベント生成日時の年（4桁）",
+    "event:created-at:mm"             => "イベント生成日時の月（2桁）",
+    "event:created-at:dd"             => "イベント生成日時の日（2桁）",
+    "event:created-at:hh"             => "イベント生成日時の時（2桁）",
+    "event:created-at:nn"             => "イベント生成日時の分（2桁）",
+    "event:created-at:ss"             => "イベント生成日時の秒（2桁）",
+    "event:trigger-operator"          => "トリガの演算子",
+    "event:trigger-operator:json"     => "トリガの演算子のJSON表記",
+    "event:trigger-level"             => "トリガのレベル",
+    "event:trigger-level:json"        => "トリガのレベルのJSON表記",
+    "event:observed-level"            => "観測されたレベル",
+    "event:observed-level:json"       => "観測されたレベルのJSON表記",
+    "event:observed-at:datetime"      => "イベント観測日時",
+    "event:observed-at:datetime:ja"   => "イベント観測日時の日本語表記",
+    "event:observed-at:datetime:json" => "イベント観測日時のJSON表記",
+    "event:observed-at:date"          => "イベント観測日時の日付部分",
+    "event:observed-at:date:ja"       => "イベント観測日時の日付部分の日本語表記",
+    "event:observed-at:date:json"     => "イベント観測日時の日付部分のJSON表記",
+    "event:observed-at:time"          => "イベント観測日時の時刻部分",
+    "event:observed-at:time:ja"       => "イベント観測日時の時刻部分の日本語表記",
+    "event:observed-at:time:json"     => "イベント観測日時の時刻部分のJSON表記",
+    "event:observed-at:yyyy"          => "イベント観測日時の年（4桁）",
+    "event:observed-at:mm"            => "イベント観測日時の月（2桁）",
+    "event:observed-at:dd"            => "イベント観測日時の日（2桁）",
+    "event:observed-at:hh"            => "イベント観測日時の時（2桁）",
+    "event:observed-at:nn"            => "イベント観測日時の分（2桁）",
+    "event:observed-at:ss"            => "イベント観測日時の秒（2桁）",
   }
 -%>
 
@@ -83,3 +117,8 @@
     </tr>
   <%- } -%>
 </table>
+
+<h2>JSON表記について</h2>
+
+<div>主に、WebHookにおけるPOSTデータでの使用を想定しています。</div>
+<div>データが無い場合は null が出力されます。</div>
