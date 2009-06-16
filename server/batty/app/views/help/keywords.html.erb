@@ -1,18 +1,6 @@
 
 <%- @title = help_title(params[:action]) -%>
-
 <h1><%= @title %></h1>
-
-<h2>キーワードが展開される箇所</h2>
-
-<ul>
-  <li>メール通知のタイトル</li>
-  <li>メール通知の本文</li>
-  <li>WebHookのURL</li>
-  <li>WebHookのPOSTデータ</li>
-</ul>
-
-<h2>キーワードの一覧</h2>
 
 <%-
   time = Time.local(2010, 1, 2, 3, 4, 5)
@@ -121,4 +109,10 @@
   <li>主に、WebHookにおけるPOSTデータでの使用を想定しています。</li>
   <li>データが無い場合は、nullが出力されます。</li>
   <li>ASCII以外の文字列は、\uXXXX形式で出力されます。</li>
+</ul>
+
+<h2>関連するヘルプ</h2>
+
+<ul>
+  <li><%= help_link(:what_is_keyword, :icon => false) %></li>
 </ul>

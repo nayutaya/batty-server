@@ -1,11 +1,12 @@
 
 module HelpHelper
   HelpTitles = {
-    :keywords => "キーワード一覧",
+    :what_is_keyword => "キーワードとは？",
+    :keywords        => "キーワードの一覧",
   }
 
   def help_title(key)
-    return HelpTitles[key.to_sym] || raise("not found")
+    return HelpTitles[key.to_sym] || "NOT FOUND"
   end
 
   def help_link(key, options = {})
