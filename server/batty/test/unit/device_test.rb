@@ -225,7 +225,8 @@ class DeviceTest < ActiveSupport::TestCase
 
     assert_nothing_raised {
       (10 - users(:yuya).devices.size).times {
-        create_device[]
+        device = create_device[]
+        device.save!
       }
     }
     assert_raise(ActiveRecord::RecordInvalid) {
