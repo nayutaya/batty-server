@@ -35,6 +35,16 @@
   keywords = NoticeFormatter.format_event(event, time)
 -%>
 
+<%-
+  description = {
+    # デバイス
+    "device:token"      => "デバイストークン",
+    "device:token:json" => "デバイストークンのJSON表記（データが無い場合はnull）",
+    "device:name"       => "デバイス名",
+    "device:name:json"  => "デバイス名のJSON表記（データが無い場合はnull）",
+  }
+-%>
+
 <table border="1">
   <tr>
     <th>キーワード</th>
@@ -45,6 +55,7 @@
     <tr>
       <td style="font-family: monospace;"><%=h key %></td>
       <td style="font-family: monospace;"><%=h value %></td>
+      <td><%=h description[key] %></td>
     </tr>
   <%- } -%>
 </table>
