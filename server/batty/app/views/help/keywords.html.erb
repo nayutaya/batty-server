@@ -18,9 +18,9 @@
     :device           => Device.new(
       :user             => User.new(
         :user_token       => "0" * User::TokenLength,
-        :nickname         => "ニックネーム"),
+        :nickname         => "ユーザ"),
       :device_token     => "0" * Device::TokenLength,
-      :name             => "デバイス名"),
+      :name             => "デバイス"),
     :created_at       => time,
     :trigger_operator => Trigger.operator_symbol_to_code(:eq),
     :trigger_level    => 100,
@@ -115,5 +115,8 @@
 
 <h2>JSON表記について</h2>
 
-<div>主に、WebHookにおけるPOSTデータでの使用を想定しています。</div>
-<div>データが無い場合は null が出力されます。</div>
+<ul>
+  <li>主に、WebHookにおけるPOSTデータでの使用を想定しています。</li>
+  <li>データが無い場合は、nullが出力されます。</li>
+  <li>ASCII以外の文字列は、\uXXXX形式で出力されます。</li>
+</ul>
