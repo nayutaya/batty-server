@@ -5,7 +5,7 @@ module HelpHelper
   }
 
   def help_title(key)
-    return HelpTitles[key] || raise("not found")
+    return HelpTitles[key.to_sym] || raise("not found")
   end
 
   def help_link(key, options = {})
