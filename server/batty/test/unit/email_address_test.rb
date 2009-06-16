@@ -127,11 +127,12 @@ class EmailAddressTest < ActiveSupport::TestCase
   end
 
   test "validates_each :user_id" do
+    srand(0)
     user = users(:yuya)
     create_record = proc {
       user.email_addresses.create!(
         :activation_token => @klass.create_unique_activation_token,
-        :email            => "email#{rand(10)}#{rand(10)}@example.jp")
+        :email            => "email#{rand(1000)}@example.jp")
     }
 
     assert_nothing_raised {

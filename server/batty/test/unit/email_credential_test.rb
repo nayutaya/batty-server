@@ -138,6 +138,7 @@ class EmailCredentialTest < ActiveSupport::TestCase
   end
 
   test "validates_each :user_id" do
+    srand(0)
     user = users(:yuya)
     create_record = proc {
       user.email_credentials.create!(
