@@ -17,6 +17,7 @@ class EmailAddress < ActiveRecord::Base
 
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
+  MaximumRecordsPerUser = 10
 
   validates_presence_of :activation_token
   validates_presence_of :user_id
@@ -26,6 +27,11 @@ class EmailAddress < ActiveRecord::Base
   validates_email_format_of :email
   validates_uniqueness_of :activation_token
   validates_uniqueness_of :email, :scope => [:user_id]
+  validates_each(:user_id, :on => :create) { |record, attr, value|
+    if record.user && record.user.email_addresses(true).size >= MaximumRecordsPerUser
+      record.errors.add(attr, "%{fn}の最大通知先メールアドレス数を超えています。")
+    end
+  }
 
   named_scope :active, :conditions => ["(email_addresses.activated_at IS NOT NULL)"]
 
