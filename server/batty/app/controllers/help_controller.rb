@@ -1,5 +1,8 @@
-class HelpController < ApplicationController
-  def index
-  end
 
+# ヘルプ
+class HelpController < ApplicationController
+  # GET /help
+  def index
+    # nop
+  end
 end
