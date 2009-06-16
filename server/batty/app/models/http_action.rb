@@ -31,7 +31,7 @@ class HttpAction < ActiveRecord::Base
   validates_format_of :url, :with => URI.regexp(["http"]), :allow_nil => true
   validates_each(:trigger_id, :on => :create) { |record, attr, value|
     if record.trigger && record.trigger.http_actions(true).size >= MaximumRecordsPerTrigger
-      record.errors.add(attr, "%{fn}の最大WebHook数を超えています。")
+      record.errors.add(attr, "これ以上%{fn}に#{_(record.class.to_s.downcase)}を追加できません。")
     end
   }
 

@@ -24,7 +24,7 @@ class OpenIdCredential < ActiveRecord::Base
   validates_uniqueness_of :identity_url
   validates_each(:user_id, :on => :create) { |record, attr, value|
     if record.user && record.user.open_id_credentials(true).size >= MaximumRecordsPerUser
-      record.errors.add(attr, "%{fn}の最大OpenID認証数を超えています。")
+      record.errors.add(attr, "これ以上%{fn}に#{_(record.class.to_s.downcase)}を追加できません。")
     end
   }
 end

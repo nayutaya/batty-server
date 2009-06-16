@@ -29,7 +29,7 @@ class EmailAddress < ActiveRecord::Base
   validates_uniqueness_of :email, :scope => [:user_id]
   validates_each(:user_id, :on => :create) { |record, attr, value|
     if record.user && record.user.email_addresses(true).size >= MaximumRecordsPerUser
-      record.errors.add(attr, "%{fn}の最大通知先メールアドレス数を超えています。")
+      record.errors.add(attr, "これ以上%{fn}に#{_(record.class.to_s.downcase)}を追加できません。")
     end
   }
 

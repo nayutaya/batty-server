@@ -50,7 +50,7 @@ class Trigger < ActiveRecord::Base
   validates_inclusion_of :level, :in => Energy::LevelRange, :allow_nil => true
   validates_each(:device_id, :on => :create) { |record, attr, value|
     if record.device && record.device.triggers(true).size >= MaximumRecordsPerDevice
-      record.errors.add(attr, "%{fn}の最大トリガ数を超えています。")
+      record.errors.add(attr, "これ以上%{fn}に#{_(record.class.to_s.downcase)}を追加できません。")
     end
   }
 
