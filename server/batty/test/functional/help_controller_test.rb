@@ -15,4 +15,11 @@ class HelpControllerTest < ActionController::TestCase
     assert_response(:success)
     assert_template("index")
   end
+
+  test "GET keywords" do
+    get :keywords
+
+    assert_response(:success)
+    assert_template("keywords")
+  end
 end
