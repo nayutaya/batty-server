@@ -14,18 +14,13 @@
 
 <%-
   time = Time.local(2010, 1, 2, 3, 4, 5)
-
-  user = User.new(
-    :user_token => "0" * User::TokenLength,
-    :nickname   => "ニックネーム")
-
-  device = Device.new(
-    :user         => user,
-    :device_token => "0" * Device::TokenLength,
-    :name         => "デバイス名")
-
   event = Event.new(
-    :device           => device,
+    :device           => Device.new(
+      :user             => User.new(
+        :user_token       => "0" * User::TokenLength,
+        :nickname         => "ニックネーム"),
+      :device_token     => "0" * Device::TokenLength,
+      :name             => "デバイス名"),
     :created_at       => time,
     :trigger_operator => Trigger.operator_symbol_to_code(:eq),
     :trigger_level    => 100,
