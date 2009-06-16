@@ -79,6 +79,8 @@ ActionController::Routing::Routes.draw do |map|
     feeds.connect "user/token/:user_token/events.csv",   :action => "events_csv"
   end
 
+  map.connect "help/:action", :controller => "help"
+
   map.connect "admin", :controller => "admin/home", :action => "index"
   map.connect "admin/sessions/:action", :controller => "admin/sessions", :action => /(index|cleanup)/
 

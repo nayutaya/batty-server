@@ -1,0 +1,122 @@
+
+<h1>キーワード</h1>
+
+<h2>キーワードが展開される箇所</h2>
+
+<ul>
+  <li>メール通知のタイトル</li>
+  <li>メール通知の本文</li>
+  <li>WebHookのURL</li>
+  <li>WebHookのPOSTデータ</li>
+</ul>
+
+<h2>キーワードの一覧</h2>
+
+<%-
+  time = Time.local(2010, 1, 2, 3, 4, 5)
+  event = Event.new(
+    :device           => Device.new(
+      :user             => User.new(
+        :user_token       => "0" * User::TokenLength,
+        :nickname         => "ユーザ"),
+      :device_token     => "0" * Device::TokenLength,
+      :name             => "デバイス"),
+    :created_at       => time,
+    :trigger_operator => Trigger.operator_symbol_to_code(:eq),
+    :trigger_level    => 100,
+    :observed_level   => 100,
+    :observed_at      => time)
+
+  keywords = NoticeFormatter.format_event(event, time)
+-%>
+
+<%-
+  description = {
+    # 現在日時
+    "now:datetime"      => "現在日時",
+    "now:datetime:ja"   => "現在日時（日本語表記）",
+    "now:datetime:json" => "現在日時（JSON表記）",
+    "now:date"          => "現在日時の日付部分",
+    "now:date:ja"       => "現在日時の日付部分（日本語表記）",
+    "now:date:json"     => "現在日時の日付部分（JSON表記）",
+    "now:time"          => "現在日時の時刻部分",
+    "now:time:ja"       => "現在日時の時刻部分（日本語表記）",
+    "now:time:json"     => "現在日時の時刻部分（JSON表記）",
+    "now:yyyy"          => "現在日時の年（4桁）",
+    "now:mm"            => "現在日時の月（2桁）",
+    "now:dd"            => "現在日時の日（2桁）",
+    "now:hh"            => "現在日時の時（2桁）",
+    "now:nn"            => "現在日時の分（2桁）",
+    "now:ss"            => "現在日時の秒（2桁）",
+    # ユーザ
+    "user:token"         => "ユーザのトークン",
+    "user:token:json"    => "ユーザのトークン（JSON表記）",
+    "user:nickname"      => "ユーザのニックネーム",
+    "user:nickname:json" => "ユーザのニックネーム（JSON表記）",
+    # デバイス
+    "device:token"      => "デバイスのトークン",
+    "device:token:json" => "デバイスのトークン（JSON表記）",
+    "device:name"       => "デバイスの名称",
+    "device:name:json"  => "デバイスの名称（JSON表記）",
+    # イベント
+    "event:created-at:datetime"       => "イベント生成日時",
+    "event:created-at:datetime:ja"    => "イベント生成日時（日本語表記）",
+    "event:created-at:datetime:json"  => "イベント生成日時（JSON表記）",
+    "event:created-at:date"           => "イベント生成日時の日付部分",
+    "event:created-at:date:ja"        => "イベント生成日時の日付部分（日本語表記）",
+    "event:created-at:date:json"      => "イベント生成日時の日付部分（JSON表記）",
+    "event:created-at:time"           => "イベント生成日時の時刻部分",
+    "event:created-at:time:ja"        => "イベント生成日時の時刻部分（日本語表記）",
+    "event:created-at:time:json"      => "イベント生成日時の時刻部分（JSON表記）",
+    "event:created-at:yyyy"           => "イベント生成日時の年（4桁）",
+    "event:created-at:mm"             => "イベント生成日時の月（2桁）",
+    "event:created-at:dd"             => "イベント生成日時の日（2桁）",
+    "event:created-at:hh"             => "イベント生成日時の時（2桁）",
+    "event:created-at:nn"             => "イベント生成日時の分（2桁）",
+    "event:created-at:ss"             => "イベント生成日時の秒（2桁）",
+    "event:trigger-operator"          => "トリガの演算子",
+    "event:trigger-operator:json"     => "トリガの演算子（JSON表記）",
+    "event:trigger-level"             => "トリガのレベル",
+    "event:trigger-level:json"        => "トリガのレベル（JSON表記）",
+    "event:observed-level"            => "観測されたレベル",
+    "event:observed-level:json"       => "観測されたレベル（JSON表記）",
+    "event:observed-at:datetime"      => "イベント観測日時",
+    "event:observed-at:datetime:ja"   => "イベント観測日時（日本語表記）",
+    "event:observed-at:datetime:json" => "イベント観測日時（JSON表記）",
+    "event:observed-at:date"          => "イベント観測日時の日付部分",
+    "event:observed-at:date:ja"       => "イベント観測日時の日付部分（日本語表記）",
+    "event:observed-at:date:json"     => "イベント観測日時の日付部分（JSON表記）",
+    "event:observed-at:time"          => "イベント観測日時の時刻部分",
+    "event:observed-at:time:ja"       => "イベント観測日時の時刻部分（日本語表記）",
+    "event:observed-at:time:json"     => "イベント観測日時の時刻部分（JSON表記）",
+    "event:observed-at:yyyy"          => "イベント観測日時の年（4桁）",
+    "event:observed-at:mm"            => "イベント観測日時の月（2桁）",
+    "event:observed-at:dd"            => "イベント観測日時の日（2桁）",
+    "event:observed-at:hh"            => "イベント観測日時の時（2桁）",
+    "event:observed-at:nn"            => "イベント観測日時の分（2桁）",
+    "event:observed-at:ss"            => "イベント観測日時の秒（2桁）",
+  }
+-%>
+
+<table border="1">
+  <tr>
+    <th>キーワード</th>
+    <th>出力例</th>
+    <th>説明</th>
+  </tr>
+  <%- keywords.to_a.sort_by { |k, v| k }.each { |key, value| -%>
+    <tr>
+      <td style="font-family: monospace;"><%=h key %></td>
+      <td style="font-family: monospace;"><%=h value %></td>
+      <td><%= description[key] %></td>
+    </tr>
+  <%- } -%>
+</table>
+
+<h2>JSON表記について</h2>
+
+<ul>
+  <li>主に、WebHookにおけるPOSTデータでの使用を想定しています。</li>
+  <li>データが無い場合は、nullが出力されます。</li>
+  <li>ASCII以外の文字列は、\uXXXX形式で出力されます。</li>
+</ul>

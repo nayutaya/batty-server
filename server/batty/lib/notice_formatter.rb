@@ -19,7 +19,7 @@ module NoticeFormatter
   end
 
   def self.format_integer_json_value(value)
-    return (value.nil? ? "null" : value.to_s)
+    return value.to_json
   end
 
   def self.format_string_value(value)
@@ -27,7 +27,7 @@ module NoticeFormatter
   end
 
   def self.format_string_json_value(value)
-    return (value.blank? ? "null" : "\"#{value}\"")
+    return (value.blank? ? nil.to_json : value.to_json)
   end
 
   def self.format_part_of_date(date)
