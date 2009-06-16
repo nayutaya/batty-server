@@ -42,12 +42,14 @@ class NoticeFormatterTest < ActiveSupport::TestCase
 
   test "format_string_value" do
     assert_equal("a", @module.format_string_value("a"))
+    assert_equal("あ", @module.format_string_value("あ"))
     assert_equal("-", @module.format_string_value(""))
     assert_equal("-", @module.format_string_value(nil))
   end
 
   test "format_string_json_value" do
     assert_equal('"a"', @module.format_string_json_value("a"))
+    assert_equal('"\\u3042"', @module.format_string_json_value("あ"))
     assert_equal("null", @module.format_string_json_value(""))
     assert_equal("null", @module.format_string_json_value(nil))
   end
