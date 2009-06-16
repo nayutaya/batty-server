@@ -34,6 +34,17 @@
         <%- end -%>
       </div>
     </div>
+    <%- topic_path_html = capture { -%>
+      <%- unless @topic_path.blank? %>
+        <div id="topic-path">
+          <%=
+            @topic_path.map { |name, path|
+              (path.nil? ? "<em>#{h(name)}</em>" : link_to(h(name), path))
+            }.join(" :: ")
+          %>
+        </div>
+      <%- end -%>
+    <%- } -%>
     <%- if (@enable_side_column != false) -%>
       <div id="body-outer-with-background">
         <div id="body-inner">
@@ -43,6 +54,7 @@
             </div>
           </div>
           <div id="content-column-outer">
+            <%= topic_path_html %>
             <div id="content-column-inner">
               <div style="color: #009900;"><%=h flash[:notice] %></div>
               <div style="color: #990000;"><%=h flash[:error] %></div>
@@ -56,6 +68,7 @@
       <div id="body-outer-without-background">
         <div id="body-inner">
           <div id="content-outer">
+            <%= topic_path_html %>
             <div id="content-inner">
               <div style="color: #009900;"><%=h flash[:notice] %></div>
               <div style="color: #990000;"><%=h flash[:error] %></div>

@@ -1,17 +1,15 @@
 
+<%- @title = "イベント履歴" -%>
+<%- @topic_path << ["トップ", root_path] -%>
+<%- @topic_path << [@device.name, device_path(:device_id => @device.id)] -%>
+<%- @topic_path << [@title] -%>
 <%-
   @rss_auto_discoveries = [
     {:title => "イベント履歴", :href => url_for(:controller => "device_feeds", :action => "events_rss", :device_token => @device.device_token)},
   ]
 -%>
 
-<div>
-  <%= link_to(h("トップ"), root_path) %> &gt;
-  <%= device_name_link(@device) %> &gt;
-  <em>イベント履歴</em>
-</div>
-
-<h1>イベント履歴</h1>
+<h1><%=h @title %></h1>
 
 <div>
   <%- @events.each_slice(20) { |events| -%>
