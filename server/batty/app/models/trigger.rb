@@ -47,6 +47,11 @@ class Trigger < ActiveRecord::Base
   validates_presence_of :level
   validates_inclusion_of :operator, :in => OperatorCodes, :allow_nil => true
   validates_inclusion_of :level, :in => Energy::LevelRange, :allow_nil => true
+  validates_each(:device_id, :on => :create) { |record, attr, value|
+    if record.device && record.device.triggers(true).size >= 20
+      record.errors.add(attr, "%{fn}の最大トリガ数を超えています。")
+    end
+  }
 
   named_scope :enable, :conditions => {:enable => true}
 

@@ -165,6 +165,26 @@ class TriggerTest < ActiveSupport::TestCase
     }
   end
 
+  test "validates_each :device_id" do
+    device = devices(:yuya_pda)
+    create_record = proc {
+      device.triggers.create!(
+        :enable    => true,
+        :operator  => 0,
+        :level     => 0)
+    }
+
+    assert_nothing_raised {
+      (20 - device.triggers.size).times {
+        record = create_record[]
+        record.save!
+      }
+    }
+    assert_raise(ActiveRecord::RecordInvalid) {
+      create_record[]
+    }
+  end
+
   #
   # 名前付きスコープ
   #
