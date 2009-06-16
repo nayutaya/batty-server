@@ -48,6 +48,8 @@
   <div><%= submit_tag("追加") %></div>
 <%- } -%>
 
+<div>ヘルプ: <%= link_to(h("キーワード"), :controller => "help", :action => "keywords") %></div>
+
 <%- unless production? -%>
   <div class="debug">
     <%= error_messages_for(:edit_form) %>
