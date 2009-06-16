@@ -2,7 +2,6 @@
 # ヘルプ
 class HelpController < ApplicationController
   before_filter :authentication
-  before_filter { |c| c.instance_eval { @topic_path = [] }; true }
   before_filter :add_root_to_topic_path
   before_filter :add_index_to_topic_path, :except => [:index]
 
