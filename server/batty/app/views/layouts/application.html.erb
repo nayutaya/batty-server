@@ -41,7 +41,7 @@
             @topic_path.map { |name, path|
               (path.nil? ? "<em>#{h(name)}</em>" : link_to(h(name), path))
             }.join(" :: ")
-          -%>
+          %>
         </div>
       <%- end -%>
     <%- } -%>
