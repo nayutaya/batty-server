@@ -24,6 +24,7 @@
             | <span><%= link_to(h("ダッシュボード"), root_path) %></span>
             | <span><%= link_to(h("ユーザ設定"), :controller => "/settings") %></span>
             | <span><%= link_to(h("ログイン設定"), :controller => "/credentials") %></span>
+            | <span><%= link_to(h("ヘルプ"), :controller => "/help") %></span>
             | <span><%= link_to(h("ログアウト"), {:controller => "/auth", :action => "logout"}, :method => :post) %></span>
           </div>
         <%- end -%>
