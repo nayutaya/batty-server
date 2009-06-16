@@ -1,0 +1,41 @@
+
+<h1>キーワード</h1>
+
+<h2>キーワードが展開される箇所</h2>
+
+<ul>
+  <li>メール通知のタイトル</li>
+  <li>メール通知の本文</li>
+  <li>WebHookのURL</li>
+  <li>WebHookのPOSTデータ</li>
+</ul>
+
+<%-
+  user = User.new(
+    :nickname => "ニックネーム")
+
+  device = Device.new(
+    :name => "デバイス")
+
+  event = Event.new
+
+  event.device = device
+  event.device.user = user
+  keywords = NoticeFormatter.format_event(event)
+-%>
+
+<h2>キーワードの一覧</h2>
+
+<table border="1">
+  <tr>
+    <th>キーワード</th>
+    <th>出力例</th>
+    <th>説明</th>
+  </tr>
+  <%- keywords.to_a.sort_by { |k, v| k }.each { |key, value| -%>
+    <tr>
+      <td style="font-family: monospace;"><%=h key %></td>
+      <td style="font-family: monospace;"><%=h value %></td>
+    </tr>
+  <%- } -%>
+</table>
