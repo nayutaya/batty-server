@@ -70,7 +70,7 @@ msgstr ""
 
 #: app/models/device.rb:-
 msgid "device"
-msgstr ""
+msgstr "デバイス"
 
 #: app/models/device.rb:-
 msgid "Device|Created at"
@@ -134,7 +134,7 @@ msgstr "URL"
 
 #: app/models/email_action.rb:-
 msgid "email action"
-msgstr ""
+msgstr "メール通知"
 
 #: app/models/email_action.rb:-
 msgid "EmailAction|Created at"
@@ -182,7 +182,7 @@ msgstr "本文"
 
 #: app/models/email_address.rb:-
 msgid "email address"
-msgstr ""
+msgstr "通知先メールアドレス"
 
 #: app/models/email_address.rb:-
 msgid "EmailAddress|Created at"
@@ -210,7 +210,7 @@ msgstr "メールアドレス"
 
 #: app/models/email_credential.rb:-
 msgid "email credential"
-msgstr ""
+msgstr "メールアドレス認証"
 
 #: app/models/email_credential.rb:-
 msgid "EmailCredential|Created at"
@@ -326,7 +326,7 @@ msgstr "エネルギー"
 
 #: app/models/http_action.rb:-
 msgid "http action"
-msgstr ""
+msgstr "WebHook"
 
 #: app/models/http_action.rb:-
 msgid "HttpAction|Created at"
@@ -374,7 +374,7 @@ msgstr "POSTデータ"
 
 #: app/models/open_id_credential.rb:-
 msgid "open id credential"
-msgstr ""
+msgstr "OpenID認証"
 
 #: app/models/open_id_credential.rb:-
 msgid "OpenIdCredential|Created at"
@@ -418,7 +418,7 @@ msgstr "データ"
 
 #: app/models/trigger.rb:-
 msgid "trigger"
-msgstr ""
+msgstr "トリガ"
 
 #: app/models/trigger.rb:-
 msgid "Trigger|Created at"

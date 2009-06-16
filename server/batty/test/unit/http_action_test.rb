@@ -100,6 +100,26 @@ class HttpActionTest < ActiveSupport::TestCase
     }
   end
 
+  test "validates_each :trigger_id" do
+    trigger = triggers(:yuya_pda_ge90)
+    create_record = proc {
+      trigger.http_actions.create!(
+        :enable  => true,
+        :http_method => "GET",
+        :url         => "http://example.jp/")
+    }
+
+    assert_nothing_raised {
+      (5 - trigger.http_actions.size).times {
+        record = create_record[]
+        record.save!
+      }
+    }
+    assert_raise(ActiveRecord::RecordInvalid) {
+      create_record[]
+    }
+  end
+
   #
   # 名前付きスコープ
   #

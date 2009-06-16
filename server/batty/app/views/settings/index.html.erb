@@ -36,7 +36,8 @@
   <tfoot>
     <tr>
       <td colspan="4" align="right">
-        <%= link_to(add_icon + h(" 通知先メールアドレスを追加する"), :controller => "emails", :action => "new") %>
+        <%- can_add_email_address = (@email_addresses.size < EmailAddress::MaximumRecordsPerUser) -%>
+        <%= link_to_if(can_add_email_address, add_icon + h(" 通知先メールアドレスを追加する"), :controller => "emails", :action => "new") %>
       </td>
     </tr>
   </tfoot>

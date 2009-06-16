@@ -18,6 +18,7 @@ class HttpAction < ActiveRecord::Base
   UrlMaximumLength  = 200
   BodyMaximumLength = 1000
   HttpMethods = %w[HEAD GET POST].freeze.each(&:freeze)
+  MaximumRecordsPerTrigger = 5
 
   belongs_to :trigger
 
@@ -28,6 +29,11 @@ class HttpAction < ActiveRecord::Base
   validates_length_of :body, :maximum => BodyMaximumLength, :allow_nil => true
   validates_inclusion_of :http_method, :in => HttpMethods, :allow_nil => true
   validates_format_of :url, :with => URI.regexp(["http"]), :allow_nil => true
+  validates_each(:trigger_id, :on => :create) { |record, attr, value|
+    if record.trigger && record.trigger.http_actions(true).size >= MaximumRecordsPerTrigger
+      record.errors.add(attr, "これ以上%{fn}に#{_(record.class.to_s.downcase)}を追加できません。")
+    end
+  }
 
   named_scope :enable, :conditions => {:enable => true}
 

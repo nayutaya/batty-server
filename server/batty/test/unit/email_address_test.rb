@@ -126,6 +126,26 @@ class EmailAddressTest < ActiveSupport::TestCase
     assert_equal(false, @yuya_gmail.valid?)
   end
 
+  test "validates_each :user_id" do
+    srand(0)
+    user = users(:yuya)
+    create_record = proc {
+      user.email_addresses.create!(
+        :activation_token => @klass.create_unique_activation_token,
+        :email            => "email#{rand(1000)}@example.jp")
+    }
+
+    assert_nothing_raised {
+      (10 - user.email_addresses.size).times {
+        record = create_record[]
+        record.save!
+      }
+    }
+    assert_raise(ActiveRecord::RecordInvalid) {
+      create_record[]
+    }
+  end
+
   #
   # 名前付きスコープ
   #
