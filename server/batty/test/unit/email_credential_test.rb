@@ -137,6 +137,26 @@ class EmailCredentialTest < ActiveSupport::TestCase
     assert_equal(false, @yuya_gmail.valid?)
   end
 
+  test "validates_each :user_id" do
+    user = users(:yuya)
+    create_record = proc {
+      user.email_credentials.create!(
+        :activation_token => @klass.create_unique_activation_token,
+        :email            => "email#{rand(1000)}@example.com",
+        :hashed_password  => ("0" * 8) + ":" + ("0" * 64))
+    }
+
+    assert_nothing_raised {
+      (10 - user.email_credentials.size).times {
+        record = create_record[]
+        record.save!
+      }
+    }
+    assert_raise(ActiveRecord::RecordInvalid) {
+      create_record[]
+    }
+  end
+
   #
   # クラスメソッド
   #

@@ -23,6 +23,7 @@ class EmailCredential < ActiveRecord::Base
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
   HashedPasswordPattern = /\A([0-9a-f]{8}):([0-9a-f]{64})\z/
+  MaximumRecordsPerUser = 10
 
   validates_presence_of :email
   validates_presence_of :activation_token
@@ -32,6 +33,11 @@ class EmailCredential < ActiveRecord::Base
   validates_format_of :hashed_password, :with => HashedPasswordPattern, :allow_nil => true
   validates_email_format_of :email
   validates_uniqueness_of :email
+  validates_each(:user_id, :on => :create) { |record, attr, value|
+    if record.user && record.user.email_credentials(true).size >= MaximumRecordsPerUser
+      record.errors.add(attr, "%{fn}の最大メールアドレス認証数を超えています。")
+    end
+  }
 
   def self.create_unique_activation_token
     return TokenUtil.create_unique_token(self, :activation_token, TokenLength)
