@@ -102,6 +102,27 @@ a img
 {
 }
 
+/* topic path */
+
+#topic-path
+{
+    padding: 0.1em 0.4em;
+    background-color: #E0E0E0;
+    color: #999999;
+    font-size: 90%;
+}
+
+#topic-path a
+{
+}
+
+#topic-path em
+{
+    color: #666666;
+    font-weight: bold;
+    font-style: normal;
+}
+
 /* for debug */
 
 div.debug
