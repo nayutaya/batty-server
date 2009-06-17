@@ -9,6 +9,11 @@ class HttpActionExecutor
   ReadTimeout = 5
   UserAgent   = "batty (http://batty.nayutaya.jp)".freeze
 
+  DenyNetworks = [
+    IPAddr.new("127.0.0.0/8"),
+    IPAddr.new(IPSocket::getaddress(Socket::gethostname)),
+  ].freeze
+
   def initialize(options = {})
     options = options.dup
     @url         = options.delete(:url)         || nil
@@ -40,10 +45,7 @@ class HttpActionExecutor
     name, aliases, type, *addresses = TCPSocket.gethostbyname(host)
     return addresses.
       map  { |ipaddr| IPAddr.new(ipaddr) }.
-      all? { |ipaddr|
-        !IPAddr.new("127.0.0.0/8").include?(ipaddr) &&
-        !IPAddr.new(IPSocket::getaddress(Socket::gethostname)).include?(ipaddr)
-      }
+      all? { |ipaddr| DenyNetworks.none? { |network| network.include?(ipaddr) } }
   end
 
   def replace(keywords)
