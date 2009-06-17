@@ -1,6 +1,7 @@
 
 require "uri"
 require "net/http"
+require "ipaddr"
 
 # HTTPアクション実行
 class HttpActionExecutor
@@ -33,6 +34,16 @@ class HttpActionExecutor
     return trigger.http_actions.enable.map { |http_action|
       HttpActionExecutor.from(http_action).replace(keywords)
     }
+  end
+
+  def self.allowed_host?(host)
+    name, aliases, type, *addresses = TCPSocket.gethostbyname(host)
+    return addresses.
+      map  { |ipaddr| IPAddr.new(ipaddr) }.
+      all? { |ipaddr|
+        !IPAddr.new("127.0.0.0/8").include?(ipaddr) &&
+        !IPAddr.new(IPSocket::getaddress(Socket::gethostname)).include?(ipaddr)
+      }
   end
 
   def replace(keywords)

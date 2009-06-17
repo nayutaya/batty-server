@@ -303,4 +303,18 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     assert_equal(@klass::OpenTimeout, http.open_timeout)
     assert_equal(@klass::ReadTimeout, http.read_timeout)
   end
+
+  test "allowed_host?" do
+    [
+      ["www.ruby-lang.org", true ],
+      ["www.google.co.jp",  true ],
+      ["localhost",         false],
+      ["127.0.0.1",         false],
+      ["127.1.2.3",         false],
+      [Socket::gethostname, false],
+      [IPSocket::getaddress(Socket::gethostname), false],
+    ].each { |value, expected|
+      assert_equal(expected, @klass.allowed_host?(value), value)
+    }
+  end
 end
