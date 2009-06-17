@@ -63,6 +63,7 @@ class HttpActionExecutor
 
     result =
       begin
+        raise(Errno::ECONNREFUSED) unless self.class.allowed_host?(connector.address)
         response = connector.start { connector.request(request) }
         {
           :success => response.kind_of?(Net::HTTPSuccess),
