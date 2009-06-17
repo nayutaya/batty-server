@@ -103,7 +103,7 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
   end
 
   test "execute, 200 OK" do
-    @executor.url         = "http://example.jp/"
+    @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :get
 
     musha = Kagemusha.new(Net::HTTP)
@@ -115,7 +115,7 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
   end
 
   test "execute, 201 Created" do
-    @executor.url         = "http://example.jp/"
+    @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :get
 
     musha = Kagemusha.new(Net::HTTP)
@@ -127,7 +127,7 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
   end
 
   test "execute, 301 Moved Permanently" do
-    @executor.url         = "http://example.jp/"
+    @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :get
 
     musha = Kagemusha.new(Net::HTTP)
@@ -138,8 +138,17 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     assert_equal("301 Moved Permanently", result[:message])
   end
 
+  test "execute, host not allowed" do
+    @executor.url         = "http://localhost/"
+    @executor.http_method = :get
+
+    result = @executor.execute
+    assert_equal(false, result[:success])
+    assert_equal("connection refused.", result[:message])
+  end
+
   test "execute, timeout" do
-    @executor.url         = "http://example.jp/"
+    @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :get
 
     musha = Kagemusha.new(Net::HTTP)
@@ -151,7 +160,7 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
   end
 
   test "execute, refused" do
-    @executor.url         = "http://example.jp/"
+    @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :get
 
     musha = Kagemusha.new(Net::HTTP)
@@ -163,7 +172,7 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
   end
 
   test "execute, reset" do
-    @executor.url         = "http://example.jp/"
+    @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :get
 
     musha = Kagemusha.new(Net::HTTP)
@@ -175,7 +184,7 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
   end
 
   test "execute, socket error" do
-    @executor.url         = "http://example.jp/"
+    @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :get
 
     musha = Kagemusha.new(Net::HTTP)
@@ -187,7 +196,7 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
   end
 
   test "execute, runtime error" do
-    @executor.url         = "http://example.jp/"
+    @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :get
 
     musha = Kagemusha.new(Net::HTTP)
@@ -302,5 +311,25 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     assert_equal(80,                  http.port)
     assert_equal(@klass::OpenTimeout, http.open_timeout)
     assert_equal(@klass::ReadTimeout, http.read_timeout)
+  end
+
+  test "allowed_host?" do
+    [
+      ["www.ruby-lang.org", true ],
+      ["www.google.co.jp",  true ],
+      ["localhost",         false],
+      ["127.0.0.1",         false],
+      ["127.1.2.3",         false],
+      [Socket::gethostname, false],
+      [IPSocket::getaddress(Socket::gethostname), false],
+    ].each { |value, expected|
+      assert_equal(expected, @klass.allowed_host?(value), value)
+    }
+  end
+
+  test "allowed_host?, DNS error" do
+    assert_raise(SocketError) {
+      @klass.allowed_host?("example.jp")
+    }
   end
 end

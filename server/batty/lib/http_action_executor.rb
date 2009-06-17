@@ -1,12 +1,18 @@
 
 require "uri"
 require "net/http"
+require "ipaddr"
 
 # HTTPアクション実行
 class HttpActionExecutor
   OpenTimeout = 5
   ReadTimeout = 5
   UserAgent   = "batty (http://batty.nayutaya.jp)".freeze
+
+  DenyNetworks = [
+    IPAddr.new("127.0.0.0/8"),
+    IPAddr.new(IPSocket::getaddress(Socket::gethostname)),
+  ].freeze
 
   def initialize(options = {})
     options = options.dup
@@ -35,6 +41,13 @@ class HttpActionExecutor
     }
   end
 
+  def self.allowed_host?(host)
+    name, aliases, type, *addresses = TCPSocket.gethostbyname(host)
+    return addresses.
+      map  { |ipaddr| IPAddr.new(ipaddr) }.
+      all? { |ipaddr| DenyNetworks.none? { |network| network.include?(ipaddr) } }
+  end
+
   def replace(keywords)
     url       = NoticeFormatter.replace_keywords(self.url,       keywords) if self.url
     post_body = NoticeFormatter.replace_keywords(self.post_body, keywords) if self.post_body
@@ -50,6 +63,7 @@ class HttpActionExecutor
 
     result =
       begin
+        raise(Errno::ECONNREFUSED) unless self.class.allowed_host?(connector.address)
         response = connector.start { connector.request(request) }
         {
           :success => response.kind_of?(Net::HTTPSuccess),
