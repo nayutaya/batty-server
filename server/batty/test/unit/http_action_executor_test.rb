@@ -317,4 +317,10 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
       assert_equal(expected, @klass.allowed_host?(value), value)
     }
   end
+
+  test "allowed_host?, DNS error" do
+    assert_raise(SocketError) {
+      @klass.allowed_host?("example.jp")
+    }
+  end
 end
