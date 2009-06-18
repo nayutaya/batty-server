@@ -139,29 +139,29 @@ a img
     padding: 20px;
 }
 
-div#powerd-by
+#foot-powerd
 {
     float: right;
     font-size: 90%;
     font-weight: bold;
     color: #999999;
 }
-div#powerd-by a
+#foot-powerd a
 {
     color: #333333;
 }
 
-div#github
+#foot-github
 {
     font-size: 95%;
 }
 
-div#services
+#foot-services
 {
     font-size: 90%;
     color: #999999;
 }
-div#services a
+#foot-services a
 {
     color: #333333;
 }
