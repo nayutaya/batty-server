@@ -1,3 +1,15 @@
 
-<%# 468x60 ライブリンク キーワード:eneloop %>
-<iframe src="http://rcm-jp.amazon.co.jp/e/cm?t=batty-22&o=9&p=13&l=st1&mode=electronics-jp&search=eneloop&fc1=000000&lt1=_blank&lc1=3366FF&bg1=FFFFFF&f=ifr" marginwidth="0" marginheight="0" width="468" height="60" border="0" frameborder="0" style="border:none;" scrolling="no"></iframe>
+<%- case rand(4) -%>
+<%- when 0 -%>
+  <%# 468x60 ライブリンク 家電＆カメラ/ベストセラー %>
+  <iframe src="http://rcm-jp.amazon.co.jp/e/cm?t=batty-22&o=9&p=13&l=bn1&mode=electronics-jp&browse=3210981&fc1=000000&lt1=_blank&lc1=3366FF&bg1=FFFFFF&f=ifr" marginwidth="0" marginheight="0" width="468" height="60" border="0" frameborder="0" style="border:none;" scrolling="no"></iframe>
+<%- when 1 -%>
+  <%# 468x60 ライブリンク 家電＆カメラ/キーワード:eneloop %>
+  <iframe src="http://rcm-jp.amazon.co.jp/e/cm?t=batty-22&o=9&p=13&l=st1&mode=electronics-jp&search=eneloop&fc1=000000&lt1=_blank&lc1=3366FF&bg1=FFFFFF&f=ifr" marginwidth="0" marginheight="0" width="468" height="60" border="0" frameborder="0" style="border:none;" scrolling="no"></iframe>
+<%- when 2 -%>
+  <%# 468x60 ライブリンク 本/ベストセラー %>
+  <iframe src="http://rcm-jp.amazon.co.jp/e/cm?t=batty-22&o=9&p=13&l=bn1&mode=books-jp&browse=202188011&fc1=000000&lt1=_blank&lc1=3366FF&bg1=FFFFFF&f=ifr" marginwidth="0" marginheight="0" width="468" height="60" border="0" frameborder="0" style="border:none;" scrolling="no"></iframe>
+<%- when 3 -%>
+  <%# 468x60 ライブリンク 本/コンピュータ・インターネット %>
+  <iframe src="http://rcm-jp.amazon.co.jp/e/cm?t=batty-22&o=9&p=13&l=bn1&mode=books-jp&browse=466298&fc1=000000&lt1=_blank&lc1=3366FF&bg1=FFFFFF&f=ifr" marginwidth="0" marginheight="0" width="468" height="60" border="0" frameborder="0" style="border:none;" scrolling="no"></iframe>
+<%- end -%>
