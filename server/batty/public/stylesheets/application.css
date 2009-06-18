@@ -42,12 +42,13 @@ a img
 
 #logo
 {
+    position: relative;
+    width: 350px;
 }
 
 #logo img
 {
     display: block;
-    border-width: 0px;
 }
 
 #global-navi
@@ -122,13 +123,38 @@ a img
 {
     width: 100%;
     min-width: 700px;
-    /*height: 100px;*/
-    background-color: #E0E0E0;
+    border-width: 1px 0px 0px 0px;
+    border-style: solid;
+    border-color: #D0D0D0;
 }
 
 #foot-inner
 {
+    padding: 10px;
 }
+
+div#powerd-by
+{
+    float: right;
+    font-size: 90%;
+    font-weight: bold;
+    color: #999999;
+}
+div#powerd-by a
+{
+    color: #333333;
+}
+
+div#nayutaya-services
+{
+    font-size: 90%;
+    color: #999999;
+}
+div#nayutaya-services a
+{
+    color: #333333;
+}
+
 
 /* topic path */
 
