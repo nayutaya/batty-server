@@ -54,7 +54,7 @@ a img
 {
     position: absolute;
     top: 95px;
-    right: 5px;
+    right: 10px;
     font-size: 14px;
     line-height: 20px;
     color: #CCCCCC;
@@ -62,7 +62,7 @@ a img
 
 #global-navi a
 {
-    color: #afbbde;
+    color: #b9c6e9;
 }
 
 /* body */
