@@ -144,17 +144,40 @@ div#powerd-by a
 {
     color: #333333;
 }
+div#powerd-by a:hover
+{
+    color: #F0F0F0;
+    background-color: #333333;
+}
 
-div#nayutaya-services
+div#github
+{
+    font-size: 95%;
+}
+div#github a
+{
+    color: #0066CC;
+}
+div#github a:hover
+{
+    color: #F0F0F0;
+    background-color: #0066CC;
+}
+
+div#services
 {
     font-size: 90%;
     color: #999999;
 }
-div#nayutaya-services a
+div#services a
 {
     color: #333333;
 }
-
+div#services a:hover
+{
+    color: #F0F0F0;
+    background-color: #333333;
+}
 
 /* topic path */
 
