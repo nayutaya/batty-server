@@ -15,7 +15,13 @@ body
 
 a
 {
+    color: #0066CC;
     text-decoration: none;
+}
+
+a:hover
+{
+    text-decoration: underline;
 }
 
 a img
@@ -130,7 +136,7 @@ a img
 
 #foot-inner
 {
-    padding: 10px;
+    padding: 20px;
 }
 
 div#powerd-by
@@ -144,24 +150,10 @@ div#powerd-by a
 {
     color: #333333;
 }
-div#powerd-by a:hover
-{
-    color: #F0F0F0;
-    background-color: #333333;
-}
 
 div#github
 {
     font-size: 95%;
-}
-div#github a
-{
-    color: #0066CC;
-}
-div#github a:hover
-{
-    color: #F0F0F0;
-    background-color: #0066CC;
 }
 
 div#services
@@ -172,11 +164,6 @@ div#services
 div#services a
 {
     color: #333333;
-}
-div#services a:hover
-{
-    color: #F0F0F0;
-    background-color: #333333;
 }
 
 /* topic path */
