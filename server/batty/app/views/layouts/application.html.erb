@@ -21,9 +21,9 @@
   <body>
     <div id="head-outer">
       <div id="head-inner">
-        <div style="font-size: 140%;"><%= link_to(h("batty"), root_path) %></div>
+        <div id="logo"><%= link_to(image_tag("logo.png"), root_path) %></div>
         <%- if logged_in? -%>
-          <div style="text-align: right;">
+          <div id="global-navi">
             <span><%= user_nickname(@login_user) %></span>
             | <span><%= link_to(h("ダッシュボード"), root_path) %></span>
             | <span><%= link_to(h("ユーザ設定"), :controller => "/settings") %></span>

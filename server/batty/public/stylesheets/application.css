@@ -27,14 +27,42 @@ a img
 
 #head-outer
 {
+    position: relative;
     width: 100%;
     min-width: 700px;
-    /*height: 100px;*/
-    background-color: #999999;
+    height: 120px;
+    background-color: #000000;
+    background-image: url(/images/logo-back.png);
+    background-repeat: repeat-x;
 }
 
 #head-inner
 {
+}
+
+#logo
+{
+}
+
+#logo img
+{
+    display: block;
+    border-width: 0px;
+}
+
+#global-navi
+{
+    position: absolute;
+    top: 95px;
+    right: 5px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #CCCCCC;
+}
+
+#global-navi a
+{
+    color: #afbbde;
 }
 
 /* body */
