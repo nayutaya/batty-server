@@ -46,18 +46,17 @@ a img
 {
 }
 
-#logo
+#head-logo
 {
     position: relative;
     width: 350px;
 }
-
-#logo img
+#head-logo img
 {
     display: block;
 }
 
-#global-navi
+#head-navi
 {
     position: absolute;
     top: 95px;
@@ -66,10 +65,18 @@ a img
     line-height: 20px;
     color: #CCCCCC;
 }
-
-#global-navi a
+#head-navi a
 {
     color: #b9c6e9;
+}
+
+#head-ad
+{
+    position: absolute;
+    width: 470px;
+    height: 62px;
+    top: 25px;
+    right: 20px;
 }
 
 /* body */
