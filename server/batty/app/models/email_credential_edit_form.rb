@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 # Schema version: 20090529051529
 #
@@ -27,7 +28,7 @@ class EmailCredentialEditForm < ActiveForm
   validates_length_of :email, :maximum => EmailCredential::EmailMaximumLength, :allow_nil => true
   validates_length_of :password, :in => PasswordLengthRange, :allow_nil => true
   validates_format_of :password, :with => PasswordPattern, :allow_nil => true
-  validates_email_format_of :email
+  validates_email_format_of :email, :message => "%{fn}は有効なメールアドレスではありません。"
   validates_each(:password) { |record, attr, value|
     # MEMO: validates_confirmation_ofはpassword_confirmation属性を上書きしてしまうため、
     #       ここでは使用できない。そのため、validates_confirmation_ofを参考に独自に実装。

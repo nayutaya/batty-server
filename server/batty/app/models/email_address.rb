@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # == Schema Information
 # Schema version: 20090529051529
 #
@@ -24,7 +25,7 @@ class EmailAddress < ActiveRecord::Base
   validates_presence_of :email
   validates_length_of :email, :maximum => 200
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
-  validates_email_format_of :email
+  validates_email_format_of :email, :message => "%{fn}は有効なメールアドレスではありません。"
   validates_uniqueness_of :activation_token
   validates_uniqueness_of :email, :scope => [:user_id]
   validates_each(:user_id, :on => :create) { |record, attr, value|

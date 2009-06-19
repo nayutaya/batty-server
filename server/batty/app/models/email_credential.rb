@@ -31,7 +31,7 @@ class EmailCredential < ActiveRecord::Base
   validates_length_of :email, :maximum => EmailMaximumLength, :allow_nil => true
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
   validates_format_of :hashed_password, :with => HashedPasswordPattern, :allow_nil => true
-  validates_email_format_of :email
+  validates_email_format_of :email, :message => "%{fn}は有効なメールアドレスではありません。"
   validates_uniqueness_of :email
   validates_each(:user_id, :on => :create) { |record, attr, value|
     if record.user && record.user.email_credentials(true).size >= MaximumRecordsPerUser
