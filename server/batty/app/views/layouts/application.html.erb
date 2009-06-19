@@ -35,7 +35,9 @@
           </div>
         <%- end -%>
         <div id="head-ad">
-          <%= render(:partial => "home/amazon_ad") %>
+          <%- if production? -%>
+            <%= render(:partial => "home/amazon_ad") %>
+          <%- end -%>
         </div>
       </div>
     </div>
