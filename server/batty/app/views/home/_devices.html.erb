@@ -48,7 +48,13 @@
         <td><%= device_name_link(device) %></td>
         <td><%= energy_meter(current_energy.try(:observed_level) || 0) %></td>
         <td align="right"><%=h current_energy.try(:observed_level) || "-" %> %</td>
-        <td><%=h yyyymmdd_hhmm(current_energy.try(:observed_at)) %></td>
+        <td align="right">
+          <%- current_observed_at = current_energy.try(:observed_at) -%>
+          <div><%=h yyyymmdd_hhmm(current_observed_at) %></div>
+          <%- if current_observed_at -%>
+            <div><%=h distance_of_time_in_words_to_now(current_observed_at) %>前</div>
+          <%- end -%>
+        </td>
         <td>
           <%= icon16("icons/fam/lightning.png", "有効なトリガ") %>
           <%=h device.triggers.enable.count %>
