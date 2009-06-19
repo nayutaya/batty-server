@@ -16,6 +16,8 @@
     <%- (@rss_auto_discoveries || []).each { |options| -%>
       <%= rss_auto_discovery(options) %>
     <%- } -%>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
     <%= @additional_head_html %>
   </head>
   <body>
