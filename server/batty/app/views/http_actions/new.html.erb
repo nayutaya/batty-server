@@ -1,16 +1,15 @@
 
-<div>
-  <%= link_to(h("トップ"), root_path) %> &gt;
-  <%= device_name_link(@device) %> &gt;
-  <em>WebHookの追加</em>
-</div>
+<%- @title = "WebHookの追加" -%>
+<%- @topic_path << ["トップ", root_path] -%>
+<%- @topic_path << [@device.name, device_path(:device_id => @device.id)] -%>
+<%- @topic_path << [@title] -%>
+
+<h1><%=h @title %></h1>
 
 <%- side_column { -%>
   <div><%= help_link(:what_is_keyword) %></div>
   <div><%= help_link(:keywords) %></div>
 <%- } -%>
-
-<h1>WebHookの追加</h1>
 
 <%- form_for(:edit_form, @edit_form, :url => {:action => "create"}) { |f| -%>
   <table border="1">
