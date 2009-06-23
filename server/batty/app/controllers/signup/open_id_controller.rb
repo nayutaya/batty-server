@@ -49,8 +49,6 @@ class Signup::OpenIdController < ApplicationController
 
       @credential = @user.open_id_credentials.build
       @credential.identity_url = @identity_url
-      # FIXME: ログイン日時を設定しないように変更
-      @credential.loggedin_at  = Time.now
       @credential.save!
     }
 
