@@ -76,4 +76,8 @@ class EmailCredential < ActiveRecord::Base
     self.update_attributes!(:activated_at => Time.now)
     return true
   end
+
+  def login!
+    self.update_attributes!(:loggedin_at => Time.now)
+  end
 end

@@ -272,4 +272,11 @@ class EmailCredentialTest < ActiveSupport::TestCase
     assert_equal(true, credential.activated?)
     assert_equal(time, credential.activated_at)
   end
+
+  test "login!" do
+    time = Time.local(2010, 1, 1)
+    assert_equal(nil, @risa_example.loggedin_at)
+    Kagemusha::DateTime.at(time) { @risa_example.login! }
+    assert_equal(time, @risa_example.reload.loggedin_at)
+  end
 end
