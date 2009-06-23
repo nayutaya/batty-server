@@ -27,4 +27,8 @@ class OpenIdCredential < ActiveRecord::Base
       record.errors.add(attr, "これ以上%{fn}に#{_(record.class.to_s.downcase)}を追加できません。")
     end
   }
+
+  def login!
+    self.update_attributes!(:loggedin_at => Time.now)
+  end
 end

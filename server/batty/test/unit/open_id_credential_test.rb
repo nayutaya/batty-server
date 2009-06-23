@@ -94,4 +94,15 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
       create_record[]
     }
   end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "login!" do
+    time = Time.local(2010, 1, 1)
+    assert_equal(nil, @shinya_example.loggedin_at)
+    Kagemusha::DateTime.at(time) { @shinya_example.login! }
+    assert_equal(time, @shinya_example.reload.loggedin_at)
+  end
 end
