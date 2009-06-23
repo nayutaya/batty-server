@@ -11,7 +11,7 @@ class HttpActionExecutor
 
   DenyNetworks = [
     IPAddr.new("127.0.0.0/8"),
-    IPAddr.new(IPSocket::getaddress(Socket::gethostname)),
+    IPAddr.new(IPSocket.getaddress(Socket.gethostname).sub(/%.+\z/, "")),
   ].freeze
 
   def initialize(options = {})
@@ -44,7 +44,7 @@ class HttpActionExecutor
   def self.allowed_host?(host)
     name, aliases, type, *addresses = TCPSocket.gethostbyname(host)
     return addresses.
-      map  { |ipaddr| IPAddr.new(ipaddr) }.
+      map  { |ipaddr| IPAddr.new(ipaddr.sub(/%.+\z/, "")) }.
       all? { |ipaddr| DenyNetworks.none? { |network| network.include?(ipaddr) } }
   end
 

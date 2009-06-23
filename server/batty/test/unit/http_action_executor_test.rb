@@ -320,8 +320,8 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
       ["localhost",         false],
       ["127.0.0.1",         false],
       ["127.1.2.3",         false],
-      [Socket::gethostname, false],
-      [IPSocket::getaddress(Socket::gethostname), false],
+      [Socket.gethostname,  false],
+      [IPSocket.getaddress(Socket.gethostname).sub(/%.+\z/, ""), false],
     ].each { |value, expected|
       assert_equal(expected, @klass.allowed_host?(value), value)
     }
