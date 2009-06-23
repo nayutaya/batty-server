@@ -17,9 +17,12 @@ class Auth::OpenIdController < ApplicationController
 
     authenticate_with_open_id(openid_url) { |result, identity_url, sreg|
       if result.successful?
-        @current_user = OpenIdCredential.find_by_identity_url(identity_url).try(:user)
-        if @current_user
-          successful_login
+        @open_id_credential = OpenIdCredential.find_by_identity_url(identity_url)
+        if @open_id_credential
+          @open_id_credential.login!
+          session[:user_id] = @open_id_credential.user.id
+          flash[:notice] = "ログインしました。"
+          redirect_to(root_path)
         else
           flash[:notice] = "OpenID がまだ登録されていません。"
           redirect_to(:controller => "signup/open_id", :action => "index")
@@ -31,13 +34,6 @@ class Auth::OpenIdController < ApplicationController
   end
 
   private
-
-  def successful_login
-    # TODO: ログイン日時を更新
-    session[:user_id] = @current_user.id
-    flash[:notice] = "ログインしました。"
-    redirect_to(root_path)
-  end
 
   def failed_login(message)
     flash[:error] = message
