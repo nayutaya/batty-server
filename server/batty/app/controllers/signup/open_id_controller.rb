@@ -44,7 +44,6 @@ class Signup::OpenIdController < ApplicationController
 
     User.transaction {
       @user = User.new
-      @user.user_token = User.create_unique_user_token
       @user.save!
 
       @credential = @user.open_id_credentials.build

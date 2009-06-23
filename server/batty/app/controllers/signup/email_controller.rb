@@ -49,8 +49,6 @@ class Signup::EmailController < ApplicationController
       # TODO: エラー処理
       User.transaction {
         @user = User.new
-        @user.user_token = User.create_unique_user_token
-        @user.nickname   = nil
         @user.save!
 
         @credential = @user.email_credentials.build
