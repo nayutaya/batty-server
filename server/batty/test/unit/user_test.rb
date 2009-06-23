@@ -140,7 +140,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "validates_presence_of :user_token" do
-    @basic.user_token = nil
+    @basic.user_token = ""
     assert_equal(false, @basic.valid?)
   end
 
@@ -177,6 +177,35 @@ class UserTest < ActiveSupport::TestCase
   test "validates_uniqueness_of :user_token, on update" do
     @yuya.user_token = @shinya.user_token
     assert_equal(false, @yuya.valid?)
+  end
+
+  #
+  # フック
+  #
+
+  test "before_validation_on_create" do
+    token = "0" * 20
+
+    user = User.new
+    assert_equal(nil, user.user_token)
+
+    Kagemusha.new(@klass).
+      defs(:create_unique_user_token) { token }.
+      swap {
+        user.save!
+      }
+
+    assert_equal(token, user.reload.user_token)
+  end
+
+  test "before_validation_on_create, already setting" do
+    token = "0" * 20
+
+    user = User.new
+    user.user_token = token
+    user.save!
+
+    assert_equal(token, user.reload.user_token)
   end
 
   #

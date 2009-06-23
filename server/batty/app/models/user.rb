@@ -30,6 +30,10 @@ class User < ActiveRecord::Base
   validates_format_of :user_token, :with => TokenPattern, :allow_nil => true
   validates_uniqueness_of :user_token
 
+  before_validation_on_create { |record|
+    record.user_token ||= record.class.create_unique_user_token
+  }
+
   def self.create_unique_user_token
     return TokenUtil.create_unique_token(self, :user_token, TokenLength)
   end
