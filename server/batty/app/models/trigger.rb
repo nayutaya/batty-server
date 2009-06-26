@@ -16,11 +16,6 @@
 
 # トリガ
 class Trigger < ActiveRecord::Base
-  has_many :email_actions, :dependent => :destroy
-  has_many :http_actions, :dependent => :destroy
-  has_many :events, :dependent => :nullify
-  belongs_to :device
-
   Operators = [
     [0, :eq, proc { |a, b| a == b }, "＝", "等しい"],
     [1, :ne, proc { |a, b| a != b }, "≠", "等しくない"],
@@ -42,6 +37,11 @@ class Trigger < ActiveRecord::Base
 
   OperatorCodes = Operators.map(&:first).freeze
   MaximumRecordsPerDevice = 20
+
+  has_many :email_actions, :dependent => :destroy
+  has_many :http_actions, :dependent => :destroy
+  has_many :events, :dependent => :nullify
+  belongs_to :device
 
   validates_presence_of :device_id
   validates_presence_of :operator

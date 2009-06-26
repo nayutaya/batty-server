@@ -14,11 +14,11 @@
 
 # 通知先メールアドレス
 class EmailAddress < ActiveRecord::Base
-  belongs_to :user
-
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
   MaximumRecordsPerUser = 10
+
+  belongs_to :user
 
   validates_presence_of :activation_token
   validates_presence_of :user_id

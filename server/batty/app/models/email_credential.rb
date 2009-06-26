@@ -17,13 +17,13 @@
 
 # メール認証情報
 class EmailCredential < ActiveRecord::Base
-  belongs_to :user
-
   EmailMaximumLength = 200
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
   HashedPasswordPattern = /\A([0-9a-f]{8}):([0-9a-f]{64})\z/
   MaximumRecordsPerUser = 10
+
+  belongs_to :user
 
   validates_presence_of :email
   validates_presence_of :activation_token

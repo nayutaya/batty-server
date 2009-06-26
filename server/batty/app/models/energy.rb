@@ -12,10 +12,10 @@
 
 # エネルギー
 class Energy < ActiveRecord::Base
+  LevelRange = 0..100
+
   has_many :events, :dependent => :nullify
   belongs_to :device
-
-  LevelRange = 0..100
 
   validates_presence_of :observed_level
   validates_presence_of :observed_at

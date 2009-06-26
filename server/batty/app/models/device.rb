@@ -16,6 +16,11 @@
 
 # デバイス
 class Device < ActiveRecord::Base
+  NameMaximumLength = 50
+  TokenLength  = 20
+  TokenPattern = TokenUtil.create_token_regexp(TokenLength)
+  MaximumRecordsPerUser = 10
+
   has_many :energies, :dependent => :destroy
   has_many :triggers, :dependent => :destroy
   has_many :email_actions, :through => :triggers
@@ -23,11 +28,6 @@ class Device < ActiveRecord::Base
   has_many :events, :dependent => :destroy
   belongs_to :user
   belongs_to :device_icon
-
-  NameMaximumLength = 50
-  TokenLength  = 20
-  TokenPattern = TokenUtil.create_token_regexp(TokenLength)
-  MaximumRecordsPerUser = 10
 
   validates_presence_of :device_token
   validates_presence_of :user_id
