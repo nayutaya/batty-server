@@ -186,26 +186,26 @@ class UserTest < ActiveSupport::TestCase
   test "before_validation_on_create" do
     token = "0" * 20
 
-    user = User.new
-    assert_equal(nil, user.user_token)
+    record = @klass.new
+    assert_equal(nil, record.user_token)
 
     Kagemusha.new(@klass).
       defs(:create_unique_user_token) { token }.
       swap {
-        user.save!
+        record.save!
       }
 
-    assert_equal(token, user.reload.user_token)
+    assert_equal(token, record.reload.user_token)
   end
 
   test "before_validation_on_create, already setting" do
     token = "0" * 20
 
-    user = User.new
-    user.user_token = token
-    user.save!
+    record = @klass.new
+    record.user_token = token
+    record.save!
 
-    assert_equal(token, user.reload.user_token)
+    assert_equal(token, record.reload.user_token)
   end
 
   #
