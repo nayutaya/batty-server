@@ -42,6 +42,10 @@ class Device < ActiveRecord::Base
     end
   }
 
+  before_validation_on_create { |record|
+    record.device_token ||= record.class.create_unique_device_token
+  }
+
   def self.create_unique_device_token
     return TokenUtil.create_unique_token(self, :device_token, TokenLength)
   end
