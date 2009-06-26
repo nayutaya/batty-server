@@ -45,17 +45,11 @@ class Signup::EmailController < ApplicationController
   def create
     @signup_form = EditFormClass.new(session[:signup_form])
 
-    if @signup_form.valid?
-      # TODO: エラー処理
-      User.transaction {
-        @user = User.new
-        @user.save!
+    @user = User.new
+    @credential = @user.email_credentials.build
+    @credential.attributes = @signup_form.to_email_credential_hash
 
-        @credential = @user.email_credentials.build
-        @credential.attributes = @signup_form.to_email_credential_hash
-        @credential.save!
-      }
-
+    if @signup_form.valid? && @user.save
       @activation_url = url_for(
         :only_path        => false,
         :controller       => "signup/email",
