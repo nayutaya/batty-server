@@ -6,7 +6,7 @@ class UserTest < ActiveSupport::TestCase
   def setup
     @klass = User
     @basic = @klass.new(
-      :user_token => "0" * 20,
+      :user_token => "0" * @klass::TokenLength,
       :nickname   => "nickname")
 
     @yuya   = users(:yuya)
@@ -184,10 +184,10 @@ class UserTest < ActiveSupport::TestCase
   #
 
   test "before_validation_on_create" do
-    token = "0" * 20
+    token = "9" * @klass::TokenLength
 
-    record = @klass.new
-    assert_equal(nil, record.user_token)
+    record = @klass.new(@basic.attributes)
+    record.user_token = nil
 
     Kagemusha.new(@klass).
       defs(:create_unique_user_token) { token }.
@@ -199,9 +199,9 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "before_validation_on_create, already setting" do
-    token = "0" * 20
+    token = "9" * @klass::TokenLength
 
-    record = @klass.new
+    record = @klass.new(@basic.attributes)
     record.user_token = token
     record.save!
 

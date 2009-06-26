@@ -8,7 +8,7 @@ class DeviceTest < ActiveSupport::TestCase
     @basic = @klass.new(
       :user_id        => users(:yuya).id,
       :name           => "name",
-      :device_token   => "0" * 20,
+      :device_token   => "0" * @klass::TokenLength,
       :device_icon_id => device_icons(:note).id)
 
     @yuya_pda      = devices(:yuya_pda)
@@ -239,7 +239,7 @@ class DeviceTest < ActiveSupport::TestCase
   #
 
   test "before_validation_on_create" do
-    token = "0" * @klass::TokenLength
+    token = "9" * @klass::TokenLength
 
     record = @klass.new(@basic.attributes)
     record.device_token = nil
@@ -254,7 +254,7 @@ class DeviceTest < ActiveSupport::TestCase
   end
 
   test "before_validation_on_create, already setting" do
-    token = "0" * @klass::TokenLength
+    token = "9" * @klass::TokenLength
 
     record = @klass.new(@basic.attributes)
     record.device_token = token
