@@ -52,8 +52,7 @@ class Signup::EmailController < ApplicationController
         @user.save!
 
         @credential = @user.email_credentials.build
-        @credential.attributes       = @signup_form.to_email_credential_hash
-        @credential.activation_token = EmailCredential.create_unique_activation_token
+        @credential.attributes = @signup_form.to_email_credential_hash
         @credential.save!
       }
 
