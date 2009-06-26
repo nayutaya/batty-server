@@ -39,6 +39,10 @@ class EmailCredential < ActiveRecord::Base
     end
   }
 
+  before_validation_on_create { |record|
+    record.activation_token ||= record.class.create_unique_activation_token
+  }
+
   def self.create_unique_activation_token
     return TokenUtil.create_unique_token(self, :activation_token, TokenLength)
   end
