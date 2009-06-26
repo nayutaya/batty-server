@@ -27,4 +27,7 @@ config.action_mailer.delivery_method = :test
 # like if you have constraints or database-specific column types
 # config.active_record.schema_format = :sql
 
+config.gem "kagemusha"
+config.gem "cucumber"
+config.gem "webrat"
 config.gem "bmabey-email_spec", :lib => "email_spec", :source => "http://gems.github.com"
