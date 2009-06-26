@@ -9,15 +9,15 @@
 
 # エネルギー更新APIフォーム
 class UpdateEnergyApiForm < ActiveForm
+  # MEMO: 符号つき32ビット整数で表せる時間の範囲
+  TimeMinimumValue = Time.at(0x00000000).strftime("%Y%m%d%H%M%S").to_i
+  TimeMaximumValue = Time.at(0x7FFFFFFF).strftime("%Y%m%d%H%M%S").to_i
+
   column :level, :type => :integer
   column :time,  :type => :integer
 
   N_("UpdateEnergyApiForm|Level")
   N_("UpdateEnergyApiForm|Time")
-
-  # MEMO: 符号つき32ビット整数で表せる時間の範囲
-  TimeMinimumValue = Time.at(0x00000000).strftime("%Y%m%d%H%M%S").to_i
-  TimeMaximumValue = Time.at(0x7FFFFFFF).strftime("%Y%m%d%H%M%S").to_i
 
   validates_presence_of :level
   validates_presence_of :time

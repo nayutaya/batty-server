@@ -20,8 +20,7 @@ class EmailsController < ApplicationController
     @edit_form = EditFormClass.new(params[:edit_form])
 
     @email_address = @login_user.email_addresses.build
-    @email_address.attributes       = @edit_form.to_email_address_hash
-    @email_address.activation_token = EmailAddress.create_unique_activation_token
+    @email_address.attributes = @edit_form.to_email_address_hash
 
     if @edit_form.valid? && @email_address.save
       # TODO: テスト

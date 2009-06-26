@@ -6,7 +6,7 @@ class EmailAddressTest < ActiveSupport::TestCase
     @klass  = EmailAddress
     @record = @klass.new
     @basic  = @klass.new(
-      :activation_token => "0" * 20,
+      :activation_token => "0" * @klass::TokenLength,
       :user_id          => users(:yuya).id,
       :email            => "email@example.jp")
 
@@ -42,7 +42,7 @@ class EmailAddressTest < ActiveSupport::TestCase
   end
 
   test "validates_presence_of :activation_token" do
-    @basic.activation_token = nil
+    @basic.activation_token = ""
     assert_equal(false, @basic.valid?)
   end
 
@@ -154,6 +154,35 @@ class EmailAddressTest < ActiveSupport::TestCase
     assert_equal(true,  (@klass.count > @klass.active.count))
     assert_equal(false, @klass.all.all?(&:activated?))
     assert_equal(true,  @klass.active.all.all?(&:activated?))
+  end
+
+  #
+  # フック
+  #
+
+  test "before_validation_on_create" do
+    token = "9" * @klass::TokenLength
+
+    record = @klass.new(@basic.attributes)
+    record.activation_token = nil
+
+    Kagemusha.new(@klass).
+      defs(:create_unique_activation_token) { token }.
+      swap {
+        record.save!
+      }
+
+    assert_equal(token, record.reload.activation_token)
+  end
+
+  test "before_validation_on_create, already setting" do
+    token = "9" * @klass::TokenLength
+
+    record = @klass.new(@basic.attributes)
+    record.activation_token = token
+    record.save!
+
+    assert_equal(token, record.reload.activation_token)
   end
 
   #

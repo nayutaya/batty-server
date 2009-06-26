@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # == Schema Information
 # Schema version: 20090529051529
 #
@@ -14,16 +13,16 @@
 
 # ユーザ
 class User < ActiveRecord::Base
+  NicknameMaximumLength = 40
+  TokenLength  = 20
+  TokenPattern = TokenUtil.create_token_regexp(TokenLength)
+
   has_many :open_id_credentials
   has_many :email_credentials
   has_many :devices
   has_many :energies, :through => :devices
   has_many :events, :through => :devices
   has_many :email_addresses
-
-  NicknameMaximumLength = 40
-  TokenLength  = 20
-  TokenPattern = TokenUtil.create_token_regexp(TokenLength)
 
   validates_presence_of :user_token
   validates_length_of :nickname, :maximum => NicknameMaximumLength, :allow_nil => true

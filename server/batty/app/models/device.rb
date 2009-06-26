@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # == Schema Information
 # Schema version: 20090529051529
 #
@@ -16,6 +15,11 @@
 
 # デバイス
 class Device < ActiveRecord::Base
+  NameMaximumLength = 50
+  TokenLength  = 20
+  TokenPattern = TokenUtil.create_token_regexp(TokenLength)
+  MaximumRecordsPerUser = 10
+
   has_many :energies, :dependent => :destroy
   has_many :triggers, :dependent => :destroy
   has_many :email_actions, :through => :triggers
@@ -23,11 +27,6 @@ class Device < ActiveRecord::Base
   has_many :events, :dependent => :destroy
   belongs_to :user
   belongs_to :device_icon
-
-  NameMaximumLength = 50
-  TokenLength  = 20
-  TokenPattern = TokenUtil.create_token_regexp(TokenLength)
-  MaximumRecordsPerUser = 10
 
   validates_presence_of :device_token
   validates_presence_of :user_id
@@ -40,6 +39,10 @@ class Device < ActiveRecord::Base
     if record.user && record.user.devices(true).size >= MaximumRecordsPerUser
       record.errors.add(attr, "これ以上%{fn}に#{_(record.class.to_s.downcase)}を追加できません。")
     end
+  }
+
+  before_validation_on_create { |record|
+    record.device_token ||= record.class.create_unique_device_token
   }
 
   def self.create_unique_device_token

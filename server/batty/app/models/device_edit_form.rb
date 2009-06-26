@@ -20,11 +20,11 @@ class DeviceEditForm < ActiveForm
     :message => "%{fn}を選択してください。"
   validates_length_of :name, :maximum => Device::NameMaximumLength, :allow_nil => true
   validates_numericality_of :device_icon_id, :only_integer => true, :allow_nil => true
-  validates_each :device_icon_id do |record, attr, value|
+  validates_each(:device_icon_id) { |record, attr, value|
     unless record.device_icon
       record.errors.add(attr, :invalid)
     end
-  end
+  }
 
   def device_icon
     return DeviceIcon.find_by_id(self.device_icon_id)

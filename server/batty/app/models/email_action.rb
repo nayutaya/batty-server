@@ -27,7 +27,8 @@ class EmailAction < ActiveRecord::Base
   validates_length_of :email, :maximum => 200, :allow_nil => true
   validates_length_of :subject, :maximum => 200, :allow_nil => true
   validates_length_of :body, :maximum => 1000, :allow_nil => true
-  validates_email_format_of :email, :message => "%{fn}は有効なメールアドレスではありません。"
+  validates_email_format_of :email,
+    :message => "%{fn}は有効なメールアドレスではありません。"
   validates_each(:trigger_id, :on => :create) { |record, attr, value|
     if record.trigger && record.trigger.email_actions(true).size >= MaximumRecordsPerTrigger
       record.errors.add(attr, "これ以上%{fn}に#{_(record.class.to_s.downcase)}を追加できません。")

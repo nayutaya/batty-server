@@ -6,8 +6,8 @@ class EmailCredentialTest < ActiveSupport::TestCase
   def setup
     @klass = EmailCredential
     @basic = @klass.new(
-      :activation_token => "0" * 20,
-      :user             => users(:yuya),
+      :activation_token => "0" * @klass::TokenLength,
+      :user_id          => users(:yuya).id,
       :email            => "foo@example.com",
       :hashed_password  => ("0" * 8) + ":" + ("0" * 64))
 
@@ -44,19 +44,16 @@ class EmailCredentialTest < ActiveSupport::TestCase
   test "validates_presence_of :email" do
     @basic.email = nil
     assert_equal(false, @basic.valid?)
-    assert_equal(true, @basic.errors.invalid?(:email))
   end
 
   test "validates_presence_of :activation_token" do
-    @basic.activation_token = nil
+    @basic.activation_token = ""
     assert_equal(false, @basic.valid?)
-    assert_equal(true, @basic.errors.invalid?(:activation_token))
   end
 
   test "validates_presence_of :hashed_password" do
     @basic.hashed_password = nil
     assert_equal(false, @basic.valid?)
-    assert_equal(true, @basic.errors.invalid?(:hashed_password))
   end
 
   test "validates_length_of :email" do
@@ -78,16 +75,15 @@ class EmailCredentialTest < ActiveSupport::TestCase
 
   test "validates_format_of :activation_token" do
     [
-      ["0123456789abcdef0000", true,  false],
-      ["0" * 19,               false, true ],
-      ["0" * 20,               true,  false],
-      ["0" * 21,               false, true ],
-      ["0" * 19 + "A",         false, true ],
-      ["0" * 19 + "g",         false, true ],
-    ].each { |value, expected1, expected2|
+      ["0123456789abcdef0000", true ],
+      ["0" * 19,               false],
+      ["0" * 20,               true ],
+      ["0" * 21,               false],
+      ["0" * 19 + "A",         false],
+      ["0" * 19 + "g",         false],
+    ].each { |value, expected|
       @basic.activation_token = value
-      assert_equal(expected1, @basic.valid?, value)
-      assert_equal(expected2, @basic.errors.invalid?(:activation_token), value)
+      assert_equal(expected, @basic.valid?, value)
     }
   end
 
@@ -156,6 +152,35 @@ class EmailCredentialTest < ActiveSupport::TestCase
     assert_raise(ActiveRecord::RecordInvalid) {
       create_record[]
     }
+  end
+
+  #
+  # フック
+  #
+
+  test "before_validation_on_create" do
+    token = "9" * @klass::TokenLength
+
+    record = @klass.new(@basic.attributes)
+    record.activation_token = nil
+
+    Kagemusha.new(@klass).
+      defs(:create_unique_activation_token) { token }.
+      swap {
+        record.save!
+      }
+
+    assert_equal(token, record.reload.activation_token)
+  end
+
+  test "before_validation_on_create, already setting" do
+    token = "9" * @klass::TokenLength
+
+    record = @klass.new(@basic.attributes)
+    record.activation_token = token
+    record.save!
+
+    assert_equal(token, record.reload.activation_token)
   end
 
   #

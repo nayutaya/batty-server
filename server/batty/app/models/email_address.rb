@@ -14,18 +14,19 @@
 
 # 通知先メールアドレス
 class EmailAddress < ActiveRecord::Base
-  belongs_to :user
-
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
   MaximumRecordsPerUser = 10
+
+  belongs_to :user
 
   validates_presence_of :activation_token
   validates_presence_of :user_id
   validates_presence_of :email
   validates_length_of :email, :maximum => 200
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
-  validates_email_format_of :email, :message => "%{fn}は有効なメールアドレスではありません。"
+  validates_email_format_of :email,
+    :message => "%{fn}は有効なメールアドレスではありません。"
   validates_uniqueness_of :activation_token
   validates_uniqueness_of :email, :scope => [:user_id]
   validates_each(:user_id, :on => :create) { |record, attr, value|
@@ -35,6 +36,10 @@ class EmailAddress < ActiveRecord::Base
   }
 
   named_scope :active, :conditions => ["(email_addresses.activated_at IS NOT NULL)"]
+
+  before_validation_on_create { |record|
+    record.activation_token ||= record.class.create_unique_activation_token
+  }
 
   def self.create_unique_activation_token
     return TokenUtil.create_unique_token(self, :activation_token, TokenLength)

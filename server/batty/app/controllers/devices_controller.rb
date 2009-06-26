@@ -19,8 +19,7 @@ class DevicesController < ApplicationController
     @edit_form = EditFormClass.new(params[:edit_form])
 
     @device = @login_user.devices.build
-    @device.attributes   = @edit_form.to_device_hash
-    @device.device_token = Device.create_unique_device_token
+    @device.attributes = @edit_form.to_device_hash
 
     if @edit_form.valid? && @device.save
       set_notice("デバイスを追加しました。")

@@ -8,7 +8,7 @@ class DeviceTest < ActiveSupport::TestCase
     @basic = @klass.new(
       :user_id        => users(:yuya).id,
       :name           => "name",
-      :device_token   => "0" * 20,
+      :device_token   => "0" * @klass::TokenLength,
       :device_icon_id => device_icons(:note).id)
 
     @yuya_pda      = devices(:yuya_pda)
@@ -170,7 +170,7 @@ class DeviceTest < ActiveSupport::TestCase
   end
 
   test "validates_presence_of :device_token" do
-    @basic.device_token = nil
+    @basic.device_token = ""
     assert_equal(false, @basic.valid?)
   end
 
@@ -232,6 +232,35 @@ class DeviceTest < ActiveSupport::TestCase
     assert_raise(ActiveRecord::RecordInvalid) {
       create_record[]
     }
+  end
+
+  #
+  # フック
+  #
+
+  test "before_validation_on_create" do
+    token = "9" * @klass::TokenLength
+
+    record = @klass.new(@basic.attributes)
+    record.device_token = nil
+
+    Kagemusha.new(@klass).
+      defs(:create_unique_device_token) { token }.
+      swap {
+        record.save!
+      }
+
+    assert_equal(token, record.reload.device_token)
+  end
+
+  test "before_validation_on_create, already setting" do
+    token = "9" * @klass::TokenLength
+
+    record = @klass.new(@basic.attributes)
+    record.device_token = token
+    record.save!
+
+    assert_equal(token, record.reload.device_token)
   end
 
   #

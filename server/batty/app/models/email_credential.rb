@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # == Schema Information
 # Schema version: 20090529051529
 #
@@ -17,13 +16,13 @@
 
 # メール認証情報
 class EmailCredential < ActiveRecord::Base
-  belongs_to :user
-
   EmailMaximumLength = 200
   TokenLength  = 20
   TokenPattern = TokenUtil.create_token_regexp(TokenLength)
   HashedPasswordPattern = /\A([0-9a-f]{8}):([0-9a-f]{64})\z/
   MaximumRecordsPerUser = 10
+
+  belongs_to :user
 
   validates_presence_of :email
   validates_presence_of :activation_token
@@ -31,12 +30,17 @@ class EmailCredential < ActiveRecord::Base
   validates_length_of :email, :maximum => EmailMaximumLength, :allow_nil => true
   validates_format_of :activation_token, :with => TokenPattern, :allow_nil => true
   validates_format_of :hashed_password, :with => HashedPasswordPattern, :allow_nil => true
-  validates_email_format_of :email, :message => "%{fn}は有効なメールアドレスではありません。"
+  validates_email_format_of :email,
+    :message => "%{fn}は有効なメールアドレスではありません。"
   validates_uniqueness_of :email
   validates_each(:user_id, :on => :create) { |record, attr, value|
     if record.user && record.user.email_credentials(true).size >= MaximumRecordsPerUser
       record.errors.add(attr, "これ以上%{fn}に#{_(record.class.to_s.downcase)}を追加できません。")
     end
+  }
+
+  before_validation_on_create { |record|
+    record.activation_token ||= record.class.create_unique_activation_token
   }
 
   def self.create_unique_activation_token

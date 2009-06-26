@@ -11,6 +11,9 @@
 
 # メール認証情報編集フォーム
 class EmailCredentialEditForm < ActiveForm
+  PasswordLengthRange = 4..20
+  PasswordPattern     = /\A[\x21-\x7E]+\z/
+
   column :email,                 :type => :text
   column :password,              :type => :text
   column :password_confirmation, :type => :text
@@ -19,16 +22,14 @@ class EmailCredentialEditForm < ActiveForm
   N_("EmailCredentialEditForm|Password")
   N_("EmailCredentialEditForm|Password confirmation")
 
-  PasswordLengthRange = 4..20
-  PasswordPattern     = /\A[\x21-\x7E]+\z/
-
   validates_presence_of :email
   validates_presence_of :password
   validates_presence_of :password_confirmation
   validates_length_of :email, :maximum => EmailCredential::EmailMaximumLength, :allow_nil => true
   validates_length_of :password, :in => PasswordLengthRange, :allow_nil => true
   validates_format_of :password, :with => PasswordPattern, :allow_nil => true
-  validates_email_format_of :email, :message => "%{fn}は有効なメールアドレスではありません。"
+  validates_email_format_of :email,
+    :message => "%{fn}は有効なメールアドレスではありません。"
   validates_each(:password) { |record, attr, value|
     # MEMO: validates_confirmation_ofはpassword_confirmation属性を上書きしてしまうため、
     #       ここでは使用できない。そのため、validates_confirmation_ofを参考に独自に実装。

@@ -21,8 +21,7 @@ class Credentials::EmailController < ApplicationController
     @edit_form = EditFormClass.new(params[:edit_form])
 
     @email_credential = @login_user.email_credentials.build
-    @email_credential.attributes       = @edit_form.to_email_credential_hash
-    @email_credential.activation_token = EmailCredential.create_unique_activation_token
+    @email_credential.attributes = @edit_form.to_email_credential_hash
 
     if @edit_form.valid? && @email_credential.save
       # TODO: テスト

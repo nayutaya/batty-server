@@ -10,6 +10,8 @@
 
 # トリガ編集フォーム
 class TriggerEditForm < ActiveForm
+  LevelRange = Energy::LevelRange
+
   column :enable,   :type => :boolean
   column :operator, :type => :integer
   column :level,    :type => :integer
@@ -17,8 +19,6 @@ class TriggerEditForm < ActiveForm
   N_("TriggerEditForm|Enable")
   N_("TriggerEditForm|Operator")
   N_("TriggerEditForm|Level")
-
-  LevelRange = Energy::LevelRange
 
   validates_presence_of :operator,
     :message => "%{fn}を選択してください。"
