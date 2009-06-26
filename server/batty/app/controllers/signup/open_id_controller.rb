@@ -42,14 +42,11 @@ class Signup::OpenIdController < ApplicationController
   def create
     @identity_url = session[:identity_url]
 
-    User.transaction {
-      @user = User.new
-      @user.save!
+    @user = User.new
+    @credential = @user.open_id_credentials.build
+    @credential.identity_url = @identity_url
 
-      @credential = @user.open_id_credentials.build
-      @credential.identity_url = @identity_url
-      @credential.save!
-    }
+    @user.save!
 
     # FIXME: ログイン状態にしないように変更
     session[:identity_url] = nil
