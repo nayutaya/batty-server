@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+# == Schema Information
+# Schema version: 20090529051529
+#
+# Table name: active_forms
+#
+#  email :text
+#
 
 # メールアドレス編集フォーム
 class EmailAddressEditForm < ActiveForm

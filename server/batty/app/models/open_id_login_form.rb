@@ -1,3 +1,10 @@
+# == Schema Information
+# Schema version: 20090529051529
+#
+# Table name: active_forms
+#
+#  openid_url :text
+#
 
 # OpenIDログインフォーム
 class OpenIdLoginForm < ActiveForm
