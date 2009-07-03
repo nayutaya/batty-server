@@ -1,8 +1,0 @@
-
-<h1>Auth#index</h1>
-
-<% form_for :session, :url => {:action => 'login'} do |f| -%>
-  <%= f.label :openid_url, 'OpenID URL' %>
-  <%= f.text_field :openid_url %>
-  <%= f.submit 'Login' %>
-<% end -%>

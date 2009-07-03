@@ -1,1 +1,17 @@
+*.bat
+*.sh
+*.txt
+*~
 .DS_Store
+bin/
+config/database.yml
+config/smtp.yml
+coverage/
+db/*.sqlite3
+db/schema.rb
+log/*.log
+nbproject/
+tmp/cache/
+tmp/pids/
+tmp/sessions/
+tmp/sockets/
