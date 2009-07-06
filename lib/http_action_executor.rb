@@ -5,23 +5,11 @@ require "ipaddr"
 
 # HTTPアクション実行
 class HttpActionExecutor
-  WebHookDispatcher.open_timeout = 5
-  WebHookDispatcher.read_timeout = 5
-  WebHookDispatcher.user_agent   = "batty (http://batty.nayutaya.jp)"
-  WebHookDispatcher.acl_with {
+  Acl = WebHookDispatcher::Acl.with{
     allow :all
     deny  :addr => "127.0.0.0/8"
     deny  :addr => IPSocket.getaddress(Socket.gethostname).sub(/%.+\z/, "")
   }
-
-  OpenTimeout = 5
-  ReadTimeout = 5
-  UserAgent   = "batty (http://batty.nayutaya.jp)".freeze
-
-  DenyNetworks = [
-    IPAddr.new("127.0.0.0/8"),
-    IPAddr.new(IPSocket.getaddress(Socket.gethostname).sub(/%.+\z/, "")),
-  ].freeze
 
   def initialize(options = {})
     options = options.dup
@@ -60,7 +48,11 @@ class HttpActionExecutor
   end
 
   def execute
-    dispatcher = WebHookDispatcher.new
+    dispatcher = WebHookDispatcher.new(
+      :open_timeout => 5,
+      :read_timeout => 5,
+      :user_agent   => "batty (http://batty.nayutaya.jp)",
+      :acl          => Acl)
 
     response =
       case @http_method
