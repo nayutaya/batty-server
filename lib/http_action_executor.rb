@@ -68,23 +68,20 @@ class HttpActionExecutor
 
   def execute
     dispatcher = WebHookDispatcher.new
-    req =
+
+    response =
       case @http_method
-      when :head then WebHookDispatcher::Request::Head.new(URI.parse(self.url))
-      when :get  then WebHookDispatcher::Request::Get.new(URI.parse(self.url))
-      when :post then WebHookDispatcher::Request::Post.new(URI.parse(self.url), self.post_body)
+      when :head then dispatcher.head(URI.parse(self.url))
+      when :get  then dispatcher.get(URI.parse(self.url))
+      when :post then dispatcher.post(URI.parse(self.url), self.post_body)
       else raise("invalid http method")
       end
 
-    ret = dispatcher.request(req)
-    case ret.status
-    when :success then return {:success => ret.success?, :message => "#{ret.http_code} #{ret.message}"}
-    when :failure then return {:success => ret.success?, :message => "#{ret.http_code} #{ret.message}"}
-    when :denied  then return {:success => false, :message => "connection refused."}
-    when :timeout then return {:success => false, :message => "timeout."}
-    when :refused then return {:success => false, :message => "connection refused."}
-    when :reset   then return {:success => false, :message => "connection reset by peer."}
-    when :error   then return {:success => false, :message => ret.message}
+    case response.status
+    when :success, :failure
+      return {:success => response.success?, :message => "#{response.http_code} #{response.message}"}
+    else
+      return {:success => response.success?, :message => response.message}
     end
   end
 

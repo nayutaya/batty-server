@@ -144,7 +144,7 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
 
     result = @executor.execute
     assert_equal(false, result[:success])
-    assert_equal("connection refused.", result[:message])
+    assert_equal("denied.", result[:message])
   end
 
   test "execute, timeout" do
