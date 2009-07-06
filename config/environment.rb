@@ -20,6 +20,7 @@ Rails::Initializer.run do |config|
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem "mongrel"
+  config.gem "nayutaya-webhook-dispatcher", :version => ">= 0.0.2", :lib => "webhook-dispatcher", :source => "http://gems.github.com"
   config.gem "mislav-will_paginate", :version => "> 2.3.2", :lib => "will_paginate", :source => "http://gems.github.com"
   config.gem "locale", :version => ">= 2.0.4"
   config.gem "locale_rails", :version => ">= 2.0.4"
