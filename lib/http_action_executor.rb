@@ -5,14 +5,11 @@ require "ipaddr"
 
 # HTTPアクション実行
 class HttpActionExecutor
-  OpenTimeout = 5
-  ReadTimeout = 5
-  UserAgent   = "batty (http://batty.nayutaya.jp)".freeze
-
-  DenyNetworks = [
-    IPAddr.new("127.0.0.0/8"),
-    IPAddr.new(IPSocket.getaddress(Socket.gethostname).sub(/%.+\z/, "")),
-  ].freeze
+  Acl = WebHookDispatcher::Acl.with{
+    allow :all
+    deny  :addr => "127.0.0.0/8"
+    deny  :addr => IPSocket.getaddress(Socket.gethostname).sub(/%.+\z/, "")
+  }
 
   def initialize(options = {})
     options = options.dup
@@ -41,13 +38,6 @@ class HttpActionExecutor
     }
   end
 
-  def self.allowed_host?(host)
-    name, aliases, type, *addresses = TCPSocket.gethostbyname(host)
-    return addresses.
-      map  { |ipaddr| IPAddr.new(ipaddr.sub(/%.+\z/, "")) }.
-      all? { |ipaddr| DenyNetworks.none? { |network| network.include?(ipaddr) } }
-  end
-
   def replace(keywords)
     url       = NoticeFormatter.replace_keywords(self.url,       keywords) if self.url
     post_body = NoticeFormatter.replace_keywords(self.post_body, keywords) if self.post_body
@@ -58,28 +48,26 @@ class HttpActionExecutor
   end
 
   def execute
-    request   = self.create_http_request
-    connector = self.create_http_connector
+    dispatcher = WebHookDispatcher.new(
+      :open_timeout => 5,
+      :read_timeout => 5,
+      :user_agent   => "batty (http://batty.nayutaya.jp)",
+      :acl          => Acl)
 
-    result =
-      begin
-        raise(Errno::ECONNREFUSED) unless self.class.allowed_host?(connector.address)
-        response = connector.start { connector.request(request) }
-        {
-          :success => response.kind_of?(Net::HTTPSuccess),
-          :message => "#{response.code} #{response.message}",
-        }
-      rescue TimeoutError
-        {:success => false, :message => "timeout."}
-      rescue Errno::ECONNREFUSED
-        {:success => false, :message => "connection refused."}
-      rescue Errno::ECONNRESET
-        {:success => false, :message => "connection reset by peer."}
-      rescue => e
-        {:success => false, :message => "#{e.class}: #{e.message}"}
+    response =
+      case @http_method
+      when :head then dispatcher.head(URI.parse(self.url))
+      when :get  then dispatcher.get(URI.parse(self.url))
+      when :post then dispatcher.post(URI.parse(self.url), self.post_body)
+      else raise("invalid http method")
       end
 
-    return result.freeze.each { |k, v| v.freeze }
+    case response.status
+    when :success, :failure
+      return {:success => response.success?, :message => "#{response.http_code} #{response.message}"}
+    else
+      return {:success => response.success?, :message => response.message}
+    end
   end
 
   def to_hash
@@ -88,32 +76,5 @@ class HttpActionExecutor
       :http_method => self.http_method,
       :post_body   => self.post_body,
     }
-  end
-
-  protected
-
-  def create_http_request
-    klass =
-      case @http_method
-      when :head then Net::HTTP::Head
-      when :get  then Net::HTTP::Get
-      when :post then Net::HTTP::Post
-      else raise("invalid http method")
-      end
-
-    request = klass.new(URI.parse(@url).request_uri)
-    request.body = @post_body if @http_method == :post
-    request["User-Agent"] = UserAgent
-
-    return request
-  end
-
-  def create_http_connector
-    uri  = URI.parse(@url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.open_timeout = OpenTimeout
-    http.read_timeout = ReadTimeout
-
-    return http
   end
 end

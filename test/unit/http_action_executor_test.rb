@@ -102,119 +102,14 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     assert_equal("A:body", executor.post_body)
   end
 
-  test "execute, 200 OK" do
-    @executor.url         = "http://www.google.co.jp/"
-    @executor.http_method = :get
-
-    musha = Kagemusha.new(Net::HTTP)
-    musha.def(:start) { Net::HTTPOK.new("1.1", "200", "OK") }
-
-    result = musha.swap { @executor.execute }
-    assert_equal(true, result[:success])
-    assert_equal("200 OK", result[:message])
-  end
-
-  test "execute, 201 Created" do
-    @executor.url         = "http://www.google.co.jp/"
-    @executor.http_method = :get
-
-    musha = Kagemusha.new(Net::HTTP)
-    musha.def(:start) { Net::HTTPCreated.new("1.1", "201", "Created") }
-
-    result = musha.swap { @executor.execute }
-    assert_equal(true, result[:success])
-    assert_equal("201 Created", result[:message])
-  end
-
-  test "execute, 301 Moved Permanently" do
-    @executor.url         = "http://www.google.co.jp/"
-    @executor.http_method = :get
-
-    musha = Kagemusha.new(Net::HTTP)
-    musha.def(:start) { Net::HTTPMovedPermanently.new("1.1", "301", "Moved Permanently") }
-
-    result = musha.swap { @executor.execute }
-    assert_equal(false, result[:success])
-    assert_equal("301 Moved Permanently", result[:message])
-  end
-
-  test "execute, host not allowed" do
-    @executor.url         = "http://localhost/"
-    @executor.http_method = :get
-
-    result = @executor.execute
-    assert_equal(false, result[:success])
-    assert_equal("connection refused.", result[:message])
-  end
-
-  test "execute, timeout" do
-    @executor.url         = "http://www.google.co.jp/"
-    @executor.http_method = :get
-
-    musha = Kagemusha.new(Net::HTTP)
-    musha.def(:start) { raise(TimeoutError) }
-
-    result = musha.swap { @executor.execute }
-    assert_equal(false, result[:success])
-    assert_equal("timeout.", result[:message])
-  end
-
-  test "execute, refused" do
-    @executor.url         = "http://www.google.co.jp/"
-    @executor.http_method = :get
-
-    musha = Kagemusha.new(Net::HTTP)
-    musha.def(:start) { raise(Errno::ECONNREFUSED) }
-
-    result = musha.swap { @executor.execute }
-    assert_equal(false, result[:success])
-    assert_equal("connection refused.", result[:message])
-  end
-
-  test "execute, reset" do
-    @executor.url         = "http://www.google.co.jp/"
-    @executor.http_method = :get
-
-    musha = Kagemusha.new(Net::HTTP)
-    musha.def(:start) { raise(Errno::ECONNRESET) }
-
-    result = musha.swap { @executor.execute }
-    assert_equal(false, result[:success])
-    assert_equal("connection reset by peer.", result[:message])
-  end
-
-  test "execute, socket error" do
-    @executor.url         = "http://www.google.co.jp/"
-    @executor.http_method = :get
-
-    musha = Kagemusha.new(Net::HTTP)
-    musha.def(:start) { raise(SocketError, "message.") }
-
-    result = musha.swap { @executor.execute }
-    assert_equal(false, result[:success])
-    assert_equal("SocketError: message.", result[:message])
-  end
-
-  test "execute, runtime error" do
-    @executor.url         = "http://www.google.co.jp/"
-    @executor.http_method = :get
-
-    musha = Kagemusha.new(Net::HTTP)
-    musha.def(:start) { raise("message.") }
-
-    result = musha.swap { @executor.execute }
-    assert_equal(false, result[:success])
-    assert_equal("RuntimeError: message.", result[:message])
-  end
-
   # MEMO: 実際に外部へのアクセスを行う
   test "execute, head www.google.co.jp" do
     @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :head
 
-    result = @executor.execute
-    assert_equal(true, result[:success])
-    assert_equal("200 OK", result[:message])
+    assert_equal(
+      {:success => true, :message => "200 OK"},
+      @executor.execute)
   end
 
   # MEMO: 実際に外部へのアクセスを行う
@@ -222,9 +117,9 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :get
 
-    result = @executor.execute
-    assert_equal(true, result[:success])
-    assert_equal("200 OK", result[:message])
+    assert_equal(
+      {:success => true, :message => "200 OK"},
+      @executor.execute)
   end
 
   # MEMO: 実際に外部へのアクセスを行う
@@ -233,9 +128,27 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     @executor.http_method = :post
     @executor.post_body   = ""
 
-    result = @executor.execute
-    assert_equal(false, result[:success])
-    assert_equal("405 Method Not Allowed", result[:message])
+    assert_equal(
+      {:success => false, :message => "405 Method Not Allowed"},
+      @executor.execute)
+  end
+
+  test "execute, host not allowed" do
+    @executor.url         = "http://localhost/"
+    @executor.http_method = :get
+
+    assert_equal(
+      {:success => false, :message => "denied."},
+      @executor.execute)
+  end
+
+  test "execute, invalid http method" do
+    @executor.url         = "http://www.google.co.jp/"
+    @executor.http_method = :invalid
+
+    assert_raise(RuntimeError) {
+      @executor.execute
+    }
   end
 
   test "to_hash, empty" do
@@ -257,79 +170,5 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
       :post_body   => "post_body",
     }
     assert_equal(expected, @executor.to_hash)
-  end
-
-  test "create_http_request, head" do
-    @executor.url         = "http://example.jp/head?query"
-    @executor.http_method = :head
-    @executor.post_body   = "body"
-
-    request = @executor.__send__(:create_http_request)
-    assert_equal("HEAD",            request.method)
-    assert_equal("/head?query",     request.path)
-    assert_equal(nil,               request.body)
-    assert_equal(@klass::UserAgent, request["User-Agent"])
-  end
-
-  test "create_http_request, get" do
-    @executor.url         = "http://example.jp/get?query"
-    @executor.http_method = :get
-    @executor.post_body   = "body"
-
-    request = @executor.__send__(:create_http_request)
-    assert_equal("GET",             request.method)
-    assert_equal("/get?query",      request.path)
-    assert_equal(nil,               request.body)
-    assert_equal(@klass::UserAgent, request["User-Agent"])
-  end
-
-  test "create_http_request, post" do
-    @executor.url         = "http://example.jp/post?query"
-    @executor.http_method = :post
-    @executor.post_body   = "body"
-
-    request = @executor.__send__(:create_http_request)
-    assert_equal("POST",            request.method)
-    assert_equal("/post?query",     request.path)
-    assert_equal("body",            request.body)
-    assert_equal(@klass::UserAgent, request["User-Agent"])
-  end
-
-  test "create_http_request, invalid" do
-    @executor.http_method = :invalid
-
-    assert_raise(RuntimeError) {
-      @executor.__send__(:create_http_request)
-    }
-  end
-
-  test "create_http_connector" do
-    @executor.url = "http://example.jp/path?query"
-
-    http = @executor.__send__(:create_http_connector)
-    assert_equal("example.jp",        http.address)
-    assert_equal(80,                  http.port)
-    assert_equal(@klass::OpenTimeout, http.open_timeout)
-    assert_equal(@klass::ReadTimeout, http.read_timeout)
-  end
-
-  test "allowed_host?" do
-    [
-      ["www.ruby-lang.org", true ],
-      ["www.google.co.jp",  true ],
-      ["localhost",         false],
-      ["127.0.0.1",         false],
-      ["127.1.2.3",         false],
-      [Socket.gethostname,  false],
-      [IPSocket.getaddress(Socket.gethostname).sub(/%.+\z/, ""), false],
-    ].each { |value, expected|
-      assert_equal(expected, @klass.allowed_host?(value), value)
-    }
-  end
-
-  test "allowed_host?, DNS error" do
-    assert_raise(SocketError) {
-      @klass.allowed_host?("example.jp")
-    }
   end
 end
