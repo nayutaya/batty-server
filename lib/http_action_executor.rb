@@ -50,13 +50,6 @@ class HttpActionExecutor
     }
   end
 
-  def self.allowed_host?(host)
-    name, aliases, type, *addresses = TCPSocket.gethostbyname(host)
-    return addresses.
-      map  { |ipaddr| IPAddr.new(ipaddr.sub(/%.+\z/, "")) }.
-      all? { |ipaddr| DenyNetworks.none? { |network| network.include?(ipaddr) } }
-  end
-
   def replace(keywords)
     url       = NoticeFormatter.replace_keywords(self.url,       keywords) if self.url
     post_body = NoticeFormatter.replace_keywords(self.post_body, keywords) if self.post_body
@@ -91,32 +84,5 @@ class HttpActionExecutor
       :http_method => self.http_method,
       :post_body   => self.post_body,
     }
-  end
-
-  protected
-
-  def create_http_request
-    klass =
-      case @http_method
-      when :head then Net::HTTP::Head
-      when :get  then Net::HTTP::Get
-      when :post then Net::HTTP::Post
-      else raise("invalid http method")
-      end
-
-    request = klass.new(URI.parse(@url).request_uri)
-    request.body = @post_body if @http_method == :post
-    request["User-Agent"] = UserAgent
-
-    return request
-  end
-
-  def create_http_connector
-    uri  = URI.parse(@url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.open_timeout = OpenTimeout
-    http.read_timeout = ReadTimeout
-
-    return http
   end
 end

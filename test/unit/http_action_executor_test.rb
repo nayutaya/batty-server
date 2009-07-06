@@ -207,6 +207,15 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     assert_equal("RuntimeError: message.", result[:message])
   end
 
+  test "execute, invalid http method" do
+    @executor.url         = "http://www.google.co.jp/"
+    @executor.http_method = :invalid
+
+    assert_raise(RuntimeError) {
+      @executor.execute
+    }
+  end
+
   # MEMO: 実際に外部へのアクセスを行う
   test "execute, head www.google.co.jp" do
     @executor.url         = "http://www.google.co.jp/"
@@ -257,79 +266,5 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
       :post_body   => "post_body",
     }
     assert_equal(expected, @executor.to_hash)
-  end
-
-  test "create_http_request, head" do
-    @executor.url         = "http://example.jp/head?query"
-    @executor.http_method = :head
-    @executor.post_body   = "body"
-
-    request = @executor.__send__(:create_http_request)
-    assert_equal("HEAD",            request.method)
-    assert_equal("/head?query",     request.path)
-    assert_equal(nil,               request.body)
-    assert_equal(@klass::UserAgent, request["User-Agent"])
-  end
-
-  test "create_http_request, get" do
-    @executor.url         = "http://example.jp/get?query"
-    @executor.http_method = :get
-    @executor.post_body   = "body"
-
-    request = @executor.__send__(:create_http_request)
-    assert_equal("GET",             request.method)
-    assert_equal("/get?query",      request.path)
-    assert_equal(nil,               request.body)
-    assert_equal(@klass::UserAgent, request["User-Agent"])
-  end
-
-  test "create_http_request, post" do
-    @executor.url         = "http://example.jp/post?query"
-    @executor.http_method = :post
-    @executor.post_body   = "body"
-
-    request = @executor.__send__(:create_http_request)
-    assert_equal("POST",            request.method)
-    assert_equal("/post?query",     request.path)
-    assert_equal("body",            request.body)
-    assert_equal(@klass::UserAgent, request["User-Agent"])
-  end
-
-  test "create_http_request, invalid" do
-    @executor.http_method = :invalid
-
-    assert_raise(RuntimeError) {
-      @executor.__send__(:create_http_request)
-    }
-  end
-
-  test "create_http_connector" do
-    @executor.url = "http://example.jp/path?query"
-
-    http = @executor.__send__(:create_http_connector)
-    assert_equal("example.jp",        http.address)
-    assert_equal(80,                  http.port)
-    assert_equal(@klass::OpenTimeout, http.open_timeout)
-    assert_equal(@klass::ReadTimeout, http.read_timeout)
-  end
-
-  test "allowed_host?" do
-    [
-      ["www.ruby-lang.org", true ],
-      ["www.google.co.jp",  true ],
-      ["localhost",         false],
-      ["127.0.0.1",         false],
-      ["127.1.2.3",         false],
-      [Socket.gethostname,  false],
-      [IPSocket.getaddress(Socket.gethostname).sub(/%.+\z/, ""), false],
-    ].each { |value, expected|
-      assert_equal(expected, @klass.allowed_host?(value), value)
-    }
-  end
-
-  test "allowed_host?, DNS error" do
-    assert_raise(SocketError) {
-      @klass.allowed_host?("example.jp")
-    }
   end
 end
