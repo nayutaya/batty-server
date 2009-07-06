@@ -31,6 +31,7 @@ class EmailsController < ApplicationController
         :activation_token => @email_address.activation_token)
 
       # TODO: テスト
+      # MEMO: 即時性を優先し、非同期化しない
       ActivationMailer.deliver_request_for_notice(
         :recipients     => @email_address.email,
         :activation_url => @activation_url)
@@ -71,6 +72,7 @@ class EmailsController < ApplicationController
     @email_address.activate!
 
     # TODO: テスト
+    # MEMO: 即時性を優先し、非同期化しない
     ActivationMailer.deliver_complete_for_notice(
       :recipients => @email_address.email)
 

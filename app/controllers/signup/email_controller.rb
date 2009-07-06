@@ -57,7 +57,7 @@ class Signup::EmailController < ApplicationController
         :activation_token => @credential.activation_token)
 
       # TODO: テスト
-      # TODO: 非同期化
+      # MEMO: 即時性を優先し、非同期化しない
       ActivationMailer.deliver_request_for_signup(
         :recipients     => @credential.email,
         :activation_url => @activation_url)
@@ -104,7 +104,7 @@ class Signup::EmailController < ApplicationController
     @credential.activate!
 
     # TODO: テスト
-    # TODO: 非同期化
+    # MEMO: 即時性を優先し、非同期化しない
     ActivationMailer.deliver_complete_for_signup(
       :recipients => @credential.email)
 

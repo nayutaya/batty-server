@@ -32,7 +32,7 @@ class Credentials::EmailController < ApplicationController
         :activation_token => @email_credential.activation_token)
 
       # TODO: テスト
-      # TODO: 非同期化
+      # MEMO: 即時性を優先し、非同期化しない
       ActivationMailer.deliver_request_for_credential(
         :recipients     => @email_credential.email,
         :activation_url => @activation_url)
@@ -97,7 +97,7 @@ class Credentials::EmailController < ApplicationController
     @email_credential.activate!
 
     # TODO: テスト
-    # TODO: 非同期化
+    # MEMO: 即時性を優先し、非同期化しない
     ActivationMailer.deliver_complete_for_credential(
       :recipients => @email_credential.email)
 
