@@ -107,9 +107,9 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :head
 
-    result = @executor.execute
-    assert_equal(true, result[:success])
-    assert_equal("200 OK", result[:message])
+    assert_equal(
+      {:success => true, :message => "200 OK"},
+      @executor.execute)
   end
 
   # MEMO: 実際に外部へのアクセスを行う
@@ -117,9 +117,9 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     @executor.url         = "http://www.google.co.jp/"
     @executor.http_method = :get
 
-    result = @executor.execute
-    assert_equal(true, result[:success])
-    assert_equal("200 OK", result[:message])
+    assert_equal(
+      {:success => true, :message => "200 OK"},
+      @executor.execute)
   end
 
   # MEMO: 実際に外部へのアクセスを行う
@@ -128,18 +128,18 @@ class HttpActionExecutorTest < ActiveSupport::TestCase
     @executor.http_method = :post
     @executor.post_body   = ""
 
-    result = @executor.execute
-    assert_equal(false, result[:success])
-    assert_equal("405 Method Not Allowed", result[:message])
+    assert_equal(
+      {:success => false, :message => "405 Method Not Allowed"},
+      @executor.execute)
   end
 
   test "execute, host not allowed" do
     @executor.url         = "http://localhost/"
     @executor.http_method = :get
 
-    result = @executor.execute
-    assert_equal(false, result[:success])
-    assert_equal("denied.", result[:message])
+    assert_equal(
+      {:success => false, :message => "denied."},
+      @executor.execute)
   end
 
   test "execute, invalid http method" do
