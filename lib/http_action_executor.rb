@@ -5,6 +5,15 @@ require "ipaddr"
 
 # HTTPアクション実行
 class HttpActionExecutor
+  WebHookDispatcher.open_timeout = 5
+  WebHookDispatcher.read_timeout = 5
+  WebHookDispatcher.user_agent   = "batty (http://batty.nayutaya.jp)"
+  WebHookDispatcher.acl_with {
+    allow :all
+    deny  :addr => "127.0.0.0/8"
+    deny  :addr => IPSocket.getaddress(Socket.gethostname).sub(/%.+\z/, "")
+  }
+
   OpenTimeout = 5
   ReadTimeout = 5
   UserAgent   = "batty (http://batty.nayutaya.jp)".freeze
@@ -58,28 +67,25 @@ class HttpActionExecutor
   end
 
   def execute
-    request   = self.create_http_request
-    connector = self.create_http_connector
-
-    result =
-      begin
-        raise(Errno::ECONNREFUSED) unless self.class.allowed_host?(connector.address)
-        response = connector.start { connector.request(request) }
-        {
-          :success => response.kind_of?(Net::HTTPSuccess),
-          :message => "#{response.code} #{response.message}",
-        }
-      rescue TimeoutError
-        {:success => false, :message => "timeout."}
-      rescue Errno::ECONNREFUSED
-        {:success => false, :message => "connection refused."}
-      rescue Errno::ECONNRESET
-        {:success => false, :message => "connection reset by peer."}
-      rescue => e
-        {:success => false, :message => "#{e.class}: #{e.message}"}
+    dispatcher = WebHookDispatcher.new
+    req =
+      case @http_method
+      when :head then WebHookDispatcher::Request::Head.new(URI.parse(self.url))
+      when :get  then WebHookDispatcher::Request::Get.new(URI.parse(self.url))
+      when :post then WebHookDispatcher::Request::Post.new(URI.parse(self.url), self.post_body)
+      else raise("invalid http method")
       end
 
-    return result.freeze.each { |k, v| v.freeze }
+    ret = dispatcher.request(req)
+    case ret.status
+    when :success then return {:success => ret.success?, :message => "#{ret.http_code} #{ret.message}"}
+    when :failure then return {:success => ret.success?, :message => "#{ret.http_code} #{ret.message}"}
+    when :denied  then return {:success => false, :message => "connection refused."}
+    when :timeout then return {:success => false, :message => "timeout."}
+    when :refused then return {:success => false, :message => "connection refused."}
+    when :reset   then return {:success => false, :message => "connection reset by peer."}
+    when :error   then return {:success => false, :message => ret.message}
+    end
   end
 
   def to_hash
