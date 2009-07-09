@@ -5,6 +5,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.root :controller => "home", :action => "index"
 
+  map.connect "signup", :controller => "signup", :action => "index"
+
   map.with_options :controller => "signup/email" do |email|
     email.connect "signup/email/:action",                      :action => /(index|validate|validated|create|created|activate|activated)/
     email.connect "signup/email/activation/:activation_token", :action => "activation", :activation_token => TokenPattern

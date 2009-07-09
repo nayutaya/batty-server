@@ -1,5 +1,8 @@
-class SignupController < ApplicationController
-  def index
-  end
 
+# サインアップ
+class SignupController < ApplicationController
+  # GET /signup
+  def index
+    # nop
+  end
 end
