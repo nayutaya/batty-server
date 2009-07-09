@@ -1,38 +1,51 @@
 
+<%- @title = "アカウント登録" -%>
+<%- @enable_side_column = false -%>
+
 <h1>さあ、battyをはじめよう</h1>
 
 <div>battyのアカウント登録はとても簡単！</div>
 
-<%- form_tag(:controller => "signup/open_id", :action => "authenticate") { -%>
-  <table border="1">
-    <tr>
-      <th><%= label_tag("openid_url", "OpenID URL") %></th>
-      <td>
-        <%= text_field_tag("openid_url", @openid_url, :size => 20) %>
-      </td>
-    </tr>
-  </table>
-  <div><%= submit_tag("次へ") %></div>
-<%- } -%>
-
-<%- form_for(:signup_form, @signup_form, :url => {:controller => "signup/email", :action => "validate"}) { |f| -%>
-  <table border="1">
-    <tr>
-      <th><%= f.label(:email) %></th>
-      <td>
-        <%= f.text_field(:email, :size => 30) %>
-        <%= error_message_on(:signup_form, :email) %>
-        <%= error_message_on(:credential, :email) %>
-      </td>
-    </tr>
-    <tr>
-      <th><%= f.label(:password) %></th>
-      <td>
-        <div><%= f.password_field(:password, :size => 20) %></div>
-        <div><%= f.password_field(:password_confirmation, :size => 20) %></div>
-        <%= error_message_on(:signup_form, :password) %>
-      </td>
-    </tr>
-  </table>
- <div><%= submit_tag("確認画面へ") %></div>
-<%- } -%>
+<div>
+  <div style="float: left; width: 45%; margin-right: 10px;">
+    <h2>OpenIDで登録！</h2>
+    <div>登録の流れ: OpenIDを入力 → OpenID認証 → 確認 → 登録完了！</div>
+    <%- form_tag(:controller => "signup/open_id", :action => "authenticate") { -%>
+      <table border="1">
+        <tr>
+          <th><%= label_tag("openid_url", "OpenID URL") %></th>
+          <td>
+            <%= text_field_tag("openid_url", @openid_url, :size => 20) %>
+          </td>
+        </tr>
+      </table>
+      <div><%= submit_tag("次へ") %></div>
+    <%- } -%>
+  </div>
+  <div style="float: left; width: 45%;">
+    <h2>メールアドレスで登録！</h2>
+    <div>登録の流れ: メールアドレスとパスワードを入力 → 確認 → 確認メール受信 → 確認 → 登録完了！</div>
+    <%- form_for(:signup_form, @signup_form, :url => {:controller => "signup/email", :action => "validate"}) { |f| -%>
+      <table border="1">
+        <tr>
+          <th><%= f.label(:email) %></th>
+          <td>
+            <%= f.text_field(:email, :size => 30) %>
+            <%= error_message_on(:signup_form, :email) %>
+            <%= error_message_on(:credential, :email) %>
+          </td>
+        </tr>
+        <tr>
+          <th><%= f.label(:password) %></th>
+          <td>
+            <div><%= f.password_field(:password, :size => 20) %></div>
+            <div><%= f.password_field(:password_confirmation, :size => 20) %></div>
+            <%= error_message_on(:signup_form, :password) %>
+          </td>
+        </tr>
+      </table>
+     <div><%= submit_tag("確認画面へ") %></div>
+    <%- } -%>
+  </div>
+  <div style="clear: left;"></div>
+</div>
