@@ -41,6 +41,20 @@ h2 span
     background-color: #999999;
 }
 
+#signup-link
+{
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+}
+#signup-free
+{
+    margin-bottom: 1em;
+    font-size: 12px;
+    text-align: center;
+    color: #990000;
+}
+
 #openid-sites
 {
     font-size: 12px;

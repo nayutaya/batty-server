@@ -19,6 +19,9 @@
 <%- side_column { -%>
   <%- unless logged_in? -%>
     <div>
+      <div id="signup-link"><%= link_to(h("アカウント登録"), :controller => "signup", :action => "index") %></div>
+      <div id="signup-free">もちろん無料です</div>
+
       <h1><span>ログイン</span></h1>
       <div id="openid-sites">
         <div><%= link_to(icon16("favicons/mixi.png") + h(" mixiアカウントでログイン"), {:controller => "auth/open_id", :action => "login", :openid_url => "mixi.jp"}, :method => :post) %></div>
