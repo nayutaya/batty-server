@@ -19,6 +19,9 @@
 <%- side_column { -%>
   <%- unless logged_in? -%>
     <div>
+      <div id="signup-link"><%= link_to(h("アカウント登録"), :controller => "signup", :action => "index") %></div>
+      <div id="signup-free">もちろん無料です</div>
+
       <h1><span>ログイン</span></h1>
       <div id="openid-sites">
         <div><%= link_to(icon16("favicons/mixi.png") + h(" mixiアカウントでログイン"), {:controller => "auth/open_id", :action => "login", :openid_url => "mixi.jp"}, :method => :post) %></div>
@@ -45,13 +48,6 @@
   <%- end -%>
 <%- } -%>
 
-<%- unless logged_in? -%>
-  <div id="login_form">
-    <div><%= link_to(h("OpenIDによるサインアップ"), :controller => "signup/open_id") %></div>
-    <div><%= link_to(h("メールアドレスによるサインアップ"), :controller => "signup/email") %></div>
-  </div>
-<%- end -%>
-
 <%- if logged_in? -%>
   <h1><span>ダッシュボード</span></h1>
   <div><%= render(:partial => "devices")  %></div>
@@ -66,6 +62,8 @@
     </div>
     <div style="clear: left;"></div>
   </div>
+<%- else -%>
+  <%# TODO: battyの説明を記述 %>
 <%- end -%>
 
 <script type="text/javascript">
