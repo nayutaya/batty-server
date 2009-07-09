@@ -9,41 +9,81 @@
         margin: 0;
         padding: 0;
       }
-      #code
+      #dialog
       {
-        float: left;
-        color: #CCCCCC;
-        background-color: #FFFFFF;
-        font-size: 160px;
-        font-weight: bold;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 650px;
+        height: 200px;
+        margin: -100px 0px 0px -325px;
+      }
+      #code-outer
+      {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 249px;
+        height: 200px;
         border-style: solid;
         border-color: #CCCCCC;
         border-width: 0px 1px 0px 0px;
       }
+      #code-inner
+      {
+        font-size: 150px;
+        line-height: 200px;
+        text-align: center;
+        color: #999999;
+      }
       #message
       {
-        padding: 40px 0px 5px 0px;
-        color: #CCCCCC;
-        font-size: 28px;
+        position: absolute;
+        top: 0px;
+        left: 250px;
+        width: 400px;
+        height: 200px;
+      }
+      #status-outer
+      {
+        height: 75px;
+      }
+      #status-inner
+      {
+        padding: 40px 0px 0px 10px;
+        font-size: 24px;
         font-weight: bold;
+        color: #999999;
+      }
+      #description-outer
+      {
+        height: 124px;
         border-style: solid;
         border-color: #CCCCCC;
-        border-width: 0px 0px 1px 0px;
+        border-width: 1px 0px 0px 0px;
       }
-      #description
+      #description-inner
       {
         padding: 10px;
-        color: #999999;
         font-size: 14px;
+        color: #999999;
       }
     </style>
   </head>
   <body>
-    <div id="box-outer">
-      <div id="box-inner">
-        <div id="code">404</div>
-        <div id="message">Not Found</div>
-        <div id="description">指定されたURLが見つかりませんでした。</div>
+    <div id="dialog">
+      <div id="code-outer">
+        <div id="code-inner">404</div>
+      </div>
+      <div id="message">
+        <div id="status-outer">
+          <div id="status-inner">Not Found</div>
+        </div>
+        <div id="description-outer">
+          <div id="description-inner">
+            指定されたURLが見つかりませんでした。
+          </div>
+        </div>
       </div>
     </div>
   </body>
