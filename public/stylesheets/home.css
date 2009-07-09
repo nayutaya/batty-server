@@ -27,7 +27,7 @@ h2 span
 
 #side-column-inner h1
 {
-    margin: 0em 0em 0.4em 0em;
+    margin-bottom: 8px;
     color: #666666;
     font-size: 16px;
     font-weight: bold;
@@ -36,9 +36,9 @@ h2 span
 #side-column-inner hr
 {
     height: 1px;
-    margin: 0.4em 0em;
+    margin: 8px 0px;
     border: none;
-    background-color: #999999;
+    background-color: #CCCCCC;
 }
 
 #signup-link
@@ -49,7 +49,7 @@ h2 span
 }
 #signup-free
 {
-    margin-bottom: 1em;
+    margin-bottom: 10px;
     font-size: 12px;
     text-align: center;
     color: #990000;
@@ -58,11 +58,11 @@ h2 span
 #openid-sites
 {
     font-size: 12px;
+    line-height: 18px;
 }
-
 #openid-sites img
 {
-    vertical-align: text-top;
+    vertical-align: text-bottom;
 }
 
 #side-column-inner form input.openid,
@@ -73,7 +73,8 @@ h2 span
 #side-column-inner form input.password-with-desc
 {
     width: 160px; /* width:200 - (padding:20 + padding:18 + border:2)*/
-    height: 18px;
+    height: 20px;
+    margin-bottom: 4px;
     padding-left: 18px;
     border-width: 1px;
     border-style: solid;
