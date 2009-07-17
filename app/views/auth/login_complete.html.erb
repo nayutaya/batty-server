@@ -1,6 +1,8 @@
 
 <%- @title = "ログインしました" -%>
 <%- @enable_side_column = false -%>
+<%- @stylesheets = %[auth] -%>
+
 <%- additional_head { -%>
   <%# MEMO: meta要素による自動遷移は無効化されている可能性があるため、JavaScriptによる遷移を併用する %>
   <meta http-equiv="refresh" content="1; URL=<%= URI.escape(@return_path) %>" />
@@ -11,29 +13,6 @@
     }, 2000);
     // ]]>
   </script>
-  <style type="text/css">
-    #dialog
-    {
-        margin: 100px auto;
-        padding: 15px;
-        width: 500px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: #CCCCCC;
-    }
-    #dialog h1
-    {
-        margin: 0 0 0.4em 0;
-        color: #666666;
-        font-size: 130%;
-        font-weight: bold;
-    }
-    .message
-    {
-        color: #999999;
-        font-size: 90%;
-    }
-  </style>
 <%- } -%>
 
 <div id="dialog">

@@ -1,6 +1,8 @@
 
 <%- @title = "ログアウトしました" -%>
 <%- @enable_side_column = false -%>
+<%- @stylesheets = %[auth] -%>
+
 <%- additional_head { -%>
   <%# MEMO: meta要素による自動遷移は無効化されている可能性があるため、JavaScriptによる遷移を併用する %>
   <meta http-equiv="refresh" content="1; URL=<%= URI.escape(@return_path) %>" />
@@ -13,5 +15,7 @@
   </script>
 <%- } -%>
 
-<div>ログアウトしました</div>
-<div>ページが切り替わらない場合は <%= link_to(h(@return_path), @return_path) %> をクリックしてください。</div>
+<div id="dialog">
+  <h1>ログアウトしました</h1>
+  <div class="message">ページが切り替わらない場合は <%= link_to(h(@return_path), @return_path) %> をクリックしてください。</div>
+</div>
