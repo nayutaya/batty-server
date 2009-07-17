@@ -1,27 +1,87 @@
 
 <%- @title = "ログイン" -%>
+<%- @enable_side_column = false -%>
 
-<h1>メールアドレスによるログイン</h1>
+<%- additional_head { -%>
+  <style type="text/css">
+    #dialog
+    {
+        margin: 100px auto;
+        padding: 15px;
+        width: 400px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #CCCCCC;
+    }
+    #dialog h1
+    {
+        margin: 0 0 0.4em 0;
+        color: #666666;
+        font-size: 130%;
+        font-weight: bold;
+    }
 
-<%- form_for(:login_form, @login_form, :url => {:action => "login"}) { |f| -%>
-  <table border="1">
-    <tr>
-      <th><%= f.label(:email) %></th>
-      <td>
-        <%= f.text_field(:email, :size => 30) %>
-        <%= error_message_on(:login_form, :email) %>
-      </td>
-    </tr>
-    <tr>
-      <th><%= f.label(:password) %></th>
-      <td>
-        <%= f.password_field(:password, :size => 30) %>
-        <%= error_message_on(:login_form, :password) %>
-      </td>
-    </tr>
-  </table>
-  <div><%= submit_tag("ログイン") %></div>
+    table#email-login
+    {
+        margin: 0 auto;
+        border-collapse: collapse;
+        border-width: 0px;
+    }
+
+    table#email-login th,
+    table#email-login td
+    {
+        padding: 5px;
+        border-width: 0px;
+    }
+
+    table#email-login th
+    {
+        text-align: right;
+        font-size: 95%;
+        font-weight: bold;
+        vertical-align: top;
+        color: #666666;
+    }
+    table#email-login td
+    {
+        color: #333333;
+    }
+
+    div.fieldWithErrors label
+    {
+        color: #990000;
+    }
+    div.formError
+    {
+        font-size: 80%;
+        color: #990000;
+    }
+  </style>
 <%- } -%>
+
+<div id="dialog">
+  <h1>ログイン</h1>
+  <%- form_for(:login_form, @login_form, :url => {:action => "login"}) { |f| -%>
+    <table id="email-login">
+      <tr>
+        <th><%= f.label(:email) %></th>
+        <td>
+          <%= f.text_field(:email, :size => 30) %>
+          <%= error_message_on(:login_form, :email) %>
+        </td>
+      </tr>
+      <tr>
+        <th><%= f.label(:password) %></th>
+        <td>
+          <%= f.password_field(:password, :size => 30) %>
+          <%= error_message_on(:login_form, :password) %>
+        </td>
+      </tr>
+    </table>
+    <div style="text-align: center;"><%= submit_tag("ログイン") %></div>
+  <%- } -%>
+</div>
 
 <%- unless production? -%>
   <div class="debug">
