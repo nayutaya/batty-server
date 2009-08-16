@@ -169,10 +169,12 @@ class DeviceTest < ActiveSupport::TestCase
     assert_equal(true, @basic.valid?)
   end
 
+=begin MEMO: before_validation_on_createによりテスト不可
   test "validates_presence_of :device_token" do
     @basic.device_token = ""
     assert_equal(false, @basic.valid?)
   end
+=end
 
   test "validates_presence_of :user_id" do
     @basic.user_id = nil
@@ -238,11 +240,26 @@ class DeviceTest < ActiveSupport::TestCase
   # フック
   #
 
-  test "before_validation_on_create" do
+  test "before_validation_on_create, nil" do
     token = "9" * @klass::TokenLength
 
     record = @klass.new(@basic.attributes)
     record.device_token = nil
+
+    Kagemusha.new(@klass).
+      defs(:create_unique_device_token) { token }.
+      swap {
+        record.save!
+      }
+
+    assert_equal(token, record.reload.device_token)
+  end
+
+  test "before_validation_on_create, empty string" do
+    token = "9" * @klass::TokenLength
+
+    record = @klass.new(@basic.attributes)
+    record.device_token = ""
 
     Kagemusha.new(@klass).
       defs(:create_unique_device_token) { token }.

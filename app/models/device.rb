@@ -42,7 +42,9 @@ class Device < ActiveRecord::Base
   }
 
   before_validation_on_create { |record|
-    record.device_token ||= record.class.create_unique_device_token
+    if record.device_token.blank?
+      record.device_token = record.class.create_unique_device_token
+    end
   }
 
   def self.create_unique_device_token
