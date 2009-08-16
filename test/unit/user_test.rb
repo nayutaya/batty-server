@@ -139,10 +139,12 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(true, @basic.valid?)
   end
 
+=begin MEMO: before_validation_on_createによりテスト不可
   test "validates_presence_of :user_token" do
     @basic.user_token = ""
     assert_equal(false, @basic.valid?)
   end
+=end
 
   test "validates_length_of :nickname" do
     [
@@ -183,11 +185,26 @@ class UserTest < ActiveSupport::TestCase
   # フック
   #
 
-  test "before_validation_on_create" do
+  test "before_validation_on_create, nil" do
     token = "9" * @klass::TokenLength
 
     record = @klass.new(@basic.attributes)
     record.user_token = nil
+
+    Kagemusha.new(@klass).
+      defs(:create_unique_user_token) { token }.
+      swap {
+        record.save!
+      }
+
+    assert_equal(token, record.reload.user_token)
+  end
+
+  test "before_validation_on_create, empty string" do
+    token = "9" * @klass::TokenLength
+
+    record = @klass.new(@basic.attributes)
+    record.user_token = ""
 
     Kagemusha.new(@klass).
       defs(:create_unique_user_token) { token }.

@@ -30,7 +30,9 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :user_token
 
   before_validation_on_create { |record|
-    record.user_token ||= record.class.create_unique_user_token
+    if record.user_token.blank?
+      record.user_token = record.class.create_unique_user_token
+    end
   }
 
   def self.create_unique_user_token
