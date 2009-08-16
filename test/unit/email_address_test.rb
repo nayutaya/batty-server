@@ -41,10 +41,12 @@ class EmailAddressTest < ActiveSupport::TestCase
     assert_equal(true, @basic.valid?)
   end
 
+=begin MEMO: before_validation_on_createによりテスト不可
   test "validates_presence_of :activation_token" do
     @basic.activation_token = ""
     assert_equal(false, @basic.valid?)
   end
+=end
 
   test "validates_presence_of :user_id" do
     @basic.user_id = nil
@@ -160,11 +162,26 @@ class EmailAddressTest < ActiveSupport::TestCase
   # フック
   #
 
-  test "before_validation_on_create" do
+  test "before_validation_on_create, nil" do
     token = "9" * @klass::TokenLength
 
     record = @klass.new(@basic.attributes)
     record.activation_token = nil
+
+    Kagemusha.new(@klass).
+      defs(:create_unique_activation_token) { token }.
+      swap {
+        record.save!
+      }
+
+    assert_equal(token, record.reload.activation_token)
+  end
+
+  test "before_validation_on_create, empty string" do
+    token = "9" * @klass::TokenLength
+
+    record = @klass.new(@basic.attributes)
+    record.activation_token = ""
 
     Kagemusha.new(@klass).
       defs(:create_unique_activation_token) { token }.
